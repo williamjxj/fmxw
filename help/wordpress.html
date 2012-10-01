@@ -1,0 +1,30 @@
+<div style="width:620px;overflow:auto;border:1px inset #666;background-color:#eee;padding:2px;">
+
+
+<pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">$config = array(
+ 'header' => array(...)
+);
+function foo() {
+  if (isset($config) && is_array($config['header'])) {
+    //do some stuff.
+  }
+}
+foo();
+</code></pre>
+the foo() will not be executed because $config is unseen in the function.
+To correct it, add:
+global $config;
+to declare it, like this:
+<pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">function foo() {
+  global $config;
+  if (isset($config) && is_array($config['header'])) {
+    //do some stuff.
+  }
+}
+foo();</code></pre>
+Right now it works.
+<h4></h4>
+<pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">echo "<pre>"; print_r($_COOKIE); print_r($_SESSION); echo "</pre>";
+</code></pre>
+$_COOKIE can be seen in different php scripts, but $_SESSION is only available on itself with 'session_start()'.
+</div>

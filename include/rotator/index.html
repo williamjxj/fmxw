@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Rotator</title>
+<link rel="stylesheet" type="text/css" media="screen" href="./rotators.css" />
+<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="./common.js"></script>
+<script type="text/javascript" src="./scripts/rotators.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	return false;
+	$.get('./content.php', function(data) {
+		$(data).each(function() {
+			console.log(this);
+		});
+	}, "json");
+});
+</script>
+</head>
+<body>
+<h3>Recent Information</h3>
+<div id="news-feed"> News Releases </div>
+</div>
+</body>
+</html>

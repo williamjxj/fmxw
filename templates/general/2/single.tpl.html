@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="box5">
+      <table width="100%" border="0" cellpadding="2px" cellspacing="2px">
+        <tr>
+          <th><h3><a href="?cid={$row.cid}">{$row.title}</a></h3></th>
+        </tr>
+        <tr>
+          <td><span>
+          {if {$row.source} && {$row.author}}来源: {$row.author}
+          {elseif {$row.source}}来源: {$row.source}
+          {elseif {$row.author}}来源: {$row.author}
+          {/if}
+          </span>&nbsp;<span>位置: <a href="?cmenu={$row.cate_id}">{$row.category}</a> / <a
+		  href="?iid={$row.iid}">{$row.item}</a> / </span>&nbsp;<span>时间: {$row.pubdate}</span></td>
+        </tr>
+        <tr>
+          <td><span>阅读: {$row.clicks}</span>&nbsp;<span>关注: {$row.likes}</span>&nbsp;<span>标签: {$row.tags}</span></td>
+        </tr>
+        <tr>
+          <td>{$row.content}</td>
+        </tr>
+        <tr>
+          <td><a
+href="{$row.url}">阅读全文</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

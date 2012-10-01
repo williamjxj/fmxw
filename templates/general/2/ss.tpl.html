@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div> {include file="{$path2}search_form.tpl.html"} </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span2">
+      <ul id="tf">
+        <li><a class="now">全部时间</a></li>
+        <li><a href="#">一天内</a></li>
+        <li><a href="#">一周内</a></li>
+        <li><a href="#">一月内</a></li>
+        <li><a href="#">一年内</a></li>
+      </ul>
+      <ul id="sf">
+        <li><a class="now" title="">全部来源</a></li>
+        <li><a href="" title="百度">百度</a></li>
+        <li><a href="" title="搜狐">搜狐</a></li>
+        <li><a href="" title="腾讯网">腾讯网</a></li>
+        <li><a href="" title="凤凰网">凤凰网</a></li>
+      </ul>
+    </div>
+    <div class="span8"> {include file="{$path2}search.tpl.html"} </div>
+    <div class="span2"> {include file="{$path2}weibo.tpl.html"}
+      {include file="{$path2}reping.tpl.html"} 
+      {include file="{$path2}pk.tpl.html"} </div>
+  </div>
+  <div class="row-fluid">
+    <div> {include file="{$path2}guanggao2.tpl.html"} </div>
+    <div> {include file="{$path2}search_form.tpl.html"} </div>
+  </div>
+</div>

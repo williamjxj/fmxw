@@ -1,0 +1,43 @@
+<!--http://widget.weibo.com/livestream/listlive.php?atopic=丑闻-->
+<div class="weibo">
+  <h3>看看微博怎么说-</h3>
+  <div class="row" style="margin:0px;">
+    <ul class="nav nav-tabs" id="weiboList">
+      <li class="active"><a href="#sinaList"><img src="images/sina.ico" /> 新浪</a></li>
+      <li><a href="#tengxunList"><img src="images/qq.ico" /> 腾讯</a></li>
+      <li><a href="#163list"><img src="images/163.ico" /> 网易</a></li>
+      <li><a href="#sohulist"><img src="images/sohu.ico" /> 搜狐</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active accordion" id="sinaList">
+        <iframe width="100%" scrolling="no" height="500" frameborder="0" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&amp;width=0&amp;height=500&amp;uid=1644057380&amp;skin=1&amp;refer=1&amp;pic=1&amp;titlebar=0&amp;border=1&amp;publish=1&amp;atalk=1&amp;recomm=0&amp;at=0&amp;atopic=负面新闻&amp;ptopic=丑闻&amp;dpc=1">新浪微博</iframe>
+      </div>
+      <div class="tab-pane accordion" id="tengxunList">
+        <iframe width="100%" scrolling="yes" height="500" frameborder="0" src=""></iframe>
+      </div>
+      <div class="tab-pane accordion" id="163list">
+        <div class="ajaxloading"></div>
+        <p>网易微博</p>
+      </div>
+      <div class="tab-pane accordion" id="sohulist">
+        <div class="ajaxloading"></div>
+        <p>搜狐微博</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#weiboList a').click(function(e) {
+		e.preventDefault();
+		if(/tengxun/.test($(this).attr('href'))) {
+			var t = $(this).attr('href'); //#tengxunList;
+			//只执行一次, 用one()来.
+			if($(t).find('iframe').attr('src')=='') {
+				$(t).find('iframe').attr('src', 'http://search.t.qq.com/index.php?pos=1002&su=1&smart=1&k=负面新闻');
+			}
+		}
+		$(this).tab('show');
+	});
+});
+</script>

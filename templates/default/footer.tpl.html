@@ -1,0 +1,14 @@
+{$gurl={$config.d}}
+<div class="container"> {if $smarty.session.fmxw.language != 'English'}
+  <div class="box">
+    <div class="btn-group sitemap"> {foreach $sitemap as $k=>$v} <a class="btn" href="{$gurl}?sitemap={$k}">{$v.0}</a> {/foreach} </div>
+    <p>&copy;2012&nbsp;&nbsp;  底细,真相,事实传播媒体 &nbsp;&nbsp;<abbr title="底细,真相,事实传播媒体">(http://www.dixitruth.com)</abbr><br />
+      联系电话:(866)123-4567 邮件: <abbr title="admin@dixitruth.com">admin@dixitruth.com</abbr> </p>
+  </div>
+  {else}
+  <div class="box">
+    <div class="btn-group sitemap"> {foreach $sitemap as $k=>$v} <a class="btn" href="{$gurl}?sitemap={$k}">{$v.1}</a> {/foreach} </div>
+    <p>&copy;2012&nbsp;&nbsp;  The Dixi, Truth Media&nbsp;&nbsp;<abbr title="The Dixi, Truth Media">(http://www.dixitruth.com)</abbr><br />
+      Phone:(866)789-5432 E-mail: <abbr title="admin@dixitruth.com">admin@dixitruth.com</abbr></p>
+  </div>
+  {/if} </div>

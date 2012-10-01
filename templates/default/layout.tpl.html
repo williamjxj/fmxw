@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{$common.header.lang}">
+<head>
+<meta charset="{$common.header.charset}">
+<title>{$config.header.title|default:{$common.header.title}}</title>
+<meta name="description" content="{$config.header.desc|default:{$common.header.desc}}">
+<meta name="keywords" content="{$config.header.keywords|default:{$common.header.keywords}}">
+<meta name="robots" content="{$config.header.robots|default:{$common.header.robots}}">
+<link rel="stylesheet" type="text/css" href="{$common.css.bootstrap}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{$common.css.fmxw}" media="screen" />
+<!--link rel="stylesheet" type="text/css" href="{$common.css.extra}" media="screen" />-->
+<script type="text/javascript" src="{$common.js.jquery}"></script>
+<script type="text/javascript" src="{$common.js.bts}"></script>
+<script type="text/javascript" src="{$common.js.gb_big5}"></script>
+<script type="text/javascript" src="{$common.js.ga}"></script>
+<script type="text/javascript" src="{$common.js.cookie}"></script>
+<!------------------------>
+<meta content="index, follow" name="robots">
+<meta content="index, follow" name="googlebot">
+<link rel="shortcut icon" href="favicon.ico">
+<!------------------------>
+<link href="{$config.include}news_ticker/styles/ticker-style.css" rel="stylesheet" type="text/css" />
+<script src="{$config.include}news_ticker/includes/jquery.ticker.min.js" type="text/javascript"></script>
+<!------------------------>
+<script type="text/javascript">
+$(window).load(function() {
+  //$('.flexslider').flexslider();
+  //$.ajaxSetup({ async: true });
+  //$.getScript('./js/ga.js');
+});
+</script>
+</head>
+<body id="{$config.browser}">
+<div class="container">
+  <div id="header"> {include file="{$header_template}"} </div>
+  <div id="menu"> {include file="{$menu_template}"} </div>
+  <div id="rss"> {include file="{$rss_template}"} </div>
+  <div id="main">{include file="{$main_template}"}</div>
+  <div id="footer"> {include file="{$footer_template}"} </div>
+</div>
+</body>
+</html>

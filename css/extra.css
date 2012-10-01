@@ -1,0 +1,57 @@
+.table8 {
+    font-size:small;
+    background: #ffffff;
+    border-collapse:collapse;
+    width:100%;
+    border: 1px solid #cdcdcd;
+    background: #fff;
+    /*position: relative;*/
+    top: -4px;
+    left: -4px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    padding-bottom: 10px;
+    padding-top: 6px;
+}
+.table8 caption.cp1 { font-weight: bold; }
+.table8 tr.alt1 {
+    background: #e6e6e6;
+}
+.table8 tr.alt2 {
+    background-color: #f1f1f1;
+}
+.table8 th, .table8 td {
+    margin: 0;
+    text-align: center;
+    text-transform: capitalize;
+    text-weight: bold;
+    padding: 3px;
+}
+.table8 tr td form { margin: 0; }
+.table8 tr td.optbtn label { display: inline-block; }
+.table8 tr td.optbtn label a {
+    width: 10px;
+    height: 10px;
+    display: block;
+}
+.table8 tr td.optbtn label a.preview {
+    background: url(../images/pams-preview-10px.png) no-repeat;
+}
+.table8 tr td.optbtn label a.edit {
+    background: url(../images/pams-edit-10px.png) no-repeat;
+}
+.table8 tr td.optbtn label a.delete {
+    background: url(../images/pams-delete-10px.png) no-repeat;
+}
+table8 tr td textarea.remitComment, .table8 tr td textarea.contactText, 
+.table8 tr td form textarea.contactText {
+    border: 1px solid #dbdfe6;
+    margin: 0;
+    padding: 5px;
+}
+.table8 td a {
+    font-weight: bold;
+    display: inline;
+}
+.table8 .name {
+    text-align: left;
+}

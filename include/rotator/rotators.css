@@ -1,0 +1,100 @@
+.news-feed {
+  /*background:none repeat scroll 0 0 #eeffdd;
+  width: 100%;*/
+  padding: 10px;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.headline {
+  position: absolute;
+  height: 150px;
+  top: 370px;
+  overflow: hidden;
+}
+.news-feed h4 {
+  margin-top: .5em;
+  margin-bottom: .25em;
+  font-size: 1em;
+}
+.news-feed h4 a {
+  color: #006;
+}
+.news-wait {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  margin-left: -10px;
+  z-index: 4;
+}
+
+.fade-slice {
+  position: absolute;
+  /*width: 20em;*/
+  height: 2px;
+  background-color: #efd;
+  z-index: 3;
+}
+/*
+ * 1. tom.com
+ * 2. http://stackoverflow.com/questions/11216940/get-height-of-li-using-jquery-so-news-ticker-scrolls-up-the-exact-amount-needed/11217076#11217076
+ */
+.rss {
+	margin-top: 10px;
+	margin-bottom:20px;
+    overflow: hidden;
+	font-size:12px;
+}
+.rss a img {
+  border: 0;
+}
+.rss .newslist {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #D9D9D9 #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    overflow: hidden;
+}
+.rss .newslist ul {
+    overflow: hidden;
+}
+.rss .newslist li {
+    border-bottom: 1px solid #D9D9D9;
+    line-height: 20px;
+    margin: 2px auto;
+    overflow: hidden;
+    padding: 2px 4px 2px;
+}
+.rss .headline h4 {
+    padding-right: 10px;
+}
+.rss .headline h4 a {
+    color: #A5A5A5;
+    text-decoration: none;
+}
+.rss .headline h4 a:hover {
+    color: #6E5FE2;
+}
+.rss .headline .summary {
+    color: #A5A5A5;
+   /* box-shadow: 2px 2px 2px #888888;*/
+}
+.rss [class*="span"] {
+  margin-left: 6px !important;
+}
+.rss .span3 {
+  width: 228px;
+}
+.rss .span3 h3 {
+	display:inline-block;
+}
+.rss .span3 .btn-group {
+    display: inline-block;
+	font-size:10px;
+}

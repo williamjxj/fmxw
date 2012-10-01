@@ -1,0 +1,261 @@
+{*debug*}
+<div class="row">
+	<div class="span2">
+		<div id="logo">
+			<a href="{$config.url}" title="{$common.header.title}"><img src="{$common.logo.logo_130x60}" /> </a>
+		</div>
+	</div>
+	<div class="span10">
+		<div class="btn-toolbar">
+
+			<i class="icon-time"></i><span class="curtime" id="today"></span>
+			{if {$config.username}}
+			<div class="btn-group">
+				<a href="#" class="btn btn-info btn-small"><i class="icon-user icon-white"></i>{$config.username}</a><a href="#" data-toggle="dropdown" class="btn btn-info btn-small dropdown-toggle"><span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="#"><i class="icon-info-sign"></i> {$config.username} 信息</a>
+					</li>
+					<li>
+						<a href="#"><i class="icon-edit"></i> 修改 {$config.username}</a>
+					</li>
+					<li>
+						<a href="login.php?logout=1"><i class="icon-share"></i> 注销</a>
+					</li>
+				</ul>
+			</div>
+			{/if}
+
+			<div class="btn-group">
+				<a href="#" class="btn btn-info btn-small"> <span id="default_icon"><i class="icon-list-alt icon-white"></i></span> <span id="default_language"></span></a>
+				<a href="#" data-toggle="dropdown" class="btn  btn-info btn-small dropdown-toggle"><span class="caret"></span></a>
+				<ul class="dropdown-menu" id="language">
+					<li>
+						<a class="chinese" href="#"><img src="images/cn.png" style="margin-right:6px;" />中文</a>
+					</li>
+					<li>
+						<a class="english" href="#"><img src="images/en.png" style="margin-right:6px;" />English</a>
+					</li>
+				</ul>
+			</div>
+			<span id="st" style="cursor: pointer;" class="curtime">切至繁体版</span>
+
+			<div class="btn-group">
+				<a href="#" class="btn btn-info btn-small"><i class="icon-list-alt icon-white"></i>&nbsp;显示字体</a><a href="#" data-toggle="dropdown" class="btn  btn-info btn-small dropdown-toggle"><span class="caret"></span></a>
+				<ul class="dropdown-menu" id="switcher">
+					<li>
+						<a href="#" id="switcher-default"><i class="icon-th"></i> 缺省</a>
+					</li>
+					<li>
+						<a href="#" id="switcher-large"><i class="icon-zoom-in"></i> 放大</a>
+					</li>
+					<li>
+						<a href="#" id="switcher-small"><i class="icon-zoom-out"></i> 缩小</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="div.container" id="prlnk"><i class="icon-print"></i> 打印</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="btn-group">
+				<a href="#" class="btn btn-info btn-small"><i class="icon-flag icon-white"></i> 帮助中心</a><a href="#" data-toggle="dropdown" class="btn btn-info btn-small dropdown-toggle"><span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a data-toggle="modal" class="contact" href="#myModal"><i class="icon-envelope"></i> 联络我们</a>
+					</li>
+					<li>
+						<a data-toggle="modal" class="help1"	href="#modal1"><i class="icon-globe"></i> 帮助中心</a>
+					</li>
+					<li>
+						<a data-toggle="modal" class="help2"	href="#modal2"><i class="icon-facetime-video"></i> 视频帮助</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a id="login_signup" href="login/login_admin.php"><i class="icon-user"></i> 后台管理</a>
+					</li>
+				</ul>
+			</div>
+			<a href="/weibo/" class="btn btn-info btn-small" style="vertical-align:top;"><img src="{$config.img}sina.ico" width="16px" height="16px" border="0" /> 新浪微博</a><a href="/iweibo/" class="btn btn-info btn-small" style="vertical-align:top;"><img src="{$config.img}qq.ico" width="16px" height="16px" border="0" /> 腾讯微博</a>
+		</div>
+	</div>
+</div>
+<section>
+	<div class="modal hide fade" id="myModal"></div>
+	<div id="div_ls" style="display:none;"></div>
+	<div class="modal hide fade" id="modal1">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">
+				&times;
+			</button>
+			<h2>了解更多</h2>
+		</div>
+		<div class="modal-body">
+			{include file="{$help_template}"}
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">关闭</a>
+		</div>
+	</div>
+	<div class="modal hide" id="modal2" style="width:640px;height:480px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				&times;
+			</button>
+		</div>
+		<div class="modal-body">
+			<iframe width="640" height="480" src="http://www.youtube.com/embed/Z5bHsrD0wic" frameborder="0" allowfullscreen></iframe>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+    $(function() {
+        /* 语言部分的判定 */
+        if ($.cookie("fmxw[language]")) {
+            $('#default_language').text($.cookie("fmxw[language]"));
+            //$('#default_language').text().match(/English/i)
+            if ($.cookie("fmxw[language]").match(/English/i)) {
+                $('#default_icon').html('<img src="images/en.png" style="margin-right:6px;" />');
+                $('#st').hide();
+            } else {
+                $('#default_icon').html('<img src="images/cn.png" style="margin-right:6px;" />');
+                $('#st').show();
+            }
+        } else {
+            $('#default_language').text('中文');
+            $('#default_icon').html('<img src="images/cn.png" style="margin-right:6px;" />');
+            $('#st').show();
+        }
+        /* 字体调整 */
+        var $speech = $('div.container');
+        var defaultSize = $speech.css('fontSize') || $('body').css('fontSize');
+        $('#switcher a').live("click", function() {
+            var num = parseFloat($speech.css('fontSize'), 10) || parseFloat($('body').css('fontSize'));
+            console.log(num + ',' + this.id);
+            switch (this.id) {
+                case 'switcher-large':
+                    num *= 1.4;
+                    break;
+                case 'switcher-small':
+                    num /= 1.4;
+                    break;
+                default:
+                    num = parseFloat(defaultSize, 10);
+            }
+            $('div.container').stop().animate({
+                fontSize : num + 'px'
+            }, 'slow');
+        });
+
+        $('#prlnk').click(function() {
+            $('#data').load($(this).attr('href'));
+            window.print();
+            return false;
+        }).show();
+
+        $('#myModal').modal({
+            show : false
+        });
+        $('#modal1').modal({
+            show : false
+        });
+
+        /* 弹出窗口 */
+        $('a.contact[data-toggle="modal"]').click(function(e) {
+            e.preventDefault();
+            var url = 'fancy_contact.php';
+            $.ajax({
+                type : 'get',
+                url : url,
+                cache : false,
+                success : function(data) {
+                    $('#myModal').modal({
+                        show : true
+                    });
+                    $('#myModal').html(data).show()
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    alert('error ' + textStatus + " " + errorThrown);
+                }
+            });
+            return true;
+        });
+        //ul.dropdown-menu
+        //从d.php移过来,应该'modal1, myModal'在一起.
+        $('a.help1[data-toggle="modal"]').click(function(e) {
+            e.preventDefault();
+            $('#modal1').modal({
+                show : true
+            });
+            return false;
+        });
+        $('a.help2[data-toggle="modal"]').click(function(e) {
+            e.preventDefault();
+            $('#modal2').modal({
+                show : true
+            });
+            return false;
+        });
+
+        // 注册到fmxw_admin
+        $('#login_signup').click(function(e) {
+            e.preventDefault();
+            var t2 = $('#div_ls');
+            if ($(t2).is(':visible')) {
+                $(t2).hide();
+            } else {
+                if ($(t2).html().length > 0) {
+                    $(t2).hide().fadeIn(200);
+                } else {
+                    $(t2).load($(this).attr('href')).hide().fadeIn(200);
+                }
+            }
+            return true;
+        });
+        /* $(this).closest('div').find('a:first').text();
+         * alert(e.target.nodeName+', '+$(this).attr('class'));
+         */
+        $('a', 'ul#language').click(function(e) {
+            e.preventDefault();
+            var $old = $('#default_language').text();
+            var $new = $(this).text();
+            if ($new != $old) {
+                $('#default_language').text($new);
+                $.cookie("fmxw[language]", $new);
+                window.location.href = "index.php";
+            }
+            return false;
+        });
+        $('#today').html(get_date());
+    });
+    /*{$smarty.now|date_format:'%Y-%m-%d %H:%M'}*/
+    function get_date() {
+        var today = new Date();
+        var wday = '星期';
+        switch (today.getDay()) {
+            case 0:
+                wday += '日';
+                break;
+            case 1:
+                wday += '一';
+                break;
+            case 2:
+                wday += '二';
+                break;
+            case 3:
+                wday += '三';
+                break;
+            case 4:
+                wday += '四';
+                break;
+            case 5:
+                wday += '五';
+                break;
+            case 6:
+                wday += '六';
+                break;
+        }
+        return (today.getMonth() + 1) + '月' + today.getDate() + '日' + wday;
+    }
+</script>

@@ -1,0 +1,62 @@
+<!-- 如何防止hacker -->
+<div class="row">
+	<div class="span12 centered">
+		<form class="form-search" action="{$config.f2.s}" method="post" name="sf" id="sf">
+			<input type="text" name="q" id="typeahead" class="input-large search-query" style="width:400px; height:35px;" data-provide="typeahead" autocompltete="off" />
+			<button type="submit" class="btn btn-primary">
+				<i class="icon-search icon-white"></i>{$_ts.search}
+			</button>
+			<button type="button" class="btn btn-primary" id="new_search">
+				<i class="icon-search icon-white"></i>{$_ts.new_search}
+			</button>
+			<div class="alert" style="display:none;">
+				<button class="close" data-dismiss="alert">
+					×
+				</button>
+				<strong>无法查询:</strong>请输入查询字
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+    $(function() {
+		$('#new_search').click(function(e) {
+			e.preventDefault();	
+			form = document.getElementById('sf');
+			form.action = '{$config.f1.s}';
+			form.method = 'post';
+			form.submit();
+			return false;
+		});
+        $('form#sf').submit(function() {
+            var t = $('#typeahead').val();
+            if (/^\s*$/.test(t)) {
+                $('div.alert').show();
+                return false;
+            }
+            return true;
+        });
+        $('#typeahead').focus(function() {
+            $('div.alert').hide();
+        })
+        $('#typeahead').typeahead({
+            source : function(typeahead, query) {
+                if (query.length == 0)
+                    return false;
+                $.ajax({
+                    url : 'keys_search.php',
+                    type : 'GET',
+                    data : 'q=' + query,
+                    dataType : 'JSON',
+                    async : false,
+                    cache : false,
+                    beforeSend : function() {
+                    },
+                    success : function(data) {
+                        typeahead.process(data);
+                    }
+                });
+            }
+        });
+    }); 
+</script>

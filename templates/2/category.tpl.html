@@ -1,0 +1,57 @@
+{*debug*}
+{if ! {$path2}}
+{$path2="{$config.general}2/"}
+{/if}
+<div class="span5 box5">
+  <ul class="nav nav-tabs" id="categoryTab">
+    <li class="active"><a href="#lcategory">分类</a></li>
+    <li><a href="#lguanzhu">加关注</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="lcategory">
+      <ul class="nav nav-pills nav-stacked">
+        {$no=1}
+        {foreach $info as $is}
+        <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?iid={$is.cid}" title="{$is.description}">{$is.name}<span id="i_{$is.iid}" class="item_count">0</span></a></li>
+        {/foreach}
+      </ul>
+    </div>
+    <div class="tab-pane" id="lguanzhu">
+      <ul class="nav nav-pills nav-stacked">
+        {$no=1}
+        {foreach $info as $is}
+        <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?iid={$is.cid}" title="{$is.description}">{$is.name}</a> <a class="add_guanzhu" action-data="uid=2722310713" action-type="follow" href="javascript:;"><i class="icon-plus-sign"></i> 加关注</a> </li>
+        {/foreach}
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="span7 box5">
+  <div id="div_display"> {include file="{$path2}pk.tpl.html"} </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('li.li3 a').click(function(e) {
+		e.preventDefault();
+		var t = $(this).attr('href').replace(/&.*$/, '');
+		$('#div_display').hide().load($(this).attr('href')).fadeIn(200);
+		return false;
+	});
+	$('li.li3 a.add_guanzhu').click(function(e) {
+		$(this).html('<i class="icon-eye-open"></i> 已关注');
+	});
+	
+	$('#categoryTab a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	})	
+});
+$(window).load(function() {
+	$.getJSON('?js_get_category_count=1', function(data) {
+		$.each(data, function(i, item) {
+			$('#i_'+item.cid).html(item.total);
+		});
+		$('span.item_count').show();
+	});
+});
+</script>

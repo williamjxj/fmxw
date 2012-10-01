@@ -1,0 +1,80 @@
+{$user}
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<form action="{$smarty.server.SCRIPT_NAME}" method="post" id="userLoginForm" class="form-horizontal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
+    <h3 id="loginLabel" class="label label-important">{$label.title}</h3>
+  </div>
+  <div class="modal-body">
+    <div class="control-group">
+      <label class="control-label" for="username">{$label.username}</label>
+      <div class="controls">
+        <input name="username" id="username" type="text" value="{$user.username}" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="passwd">{$label.passwd}</label>
+      <div class="controls">
+        <input name="passwd" id="passwd" type="password" value="{$user.password}" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="control-group">
+      <div align="center" style="padding-top:0px;">
+        <button type="submit" class="btn btn-primary"> {$label.login} </button>
+        <img src="login/loading.gif" width="32" height="32" border="0" style="display:none;" />
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> {$label.close} </button>
+      </div>
+    </div>
+    <div class="control-group error">
+      <label id="error"></label>
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+    $(function() {
+        var validator = $('#userLoginForm').validate({
+            rules : {
+                username : "required",
+                passwd : "required",
+            },
+            messages : {
+                username : '',
+                passwd : '',
+            },
+            highlight : function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight : function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error').addClass('success');
+            }
+        });
+         $('#userLoginForm').submit(function(e) {
+		 	var form = $(this);
+            e.preventDefault();
+            if (!validator.form()) {
+                return false;
+            }
+ 
+            $.ajax({
+                type : form.attr('method'),
+                url : form.attr('action'),
+                data : form.serialize(),
+                beforeSend : function() {
+                    $('button:submit', form).attr('disabled', true).next('img').fadeIn();
+                },
+                success : function(succ) {
+                	if(succ == 'Y')
+                        document.location.href = '/fmxw/';
+                    else {
+                        var msg = "登陆信息不正确，请重新输入。";
+                        $('#error').html(msg).parent('div').fadeIn(100);
+                    }
+                    $('button:submit', form).attr('disabled', false).next('img').fadeOut();
+                }
+            });
+            return false;
+        });
+    }); 
+</script>

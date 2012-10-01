@@ -1,0 +1,81 @@
+<link rel="stylesheet" type="text/css" href="css/rotators.css">
+<script type="text/javascript" src="js/rotators.js"></script>
+
+{if $smarty.session.fmxw.language=='English'}
+
+<div class="rss"> 
+
+<span class="span3">
+  <h3>Chinadaily</h3>
+  <div id="rss_daily" class="news-feed newslist"> Chinadaily </div>
+  </span> 
+  
+<span class="span3">
+  <h3>Chinapost</h3>
+  <div id="rss_post" class="news-feed newslist"> Chinapost </div>
+  </span> 
+  
+  <span class="span3">
+  <h3>Shanghai Daily</h3>
+  <div id="rss_sh"  class="news-feed newslist"> Shanghai Daily</div>
+  </span> 
+  
+  <span class="span3">
+  <h3>BBC</h3>
+  <div id="rss_bbc"  class="news-feed newslist"> BBC </div>
+  </span>
+</div>
+<script type="text/javascript">
+$(function() {
+	//true mean get rss from worldwide(English) other than Chinese media.
+	$('#rss_daily').rotator(true);
+	$('#rss_post').rotator(true);
+	$('#rss_sh').rotator(true);
+	$('#rss_bbc').rotator(true);
+});
+</script>
+
+{else}
+
+<div class="rss"> <span class="span3">
+  <h3>中国大陆
+  <div class="btn-group" style="float:right; padding-right:6px; padding-top:2px;"> <a class="btn btn-info btn-mini" id="cn" href="#"> <img src="{$config.img}sina.ico" width="12px" height="12px" border="0" /> 新浪</a> <a class="btn btn-info btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a id="cn_sina" href="新浪"> <img src="{$config.img}sina.ico" width="12px" height="12px" border="0" />&nbsp;新浪</a></li>
+      <li><a id="cn_qq" href="腾讯"> <img src="{$config.img}qq.ico" width="12px" height="12px" border="0" />&nbsp;腾讯</a></li>
+      <li><a id="cn_sohu" href="搜狐"> <img src="{$config.img}sohu.ico" width="12px" height="12px" border="0" />&nbsp;搜狐</a></li>
+      <li><a id="cn_163" href="网易"> <img src="{$config.img}163.ico" width="12px" height="12px" border="0" />&nbsp;网易</a></li>
+    </ul>
+  </div></h3>
+  <div id="rss_cn" class="news-feed newslist"> 中国大陆 </div>
+  </span> <span class="span3">
+  <h3>香港</h3>
+  <div id="rss_hk"  class="news-feed newslist"> 香港 </div>
+  </span> <span class="span3">
+  <h3>台湾</h3>
+  <div id="rss_tw"  class="news-feed newslist"> 台湾 </div>
+  </span> <span class="span3">
+  <h3>新加坡</h3>
+  <div id="rss_sg"  class="news-feed newslist"> 新加坡 </div>
+  </span>
+  <!--span class="span2">
+  <div id="rss_na"  class="news-feed newslist"> 北美 </div>
+  </span-->
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#rss_cn').rotator();
+	$('#rss_hk').rotator();
+	$('#rss_tw').rotator();
+	$('#rss_sg').rotator();
+//	$('#rss_na').rotator();
+	$('a#cn_sina, a#cn_163, a#cn_sohu, a#cn_qq').click(function(e) {
+		e.preventDefault();
+		$('#rss_cn').rotator($(this).attr('id'));
+		$('#cn').html($(this).html());
+	});
+});
+</script>
+
+{/if}
+

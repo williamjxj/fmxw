@@ -1,0 +1,136 @@
+{if $user}
+<h3>上次修改时间/Last-time Modify: {$user.date}</h3>
+{/if}
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<form action="{$smarty.server.SCRIPT_NAME}" method="post" id="userSignupForm" class="form-horizontal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
+    <h3 id="signupLabel" class="label label-important"> {$_sign.title} </h3>
+  </div>
+  <div class="modal-body">
+    <div class="control-group">
+      <label class="control-label" for="username">{$_sign.username}</label>
+      <div class="controls">
+        <input name="username" id="username" type="text" value="{$user.username}" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="email">{$_sign.email}</label>
+      <div class="controls">
+        <input name="email" id="email" type="text" value="{$user.email}" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="passwd1">{$_sign.passwd1}</label>
+      <div class="controls">
+        <input name="passwd1" id="passwd1" type="password" value="{$user.password}" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="passwd2">{$_sign.passwd2}</label>
+      <div class="controls">
+        <input name="passwd2" id="passwd2" type="password" value="{$user.password}" />
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <label class="checkbox">
+        <input type="checkbox" id="optionsCheckbox" name="optionsCheckbox" checked="checked" />
+        {$_sign.read} <a data-toggle="modal" href="#guide" role="button">{$_sign.guide}</a>。</label>
+      </div>
+    </div>
+    <div class="control-group error">
+      <label id="error"></label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="control-group">
+      <div align="center" style="padding-top:0px;">
+        <button type="submit" class="btn btn-primary"> {$_sign.signup} </button>
+        <img src="login/loading.gif" width="32" height="32" border="0" style="display:none;" />
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> {$_sign.close} </button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal hide" id="guide"></div>
+<script type="text/javascript">
+    $(function() {
+        $('a.btn[href="#guide"]').click(function(e) {
+            e.preventDefault();
+            $('#guide').load('{$config.t}/shared/guide.html').show();
+            return false;
+        });
+
+        var validator = $('#userSignupForm').validate({
+            rules : {
+                username : "required",
+                email : "required",
+                passwd1 : {
+                    required : true
+                },
+                passwd2 : {
+                    required : true,
+                    equalTo : "#passwd1"
+                },
+                optionsCheckbox : {
+                    required : true
+                }
+            },
+            messages : {
+                username : '',
+                email : '',
+                passwd1 : '',
+                passwd2 : '',
+                optionsCheckbox : ''
+            },
+            highlight : function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight : function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error').addClass('success');
+            }
+        });
+
+        var form = $('#userSignupForm');
+        $('input', form).focus(function() {
+            if ($('#error').html().length > 0)
+                $('#error').empty().parent('div').hide();
+        });
+        $('input:text, input:password', '#userSignupForm').change(function() {
+            var t = $(this).val();
+            if (/^\s*$/.test(t))
+                $(this).popover('show');
+            else
+                $(this).popover('hide');
+        }).hover(function() {
+            $(this).popover('show');
+        });
+
+        $('#userSignupForm').submit(function(e) {
+            e.preventDefault();
+            if (!validator.form()) {
+                return false;
+            }
+ 
+            $.ajax({
+                type : form.attr('method'),
+                url : form.attr('action'),
+                data : form.serialize(),
+                beforeSend : function() {
+                    $('button:submit', form).attr('disabled', true).next('img').fadeIn();
+                },
+                success : function(succ) {
+                	if(/\d+/.test(succ) || succ!=0)
+                        document.location.href = '/fmxw/';
+                    else {
+                        var msg = "注册信息不正确，请重新输入。";
+                        $('#error').html(msg).parent('div').fadeIn(100);
+                    }
+                    $('button:submit', form).attr('disabled', false).next('img').fadeOut();
+                }
+            });
+            return false;
+        });
+    }); 
+</script>

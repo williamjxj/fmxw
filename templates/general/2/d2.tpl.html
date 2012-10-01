@@ -1,0 +1,44 @@
+{*debug*}
+{$url={$config.d}}
+{$path2="{$config.general}2/"}
+{if empty($results)}
+{if $smarty.session.dixi.language!='English'}
+  {$info.title='没有关于这个关键词的记录'}
+  {$info.content='没有关于这个关键词的记录。'}
+{else}
+  {$info.title='No record matching it, try again:'}
+  {$info.content=''}
+{/if}
+{include file="{$config.general}norecord.tpl.html"}
+{else}
+<div id="d2">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div id="search">{include file="{$path2}search.tpl.html"}</div>
+ 
+	<!-- features: 返回顶部 -->
+    <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</a>
+    
+    <!-- 广告:bashare, google -->
+    {include file="{$path2}guanggao2.tpl.html"}
+
+    </div>
+  </div>
+</div>
+{/if}
+
+<script type="text/javascript">
+(function($) {
+	//$(".st_email").shareEmail();
+})(jQuery);
+$(function() {
+	$('a.keyword', 'div.container').click(function(e) {
+		e.preventDefault();
+		$('form.form-search').find('input[name=key]').val($(this).text());
+		$('form.form-search').submit();
+	});
+	
+	$(".collapse").collapse();
+//	$().UItoTop({ easingType: 'easeOutQuart' });
+});
+</script>

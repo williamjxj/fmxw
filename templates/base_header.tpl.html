@@ -1,0 +1,172 @@
+{config_load file="{$config.smarty}"}
+<div class="btn-toolbar"> <i class="icon-time"></i><span class="curtime">{$smarty.now|date_format:'%Y-%m-%d %H:%M'}</span> {if {$config.username}}
+  <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>{$config.username} <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li> <a href="#signup" rel="tooltip" title="{$_th.edit} {$config.username}"><i class="icon-edit"></i> {$_th.edit} {$config.username}</a> </li>
+      <li> <a href="{$config.base}ulogin.php?logout=1" rel="tooltip" title="title"><i class="icon-share"></i> {$_th.logout}</a> </li>
+    </ul>
+  </div>
+  {else}
+  <div class="btn-group"> <a href="#login" rel="tooltip" title="{$_th.ulogin}"><i class="icon-share"></i>{$_th.ulogin}</a> &nbsp; <a href="#signup" rel="tooltip" title="{$_th.usignup}"><i class="icon-share"></i>{$_th.usignup}</a> </div>
+  {/if}
+  <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i id="default_icon" class="icon-list-alt icon-white"></i>&nbsp; <span id="default_language"></span><span class="caret"></span></a>
+    <ul class="dropdown-menu" id="language">
+      <li> <a class="chinese" href="#" rel="tooltip" title="中文">{#img_cn#}中文</a> </li>
+      <li> <a class="english" href="#" rel="tooltip" title="English">{#img_en#}English</a> </li>
+    </ul>
+  </div>
+  {if {$smarty.session.fmxw.language}=='中文' || !{$smarty.session.fmxw.language}} <span id="st" style="cursor: pointer;" class="curtime">切至繁体版</span> {/if}
+  <div class="btn-group"> <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown" rel="tooltip" title="title"><i class="icon-user icon-white"></i> {$_th.help} <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li> <a data-toggle="modal" class="contact" href="#contact"><i class="icon-envelope"></i> {$_th.contact_us}</a> </li>
+      <li> <a data-toggle="modal" class="help1"	href="#help_center"><i class="icon-globe"></i> {$_th.help_center}</a> </li>
+      <li> <a data-toggle="modal" class="help2"	href="#help_video"><i class="icon-facetime-video"></i> {$_th.help_video}</a> </li>
+      <li> <a href="#" rel="tooltip" title="title"><i class="icon-info-sign"></i> {$_th.faq}</a> </li>
+      <li class="divider"></li>
+      <li> <a id="admin_login" href="{$config.base}login/login_admin.php" rel="tooltip" title="title"><i class="icon-flag"></i> {$_th.admin}</a> </li>
+    </ul>
+  </div>
+  <div class="btn-group"> <a href="#" class="btn btn-info btn-small"><i class="icon-list-alt icon-white"></i>&nbsp;显示字体</a><a href="#" data-toggle="dropdown" class="btn  btn-info btn-small dropdown-toggle"><span class="caret"></span></a>
+    <ul class="dropdown-menu" id="switcher">
+      <li> <a href="#" id="switcher-default"><i class="icon-th"></i> 缺省</a> </li>
+      <li> <a href="#" id="switcher-large"><i class="icon-zoom-in"></i> 放大</a> </li>
+      <li> <a href="#" id="switcher-small"><i class="icon-zoom-out"></i> 缩小</a> </li>
+      <li class="divider"></li>
+      <li> <a href="div.container" id="prlnk"><i class="icon-print"></i> 打印</a> </li>
+    </ul>
+  </div>
+  <a href="/weibo/" class="btn btn-info btn-small" style="vertical-align:top;"><img src="{$config.img}sina.ico" width="16px" height="16px" border="0" /> 新浪微博</a><a href="/iweibo/" class="btn btn-info btn-small" style="vertical-align:top;"><img src="{$config.img}qq.ico" width="16px" height="16px" border="0" /> 腾讯微博</a> </div>
+<section>
+  <div class="modal hide" id="contact"></div>
+  <div class="modal hide" id="help_center"></div>
+  <div class="modal hide" id="help_video"></div>
+  <div id="div_ls" style="display:none;"></div>
+  <div class="modal hide" id="login"></div>
+  <div class="modal hide" id="signup"></div>
+</section>
+<script type="text/javascript">
+$(function() {
+	if ($.cookie("fmxw[language]")) {
+		$('#default_language').text($.cookie("fmxw[language]"));
+		if ($.cookie("fmxw[language]").match(/English/i))
+			$('#default_icon').html('{#img_en#}');
+		else
+			$('#default_icon').html('{#img_cn#}');
+	} else {
+		$('#default_language').text('中文');
+		$('#default_icon').html('{#img_cn#}');
+	}
+
+	$('a.help1[data-toggle="modal"]').click(function(e) {
+		e.preventDefault();
+		t = '#help_center';
+		if ($(t).html().length > 1)
+			$(t).modal();
+		else
+			$(t).load('{$config.shared}help.tpl.html').modal();
+		return false;
+	});
+	$('a.help2[data-toggle="modal"]').click(function(e) {
+		e.preventDefault();
+		t = '#help_video';
+		if ($(t).html().length > 1)
+			$(t).modal();
+		else
+			$(t).load('{$config.shared}video.tpl.html').modal();
+		return false;
+	});
+
+	$('a[href="#login"]').click(function() {
+		var $t = $($(this).attr('href'));
+		if ($t.html().length > 1)
+			$t.modal();
+		else
+			$t.load('{$config.base}ulogin.php').modal();
+		return false;
+	});
+	$('a[href="#signup"]').click(function(e) {
+		e.preventDefault();
+		t = $(this).attr('href');
+		if ($(t).html().length > 1)
+			$(t).modal();
+		else
+			$(t).load('{$config.base}usignup.php').modal({
+				show : true
+			});
+		return false;
+	});
+	$('a.contact[href="#contact"]').click(function(e) {
+		e.preventDefault();
+		$t = $($(this).attr('href'));
+		if ($t.html().length > 1)
+			$t.modal();
+		else
+			$.ajax({
+				type : 'get',
+				url : '{$config.base}ucontact.php',
+				cache : false,
+				success : function(data) {
+					$t.html(data).modal();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert('error ' + textStatus + " " + errorThrown);
+				}
+			});
+		return false;
+	});
+	$('#admin_login').click(function(e) {
+		e.preventDefault();
+		var t2 = $('#div_ls');
+		if ($(t2).is(':visible')) {
+			$(t2).hide();
+		} else {
+			if ($(t2).html().length > 0) {
+				$(t2).hide().fadeIn(200);
+			} else {
+				$(t2).load($(this).attr('href')).hide().fadeIn(200);
+			}
+		}
+	});
+
+	$('a', 'ul#language').click(function(e) {
+		e.preventDefault();
+		var $old = $('#default_language').text();
+		var $new = $(this).text();
+		if ($new != $old) {
+			$('#default_language').text($new);
+			$.cookie("fmxw[language]", $new);
+			window.location.href = "index.php";
+		}
+		return false;
+	});
+	
+	var $fs = $('div.container');
+	var defaultSize = $fs.css('fontSize') || $('body').css('fontSize');
+	$('#switcher a').live("click", function() {
+		var num = parseFloat($fs.css('fontSize'), 10) || parseFloat($('body').css('fontSize'));
+		console.log(num + ',' + this.id);
+		switch (this.id) {
+			case 'switcher-large':
+				num *= 1.4;
+				break;
+			case 'switcher-small':
+				num /= 1.4;
+				break;
+			default:
+				num = parseFloat(defaultSize, 10);
+		}
+		$('div.container').stop().animate({
+			fontSize : num + 'px'
+		}, 'slow');
+	});
+
+	$('#prlnk').click(function() {
+		$('#data').load($(this).attr('href'));
+		window.print();
+		return false;
+	}).show();
+
+	$('a[rel="tooltip"]').tooltip();
+	
+}); 
+</script>

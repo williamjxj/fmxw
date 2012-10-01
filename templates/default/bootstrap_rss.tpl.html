@@ -1,0 +1,114 @@
+<style type="text/css">
+.rss h4 {
+	padding-right: 10px;
+}
+.rss h4 a {
+	color: #A5A5A5;
+	text-decoration: none;
+}
+.rss h4 a:hover {
+	color: #6E5FE2;
+}
+.rss .summary {
+	color: #A5A5A5;/* box-shadow: 2px 2px 2px #888888;*/
+}
+.rss [class*="span"] {
+ margin-left: 6px !important;
+}
+.rss .span3 {
+	width: 228px;
+}
+.rss .span3 h3 {
+	display:inline-block;
+}
+.rss .span3 .btn-group {
+	display: inline-block;
+	font-size:10px;
+}
+</style>
+<div class="rss"> <span class="span3">
+  <h3>中国大陆</h3>
+  <div class="btn-group"> <a class="btn btn-info btn-mini" id="cn" href="#"> <img src="{$config.img}sina.ico" width="12px" height="12px" border="0" /> 新浪</a> <a class="btn btn-info btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a id="cn_sina" href="新浪"> <img src="{$config.img}sina.ico" width="12px" height="12px" border="0" />&nbsp;新浪</a></li>
+      <li><a id="cn_qq" href="腾讯"> <img src="{$config.img}qq.ico" width="12px" height="12px" border="0" />&nbsp;腾讯</a></li>
+      <li><a id="cn_sohu" href="搜狐"> <img src="{$config.img}sohu.ico" width="12px" height="12px" border="0" />&nbsp;搜狐</a></li>
+      <li><a id="cn_163" href="网易"> <img src="{$config.img}163.ico" width="12px" height="12px" border="0" />&nbsp;网易</a></li>
+    </ul>
+  </div>
+  <div id="rss_cn" class="carousel vertical slide">
+    <div class="carousel-inner"> </div>
+  </div>
+  </span> <span class="span3">
+  <h3>香港</h3>
+  <div id="rss_hk" class="carousel vertical slide">
+    <div class="carousel-inner"> </div>
+  </div>
+  </span> <span class="span3">
+  <h3>台湾</h3>
+  <div id="rss_tw" class="carousel vertical slide">
+    <div class="carousel-inner"> </div>
+  </div>
+  </span> <span class="span3">
+  <h3>新加坡</h3>
+  <div id="rss_sg" class="carousel vertical slide">
+    <div class="carousel-inner"> </div>
+  </div>
+  </span>
+  <!--span class="span3">
+  <div id="rss_na"  class="news-feed newslist"> 北美 </div>
+ </span-->
+</div>
+<script type="text/javascript">
+// RSS rotator 实现.
+;(function ($) {
+    $.fn.rotator = function (param) {
+        var $container = $(this);
+		var inner = $container.find('div.carousel-inner');
+        var did, ww;
+        
+        if(param !== undefined || typeof param !== 'undefined') ww = param;
+        did = $container.attr('id').replace(/rss_/,'');
+        
+        $(this).each(function () {
+            $(inner).empty();
+			
+            var $loadingIndicator = $('<img/>').attr({
+                'src': './images/loading.gif',
+                'alt': '正在下载,请稍等...'
+            }).addClass('news-wait').appendTo(inner);
+
+            var url = 'rotators.php?rss='+did;
+            if(ww) url += '&ww=1';
+            $.get(url, function (data) {
+
+                $loadingIndicator.remove();
+                $(data).each(function () {
+                    var $link = $('<a></a>').attr('href', this.link).text(this.title);
+                    var $headline = $('<h4></h4>').append($link);
+
+                    var $date = $('<div></div>').addClass('date').text(this.date);
+
+                    var $summary = $('<div></div>').addClass('summary').html(this.text);
+
+                    $('<div></div>').addClass('item').append($headline, $date, $summary).appendTo(inner);
+                });
+            }, "json");
+        });
+    }
+})(jQuery);
+$(function() {
+	$('#rss_cn').rotator();
+	$('#rss_hk').rotator();
+	$('#rss_tw').rotator();
+	$('#rss_sg').rotator();
+	$('#cn_sina, #cn_163, #cn_sohu, #cn_qq').click(function(e) {
+		e.preventDefault();
+		$('#rss_cn').rotator($(this).attr('id'));
+		$('#cn').html($(this).html());
+	});
+	$('.carousel.vertical').carousel({
+		interval: 2000
+	});
+});
+</script>

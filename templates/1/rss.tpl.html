@@ -1,0 +1,22 @@
+<div class="row">
+	<div class="span12">
+		<h2 align="center"><span class="label label-warning">{$rss.0.title}</span></h2>
+		<div align="right">
+			<span class="label label-warning">{$rss.0.date}</span>
+		</div>
+		{$rss.0.text}
+	</div>
+</div>
+<script type="text/javascript">
+$(function() {
+});
+$(window).load(function() {
+	p = '&nbsp;&nbsp;<a href="javascript:;" title="我要参与评论">我要评论</a>';
+	//$('abcdefg').appendTo($('td:nth-child(2)', 'table.table'));
+	//$(p).appendTo('td:nth-child(4):not(:first-child)', 'table.table');
+	// N: $(p).appendTo('td:last-child', 'table.table tr:not(:first-child)');
+	// N: $(p).appendTo('td:last-child', 'tr:not(:first-child)');
+	// Y: $('td:last-child', 'tr:not(:first-child)').html('');
+	$('td:last-child', 'tr:not(:first-child)').append($(p));
+});
+</script>

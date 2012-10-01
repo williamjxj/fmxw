@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sample HTML5 Structure</title>
+<meta name="keywords" content="key, words" />
+<meta name="description" content="description" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="include/bootstrap/css/bootstrap.css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="include/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('#myModal').modal({ show: false });
+    $('a.btn[data-toggle="modal"]').click(function(e) {
+        e.preventDefault();
+        var url = 'fancy_contact.php';
+        $.ajax({
+            type: 'get',
+            url: url,
+            cache: false,
+            success: function(data) {
+                $('#myModal').modal({ show: true });
+                $('#myModal').html(data).show()
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('error ' + textStatus + " " + errorThrown);
+            }
+        });
+        return false;
+    });
+});
+</script>
+</head>
+<body>
+<div id="container">
+  <header>
+    <h1>Sample HTML5 Structure</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+  </header>
+  <article>
+    <h1>People</h1>
+    <p>text about people</p>
+    <section>
+      <h1>fat people</h1>
+      <p>text about fat people</p>
+    </section>
+    <section>
+      <h1> skinny people </h1>
+      <p>text about skinny people</p>
+    </section>
+  </article>
+  <article>
+    <h1>Cars</h1>
+    <p><a class="btn" data-toggle="modal" href="#myModal">联络我们</a></p>
+    <section>
+      <div class="modal hide" id="myModal"></div>
+    </section>
+  </article>
+  <aside>
+    <p>aside222222</p>
+  </aside>
+  <footer>
+    <p>This is the Footer</p>
+  </footer>
+</div>
+</body>
+</html>
