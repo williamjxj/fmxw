@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd $HOME/fmxw
+
+git add .
+
+git commit -a -m"update from server at `date`"
+
+# not work: git push origin master
+
+git push git@github.com:williamjxj/fmxw.git master
+
+cd -
