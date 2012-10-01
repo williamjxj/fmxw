@@ -1,0 +1,77 @@
+{if ! {$path2}}
+{$path2="{$config.general}2/"}
+{/if}
+<script type="text/javascript" src="js/gb2312utf8.js"></script>
+<script type="text/javascript" src="js/UrlEncode.js"></script>
+<div class="row span12">
+  <div class="span4 box5"> {$no=1+({$smarty.session.dixi.search.page}-1)*25}
+    {include file="{$path2}search_summary.tpl.html"}
+    <div class="pages">{include file="{$path2}pagination.tpl.html"}</div>
+    <ul class="nav nav-pills nav-stacked">
+      {foreach $results as $rts}
+      <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?cid={$rts.cid}&js_get_content=1">{$rts.title} ({$rts.date})</a></li>
+      {/foreach}
+    </ul>
+    <div class="pages">{include file="{$path2}pagination.tpl.html"}</div>
+  </div>
+  <div class="span8" style="width:580px">
+    <div id="div_display" class="box5">
+      <script type="text/javascript">
+var t1 = UrlEncode('{$smarty.session.dixi.search.key}');
+var t2='http://news.baidu.com/ns?word=title%3A';
+var t3='&tn=newsfcu&from=news&cl=2&rn=10&ct=0';
+var t = t2 + t1 + t3;
+document.write('<script type="text\/javascript" src=');
+document.write(t);
+document.write('><\/script>');
+</script>
+      {include file="{$path2}scrollbar.tpl.html"} </div>
+    {include file="{$path2}weibo.tpl.html"}
+    {include file="{$path2}reping.tpl.html"} 
+    {include file="{$path2}pk.tpl.html"} </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	var oScrollbar = $('#scrollbar1');
+	oScrollbar.tinyscrollbar({ size:'auto', sizethumb:'auto' });
+
+	$('li.li3 a').click(function(e) {
+		e.preventDefault();
+
+		l = $loading = $('<div></div>').addClass('ajaxloading');
+		$('div.overview', '#scrollbar1').empty();
+		
+		var h = $(this).attr('href');
+		t = h.replace(/\&js_get_content=1/,'');
+		t = '<a href="' + t + '">' + $(this).text() + '</a>';
+
+		$('<h3></h3>').html(t).prependTo($('div.overview', '#scrollbar1'));
+
+		$('#scrollbar1').tinyscrollbar({ size:'auto',sizethumb: 15 });
+		
+		$.get(h, function(data) {
+			//$(data).appendTo('#div_display');
+			$(data).appendTo($('div.overview', '#scrollbar1'));
+			oScrollbar.tinyscrollbar_update();
+		})
+		.complete(function() {
+			$('#div_display').fadeIn(200);
+			$('#breadcrumb').hide().load(h.replace(/js_get_content/, "js_get_breadcrumb")).fadeIn(200);	
+		});
+		return false;
+	});
+	$('div.pagination a').bind('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$.ajax({
+			type: 'get',
+			url: url,
+			data: 'js_page=1',
+			success: function(data) {
+				$('div#search').hide().html(data).fadeIn(200);
+			}
+		});
+		return false;
+	});
+});
+</script>

@@ -1,0 +1,29 @@
+<div class="hero-unit">
+  <h2>{$info.title|lower|capitalize}</h2>
+  <p style="margin:10px;padding:10px;">{$info.content}</p>
+  <form method="post" name="search" action="d.php"  class="form-search" >
+    <input type="text" placeholder="全文检索" name="key" class="input-large search-query span5" />
+    <button type="submit" class="btn btn-success"><i class="icon-white icon-search"></i> 搜&#12288;索</button>
+  </form>
+  <p style="margin-top:20px;"><a class="btn btn-primary btn-large" href="index.php"><i class="icon-home icon-white"></i> 返回主页 </a>&nbsp; <a class="btn btn-primary btn-large contact" data-toggle="modal" href="#myModal"><i class="icon-flag icon-white"></i> 联系我们 </a>&nbsp; <a class="btn btn-primary btn-large knowmore" data-toggle="modal" href="#modal1"><i class="icon-info-sign icon-white"></i> 了解更多 &raquo;</a> </p>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('div#footer').find('a.btn').click(function(e) {
+		e.preventDefault();
+		t = $(this);
+		t1 = $('<div class="ajaxloading"></div>');
+		t2 = t.html();
+		t.html(t1);
+		//$('div.hero-unit', '#main').find('h2').append($('<div class="ajaxloading"></div>'));
+		//$('#main').load($(this).attr('href')+'&js_sitemap=1');
+		$.getJSON($(this).attr('href')+'&js_sitemap=1', function(data) {
+			$('div.hero-unit', '#main').find('h2').html(data.title);
+			$('div.hero-unit', '#main').find('p:first-child').html(data.content);			
+			t.html(t2);
+			//console.log(data);
+		});
+		return false;
+	});
+});
+</script>

@@ -1,0 +1,58 @@
+<head>
+	<meta charset="{$config.header.charset}">
+	<meta name="description" content="{$config.header.desc}">
+	<meta name="keywords" content="{$config.header.keywords}">
+	<title>{$config.header.title}</title>
+	<link rel="shortcut icon" href="{$config.favicon}">
+	<link rel="stylesheet" type="text/css" href="{$config.css.bootstrap}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{$config.css.fmxw}" media="screen" />
+	<script type="text/javascript" src="{$config.js.jquery}"></script>
+	<script type="text/javascript" src="{$config.js.gb_big5}"></script>
+	<script type="text/javascript" src="{$config.js.ga}"></script>
+	<script type="text/javascript" src="{$config.js.cookie}"></script>
+	<script type="text/javascript" src="{$config.js.bts}"></script>
+	<script type="text/javascript">
+        var news = new Array('civilnews', 'internews', 'finannews', 'enternews', 'socianews');
+        function loadScript(s) {
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = s;
+            head.appendChild(script);
+            document.write(script);
+        }
+
+        (function() {
+            for (var i = 0; i < news.length; i++) {
+                var t = 'http://news.baidu.com/n?cmd=1&class=' + news[i] + '&pn=1&tn=newsbrofcu';
+                loadScript(t);
+            }
+        })();
+
+		//或者：
+        for (var i = 0; i < news.length; i++) {
+            var t = 'http://news.baidu.com/n?cmd=1&class=' + news[i] + '&pn=1&tn=newsbrofcu';
+            document.write('<script type="text\/javascript" src=');
+            document.write(t);
+            document.write('><\/script>');
+        }
+        $(window).load(function() {
+            t = $('body').html();
+            //t.replace('/<a href="http://news.baidu.com" target="_blank"><img src="http://www.baidu.com/search/img/slogo-news.gif" align="absbottom" border="0" height="21" width="60"></a>', "");
+            t = t.replace(/<img\ssrc="http:\/\/www.baidu.com\/search\/img\/slogo-news.gif".*?>/g, '');
+            $('body').html(t).show();
+        });
+	</script>
+</head>
+<body style="display:none;">
+	<div class="container">
+		<div id="header">
+			{include file="{$header_template}"}
+		</div>
+		<div id="news"></div>
+		<div id="footer">
+			{include file="{$footer_template}"}
+		</div>
+	</div>
+</body>

@@ -1,0 +1,68 @@
+body {
+    background-color: #DFE8EC;
+    background-image: url(page-bg.png);
+    background-repeat: repeat-x;
+    color: #323232;
+    font: 12px/150% Arial,sans-serif;
+    margin: 0 auto;
+}
+div#container {
+    width: 420px;
+    margin: 2px auto 0 auto;
+    position: relative;
+}
+form#form_id {
+    padding: 10px auto 10px auto;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+button.btn {
+    padding: 8px 20px 10px;
+    font-size: 12px;
+    font-weight: bolder;
+}
+button.btn:hover {
+    background: -moz-linear-gradient(center top , #2A79A5 0px, #005583 100%) repeat scroll 0 0 transparent;
+    color: #FFFFFF;   
+}
+.logo {
+    background: url(./logo.png) no-repeat scroll center top transparent;
+	width: 290px;
+	height:96px;
+	border:0;
+	margin-top:10px;
+	margin-left: 34%;
+}
+.copyright {
+    color: #10A5CA;
+    font-family: verdana;
+    font-size: 10pt;
+    margin: 10px 0 0;
+    padding-top: 0px;
+    text-align: center;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+/*no use*/
+.footer_hr{
+    width: 420px;
+    margin: 0 auto;
+    border-top: 1px solid #0A91AD;
+    padding: 5px 0 0;
+    text-align: center;
+}
+input#searchsubmit.btn{ 
+    background-image: url("../img/glyphicons-halflings.png");
+    background-position: -48px 0;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: text-top;
+    width: 14px;
+}
+#div_login {
+    background: url(login-box.png) no-repeat;
+    width: 366px;
+    height: 190px;
+    margin: 150px auto 0 auto;
+	position: relative;
+}

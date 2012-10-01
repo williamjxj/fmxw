@@ -1,0 +1,27 @@
+<div class="box_sina">
+  <div class="row" style="margin-bottom:0px;">
+    <div class="span9">
+      <ul class="pager">
+        <li class="previous"> <a href=""><i class="icon-arrow-left"></i> {$info.previous.title}</a> </li>
+        <li class="next"> <a href="">{$info.next.title} <i class="icon-arrow-right"></i></a></li>
+      </ul>
+    </div>
+    <div tyle="width:100%">
+      <form method="post" name="search" action="d.php"  class="form-search">
+        <input type="text" placeholder="全文检索" name="key" class="input-small search-query" autocomplete="off" />
+        <button type="submit" class="btn btn-success"><i class="icon-white icon-search"></i> 搜索</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span7">
+      <ul id="keylist" class="pager">
+        <li><span class="label label-warning"><i class="icon-tags icon-white"></i> 文章关键词:&nbsp;</span></li>
+        {foreach $info.keywords as $k}
+        <li><a href="#" class="keyword">{$k}</a></li>
+        {/foreach}
+      </ul>
+    </div>
+    <div class="span5" style="margin:0;padding:0"><span class="st_email"></span> 分享到：{include file="{$config.shared}bshare.tpl.html"}</div>
+  </div>
+</div>

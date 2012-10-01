@@ -1,0 +1,102 @@
+<form id="fayanForm">
+  <div class="hero-unit" style="margin:0;padding:0 0 6px 10px;">
+    <legend>
+    <span class="label label-warning">网友留言</span>
+    <h5 style="display:inline;margin-left:20px;">
+    	<a class="btn" href="#login">登录</a> &nbsp; 
+        <a class="btn" href="#signup">立即注册</a>
+        <span style="margin-left:20px;">(快捷登录:<a href="javascript:;" rel="tooltip" title="本网站共享QQ账号"><img src="images/qq.ico" /> 用QQ账号登录</a> | 
+        <a href="javascript:;" rel="tooltip" title="本网站共享新浪账号"><img src="images/sina.ico" /> 用新浪微博账号登录</a>)</span>
+    </h5>
+    <span id="result" class="alert" style="display:none;"></span>
+    </legend>
+    <div class="control-group">
+      <label class="control-label" for="fayan">我要评论:<span class="alert">（网友评论仅供其表达个人看法。）</span></label>
+      <div class="controls">
+        <textarea id="fayan" name="fayan" placeholder="文明上网，登录发贴，理性发言。" style="width:96%" rows="8"></textarea>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls"> <img src="{$config.include}/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a>
+        <input type="text" name="captcha" id="captcha-form" autocomplete="off" />
+        <input type="hidden" name="cid" value="{$cid}"  />
+        <input type="hidden" name="username" value="{$user}"  />
+        <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发表评论</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal hide fade" id="login"></div>
+<div class="modal hide fade" id="signup"></div>
+<script type="text/javascript">
+$(function() {
+	/* 登录或注册事件的注册。*/
+	$('a.btn[href="#login"]').click(function() {
+		var t = $('#login');
+		if (t.html().length>1) t.modal();
+		else t.load('{$config.general}help/login.tpl.html').modal();
+		return false;
+	});
+	$('a.btn[href="#signup"]').click(function(e) {
+		t = $('#signup'); 
+		if (t.html().length>1) t.modal();
+		else  t.load('{$config.general}help/signup.tpl.html').modal({ show: true });
+		return false;
+	});
+	
+	/* 验证captcha的图形切换 */
+	$('#change-image').click(function(e) {
+		document.getElementById('captcha').src='{$config.include}/captcha/captcha.php?'+Math.random();
+		$('#captcha-form').focus();
+		return false;
+	});
+	
+	/* 提交评论表单 */
+	var count = 1;
+	var validator = $('#fayanForm').validate({
+		rules: { "fayan": "required" },
+		messages: { fayan: "" },
+		highlight: function(label) {
+			$(label).closest('.control-group').addClass('error');
+		},
+		unhighlight: function(label) {
+			$(label).closest('.control-group').removeClass('error');
+		},
+		success: function(label) {
+			$(label).closest('.control-group').removeClass('error success');
+		}	
+	});
+	$('button:submit', '#fayanForm').click(function(e) {
+		e.preventDefault();		
+		if(!validator.form()) {
+			$('#fayan').attr('placeholder', '请输入您的评论。');
+			$('#fayanForm').find('div.control-group').first().removeClass('success').addClass('error');
+			return false;
+		}
+		if($('#captcha-form').val()=='') {
+			$('#result').html('请输入验证码。').show();
+			return false;
+		}
+		var tid = 'collapse' + count++;
+		$.post("{$config.f3.s}", $("#fayanForm").serialize(), function(result) {
+			if(result=='N') {
+				$('#result').html('输入验证失败, 无法添加评论, 请重试。').show();
+				return false;
+			}
+			var msg = '<div class="accordion-group">' + 
+					'<div class="accordion-heading">' +
+					' <a href="#' + tid + '" data-parent="#commentlist" data-toggle="collapse" class="accordion-toggle">' +
+					'<b>{$user}</b> 发表于 {$smarty.now|date_format:"%Y-%m-%d %T"} </a>' +
+					' </div> ' +
+					 ' <div class="accordion-body collapse in" id="' + tid + '">' +
+						'<div class="accordion-inner">' + $('#fayan').val() + '</div>' +
+				  '</div>' +
+				'</div>';
+			$(msg).prependTo('#commentlist');
+		});		
+	});
+	
+	// tooltip 提示条
+	$('a[rel="tooltip"]').tooltip();
+});
+</script>

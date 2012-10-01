@@ -1,0 +1,57 @@
+<?php
+require_once (ROOT . "configs/base.inc.php");
+
+class f0Class extends BaseClass 
+{
+    var $mdb2, $mysql, $lang, $locale;
+    public function __construct() {
+        parent::__construct();
+        $this -> mdb2 = $this -> pear_connect_admin();
+		$this -> mysql = $this -> mysql_connect_fmxw();
+        $this -> lang = isset($_SESSION[PACKAGE]['language']) ? $_SESSION[PACKAGE]['language'] : '中文';
+        $this -> locale = $this -> lang == 'English' ? 'en' : 'cn';
+    }
+
+    /* 寻找输入框的输入处理. */
+	public function typeahead() {
+		$ary = array();
+		$q = $_GET['q'];
+		$query = "select keyword from keywords where keyword like '%" . $q . "%' order by kid";
+
+		$res = $this->mdb2->query($query);
+		if (PEAR::isError($res)) die($res->getMessage());
+		while($row = $res->fetchRow()) {
+			$ary[] = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
+		}
+		echo json_encode($ary);
+	}
+
+    /* 获取所有categories */
+	public function get_categories() {
+        $ary = array();
+        $sql = "select cid, curl, name from categories where active='Y' order by frequency, weight";
+	        $res = $this -> mdb2 -> queryAll($sql);
+        if (PEAR::isError($res))
+            die($res -> getMessage());
+        return $res;
+	}
+	public function get_category() {
+        $ary = array();
+        $query = "select cid, curl, name from categories where active='Y' order by frequency, weight";
+        $res = mysql_query($query);
+        while($row = mysql_fetch_assoc($res)) {
+            array_push ($ary, $row);
+        }
+        return $ary;
+    }
+
+    /* 中英文切换,根据session.fmxw.language来决定label的显示. */
+    public function get_search_label($search) {
+        return $this->_get_label($search);
+    }
+    public function get_list_label($list) {
+        return $this->_get_label($list);
+    }
+
+}
+?>

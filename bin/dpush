@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd $HOME/fmxw
+
+git add .
+
+git commit -a -m"update from server at `date`"
+
+git push origin master
+
+cd -

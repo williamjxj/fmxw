@@ -1,0 +1,127 @@
+{$url={$SCRIPT_NAME}}
+{*$url={$config.d}*}
+{if $smarty.session.fmxw.language != 'English'}
+<div> {$cn=1}
+  {foreach $aoa_tabs as $no => $tabs}
+  
+  {if $cn%2}
+  <div class="row"> {/if}
+    <div class="span6">
+      <ul class="nav nav-tabs" id="Tab{$no}">
+        {foreach $tabs as $tab}
+        <li><a data-toggle="tab" href="#{$tab.curl}" title="{$tab.description}"><span class="head2">{$tab.name}</span></a></li>
+        {/foreach}
+      </ul>
+      <div class="tab-content tab1" id="TabContent{$no}"> {foreach $tabs as $tab}
+        <div id="{$tab.curl}" class="tab-pane fade"></div>
+        {/foreach}</div>
+    </div>
+    {if $cn%2}
+    {$cn=$cn+1}
+    {else} 
+    {$cn=$cn+1} </div>
+  {/if}
+  {/foreach} </div>
+<div class="row box2">
+  <div id="myCarousel2" class="carousel slide">
+    <div class="carousel-inner"> {foreach $carousel2 as $v}
+      <div class="item">{$v}</div>
+      {/foreach} </div>
+    <a class="carousel-control left" href="#myCarousel2" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel2" data-slide="next">&rsaquo;</a> </div>
+</div>
+{else}
+<div> {$cn=1}
+  {foreach $aoa_tabs as $no => $tabs}
+  
+  {if $cn%2}
+  <div class="row"> {/if}
+    <div class="span6">
+      <ul class="nav nav-tabs" id="Tab{$no}">
+        {foreach $tabs as $tab}
+        <li><a data-toggle="tab" href="#{$tab.curl}"><span class="head2">{$tab.curl|lower|capitalize}</span></a></li>
+        {/foreach}
+      </ul>
+      <div class="tab-content tab1" id="TabContent{$no}"> {foreach $tabs as $tab}
+        <div id="{$tab.curl}" class="tab-pane fade"></div>
+        {/foreach} 
+        <span class="more"><a href="./d.php?cmenu=">更多&raquo;</a></div>
+    </div>
+    {if $cn%2}
+    {$cn=$cn+1}
+    {else} 
+    {$cn=$cn+1} </div>
+  {/if}
+  {/foreach} </div>
+<div class="row box2">
+  <div id="myCarousel2" class="carousel slide">
+    <div class="carousel-inner"> {foreach $carousel2 as $v}
+      <div class="item">{$v}</div>
+      {/foreach} </div>
+    <a class="carousel-control left" href="#myCarousel2" data-slide="prev">&lsaquo;</a> <a class="carousel-control right" href="#myCarousel2" data-slide="next">&rsaquo;</a> </div>
+</div>
+{/if}
+<script type="text/javascript">
+function get_tab_list(group, curl) {
+	var tab_div = '#TabContent'+group;
+	var query = '{$url}?js_get_tab_list=1&group='+group;
+	var t = $('<div></div>').addClass('ajaxloading');
+	if(curl) {
+		query += '&curl='+curl;
+		$(tab_div + '.tab-content').find('div#'+curl).html(t);
+	}
+	else {
+		$(tab_div + '.tab-content').find('div').first().html(t);
+	}
+
+	$.getJSON(query, function(data) {
+		//console.log($('#TabContent1.tab-content').find('div').first().html()+','+data.length);
+		cate_id = 0;
+		t = '<ul>';
+		for(i=0; i<data.length; i++) {
+			t+='<li class="tab_list"><i class="icon-chevron-right"></i>  <a href="d.php?cid='+data[i][0]+'">'+data[i][1]+'</a><span class="guanzhu"><span class="renshu">'+data[i][2]+'</span></span></li>';
+			if(!cate_id) cate_id = data[i][3];
+		}
+		t+='</ul>';
+		if(/\<li/.test(t)) {
+			t+='<span class="more"><a href="./d.php?cmenu=' + cate_id + '">更多&raquo;</a>';
+		}
+		else {
+			t='<div>暂无内容。</div>';
+		}
+		if (curl) $(tab_div + '.tab-content').find('div#'+curl).html(t);
+		else $(tab_div + '.tab-content').find('div').first().html(t);
+	});
+	return false;
+}
+
+$(function() {
+	for (var i=1; i<=6; i++) {
+		group = i;
+		$('ul.nav>li>a', '#Tab'+i).removeClass('active');
+		$('li', '#Tab'+i).first().addClass('active');
+		var id = '#TabContent'+i;
+		$('div'+id).find('div:first').addClass('active in');
+		$('a', '#Tab'+i).click(function(e) {
+			e.preventDefault();
+			var t= $(this).attr('href');
+			if($(t).html()<1) {
+				var group = $(this).closest('ul').attr('id').substr(3);
+				get_tab_list(group, $(this).attr('href').substr(1));
+			}
+			$(this).tab('show');
+		});
+	}
+
+	$('#js-news').ticker();
+	$('#myCarousel2.carousel').carousel({
+	  interval: false
+	});
+	$('#myCarousel2 div.item').first().addClass('active');
+});
+
+$(window).load(function() {
+	for (i=1; i<=6; i++) {
+		get_tab_list(i);
+	}
+});
+</script>

@@ -1,0 +1,58 @@
+{if {$smarty.session.dixi.username}} {$user=$smarty.session.dixi.username}
+{else} {$user='访问用户'}
+{/if}
+{if $info.cid} {$cid=$info.cid}
+{else}{'出错了，无法插入comments表，cid未知。'}
+{/if}
+{$path3="{$config.general}3/"}
+<script type="text/javascript" src="{$config.js}/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="{$config.include}/jquery-jquery-tmpl/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="{$config.js}/dixi.js"></script>
+<div class="hero-unit">
+  <h2><a href="{$info.row.url}">{$info.title}</a></h2>
+
+  <p><span>来源: {$info.row.source}</span>&nbsp;&nbsp;<span>时间: {$info.row.pubdate}</span></p>
+  <p><span>阅读: {$info.row.clicks}</span>&nbsp;<span>关注: {$info.row.likes}</span>&nbsp;<span>标签:
+  {$info.row.tags}</span></p>
+
+  <p style="margin:10px;padding:10px;">{$info.content}</p>
+</div>
+<div class="clear"></div>
+<div id="affix">
+  <!-- features: 连接上下文,关键词,搜索,分享,邮件共享 -->
+  {include file="{$path3}lianjie.tpl.html"}
+
+  <!-- features: 相关文章, 相关推荐 --> 
+  {include file="{$path3}xiangguan.tpl.html"}
+  
+  <!-- 看看微博怎么说 -->
+  <div id="weibo"> {include file="{$config.general}weibo.tpl.html"} </div>
+
+  <!-- 网友热评 -->
+  {include file="{$path3}reping.tpl.html"}
+  
+  <!-- 我要评论 -->
+  <div id="pinglun"> {include file="{$path3}pinglun.tpl.html"} </div>
+
+  <!-- features: 返回顶部 -->
+  <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</a>
+
+  <!-- 广告:bashare, google -->
+  {include file="{$config.general}guanggao.tpl.html"}
+</div>
+
+<script type="text/javascript">
+(function($) {
+	$(".st_email").shareEmail();
+})(jQuery);
+$(function() {
+	$('a.keyword', 'div.container').click(function(e) {
+		e.preventDefault();
+		$('form.form-search').find('input[name=key]').val($(this).text());
+		$('form.form-search').submit();
+	});
+	
+	$(".collapse").collapse();
+	$().UItoTop({ easingType: 'easeOutQuart' });
+});
+</script>

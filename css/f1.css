@@ -1,0 +1,96 @@
+@charset "utf-8";
+/* CSS Document */
+.span6 {
+	width:450px;
+	margin-top:20px;
+}
+#header {
+	margin: auto;
+}
+.table {
+	font-size:small;
+	background: #ffffff;
+	border-collapse:collapse;
+	width:100%;
+	border: 1px solid #cdcdcd;
+	background: #fff;
+	top: -4px;
+	left: -4px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	padding-bottom: 10px;
+	padding-top: 6px;
+	margin-top:20px;
+}
+.table tr:odd {
+ background: #e6e6e6;
+}
+.table tr:even {
+ background-color: #f1f1f1;
+}
+.table th, .table td {
+	margin: 0;
+	text-align: center;
+	text-transform: capitalize;
+	text-weight: bold;
+	padding: 3px;
+}
+#news div {
+	font-size:12px;
+	font-family:arial
+}
+#news .baidu {
+	font-size:14px;
+	line-height:24px;
+	font-family:arial
+}
+#news a, #news a:link {
+	color:#0000cc;
+}
+#news .baidu span {
+	color:#6f6f6f;
+	font-size:12px
+}
+#news a.more {
+	color:#008000;
+}
+#news a.blk {
+	color:#000;
+	font-weight:bold;
+}
+/*rotator标题效果*/
+.rss .span3 {
+	border-color: #C8D8F2;
+	border-style: solid;
+	border-width: 1px;
+}
+.rss .span3 h3 {
+	background-color: #F5F8FD;
+	font-family: "微软雅黑", "黑体";
+	font-size: 16px;
+	font-weight:bolder;
+	color: #A90000;
+	text-decoration: none;
+	padding-left: 4px;
+	padding-bottom:4px;
+}
+.rss .span h3:hover {
+	color: #FF0000;
+	text-decoration: underline;
+}
+#guanggao {
+	margin:20px;
+}
+.container111 {
+	margin-left:20px;
+	width: 100%;
+}
+.pk {
+style="line-height: 140%;
+	margin: 0px;
+	padding: 0px;
+	width: 28px;
+	color: #c74b15;
+	font-size: 28px;
+	font-weight: bolder;
+	border: #000000 0px solid;
+}

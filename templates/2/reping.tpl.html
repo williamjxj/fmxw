@@ -1,0 +1,48 @@
+{if {$reping}}
+<div class="row reping">
+  <h2><span class="title"> 网友热评</span></h2>
+  {foreach $reping as $rp}
+  <div class="reping_item">
+    <div class="t_info"><i class="icon-gift"></i> {$rp.author} <br>
+      <span class="t_area">{$rp.area}</span></div>
+    <div class="t_txt">{$rp.content} <span class="t_date"> {$rp.created} <span class="t_reply"><a href="javascript:;" class="a_huifu">回复</a> <a href="javascript:;" class="a_zhichi" id="{$rp.id}">支持</a></span> </span> </div>
+    <div class="well" id="div_huifu_{$rp.id}" style="display:none;">
+      <form name="huifuForm" id="huifuForm_{$rp.id}" method="post" action="javascript:;">
+        <div class="control-group">
+          <div class="controls">
+            <textarea name="t_huifu" placeholder="文明上网，登录发贴。" style="width:100%" rows="6"></textarea>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-success btn-small"><i class="icon-comment icon-white"></i> 提交评论</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {/foreach}
+</div>
+<script type="text/javascript">
+$(function() {
+	$('a.a_zhichi', 'span.t_reply').one('click', function(e) {
+		var comment_id = $(this).attr('id');
+		e.preventDefault();
+		$(this).html('已支持');
+		$.ajax({
+			url: '{$url}',
+			type: 'post',
+			data: { id:comment_id, 'js_zhichi':1 }
+		});
+		return false;
+	});
+	$('a.a_huifu', 'span.t_reply').click(function(e) {
+		e.preventDefault();
+		t = $('#div_huifu');
+		if(t.is(':visible')) t.hide();
+		else t.show();
+		return false;
+	});
+});
+</script>
+{/if}

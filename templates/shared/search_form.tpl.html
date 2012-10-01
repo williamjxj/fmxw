@@ -1,0 +1,33 @@
+{*foreach $smarty.session.fmxw.search as $s}{$s}{/foreach*}
+<form class="well form-search" action="{$url}" method="get" name="sf">
+  <input type="text" name="q" class="input-small search-query" style="width:399px" data-provide="typeahead" autocompltete="off" placeholder="查询" />
+  <input type="hidden" value="web" name="sc" />
+  <input type="hidden" value="" />
+  <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
+  <div clear="sf_alert" class="alert" style="display:none;">
+    <button class="close" data-dismiss="alert">×</button>
+    <strong>无法查询:</strong>请输入查询字 </div>
+</form>
+<script type="text/javascript">
+$(function() {
+	if('{$smarty.post.q}') $('input[name=q]', 'form.form-search').val('{$smarty.post.q}');
+	$('input[name="q"]', 'form.form-search').typeahead({
+		source: function(typeahead, query) {
+			if(query.length==0) return false;
+			$.ajax({
+				url: 'keys_search.php',
+				type: 'GET',
+				data: 'q=' + query,
+				dataType: 'JSON',
+				async: false,
+				cache: false,
+				beforeSend: function(){
+				},
+				success: function(data) {
+					typeahead.process(data);
+				}
+			});
+		}
+	});
+});
+</script>

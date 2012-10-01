@@ -1,0 +1,47 @@
+<!--script type="text/javascript" src="js/gb2312utf8.js"></script-->
+<script type="text/javascript" src="js/UrlEncode.js"></script>
+
+<div class="row span12">
+  <div id="search" class="span4 box5"> {include file="{$t2}pagination.tpl.html"} </div>
+  <div class="span8" style="width:580px">
+    <div id="div_display" class="box5"></div>
+    {include file="{$t2}weibo.tpl.html"}
+    {include file="{$t2}news.tpl.html"}
+    {include file="{$t2}reping.tpl.html"} 
+    {include file="{$t2}pk.tpl.html"} </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('li.li3 a').click(function(e) {
+		e.preventDefault();
+
+		$('<div></div>').addClass('ajaxloading');
+		
+		var h = $(this).attr('href');
+		t = h.replace(/\&js_get_content=1/,'');
+		t = '<a href="' + t + '">' + $(this).text() + '</a>';
+
+		$.get(h, function(data) {
+			//$(data).appendTo('#div_display');
+			$('#div_display').html(data);
+		})
+		.complete(function() {
+			$('#div_display').fadeIn(200);
+		});
+		return false;
+	});
+	$('div.pagination a').live('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		if (! /js_page=/.test(url)) url+='&js_page=1';
+		$.ajax({
+			type: 'get',
+			url: url,
+			success: function(data) {
+				$('div#search').hide().html(data).fadeIn(200);
+			}
+		});
+		return false;
+	});
+});
+</script>

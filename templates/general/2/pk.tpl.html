@@ -1,0 +1,117 @@
+<div class="well">
+  <ul class="nav nav-tabs" id="div_pk">
+    <li class="active"> <a data-toggle="tab" href="#home">我要PK </a></li>
+    <li><a href="#profile" data-toggle="tab">邮件共享</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="home">
+      <div class="well">
+        <form id="form_fayan" class="form-horizontal">
+          <div class="control-group">
+            <div class="controls">
+              <select>
+                <option>-分类-</option>
+                
+  {foreach $info as $i}
+              
+                <option value="{$i.iid}">{$i.name}</option>
+                
+  {/foreach}
+            
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <label class="radio inline">
+              <input type="radio" name="pk" id="pk_yes" value="Y" checked>
+              赞成 </label>
+              <label class="radio inline">
+              <input type="radio" name="pk" id="pk_no" value="N">
+              反驳 </label>
+              <label class="radio inline">
+              <input type="radio" name="pk" id="pk_nyn" value="A">
+              中立 </label>
+              <label class="radio inline">
+              <input type="radio" name="pk" id="pk_nn" value="B">
+              不置可否 </label>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <textarea id="fayan" name="fayan" placeholder="文明上网，登录发贴。" style="width:90%" rows="8"></textarea>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发表评论</button>
+              <img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a>
+              <input type="text" name="captcha" id="captcha-form" autocomplete="off" />
+            </div>
+          </div>
+          <input type="hidden" name="cid" value="{$cid}"  />
+          <input type="hidden" name="username" value="{$user}"  />
+        </form>
+      </div>
+    </div>
+    <div class="tab-pane" id="profile">...</div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#div_pk a').click(function(e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+	
+	$('#change-image').click(function(e) {
+		//$('#captcha').src='include/captcha/captcha.php?'+Math.random();
+		document.getElementById('captcha').src='include/captcha/captcha.php?'+Math.random();
+		$('#captcha-form').focus();
+		return false;
+	});
+	
+	var count = 1;
+	var validator = $('#form_fayan').validate({
+		rules: { "fayan": "required" },
+		messages: { fayan: "" },
+		highlight: function(label) {
+			$(label).closest('.control-group').addClass('error');
+		},
+		success: function(label) {
+			label.closest('.control-group').addClass('success');
+		}	
+	});
+	$('button:submit', '#form_fayan').click(function(e) {
+		e.preventDefault();		
+		if(!validator.form()) {
+			$('#fayan').attr('placeholder', '请输入您的评论。');
+			$('#form_fayan').find('div.control-group').first().removeClass('success').addClass('error');
+			return false;
+		}
+		if($('#captcha-form').val()=='') {
+			$('#result').html('请输入验证码。').show();
+			return false;
+		}
+
+		var tid = 'collapse' + count++;
+		
+		$.post("d.php", $("#form_fayan").serialize(), function(result) {
+			if(result=='N') {
+				$('#result').html('输入验证失败, 无法添加评论, 请重试。').show();
+				return false;
+			}
+			var msg = '<div class="accordion-group">' + 
+					'<div class="accordion-heading">' +
+					' <a href="#' + tid + '" data-parent="#commentlist" data-toggle="collapse" class="accordion-toggle">' +
+					'{$user} 于 {$smarty.now|date_format:"%Y-%m-%d %T"} </a>' +
+					' </div> ' +
+					 ' <div class="accordion-body collapse in" id="' + tid + '">' +
+						'<div class="accordion-inner">' + $('#fayan').val() + '</div>' +
+				  '</div>' +
+				'</div>';
+			$(msg).prependTo('#commentlist');
+		});		
+	});
+});
+</script>
