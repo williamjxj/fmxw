@@ -8,7 +8,7 @@ body {
 }
 div#container {
     width: 420px;
-    margin: 2px auto 0 auto;
+    margin: 100px auto 30px auto;
     position: relative;
 }
 form#form_id {
@@ -65,4 +65,27 @@ input#searchsubmit.btn{
     height: 190px;
     margin: 150px auto 0 auto;
 	position: relative;
+}
+.row {
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+	border: 1px solid #C6D0DF;
+	color: #3E6D8E;
+	background: #fff;
+	box-shadow: 1px 1px 1px #888888;
+	padding:10px;
+	background-color: #F5F5F5;
+}
+.well {
+	border-collapse:collapse;
+	border:0;
+	box-shadow: 0;
+}
+.img {
+	margin:30px;
+	text-align:center;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
 }

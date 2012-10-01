@@ -26,48 +26,49 @@ function init()
 <script type="text/javascript" src="login/js/cookie.js"></script>
 <script type="text/javascript" src="login/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="login/js/bootstrap.popover.js"></script>
-<div class="logo"></div>
-<div id="container">
-  <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post" id="form_id" class="well">
-    <fieldset>
-    <legend><img src="login/login-icon.png" /><strong>用户注册</strong></legend>
-    <div class="control-group">
-      <label class="control-label" for="username">用户名：</label>
-      <div class="controls">
-        <div class="input-prepend"> <span class="add-on"> <i class="icon-user"></i></span>
-          <input name="username" id="username" type="text" placeholder="用 户 名" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+<div id="container" class="container">
+  <div class="row">
+    <div class="span5 img"> <img src="images/logo.png" /> </div>
+    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post" id="form_id" class="well">
+      <fieldset>
+      <legend><img src="login/login-icon.png" /><strong>用户注册</strong></legend>
+      <div class="control-group">
+        <label class="control-label" for="username">用户名：</label>
+        <div class="controls">
+          <div class="input-prepend"> <span class="add-on"> <i class="icon-user"></i></span>
+            <input name="username" id="username" type="text" placeholder="用 户 名" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+          </div>
         </div>
       </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="password">口令：</label>
-      <div class="controls">
-        <div class="input-prepend"> <span class="add-on"><i class="icon-lock"></i></span>
-          <input name="password" id="password" type="password" placeholder="口 令" class="input-xlarge" data-content="口令栏不能为空。" data-original-title="口令验证"/>
+      <div class="control-group">
+        <label class="control-label" for="password">口令：</label>
+        <div class="controls">
+          <div class="input-prepend"> <span class="add-on"><i class="icon-lock"></i></span>
+            <input name="password" id="password" type="password" placeholder="口 令" class="input-xlarge" data-content="口令栏不能为空。" data-original-title="口令验证"/>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <label class="checkbox">
-        <input type="checkbox" id="rememberme" name="rememberme">
-        记住我的选择！ </label>
+      <div class="control-group">
+        <div class="controls">
+          <label class="checkbox">
+          <input type="checkbox" id="rememberme" name="rememberme">
+          记住我的选择！ </label>
+        </div>
       </div>
-    </div>
-    <div class="control-group">
-      <div align="center">
-        <button type="submit" class="btn btn-primary">登 录</button>
-        <img src="login/loading.gif" width="32" height="32" border="0" style="display:none;" /> </div>
-    </div>
-    <div class="control-group error">
-      <label id="error"></label>
-    </div>
-    </fieldset>
-  </form>
+      <div class="control-group">
+        <div align="center">
+          <button type="submit" class="btn btn-primary">登 录</button>
+          <img src="login/loading.gif" width="32" height="32" border="0" style="display:none;" /> </div>
+      </div>
+      <div class="control-group error">
+        <label id="error"></label>
+      </div>
+      </fieldset>
+    </form>
+  </div>
 </div>
 <!--hr width="60%" style="margin:0 auto" />-->
 <div class="copyright">Copyright &copy; 2012 <abbr title="dixiTruth Inc">dixiTruth, Inc</abbr>. All rights reserved.</div>
-
 <script type="text/javascript">
 $(function() {
 	var validator = $('#form_id').validate({
