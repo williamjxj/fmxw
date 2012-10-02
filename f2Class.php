@@ -15,18 +15,6 @@ class f2Class extends f23Class {
         category, cate_id, item, iid from contents where language='" . $this -> lang . "'";
     }
 
-    // keywords 表:提取最新的，查询次数最多的关键词.
-    function get_keywords($order = '') {
-        if (!$order)
-            $order = ' order by updated desc, total desc';
-        $sql = "select keyword, total from keywords " . $order . " limit 0, " . PER_TOTAL;
-        $res = $this -> mdb2 -> queryAll($sql);
-        if (PEAR::isError($res)) {
-            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
-        }
-        return $res;
-    }
-
     // key_related表:提取关联关键词.
     function get_key_related($kid, $createdby = '') {
         if ($createdby)

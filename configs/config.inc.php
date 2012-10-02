@@ -10,7 +10,7 @@ defined('ROOT') or define('ROOT', '/');
 defined('PACKAGE') or define('PACKAGE', 'fmxw');
 
 defined('TAB_LIST') or define('TAB_LIST', 10);
-defined('PER_TOTAL') or define('PER_TOTAL', 5);
+defined('PER_TOTAL') or define('PER_TOTAL', 10);
 defined('LIMIT') or define('LIMIT', 25);
 defined('SEARCH') or define('SEARCH', 'search');
 defined('ROWS_PER_PAGE') or define('ROWS_PER_PAGE', 25);
