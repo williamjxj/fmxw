@@ -43,6 +43,8 @@ else if (isset($_GET['test'])) {
     $obj -> assign('sitemap', $obj -> get_sitemap());
 	$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
+    $obj->assign('keywords', $obj->get_keywords());
+
 	$tdir = $config['t0'];
     $obj -> assign('header_template', $tdir . 'header0.tpl.html');
     $obj -> assign('search_template', $tdir . 'search.tpl.html');
