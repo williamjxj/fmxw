@@ -30,7 +30,7 @@ if (!isset($config)) {
     'css' => array(
         'bootstrap' => 'include/bootstrap/css/bootstrap.css', 
         'fmxw' => 'css/dixi.css', 
-        'extra' => 'css/extra.css', 
+        'extra' => 'css/extra.css',
         'jquery-ui' => 'include/jqueryui/js/jquery-ui-1.8.22.custom.min.js', 
     ), 
     'js' => array(

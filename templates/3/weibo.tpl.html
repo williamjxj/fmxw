@@ -1,43 +1,188 @@
 <!--http://widget.weibo.com/livestream/listlive.php?atopic=丑闻-->
+{$q=$smarty.session.fmxw.search.key}
 <div class="weibo">
-  <h3>看看微博怎么说-</h3>
-  <div class="row" style="margin:0px;">
-    <ul class="nav nav-tabs" id="weiboList">
-      <li class="active"><a href="#sinaList"><img src="images/sina.ico" /> 新浪</a></li>
-      <li><a href="#tengxunList"><img src="images/qq.ico" /> 腾讯</a></li>
-      <li><a href="#163list"><img src="images/163.ico" /> 网易</a></li>
-      <li><a href="#sohulist"><img src="images/sohu.ico" /> 搜狐</a></li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active accordion" id="sinaList">
-        <iframe width="100%" scrolling="no" height="500" frameborder="0" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&amp;width=0&amp;height=500&amp;uid=1644057380&amp;skin=1&amp;refer=1&amp;pic=1&amp;titlebar=0&amp;border=1&amp;publish=1&amp;atalk=1&amp;recomm=0&amp;at=0&amp;atopic=负面新闻&amp;ptopic=丑闻&amp;dpc=1">新浪微博</iframe>
-      </div>
-      <div class="tab-pane accordion" id="tengxunList">
-        <iframe width="100%" scrolling="yes" height="500" frameborder="0" src=""></iframe>
-      </div>
-      <div class="tab-pane accordion" id="163list">
-        <div class="ajaxloading"></div>
-        <p>网易微博</p>
-      </div>
-      <div class="tab-pane accordion" id="sohulist">
-        <div class="ajaxloading"></div>
-        <p>搜狐微博</p>
-      </div>
-    </div>
-  </div>
+	<h3>看看微博怎么说-</h3>
+	<form method="post" name="wb_search" action="javascript:;"  class="form-search">
+		<input type="text" placeholder="微博主题" name="key" class="input-medium search-query" />
+		<button type="submit" class="btn btn-success">
+			<i class="icon-white icon-search"></i> 微博查询
+		</button>
+	</form>
+	<div class="row" style="margin:0px;">
+		<ul class="nav nav-tabs" id="weiboList">
+			<li class="active">
+				<a href="#sina_wb" rel="tooltip" title="新浪微博"><img src="images/sina.ico" /> 新浪</a>
+			</li>
+			<li>
+				<a href="#tengxun_wb" rel="tooltip" title="腾讯微博"><img src="images/qq.ico" /> 腾讯</a>
+			</li>
+			<li>
+				<a href="#163_wb" rel="tooltip" title="网易微博"><img src="images/163.ico" /> 网易</a>
+			</li>
+			<li>
+				<a href="#sohu_wb" rel="tooltip" title="搜狐微博"><img src="images/sohu.ico" /> 搜狐</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="sina_wb">
+				<div class="ajaxloading"></div>
+			</div>
+			<div class="tab-pane" id="tengxun_wb">
+				<div class="ajaxloading"></div>
+				<p>
+					腾讯微博
+				</p>
+			</div>
+			<div class="tab-pane" id="163_wb">
+				<div class="ajaxloading"></div>
+				<p>
+					网易微博
+				</p>
+			</div>
+			<div class="tab-pane" id="sohu_wb">
+				<div class="ajaxloading"></div>
+				<p>
+					搜狐微博
+				</p>
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
-$(function() {
-	$('#weiboList a').click(function(e) {
-		e.preventDefault();
-		if(/tengxun/.test($(this).attr('href'))) {
-			var t = $(this).attr('href'); //#tengxunList;
-			//只执行一次, 用one()来.
-			if($(t).find('iframe').attr('src')=='') {
-				$(t).find('iframe').attr('src', 'http://search.t.qq.com/index.php?pos=1002&su=1&smart=1&k=负面新闻');
-			}
-		}
-		$(this).tab('show');
-	});
-});
+    var q = '{$q}';
+    $('input[name=key]', 'form[name=wb_search]').val(q);
+    var defaults = {
+        width : '100%',
+        scrolling : 'yes',
+        height : 500,
+        frameborder : 0
+    };
+    function sina_weibo(q) {
+        var attrs = {
+            src : 'http://widget.weibo.com/livestream/listlive.php'
+        };
+        if ( typeof defaults === 'object')
+            $.extend(attrs, defaults);
+        var params = {
+            language : 'zh_cn',
+            width : 0,
+            height : '500',
+            uid : 1644057380,
+            skin : 1,
+            refer : 1,
+            pic : 1,
+            titlebar : 0,
+            border : 1,
+            publish : 1,
+            atalk : 1,
+            recomm : 0,
+            at : 0,
+            dpc : 1
+        };
+        //缁勮query瀛楃涓
+        var t = '?';
+        Object.keys(params).forEach(function(key) {
+            t += key + '=' + params[key] + '&';
+        });
+        t += 'atopic=' + q;
+        t += '&ptopic=' + q;
+        attrs.src += t;
+        $('#sina_wb').html($('<iframe></iframe>').attr(attrs));
+    }
+
+    //http://topic.weibo.com/areahot/5460?page=4
+    function qq_weibo(q) {
+        var attrs = {
+            src : 'http://search.t.qq.com/index.php'
+        };
+        $.extend(attrs, defaults);
+        var params = {
+            pos : 1002,
+            su : 1,
+            smart : 1
+        };
+        var t = '?';
+        Object.keys(params).forEach(function(key) {
+            t += key + '=' + params[key] + '&';
+        });
+        attrs.src += t + 'k=' + q;
+        //<iframe width="100%" scrolling="yes" height="500" frameborder="0" src=""></iframe>
+        $('#tengxun_wb').html($('<iframe></iframe>').attr(attrs));
+    }
+
+    function netease_weibo(q) {
+        var attrs = {
+            src : 'http://t.163.com/tag/'
+        };
+        $.extend(attrs, defaults);
+        attrs.src += q;
+        $('#163_wb').html($('<iframe></iframe>').attr(attrs));
+    }
+
+    function sohu_weibo(q) {
+        var attrs = {
+            src : 'http://t.sohu.com/twsearch/twSearch?key='
+        };
+        $.extend(attrs, defaults);
+        attrs.src += UrlEncode(q);
+        $('#sohu_wb').html($('<iframe></iframe>').attr(attrs));
+    }
+
+    $(function() {
+        $('#weiboList a').click(function(e) {
+            e.preventDefault();
+            t = $(this).attr('href');
+            if (/tengxun/.test(t)) {
+                //只执行一次, 用one()来.
+                if ($(t).find('iframe').attr('src') === undefined) {
+                    $(t).html($('<div class="ajaxloading"></div>'));
+                    qq_weibo(q);
+                }
+            } else if (/163/.test(t)) {
+                if ($(t).find('iframe').attr('src') === undefined) {
+                    $(t).html($('<div class="ajaxloading"></div>'));
+                    netease_weibo(q);
+                }
+            } else if (/sohu/.test(t)) {
+                if ($(t).find('iframe').attr('src') === undefined) {
+                    $(t).html($('<div class="ajaxloading"></div>'));
+                    sohu_weibo(q);
+                }
+            }
+            $(this).tab('show');
+            return false;
+        });
+        $('form[name="wb_search"]').submit(function(e) {
+            e.preventDefault();
+            var q = $('input:text', $(this)).val();
+            if (/^\s*$/.test(q)) {
+                alert('请输入查询微博词?');
+                $('input:text', this).focus();
+                return false;
+            }
+            var t1 = $('#weiboList').find('li.active a').attr('href');
+            if (/sina/.test(t1))
+                sina_weibo(q);
+            else if (/tengxun/.test(t1))
+                qq_weibo(q);
+            else if (/163/.test(t1))
+                netease_weibo(q);
+            else if (/sohu/.test(t1))
+                sohu_weibo(q);
+            return false;
+
+        });
+        $('input:text', 'form[name="wb_search"]').focus(function() {
+            $(this).animate({
+                width : '+=50',
+            }).select();
+        }).blur(function() {
+            $(this).animate({
+                width : '-=50',
+            });
+        });
+    });
+    $(window).load(function() {
+        sina_weibo(q);
+    }); 
 </script>
