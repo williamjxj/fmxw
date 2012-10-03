@@ -1,7 +1,7 @@
 <div class="reping">
   <h2><span class="title"> 网友热评</span></h2>
-  <div style="font-size:12px;">
-    <div class="reping_item"> {foreach $info.rps as $rp}
+  <div style="font-size:12px;"> {foreach $info.rps as $rp}
+    <div class="reping_item">
       <div class="t_info"><i class="icon-gift"></i> {$rp.author} <br>
         <span class="t_area">{$rp.area}</span></div>
       <div class="t_txt">{$rp.content}<span class="t_date"> {$rp.create_time} <span class="t_reply"><a href="javascript:;" class="a_huifu">回复</a> <a href="javascript:;" class="a_zhichi">支持</a></span> </span> </div>
@@ -19,11 +19,21 @@
           </div>
         </form>
       </div>
-      {/foreach} </div>
-  </div>
+    </div>
+    {/foreach} </div>
 </div>
 <script type="text/javascript">
 $(function() {
+	$('div.reping_item').hover(
+		function() {
+			$(this).find('span.t_reply').show();
+			return false;
+		},
+		function() {
+			$(this).find('span.t_reply').hide();
+			return false;
+		}
+	);
 	$('a.a_zhichi', 'span.t_reply').one('click', function(e) {
 		e.preventDefault();
 		$(this).html('已支持');

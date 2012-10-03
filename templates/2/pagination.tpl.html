@@ -1,20 +1,9 @@
-{if $smarty.get.page}
-{$page=$smarty.get.page}
-{else}
-{$page=1}
-{/if}
-{$no=1+({$page}-1)*25}
-<div class="alert">
-  <button class="close" data-dismiss="alert">×</button>
-  查询：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;, 
-  匹配总数：&lt;<strong>{$smarty.session.fmxw.search.total}</strong>&gt;, 
-  页数：&lt;<strong>{$smarty.session.fmxw.search.page}/{$smarty.session.fmxw.search.total_pages}</strong>&gt; </div>
 {if !empty($pagination)}
 <div class="pages">
   <div class="pagination">
     <ul>
       {foreach $pagination as $p}
-      {if preg_match("/\>{$smarty.session.fmxw.search.page}\<\/a\>/", $p)}
+      {if preg_match("/{$page}/", $p)}
       <li class="active">{$p}</li>
       {else}
       <li> {$p} </li>
@@ -24,23 +13,3 @@
   </div>
 </div>
 {/if}
-<ul class="nav nav-pills nav-stacked">
-  {foreach $results as $rts}
-  <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?cid={$rts.cid}&js_get_content=1">{$rts.title} ({$rts.date})</a></li>
-  {/foreach}
-</ul>
-{if !empty($pagination)}
-<div class="pages">
-  <div class="pagination">
-    <ul>
-      {foreach $pagination as $p}
-      {if preg_match("/\>{$smarty.session.fmxw.search.page}\<\/a\>/", $p)}
-      <li class="active">{$p}</li>
-      {else}
-      <li> {$p} </li>
-      {/if}
-      {/foreach}
-    </ul>
-  </div>
-</div>
-{/if} 

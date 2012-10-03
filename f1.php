@@ -18,6 +18,7 @@ try {
 if (isset($_SESSION[PACKAGE]['username'])) {
     $config['username'] = $_SESSION[PACKAGE]['username'];
 }
+$obj -> assign('config', $config);
 
 ///////////////////////////////
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']);
@@ -72,18 +73,24 @@ elseif ($_GET['sitemap']) {
     $rss = $obj -> get_rss($obj -> rss[$_GET['js_f1']]);
     $obj -> assign('rss', $rss);
     $obj -> assign('rss_template', $tdir1 . 'rss.tpl.html');
-} elseif (isset($_GET['page'])) {
+}
+elseif(isset($_GET['js_get_content'])) {
+    $row = $obj->get_content_1($_GET['cid']);
+    $obj->assign('row', $row);
+    $obj->display($tdir2.'single.tpl.html');
+    exit;
+} 
+elseif (isset($_GET['page'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     if (isset($_GET['js_page'])) {
-        $obj -> display($tdir . '2/search.tpl.html');
+        $obj -> display($tdir2 . 'nav.tpl.html');
         exit ;
     } else {
-        echo "stop";
+        echo "stop at: " . __FILE__ . ',' . __LINE__;
         exit ;
-        $obj -> assign('search_template', $tdir . '2/d2.tpl.html');
     }
 } 
 elseif (isset($_GET['test'])) {
@@ -97,8 +104,7 @@ elseif (isset($_POST['q'])) {
     $obj -> assign('results', $obj -> select_contents_by_keyword($key));
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-    $obj -> assign("pagination_template", $tdir2 . 'pagination.tpl.html');
-	
+    $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
 	$obj -> assign('kr', $obj->get_key_related($key));
 }
 else {
@@ -113,7 +119,6 @@ global $footer;
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
 
-$obj -> assign('config', $config);
 $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 

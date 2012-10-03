@@ -1,5 +1,5 @@
 {*debug*}
-{$url={$config.f1.s}}
+{$url={$config.f2.s}}
 {$t1={$config.t1}}
 {include file="{$config.t}base_layout.tpl.html"}
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
@@ -33,16 +33,15 @@
         <li><a href="#tw.yahoo" rel="tooltip" title="雅虎">雅虎台湾</a></li>
       </ul>
     </div>
-    <div class="span4" id="sr"> {include file="{$pagination_template}"} </div>
+    <div class="span4" id="sr"> {include file="{$nav_template}"} </div>
     <div class="span7" id="sd">
-    
       <div class="head1">网友在查</div>
       <ul class="nav nav-list nav-pills nav-stacked">
         {foreach $kr as $r}
         <li><a class="rk" href="{$r.kurl}">{$r.rk}</a></li>
         {/foreach}
       </ul>
-      <!--iframe width="100%" scrolling="yes" height="800px" frameborder="0" src="http://search.t.qq.com/index.php?pos=1002&su=1&smart=1&k=负面新闻"></iframe-->
+      <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
 </div>
@@ -55,11 +54,34 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('a.day', '#tf').click(function(e) {
+	$('a.day', '#tf').click(function() {
 		alert('Haliluuya');
 	});
-	/*$('#div_result');
-	$('#div_result');
-	$('#div_detail');*/
+	
+	$('li.li3 a').live('click', function() {
+		$t = $(this);
+		$('{$config.wait}').insertAfter(this);
+		$('#sd').load($(this).attr('href'), function() {
+			$(this).fadeIn(200);
+			$('li.li3').removeClass('highlight');
+			$t.parent('li.li3').addClass('highlight');
+			$t.next('img').remove();
+		});
+		return false;
+	});
+	$('div.pagination a').live('click', function() {
+		$(this).html('{$config.wait}');
+		var url = $(this).attr('href');
+		//var t = new Date().getTime();
+		if (! /js_page=/.test(url)) url+='&js_page';
+		$.ajax({
+			type: 'get',
+			url: url,
+			success: function(data) {
+				$('div#sr').hide().html(data).fadeIn(200);
+			}
+		});
+		return false;
+	});
 });
 </script>

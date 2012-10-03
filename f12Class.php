@@ -89,7 +89,7 @@ class f12Class extends BaseClass
 
     function draw() {
         $current_page = $_SESSION[PACKAGE][SEARCH]['page'] ? $_SESSION[PACKAGE][SEARCH]['page'] : 1;
-        $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 0;
+        $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
         $links = array();
         $queryURL = '';
         if (count($_GET)) {
@@ -131,6 +131,47 @@ class f12Class extends BaseClass
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
         }
         return $res;
+    }
+
+    // 输出内容.
+    function get_content_1($cid) {
+        $sql = "select * from contents where cid=" . $cid;
+        $res = mysql_query($sql);
+        $row = mysql_fetch_assoc($res);
+        mysql_free_result($res);
+        return $row;
+    }
+
+    function select_contents_by_page() {
+        //计算共有多少页？
+        $total_pages = isset($_SESSION[PACKAGE][SEARCH]['total_pages']) ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        if ($page > $total_pages)
+            $page = $total_pages;
+        if ($page < 1)
+            $page = 1;
+        $_SESSION[PACKAGE][SEARCH]['page'] = $page;
+
+        //当前从第几条记录开始显示�?
+        $row_no = ((int)$page - 1) * ROWS_PER_PAGE;
+
+        //生成新的查询语句.
+        if (preg_match("/limit/i", $_SESSION[PACKAGE][SEARCH]['sql']))
+            $_SESSION[PACKAGE][SEARCH]['sql'] = preg_replace("/limit.*$/i", '', $_SESSION[PACKAGE][SEARCH]['sql']);
+
+        $sql = $_SESSION[PACKAGE][SEARCH]['sql'];
+        $sql .= " limit  " . $row_no . "," . ROWS_PER_PAGE;
+        $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;
+
+        $ary = array();
+        $res = mysql_query($sql);
+        while ($row = mysql_fetch_assoc($res)) {
+            array_push($ary, $row);
+        }
+        mysql_free_result($res);
+
+        //返回生成的结果�?
+        return $ary;
     }
 
 }

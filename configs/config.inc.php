@@ -86,7 +86,8 @@ if (!isset($config)) {
     ), 'footer' => array(
         'copyright' => '负面新闻网。底细，真相，事实传播媒体。', 
         'menu' => '负面新闻网。底细，真相，事实传播媒体。', 
-    ), 
+    ),
+	'wait' => '<img src="images/spinner.gif" width="16" height="16" border="0" />',
   );
 }
 
