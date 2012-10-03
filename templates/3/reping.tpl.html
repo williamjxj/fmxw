@@ -1,3 +1,4 @@
+{if {$reping}}
 <div class="reping">
   <h2><span class="title"> 网友热评</span></h2>
   <div style="font-size:12px;"> {foreach $info.rps as $rp}
@@ -35,6 +36,7 @@ $(function() {
 		}
 	);
 	$('a.a_zhichi', 'span.t_reply').one('click', function(e) {
+		var comment_id = $(this).attr('id');
 		e.preventDefault();
 		$(this).html('已支持');
 		$.ajax({
@@ -54,3 +56,4 @@ $(function() {
 	});
 });
 </script>
+{/if}

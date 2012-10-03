@@ -21,10 +21,19 @@
       </form>
     </div>
   </div>
-  {/foreach}
-</div>
+  {/foreach} </div>
 <script type="text/javascript">
 $(function() {
+	$('div.reping_item').hover(
+		function() {
+			$(this).find('span.t_reply').show();
+			return false;
+		},
+		function() {
+			$(this).find('span.t_reply').hide();
+			return false;
+		}
+	);
 	$('a.a_zhichi', 'span.t_reply').one('click', function(e) {
 		var comment_id = $(this).attr('id');
 		e.preventDefault();
