@@ -47,9 +47,10 @@ $(function() {
 	});
 	$('a.a_huifu', 'span.t_reply').click(function(e) {
 		e.preventDefault();
-		t = $('#div_huifu');
-		if(t.is(':visible')) t.hide();
-		else t.show();
+		var t = $(this).closest('div.t_txt').next('div.well').attr('id');
+		var dt = $('#'+t);
+		if(dt.is(':visible')) dt.hide();
+		else dt.show();
 		return false;
 	});
 });
