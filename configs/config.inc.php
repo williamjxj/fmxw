@@ -5,7 +5,7 @@
  * CMS: ROOT=/admin/
  * 前端: ROOT=/fmxw/
  */
-defined('HOME') or define('HOME', 'http://dixitruth.com/');
+defined('HOME') or define('HOME', 'http://dixitruth.com/fmxw/');
 defined('ROOT') or define('ROOT', '/');
 defined('PACKAGE') or define('PACKAGE', 'fmxw');
 
