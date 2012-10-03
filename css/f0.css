@@ -1,5 +1,14 @@
 @charset "utf-8";
 /* f0.php */
+/* 参考*/
+#livetip {
+	position: absolute;
+	background-color: #cfc;
+	border: 2px solid #c9c;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
 a.contact {}
 a.help1 {}
 a.help2 {}
@@ -21,9 +30,6 @@ a.english {}
 }
 #footer p {
 	margin-top: 20px;
-}
-.centered {
-    text-align:center;
 }
 form div.alert {
     margin: 10px auto 15px;

@@ -497,14 +497,8 @@ div.ajaxloading * {
 .more a:hover {
 	text-decoration:underline;
 }
-/* 参考*/
-#livetip {
-	position: absolute;
-	background-color: #cfc;
-	border: 2px solid #c9c;
-	border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
+.centered {
+    text-align:center;
 }
 ​a.tqmail {
 	background: url(http://mat1.gtimg.com/news/imgcss_article_qq/qqmail.png) no-repeat scroll 0 0 transparent;
