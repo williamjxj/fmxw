@@ -27,6 +27,7 @@ elseif (isset($_POST['q'])) {
     $obj -> assign('results', $obj -> select_contents_by_keyword($key));
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
+    $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
     $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
     if (!empty($key)) {
         exec("/home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 &");
@@ -38,11 +39,11 @@ elseif (isset($_POST['q'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-    // ������:ȥ��search.tpl.html ajax ����,������Ȼ�ܹ���.
     if (isset($_GET['js_page'])) {
-        $obj -> display($tdir2 . 'pagination.tpl.html');
+        $obj -> display($tdir2 . 'nav.tpl.html');
         exit ;
     } else {
+	    $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
         $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
     }
 } elseif (isset($_GET['test'])) {
@@ -65,7 +66,6 @@ elseif(isset($_POST['fayan'])) {
 	exit;
 }
 else {
-
 }
 
 //

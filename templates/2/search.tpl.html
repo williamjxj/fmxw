@@ -1,5 +1,5 @@
 <div class="row span12">
-  <div id="search" class="span4 box5"> {include file="{$t2}pagination.tpl.html"} </div>
+  <div id="search" class="span4 box5"> {include file="{$t2}nav.tpl.html"} </div>
   <div class="span8" style="width:580px">
     <div id="div_display" class="box5"></div>
     {include file="{$t3}weibo.tpl.html"}
@@ -9,28 +9,23 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('li.li3 a').click(function(e) {
-		e.preventDefault();
+	$('li.li3 a').live('click', function(e) {
+		$t = $(this);
+		$('{$config.wait}').insertAfter(this);
 
-		$('<div></div>').addClass('ajaxloading');
-		
-		var h = $(this).attr('href');
-		t = h.replace(/\&js_get_content=1/,'');
-		t = '<a href="' + t + '">' + $(this).text() + '</a>';
-
-		$.get(h, function(data) {
-			//$(data).appendTo('#div_display');
-			$('#div_display').html(data);
-		})
-		.complete(function() {
-			$('#div_display').fadeIn(200);
+		$('#div_display').load($(this).attr('href'), function() {
+			$(this).fadeIn(200);
+			$('li.li3').removeClass('highlight');
+			$t.parent('li.li3').addClass('highlight');
+			$t.next('img').remove();
 		});
 		return false;
 	});
 	$('div.pagination a').live('click', function(e) {
+		$(this).html('{$config.wait}');
 		e.preventDefault();
 		var url = $(this).attr('href');
-		if (! /js_page=/.test(url)) url+='&js_page=1';
+		if (! /js_page=/.test(url)) url+='&js_page=_';
 		$.ajax({
 			type: 'get',
 			url: url,

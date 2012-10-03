@@ -2,7 +2,6 @@
 .clear {
 	clear: both;
 }
-/*******************/
 .hero-unit p {
 	font-size: 12px !important;
 }
@@ -326,8 +325,8 @@ table tbody tr th span {
 }
 /******* div 部分*************/
 div.ajaxloading {
-	height: 32px;
-	width: 32px;
+	height: 16px;
+	width: 16px;
 	background-color: #fff;
 	background-image: url(../images/spinner.gif);
 	background-position:  center center;
@@ -402,10 +401,9 @@ div.ajaxloading * {
 .reping_item .t_txt {
 	color: #414159;
 	font-size: 12px;
-	/*line-height: 24px;*/
     margin-left: 124px;
 	margin-bottom:10px;
-	border-bottom: 1px dotted #ccc;
+	/*border-bottom: 1px dotted #ccc;line-height: 24px;*/
 }
 .reping_item .t_date {
 	color: #D0D0D0;
@@ -416,6 +414,10 @@ div.ajaxloading * {
 	float:right;
 	display:inline;
 	margin-right:6px;
+	display:none;
+}
+.reping_item:hover {
+	background-color:lightyellow;
 }
 .reping .a_huifu {
 	padding: 10px;
@@ -506,4 +508,12 @@ div.ajaxloading * {
 }
 ​a.tqmail {
 	background: url(http://mat1.gtimg.com/news/imgcss_article_qq/qqmail.png) no-repeat scroll 0 0 transparent;
+}
+li.highlight {
+    background: none repeat scroll 0 0 #E5E3E3;
+    border: 1px solid #E7E5E6;
+    box-shadow: 1px 1px 1px #E7E5E6;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 }
