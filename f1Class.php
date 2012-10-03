@@ -3,14 +3,14 @@ require_once (ROOT . "f12Class.php");
 
 class f1Class extends f12Class {
 
-    var $url, $mdb2, $lang, $l;
+    var $url, $mdb2, $lang, $locale;
     public function __construct() {
         parent::__construct();
         $this -> url = $_SERVER['PHP_SELF'];
         $this -> mdb2 = $this -> pear_connect_admin();
         $this -> dbh = $this -> mysql_connect_fmxw();
         $this -> lang = $_SESSION[PACKAGE]['language'];
-        $this -> l = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
+        $this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
         $this -> ary = array('top10', 'weekhotspot', 'top_keyword', 'shishuoxinci', 'shijian', 'shijian_lastweek', 'shijian_lastmonth', 'hotman', 'girls', 'boys', 'FStar', 'MStar', 'ygeshou', 'ngeshou', 'titan', 'internet', 'mingjia', 'caijing', 'rich', 'zhengtan', 'lishiren', 'relation', 'cishan', 'fangchanqy');
         $this -> rss = array('guanzhu' => 'http://top.baidu.com/rss_xml.php?p=top10', 'weekhot' => 'http://top.baidu.com/rss_xml.php?p=weekhotspot', 'keyword' => 'http://top.baidu.com/rss_xml.php?p=top_keyword', 'xinxian' => 'http://top.baidu.com/rss_xml.php?p=shishuoxinci', 'events' => 'http://top.baidu.com/rss_xml.php?p=shijian', '1week' => 'http://top.baidu.com/rss_xml.php?p=shijian_lastweek', '1month' => 'http://top.baidu.com/rss_xml.php?p=shijian_lastmonth', 'person' => 'http://top.baidu.com/rss_xml.php?p=hotman', 'star' => 'http://top.baidu.com/rss_xml.php?p=FStar', );
 
@@ -138,6 +138,11 @@ class f1Class extends f12Class {
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
             die($res -> getMessage());
+		if ($res[0]['category']) {
+			$_SESSION[PACKAGE][SEARCH]['key'] = $res[0]['category'];
+			//array_push($_SESSION[PACKAGE][SEARCH], array('key' => $res[0]['category']));
+			//$this->__p($_SESSION);
+		}
         return $res;
     }
 
@@ -177,6 +182,8 @@ class f1Class extends f12Class {
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
             die($res -> getMessage());
+		if ($res[0]['item'])
+			$_SESSION[PACKAGE][SEARCH]['key'] = $res[0]['item'];
         return $res;
     }
 

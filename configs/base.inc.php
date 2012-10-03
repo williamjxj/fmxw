@@ -28,6 +28,10 @@ class BaseClass extends Smarty {
         $this -> compile_dir = ROOT . 'templates_c/';
         $this -> config_dir = ROOT . 'configs/';
         $this -> cache_dir = ROOT . 'cache/';
+		
+		//缺省设置:
+        $this -> lang = isset($_SESSION[PACKAGE]['language']) ? $_SESSION[PACKAGE]['language'] : '中文';
+        $this -> locale = $this -> lang == 'English' ? 'en' : 'cn';	
     }
 
     public function pear_connect_admin() {
@@ -120,7 +124,7 @@ class BaseClass extends Smarty {
     }
 
 	/* 这样写的目的是让程序更加清楚。 */
-	protected function _get_label($array) {
+	public function _get_label($array) {
 		$ary = array();
         foreach ($array as $k => $v) $ary[$k] = $v[$this->locale];
 		return $ary;

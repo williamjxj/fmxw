@@ -48,87 +48,12 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="{$config.base}js/jquery.fmxw4.js"></script>
 <script type="text/javascript">
+    //这里需要q是全局的,这样window.load能访问到.
     var q = '{$q}';
-    $('input[name=key]', 'form[name=wb_search]').val(q);
-    var defaults = {
-        width : '100%',
-        scrolling : 'yes',
-        height : 500,
-        frameborder : 0
-    };
-    function sina_weibo(q) {
-        var attrs = {
-            src : 'http://widget.weibo.com/livestream/listlive.php'
-        };
-        if ( typeof defaults === 'object')
-            $.extend(attrs, defaults);
-        var params = {
-            language : 'zh_cn',
-            width : 0,
-            height : '500',
-            uid : 1644057380,
-            skin : 1,
-            refer : 1,
-            pic : 1,
-            titlebar : 0,
-            border : 1,
-            publish : 1,
-            atalk : 1,
-            recomm : 0,
-            at : 0,
-            dpc : 1
-        };
-        //缁勮query瀛楃涓
-        var t = '?';
-        Object.keys(params).forEach(function(key) {
-            t += key + '=' + params[key] + '&';
-        });
-        t += 'atopic=' + q;
-        t += '&ptopic=' + q;
-        attrs.src += t;
-        $('#sina_wb').html($('<iframe></iframe>').attr(attrs));
-    }
-
-    //http://topic.weibo.com/areahot/5460?page=4
-    function qq_weibo(q) {
-        var attrs = {
-            src : 'http://search.t.qq.com/index.php'
-        };
-        $.extend(attrs, defaults);
-        var params = {
-            pos : 1002,
-            su : 1,
-            smart : 1
-        };
-        var t = '?';
-        Object.keys(params).forEach(function(key) {
-            t += key + '=' + params[key] + '&';
-        });
-        attrs.src += t + 'k=' + q;
-        //<iframe width="100%" scrolling="yes" height="500" frameborder="0" src=""></iframe>
-        $('#tengxun_wb').html($('<iframe></iframe>').attr(attrs));
-    }
-
-    function netease_weibo(q) {
-        var attrs = {
-            src : 'http://t.163.com/tag/'
-        };
-        $.extend(attrs, defaults);
-        attrs.src += q;
-        $('#163_wb').html($('<iframe></iframe>').attr(attrs));
-    }
-
-    function sohu_weibo(q) {
-        var attrs = {
-            src : 'http://t.sohu.com/twsearch/twSearch?key='
-        };
-        $.extend(attrs, defaults);
-        attrs.src += UrlEncode(q);
-        $('#sohu_wb').html($('<iframe></iframe>').attr(attrs));
-    }
-
     $(function() {
+
         $('#weiboList a').click(function(e) {
             e.preventDefault();
             t = $(this).attr('href');
@@ -136,17 +61,17 @@
                 //只执行一次, 用one()来.
                 if ($(t).find('iframe').attr('src') === undefined) {
                     $(t).html($('<div class="ajaxloading"></div>'));
-                    qq_weibo(q);
+                    $.fmxw4.qq_weibo(q);
                 }
             } else if (/163/.test(t)) {
                 if ($(t).find('iframe').attr('src') === undefined) {
                     $(t).html($('<div class="ajaxloading"></div>'));
-                    netease_weibo(q);
+                    $.fmxw4.netease_weibo(q);
                 }
             } else if (/sohu/.test(t)) {
                 if ($(t).find('iframe').attr('src') === undefined) {
                     $(t).html($('<div class="ajaxloading"></div>'));
-                    sohu_weibo(q);
+                    $.fmxw4.sohu_weibo(q);
                 }
             }
             $(this).tab('show');
@@ -162,16 +87,17 @@
             }
             var t1 = $('#weiboList').find('li.active a').attr('href');
             if (/sina/.test(t1))
-                sina_weibo(q);
+                $.fmxw4.sina_weibo(q);
             else if (/tengxun/.test(t1))
-                qq_weibo(q);
+                $.fmxw4.qq_weibo(q);
             else if (/163/.test(t1))
-                netease_weibo(q);
+                $.fmxw4.netease_weibo(q);
             else if (/sohu/.test(t1))
-                sohu_weibo(q);
+                $.fmxw4.sohu_weibo(q);
             return false;
 
         });
+        $('input[name=key]', 'form[name=wb_search]').val(q);
         $('input:text', 'form[name="wb_search"]').focus(function() {
             $(this).animate({
                 width : '+=50',
@@ -183,6 +109,6 @@
         });
     });
     $(window).load(function() {
-        sina_weibo(q);
+        $.fmxw4.sina_weibo(q);
     }); 
 </script>

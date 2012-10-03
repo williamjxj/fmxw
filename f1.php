@@ -5,6 +5,11 @@ define("ROOT", "./");
 
 require_once (ROOT . "configs/config.inc.php");
 global $config;
+require_once (ROOT . "locales/f0.inc.php");
+global $header;
+global $search;
+global $list;
+global $footer;
 
 set_lang();
 
@@ -51,11 +56,6 @@ elseif ($_GET['sitemap']) {
     }
 } elseif ($_GET['js_get_news']) {
 
-    require_once (ROOT . "locales/f0.inc.php");
-    global $header;
-    global $search;
-    global $list;
-    global $footer;
 
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_tf', $obj -> get_footer_label($footer));
@@ -64,7 +64,7 @@ elseif ($_GET['sitemap']) {
     $obj -> assign('sitemap', $obj -> get_sitemap());
     $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
-    $obj -> assign('header_template', $tdir0 . 'header.tpl.html');
+    $obj -> assign('header_template', $tdir0 . 'header0.tpl.html');
     $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
     $obj -> display($tdir1 . 'news.tpl.html');
@@ -111,10 +111,6 @@ else {
     $obj -> __p($_REQUEST);
     die("Error, no http request at: [" . __FILE__ . '], line ' . __LINE__);
 }
-
-require_once (ROOT . "locales/f0.inc.php");
-global $header;
-global $footer;
 
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));

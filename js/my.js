@@ -40,8 +40,7 @@ $.cachedScript("ajax/test.js").done(function (script, textStatus) {
         function f2() {};
     };
 
-    $.foo.
-    default = {};
+    $.foo.defaults = {};
 
 
     $.dixi = {
