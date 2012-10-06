@@ -20,7 +20,7 @@
 	<br/>
 	<div class="span12">
 		<span class="label label-warning">热门搜索词:</span>
-		<span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>,&nbsp;
+		<span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
 			{/foreach} </span>
 	</div>
 </div>
@@ -53,7 +53,7 @@
 				}
                 t2 = $(this);
                 var w2 = t2.outerWidth(), h2 = t2.outerHeight();
-				console.log('width:' + w2 + ','+'height:' +h2);
+				//console.log('width:' + w2 + ','+'height:' +h2);
                 t2.css({ top : p1.top+h1, left : p1.left })
 				.animate({ height : h2, width : w2 }, { queue : false, duration : 150 }).fadeIn(200);
             });
