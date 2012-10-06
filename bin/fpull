@@ -8,6 +8,6 @@ git commit -a -m"update from server at `date`"
 
 git pull git@github.com:williamjxj/fmxw.git master
 
-sudo chgrp -R nobody .
+#sudo chgrp -R nobody .
 
 cd -

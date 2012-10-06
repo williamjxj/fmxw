@@ -65,5 +65,13 @@ class f0Class extends BaseClass
         return $res;
     }
 
+    function get_key_related($q) {
+        $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
+        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        return $res;
+    }
 }
 ?>

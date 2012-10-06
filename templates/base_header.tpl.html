@@ -144,7 +144,7 @@ $(function() {
 	var defaultSize = $fs.css('fontSize') || $('body').css('fontSize');
 	$('#switcher a').live("click", function() {
 		var num = parseFloat($fs.css('fontSize'), 10) || parseFloat($('body').css('fontSize'));
-		console.log(num + ',' + this.id);
+		// console.log(num + ',' + this.id);
 		switch (this.id) {
 			case 'switcher-large':
 				num *= 1.4;

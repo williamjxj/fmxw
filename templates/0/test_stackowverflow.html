@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Dimensions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../include/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+.kw_tag {
+	position:relative;
+}
+.rk_tag {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: lightyellow;
+	border-color: PeachPuff;
+	border-image: none;
+	border-radius: 4px 4px 4px 4px;
+	border-right: 1px solid PeachPuff;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 0 SlateBlue inset;
+	color: MidnightBlue;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	padding: 10px;
+	text-align: left;
+	width: 248px;
+	z-index: 320;
+	position: absolute;
+	top:0;
+	right:0;
+	display: none;
+	overflow:hidden;
+}
+</style>
+</head>
+<body>
+<!--script src="http://code.jquery.com/jquery-latest.js"></script-->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../include/bootstrap/js/bootstrap.min.js"></script>
+<div class="container">
+  <div class="hero-unit">
+    <h1>Hello, world!</h1>
+    <p>&nbsp;</p>
+    <div class="kw_tag">
+      <p><a class="btn btn-primary btn-large" href="javascript:;">Typographic components</a></p>
+      <div class="rk_tag">
+        <ul class="nav nav-tabs nav-stacked">
+          <li>相关关键词1</li>
+          <li>相关关键词2</li>
+          <li>相关关键词3</li>
+          <li>相关关键词4</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	var t1 = $('div.kw_tag'), t2 = $('div.rk_tag');
+	var w1=t1.width(),
+		h1=t1.outerHeight(), 
+		w2=t2.outerWidth(),
+		h2=t2.outerHeight();
+	var p1=t1.position(),
+		p2=t2.position();
+	var o1=t1.offset(),
+		o2=t2.position();
+	t2.css({width:0, height:0});
+	t1.hover(function() {
+		t2.css({ top: p1.top, left: p1.left })
+		.animate({height:h2, width: w2},  { queue: false, duration: 1500 }).fadeIn(1000);
+	}, function() {
+		t2.hide().css({width:0, height:0}); 
+	});
+});
+</script>
+</body>
+</html>

@@ -1,7 +1,52 @@
 @charset "utf-8";
 /* f0.php */
-/* 参考*/
-#livetip {
+a.post-tag {
+	background-color: #E0EAF1;
+	border-bottom: 1px solid #3E6D8E;
+	border-right: 1px solid #7F9FB6;
+	color: #3E6D8E;
+	font-size: 90%;
+	line-height: 2.4;
+	margin: 2px 2px 2px 0;
+	padding: 3px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+    position:relative;
+}
+a.post-tag:hover {
+	background-color: #3E6D8E;
+	border-bottom: 1px solid #37607D;
+	border-right: 1px solid #37607D;
+	color: #E0EAF1;
+	text-decoration: none;
+}
+.related_tag {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: lightyellow;
+    border-color: PeachPuff;
+    border-image: none;
+    border-radius: 4px 4px 4px 4px;
+    border-right: 1px solid PeachPuff;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 0 SlateBlue inset;
+    color: MidnightBlue;
+    font-family: '宋体', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    padding: 1px;
+    text-align: left;
+    /*width: 248px;*/
+    z-index: 320;
+    position: absolute;
+    top:0;
+    right:0;
+    display: none;
+    overflow:hidden;
+}
+.box6 {
 	position: absolute;
 	background-color: #cfc;
 	border: 2px solid #c9c;

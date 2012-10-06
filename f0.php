@@ -11,6 +11,8 @@ set_lang();
 require_once (ROOT . 'f0Class.php');
 $obj = new f0Class();
 
+$tdir = $config['t0'];
+
 // login or not?
 if (isset($_SESSION[PACKAGE]['username'])) {
     $config['username'] = $_SESSION[PACKAGE]['username'];
@@ -21,6 +23,11 @@ if (isset($_GET['q'])) {
 } 
 else if (isset($_GET['js_get_category'])) {
 	$obj->get_category();
+}
+else if (isset($_GET['js_get_related'])) {
+    $obj->assign('krs', $obj->get_key_related($_GET['kw']));
+    $obj->display($tdir.'related_keywords.tpl.html');
+    exit;
 }
 else if (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
@@ -45,7 +52,6 @@ else if (isset($_GET['test'])) {
 
     $obj->assign('keywords', $obj->get_keywords());
 
-	$tdir = $config['t0'];
     $obj -> assign('header_template', $tdir . 'header0.tpl.html');
     $obj -> assign('search_template', $tdir . 'search.tpl.html');
     $obj -> assign('footer_template', $tdir . 'footer.tpl.html');

@@ -41,6 +41,33 @@
     };
     //实例方法的扩展.
     $.extend($.fn, {
+        krk : function(t1, t2) {
+            var p1 = $(t1).position(), w1 = $(t1).width(), h1 = $(t1).outerHeight();
+            var p2 = $(t2).position(), w2 = $(t2).outerWidth(), h2 = $(t2).outerHeight();
+            console.log($(t2));
+            console.log($(t1));
+            $(t2).css({
+                width : 0,
+                height : 0
+            });
 
+            $(t1).hover(function(e) {
+                t2.css({
+                    top : p1.top,
+                    left : p1.left
+                }).animate({
+                    height : h2,
+                    width : w2
+                }, {
+                    queue : false,
+                    duration : 1500
+                }).fadeIn(1000);
+            }, function() {
+                $(t2).hide().css({
+                    width : 0,
+                    height : 0
+                });
+            });
+        },
     });
 })(jQuery);

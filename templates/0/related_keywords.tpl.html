@@ -1,0 +1,10 @@
+{if count($krs)>0}
+<div class="alert">
+  <button type="button" class="close" data-dismiss="alert" onclick="$('div.related_tag').hide();return false;">×</button>
+  <strong>也查关联词:</strong> </div>
+<ul class="nav nav-tabs nav-stacked">
+  {foreach $krs as $r}
+  <li><a id="rk_{$r.rid}" href="{$r.kurl}">{$r.rk}</a></li>
+  {/foreach}
+</ul>
+{/if}

@@ -20,18 +20,47 @@
 	<br/>
 	<div class="span12">
 		<span class="label label-warning">热门搜索词:</span>
-		<span class="alert"> {foreach $keywords as $q} <a class="sq" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>,&nbsp;
+		<span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
 			{/foreach} </span>
 	</div>
 </div>
-<p>&nbsp;</p>
+<div class="related_tag">
+	&nbsp;
+</div>
+<p>&nbsp;
+	
+</p>
 <script type="text/javascript">
     $(function() {
-    	$('a.sq').click(function() {
-    		$('#typeahead').val($(this).attr('datasrc'));
-    		$('#sf').trigger('submit');
-    		return false;
-    	});
+        $('a.post-tag').click(function(e) {
+            e.preventDefault();
+            var t = $(e.target);
+            $('#typeahead').val(t.attr('datasrc'));
+            $('#sf').trigger('submit');
+            return false;
+        });
+
+        //$(this).krk('a.post-tag', 'div.related_tag');
+        $('a.post-tag').mouseover(function(e) {
+            e.preventDefault();
+            var t1 = $(e.target);
+            var p1 = t1.position(), w1 = t1.width(), h1 = t1.outerHeight();
+            $('div.related_tag').hide();
+			
+            $('div.related_tag').load('?js_get_related=1&kw=' + t1.text(), function(data) {
+				if(! data) {
+					return false;
+				}
+                t2 = $(this);
+                var w2 = t2.outerWidth(), h2 = t2.outerHeight();
+				//console.log('width:' + w2 + ','+'height:' +h2);
+                t2.css({ top : p1.top+h1, left : p1.left })
+				.animate({ height : h2, width : w2 }, { queue : false, duration : 150 }).fadeIn(200);
+            });
+
+            return false;
+        });
+
         $('#new_search').click(function(e) {
             e.preventDefault();
             form = document.getElementById('sf');
