@@ -31,7 +31,11 @@ class BaseClass extends Smarty {
 		
 		//缺省设置:
         $this -> lang = isset($_SESSION[PACKAGE]['language']) ? $_SESSION[PACKAGE]['language'] : '中文';
-        $this -> locale = $this -> lang == 'English' ? 'en' : 'cn';	
+        $this -> locale = $this -> lang == 'English' ? 'en' : 'cn';
+		
+		//时区设置:http://php.net/manual/en/function.date-default-timezone-set.php
+		$timezone = "Asia/Shanghai";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
     }
 
     public function pear_connect_admin() {
