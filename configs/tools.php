@@ -13,16 +13,13 @@ function filter_xml($matches) {
     return trim(htmlspecialchars($matches[1]));
 }
 
-function __p($vars, $debug=true) {
-	if (!$debug) return;
-	global $config;
-	if (isset($config['debug']) && $config['debug']) {
+function __p($vars) {
 	if (is_array($vars) || is_object($vars)) {
 		echo "<pre>";
 		print_r($vars);
 		echo "</pre>";
-	} else
-		echo $vars . "<br>\n";
 	}
+	else
+		echo $vars . "<br>\n";
 }
 ?>
