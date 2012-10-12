@@ -4,7 +4,7 @@
 // $Id: test2.php 910 2007-11-16 11:43:46Z shodan $
 //
 
-require ( "sphinxapi.php" );
+require ( "../etc/sphinxapi.php" );
 
 $docs = array
 (

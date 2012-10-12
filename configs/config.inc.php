@@ -10,6 +10,9 @@ defined('ROOT') or define('ROOT', '/');
 defined('PACKAGE') or define('PACKAGE', 'fmxw');
 defined('SEARCH') or define('SEARCH', 'search');
 
+defined('CORESEEK_PORT') or define('CORESEEK_PORT', 9313);
+defined('CORESEEK_PORT2') or define('CORESEEK_PORT2', 9312);
+
 defined('TAB_LIST') or define('TAB_LIST', 10);
 defined('PER_TOTAL') or define('PER_TOTAL', 10);
 defined('LIMIT') or define('LIMIT', 25);
