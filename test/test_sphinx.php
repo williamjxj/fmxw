@@ -3,6 +3,7 @@
 header('Content-Type: text/html; charset=utf-8');
 
 require_once('../etc/sphinxapi.php');
+require_once('../configs/toosl.php');
 
 $s = new SphinxClient;
 
@@ -14,6 +15,6 @@ $s->setMaxQueryTime(3);
 
 $result = $s->query("test");
 
-var_dump($result);
+__p($result);
 
 ?>
