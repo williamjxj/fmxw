@@ -54,7 +54,7 @@ elseif ($_GET['sitemap']) {
         $obj -> assign('info', $info);
         $obj -> assign('sitemap_template', $tdir1 . 'sitemap.tpl.html');
     }
-} elseif ($_GET['js_get_news']) {
+} elseif ($_GET['f1_news']) {
 
 
     $obj -> assign('_th', $obj -> get_header_label($header));
@@ -69,8 +69,8 @@ elseif ($_GET['sitemap']) {
 
     $obj -> display($tdir1 . 'news.tpl.html');
     exit ;
-} elseif ($_GET['js_f1']) {
-    $rss = $obj -> get_rss($obj -> rss[$_GET['js_f1']]);
+} elseif ($_GET['f1_hot']) {
+    $rss = $obj -> get_rss($obj -> rss[$_GET['f1_hot']]);
     $obj -> assign('rss', $rss);
     $obj -> assign('rss_template', $tdir1 . 'rss.tpl.html');
 }
