@@ -1,14 +1,15 @@
 <?php
 
-//
-// $Id: test.php 2903 2011-08-04 13:30:49Z shodan $
-//
+require ( "../etc/sphinxapi.php" );
 
-require ( "sphinxapi.php" );
+/**
+PHP Warning:  date(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function.
+In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected 'America/Denver' for 'MST/-7.0/no
+DST' instead in /home/williamjxj/fmxw/test/test_sphinx1.php on line 147
+*/
+$timezone = "Asia/Shanghai";
+if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
 
-//////////////////////
-// parse command line
-//////////////////////
 
 // for very old PHP versions, like at my home test server
 if ( is_array($argv) && !isset($_SERVER["argv"]) )

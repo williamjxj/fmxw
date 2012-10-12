@@ -1,10 +1,6 @@
 <?php
 
-//
-// $Id: test2.php 910 2007-11-16 11:43:46Z shodan $
-//
-
-require ( "sphinxapi.php" );
+require ( "../etc/sphinxapi.php" );
 
 $docs = array
 (
@@ -45,9 +41,5 @@ foreach ( array(0,1) as $exact )
 		print "\n";
 	}
 }
-
-//
-// $Id: test2.php 910 2007-11-16 11:43:46Z shodan $
-//
 
 ?>
