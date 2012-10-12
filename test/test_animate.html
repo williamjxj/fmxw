@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- Bootstrap -->
+<link href="../include/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Hello, world!</h1>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="../include/bootstrap/js/bootstrap.min.js"></script>
+<form method="post" name="wb_search" action="javascript:;"  class="form-search">
+  <input type="text" placeholder="微博主题" name="key" class="input-medium search-query" />
+  <button type="submit" class="btn btn-success"> <i class="icon-white icon-search"></i> 微博查询 </button>
+</form>
+<script type="text/javascript">
+$(function() {
+	$('input').focus(function() {
+		$(this).animate({
+			width: '+=50',
+		});
+	}).blur(function() {
+		$(this).animate({
+			width: '-=50',
+		});
+	});
+});
+</script>
+</body>
+</html>
