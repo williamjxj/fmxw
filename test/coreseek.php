@@ -105,11 +105,11 @@ class FMXW_Sphinx extends SphinxClient
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
-        <td colspan="2" class="tdheader"> Search Options</td>
+        <td colspan="2" class="tdheader">查询选项：</td>
       </tr>
       <tr>
         <td align="right">查询词:</td>
-        <td><input name="words" size="30" class="formboxes" type="text" placeholder="" />
+        <td><input name="words" size="30" class="formboxes" type="text" placeholder="钓鱼岛争端" />
         </td>
       </tr>
       <tr>
@@ -131,6 +131,10 @@ class FMXW_Sphinx extends SphinxClient
       <tr>
         <td align="right">栏目:</td>
         <td><input autocomplete="off" name="replybox" id="replybox" size="30" class="formboxes" type="text">
+          <select name="tosearch" id="tosearch">
+            <option value="both">all posts</option>
+            <option value="main">main posts</option>
+          </select>
         </td>
       </tr>
     </tbody>
@@ -148,8 +152,9 @@ class FMXW_Sphinx extends SphinxClient
           </select>
           范围
           <select name="where" id="where">
-            <option value="subject">subject</option>
-            <option value="body" selected="selected">subject &amp; body</option>
+            <option value="subject">标题</option>
+            <option value="subject">内容</option>
+            <option value="body" selected="selected">标题和内容</option>
           </select></td>
       </tr>
       <tr>
