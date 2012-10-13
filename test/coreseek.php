@@ -113,7 +113,8 @@ class FMXW_Sphinx extends SphinxClient
 <body>
 <div class="container">
   <div class="hero-unit well-large">
-    <form action="" method="POST">
+    <h3 id="ad_search">负面新闻高级查询表单</h3>
+    <form action="" method="POST" id="ad_form">
       <fieldset>
       <legend>负面新闻高级查询表单</legend>
       <table class="table table-striped table-bordered table-hover">
@@ -198,7 +199,10 @@ class FMXW_Sphinx extends SphinxClient
               </select></td>
           </tr>
           <tr>
-            <td colspan="2"><button class="btn btn-primary" type="submit"> ><i class="icon-white icon-search">查询</button></td>
+            <td colspan="2">
+			<button class="btn btn-primary" type="submit"> <i class="icon-white icon-search"></i>查询</button>
+			<button class="btn" type="rest"> 查询</button>
+			</td>
           </tr>
         </tbody>
       </table>
@@ -210,6 +214,22 @@ class FMXW_Sphinx extends SphinxClient
 </html>
 <script type="text/javascript">
 $(function() {
+	$('input:text, select', '#ad_form').hover(function() {
+		$(this).popover('show');
+	});
+	$('#ad_search').click(function(){
+		var f = $('#ad_form');
+		if($(f).is(':visible')) $(f).hide();
+		else $(f).animate().show();
+		return false;
+	});
+	$('#cate').live('change', function() {
+		$('#item').load('?cate_id=1&js_item=1');
+	});
+});
+$(window).load(function() {
+	// load category select list.
+	$('#cate').load('?cate=1');
 });
 </script>
 <?php
