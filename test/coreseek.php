@@ -105,11 +105,11 @@ class FMXW_Sphinx extends SphinxClient
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
-        <td class="tdheader"> Search options <span class="small">(<img src="/forums/images/magtiny.gif" alt="" height="8" width="9"> <a href="javascript:void(0);" onClick="javascript:window.open('http://www.shroomery.org/forums/searchtips.php','_blank','toolbar=no, menubar=no,location=no,directories=no,status=no,width=720,height=500,top=200,left=200');">Advanced search tips</a>)</span></td>
+        <td colspan="2" class="tdheader"> Search Options</td>
       </tr>
       <tr>
         <td align="right">查询词:</td>
-        <td><input name="words" size="30" class="formboxes" type="text">
+        <td><input name="words" size="30" class="formboxes" type="text" placeholder="" />
         </td>
       </tr>
       <tr>

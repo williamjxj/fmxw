@@ -64,7 +64,7 @@ $mult = array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 
 // Create Sphinx client
 $cl = new SphinxClient();
-$cl->SetServer("192.168.0.20", 3312);
+$cl->SetServer("localhost", 9313);
 $index = 'full fulldelta';
 
 // Filter by date
