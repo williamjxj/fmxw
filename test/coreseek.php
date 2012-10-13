@@ -41,22 +41,35 @@ class FMXW_Sphinx extends SphinxClient
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
-	
+	function get_categoris() {
+		$ary = array();
+		$sql = "select * from categories";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array() {
+			array_push($ary, $row[1], $row[2]);
+		}
+		return $res;
+	}
+	function get_categoris() {
+		$ary = array();
+		$sql = "select * from items";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array() {
+			array_push($ary, $row[1], $row[2]);
+		}
+		return $ary;
+	}
 	function set_sphinx() {
 	  return array(
 		'sphinx_host' => 'localhost',
-		'sphinx_port' => 9312, //this demo uses the SphinxAPI interface
-	
+		'sphinx_port' => 9312, //this demo uses the SphinxAPI interface	
 		'mysql_host' => "localhost",
 		'mysql_username' => "fmxw",
 		'mysql_password' => "fmxw123456",
 		'mysql_database' => "fmxw",
-	
 		'sphinx_index' => "mysql", 
-	
 		#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
 		'body' => 'excerpt',
-	
 		#the link for the title (only $id) placeholder supported
 		'link_format' => '/page.php?page_id=$id',
 	
@@ -99,9 +112,8 @@ class FMXW_Sphinx extends SphinxClient
 </head>
 <body>
 <div class="container">
-  <div class="hero-unit well-large">
-    <h3>Bootstrap 模板文件 - Ready for use</h3>
-  </div>
+<div class="hero-unit well-large">
+  <h3>Bootstrap 模板文件 - Ready for use</h3>
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
@@ -109,40 +121,23 @@ class FMXW_Sphinx extends SphinxClient
       </tr>
       <tr>
         <td align="right">查询词:</td>
-        <td><input name="words" size="30" class="formboxes" type="text" placeholder="钓鱼岛争端" />
+        <td><input name="words" size="30" type="text" placeholder="钓鱼岛争端" />
         </td>
       </tr>
       <tr>
         <td align="right">归档:</td>
-        <td><input autocomplete="off" name="namebox" id="namebox" size="30" class="formboxes" type="text">
-          <select name="tosearch" id="tosearch">
-            <option value="both">all posts</option>
-            <option value="main">main posts</option>
-          </select></td>
-      </tr>
-      <tr>
         <td></td>
-        <td><input name="expert" id="expert" value="1" type="checkbox">
-          <label for="expert">Trusted Cultivators</label>
-          &nbsp;
-          <input name="identifier" id="identifier" value="1" type="checkbox">
-          <label for="identifier">Trusted Identifiers</label></td>
       </tr>
       <tr>
         <td align="right">栏目:</td>
-        <td><input autocomplete="off" name="replybox" id="replybox" size="30" class="formboxes" type="text">
-          <select name="tosearch" id="tosearch">
-            <option value="both">all posts</option>
-            <option value="main">main posts</option>
-          </select>
-        </td>
+        <td></td>
       </tr>
       <tr>
         <td align="right"> 查询模式: </td>
         <td><select name="how" id="how" onChange="searchMethod()" ;="">
-            <option value="all">all words</option>
-            <option value="any">any words</option>
-            <option value="exact">exact phrase</option>
+            <option value="all">全部单词all words</option>
+            <option value="any">每一个单词any words</option>
+            <option value="exact">准确词exact phrase</option>
             <option value="boolean">boolean</option>
           </select>
           范围
@@ -154,44 +149,41 @@ class FMXW_Sphinx extends SphinxClient
       </tr>
       <tr>
         <td align="right"> 时间早于: </td>
-        <td><input name="newerval" id="newerval" value="" size="2" class="formboxes" type="text">
-          <select name="newertype" id="newertype" class="formboxes">
-            <option value="d">days</option>
-            <option value="w">weeks</option>
-            <option value="m">months</option>
-            <option value="y" selected="selected">years</option>
+        <td><input name="newerval" id="newerval" value="" size="2" type="text">
+          <select name="newertype" id="newertype" >
+            <option value="d">日</option>
+            <option value="w">周</option>
+            <option value="m">月</option>
+            <option value="y" selected="selected">年</option>
           </select>
-          并且，晚于:
-          <input name="olderval" id="olderval" value="" size="2" class="formboxes" type="text">
-          <select name="oldertype" id="oldertype" class="formboxes">
-            <option value="d">days</option>
-            <option value="w">weeks</option>
-            <option value="m">months</option>
-            <option value="y" selected="selected">years</option>
+          并且，时间晚于:
+          <input name="olderval" id="olderval" value="" size="2" type="text">
+          <select name="oldertype" id="oldertype" >
+            <option value="d">日</option>
+            <option value="w">周</option>
+            <option value="m">月</option>
+            <option value="y" selected="selected">年</option>
           </select></td>
       </tr>
       <tr>
         <td align="right">最少查询词:</td>
-        <td><input name="minwords" id="minwords" value="" size="4" class="formboxes" type="text">
+        <td><input name="minwords" id="minwords" value="" size="4" type="text">
           最多查询词:
-          <input name="maxwords" id="maxwords" value="" size="4" class="formboxes" type="text">
+          <input name="maxwords" id="maxwords" value="" size="4" type="text">
         </td>
       </tr>
       <tr>
-        <td class="tdheader" colspan="2"> Result format </td>
-      </tr>
-      <tr>
         <td> 查询结果 每页记录数: </td>
-        <td><input name="limit" id="limit" value="25" size="3" class="formboxes" type="text">
+        <td><input name="limit" id="limit" value="25" size="3" type="text">
           排序方式
           <select name="sort" id="sort">
-            <option value="r">相关性relevance</option>
-            <option value="d">日期date</option>
-            <option value="s">主题title</option>
-            <option value="u">关注guanzhu</option>
-            <option value="v">点击数clicks</option>
-            <option value="p">回复pinglun</option>
-            <option value="w">标签tags</option>
+            <option value="r">相关性 relevance</option>
+            <option value="d">日期 date</option>
+            <option value="s">主题 title</option>
+            <option value="u">关注 guanzhu</option>
+            <option value="v">点击数 clicks</option>
+            <option value="p">回复 pinglun</option>
+            <option value="w">标签 tags</option>
           </select>
           <select name="way" id="way">
             <option value="d">降序</option>
@@ -203,6 +195,10 @@ class FMXW_Sphinx extends SphinxClient
 </div>
 </body>
 </html>
+<script type="text/javascript">
+$(function() {
+});
+</script>
 <?php
 	}
 }
