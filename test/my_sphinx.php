@@ -1,7 +1,7 @@
 <?php
 header("Content-Type:text/html;charset=utf-8");
 
-require_once('./sphinxapi.php');
+require_once('../etc/sphinxapi.php');
 
 class FMXW_Sphinx extends SphinxClient
 {
