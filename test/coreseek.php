@@ -41,20 +41,20 @@ class FMXW_Sphinx extends SphinxClient
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
-	function get_categoris() {
+	function get_categories() {
 		$ary = array();
 		$sql = "select * from categories";
 		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array() {
+		while ($row = mysql_fetch_array($res)) {
 			array_push($ary, $row[1], $row[2]);
 		}
 		return $res;
 	}
-	function get_categoris() {
+	function get_items() {
 		$ary = array();
 		$sql = "select * from items";
 		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array() {
+		while ($row = mysql_fetch_array($res)) {
 			array_push($ary, $row[1], $row[2]);
 		}
 		return $ary;
@@ -113,7 +113,9 @@ class FMXW_Sphinx extends SphinxClient
 <body>
 <div class="container">
 <div class="hero-unit well-large">
-  <h3>Bootstrap 模板文件 - Ready for use</h3>
+  <form action="" method="POST">
+  <fieldset>
+  <legend>FMXW</legend>
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
@@ -190,8 +192,14 @@ class FMXW_Sphinx extends SphinxClient
             <option value="a">升序</option>
           </select></td>
       </tr>
+	  <tr>
+	  	<td colspan="2"><button class="btn btn-primary"><i class=""></i>Submit</td>
+	  </tr>
     </tbody>
   </table>
+  </fieldset>
+  </form>
+</div>
 </div>
 </body>
 </html>
