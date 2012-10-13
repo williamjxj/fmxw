@@ -137,11 +137,6 @@ class FMXW_Sphinx extends SphinxClient
           </select>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <hr>
-  <table>
-    <tbody>
       <tr>
         <td align="right"> 查询模式: </td>
         <td><select name="how" id="how" onChange="searchMethod()" ;="">
@@ -182,36 +177,29 @@ class FMXW_Sphinx extends SphinxClient
           <input name="maxwords" id="maxwords" value="" size="4" class="formboxes" type="text">
         </td>
       </tr>
+      <tr>
+        <td class="tdheader" colspan="2"> Result format </td>
+      </tr>
+      <tr>
+        <td> 查询结果 每页记录数: </td>
+        <td><input name="limit" id="limit" value="25" size="3" class="formboxes" type="text">
+          排序方式
+          <select name="sort" id="sort">
+            <option value="r">相关性relevance</option>
+            <option value="d">日期date</option>
+            <option value="s">主题title</option>
+            <option value="u">关注guanzhu</option>
+            <option value="v">点击数clicks</option>
+            <option value="p">回复pinglun</option>
+            <option value="w">标签tags</option>
+          </select>
+          <select name="way" id="way">
+            <option value="d">降序</option>
+            <option value="a">升序</option>
+          </select></td>
+      </tr>
     </tbody>
   </table>
-  </td>
-  </tr>
-  <tr>
-    <td class="tdheader"> Result format </td>
-  </tr>
-  <tr>
-    <td><table>
-        <tbody>
-          <tr>
-            <td align="right"> 查询结果 每页记录数: </td>
-            <td><input name="limit" id="limit" value="25" size="3" class="formboxes" type="text">
-              排序方式
-              <select name="sort" id="sort">
-                <option value="r">相关性relevance</option>
-                <option value="d">日期date</option>
-                <option value="s">主题title</option>
-                <option value="u">关注guanzhu</option>
-                <option value="v">点击数clicks</option>
-                <option value="p">回复pinglun</option>
-                <option value="w">标签tags</option>
-              </select>
-              <select name="way" id="way">
-                <option value="d">降序</option>
-                <option value="a">升序</option>
-              </select></td>
-          </tr>
-        </tbody>
-      </table>
 </div>
 </body>
 </html>
