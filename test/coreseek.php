@@ -112,94 +112,99 @@ class FMXW_Sphinx extends SphinxClient
 </head>
 <body>
 <div class="container">
-<div class="hero-unit well-large">
-  <form action="" method="POST">
-  <fieldset>
-  <legend>FMXW</legend>
-  <table class="table table-striped table-bordered table-hover">
-    <tbody>
-      <tr>
-        <td colspan="2" class="tdheader">查询选项：</td>
-      </tr>
-      <tr>
-        <td align="right">查询词:</td>
-        <td><input name="words" size="30" type="text" placeholder="钓鱼岛争端" />
-        </td>
-      </tr>
-      <tr>
-        <td align="right">归档:</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td align="right">栏目:</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td align="right"> 查询模式: </td>
-        <td><select name="how" id="how" onChange="searchMethod()" ;="">
-            <option value="all">全部单词all words</option>
-            <option value="any">每一个单词any words</option>
-            <option value="exact">准确词exact phrase</option>
-            <option value="boolean">boolean</option>
-          </select>
-          范围
-          <select name="where" id="where">
-            <option value="subject">标题</option>
-            <option value="subject">内容</option>
-            <option value="body" selected="selected">标题和内容</option>
-          </select></td>
-      </tr>
-      <tr>
-        <td align="right"> 时间早于: </td>
-        <td><input name="newerval" id="newerval" value="" size="2" type="text">
-          <select name="newertype" id="newertype" >
-            <option value="d">日</option>
-            <option value="w">周</option>
-            <option value="m">月</option>
-            <option value="y" selected="selected">年</option>
-          </select>
-          并且，时间晚于:
-          <input name="olderval" id="olderval" value="" size="2" type="text">
-          <select name="oldertype" id="oldertype" >
-            <option value="d">日</option>
-            <option value="w">周</option>
-            <option value="m">月</option>
-            <option value="y" selected="selected">年</option>
-          </select></td>
-      </tr>
-      <tr>
-        <td align="right">最少查询词:</td>
-        <td><input name="minwords" id="minwords" value="" size="4" type="text">
-          最多查询词:
-          <input name="maxwords" id="maxwords" value="" size="4" type="text">
-        </td>
-      </tr>
-      <tr>
-        <td> 查询结果 每页记录数: </td>
-        <td><input name="limit" id="limit" value="25" size="3" type="text">
-          排序方式
-          <select name="sort" id="sort">
-            <option value="r">相关性 relevance</option>
-            <option value="d">日期 date</option>
-            <option value="s">主题 title</option>
-            <option value="u">关注 guanzhu</option>
-            <option value="v">点击数 clicks</option>
-            <option value="p">回复 pinglun</option>
-            <option value="w">标签 tags</option>
-          </select>
-          <select name="way" id="way">
-            <option value="d">降序</option>
-            <option value="a">升序</option>
-          </select></td>
-      </tr>
-	  <tr>
-	  	<td colspan="2"><button class="btn btn-primary"><i class=""></i>Submit</td>
-	  </tr>
-    </tbody>
-  </table>
-  </fieldset>
-  </form>
-</div>
+  <div class="hero-unit well-large">
+    <form action="" method="POST">
+      <fieldset>
+      <legend>负面新闻高级查询表单</legend>
+      <table class="table table-striped table-bordered table-hover">
+        <tbody>
+          <tr>
+            <td colspan="2" >查询选项：</td>
+          </tr>
+          <tr>
+            <td align="right">
+            <label class="">
+            查询词:
+            <label>
+            </td>
+            <td><input name="words" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><label class="">归档:</label></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td align="right"><label class="">栏目:</label></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td align="right"><label class=""> 查询模式: </label></td>
+            <td><select name="how" id="how" onChange="searchMethod()" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+                <option value="all">全部单词all words</option>
+                <option value="any">每一个单词any words</option>
+                <option value="exact">准确词exact phrase</option>
+                <option value="boolean">boolean</option>
+              </select>
+              <label class=""> 范围</label>
+              <select name="where" id="where" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+                <option value="subject">标题</option>
+                <option value="subject">内容</option>
+                <option value="body" selected="selected">标题和内容</option>
+              </select></td>
+          </tr>
+          <tr>
+            <td align="right"><label class="">时间早于:</label>
+            </td>
+            <td><input name="newerval" id="newerval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+              <select name="newertype" id="newertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+                <option value="d">日</option>
+                <option value="w">周</option>
+                <option value="m">月</option>
+                <option value="y" selected="selected">年</option>
+              </select>
+              并且，时间晚于:
+              <input name="olderval" id="olderval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+              <select name="oldertype" id="oldertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+                <option value="d">日</option>
+                <option value="w">周</option>
+                <option value="m">月</option>
+                <option value="y" selected="selected">年</option>
+              </select></td>
+          </tr>
+          <tr>
+            <td align="right"><label class="">最少查询词:</label></td>
+            <td><input name="minwords" id="minwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+              <label class=""> 最多查询词:</label>
+              <input name="maxwords" id="maxwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            </td>
+          </tr>
+          <tr>
+            <td><label class=""> 查询结果 每页记录数: </label></td>
+            <td><input name="limit" id="limit" value="25" size="3" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+              排序方式
+              <select name="sort" id="sort" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+                <option value="r">相关性 relevance</option>
+                <option value="d">日期 date</option>
+                <option value="s">主题 title</option>
+                <option value="u">关注 guanzhu</option>
+                <option value="v">点击数 clicks</option>
+                <option value="p">回复 pinglun</option>
+                <option value="w">标签 tags</option>
+              </select>
+              <select name="way" id="way">
+                <option value="d">降序</option>
+                <option value="a">升序</option>
+              </select></td>
+          </tr>
+          <tr>
+            <td colspan="2"><button class="btn btn-primary" type="submit"> ><i class="icon-white icon-search">查询</button></td>
+          </tr>
+        </tbody>
+      </table>
+      </fieldset>
+    </form>
+  </div>
 </div>
 </body>
 </html>
