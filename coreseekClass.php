@@ -42,49 +42,63 @@ class FMXW_Sphinx extends SphinxClient
 	}
 	function get_categories() {
 		$ary = array();
-		$sql = "select * from categories";
+		$sql = "select cid, name from categories order by weight";
 		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array($res)) {
-			array_push($ary, $row[1], $row[2]);
-		}
-		return $res;
-	}
-	function get_items() {
-		$ary = array();
-		$sql = "select * from items";
-		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array($res)) {
-			array_push($ary, $row[1], $row[2]);
-		}
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row[0], $row[1]);
 		return $ary;
 	}
-	function set_sphinx() {
-	  return array(
-		'sphinx_host' => 'localhost',
-		'sphinx_port' => 9313, //this demo uses the SphinxAPI interface	
-		'mysql_host' => "localhost",
-		'mysql_username' => "fmxw",
-		'mysql_password' => "fmxw123456",
-		'mysql_database' => "fmxw",
-		'sphinx_index' => "mysql", 
-		#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
-		'body' => 'excerpt',
-		#the link for the title (only $id) placeholder supported
-		'link_format' => '/page.php?page_id=$id',
-	
-		#Change this to FALSE on a live site!
-		'debug' => TRUE,
-	
-		#How many results per page
-		'page_size' => 25,
-	
-		#maximum number of results - should match sphinxes max_matches. default 1000
-		'max_matches' => 1000,
-	  );
+	function get_items($cid) {
+		$ary = array();
+		$sql = "select iid, name from items where cid=$cid order by weight";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row[0], $row[1]);
+		return $ary;
 	}
-	function set_sphinx_server() 
+
+	function set_sphinx() {
+		$conf = array(
+			'coreseek' => array(
+				'host' => 'localhost',
+				'port' => 9313,
+				'index' => "contents", 
+			),
+			'sphinx' => array(
+				'host' => 'localhost',
+				'port' => 9312,
+				'index' => "contents increment_contents", 
+			)
+			'mysql' => array(
+				'host' => "localhost:3563",
+				'username' => "fmxw",
+				'password' => "fmxw123456",
+				'database' => "fmxw",
+			),
+			'page' => array(
+				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
+				'body' => 'excerpt',
+				#the link for the title (only $id) placeholder supported
+				'link_format' => '?page_id=$id',
+				#Change this to FALSE on a live site!
+				'debug' => TRUE,
+				#How many results per page
+				'page_size' => 25,
+				#maximum number of results - should match sphinxes max_matches. default 1000
+				'max_matches' => 1000,
+			)
+		);
+	}
+	// 参看:/etc/my.cnf
+	function mysql_connect_fmxw()
 	{
-		$this->SetServer($this->conf['sphinx_host'], $this->conf['sphinx_port']);
+		$db = mysql_pconnect($this->conf['mysql']['host'], $this->conf['mysql']['username'], $this->conf['mysql']['password']) or die(mysql_error());
+		mysql_select_db($this->conf['mysql']['database'], $db);
+		//设置字符集,  mysql_set_charset("utf8");
+		mysql_query("SET NAMES 'utf8'", $db);
+		return $db;
+	}
+	function set_coreseek_server()
+	{
+		$this->SetServer($this->conf['coreseek']['host'], $this->conf['coreseek']['port']);
 		
 		//$this->SetConnectTimeout ( 3 );
 		//$this->SetArrayResult ( true );
@@ -94,137 +108,101 @@ class FMXW_Sphinx extends SphinxClient
 		$mode = "extended2";
 		$this->SetMatchMode($mode);
 	}
-	
-	// 参看:/etc/my.cnf
-	function mysql_connect_fmxw()
+	function set_sphinx_server()
 	{
-		define("DBHOST", "localhost:3563");
-		define('DBUSER', 'fmxw');
-		define("DBPASS", "fmxw123456");
-		define('DBNAME', 'fmxw');
-		$db = mysql_pconnect("localhost:3563", DBUSER, DBPASS) or die(mysql_error());
-		mysql_select_db(DBNAME, $db);
-		//设置字符集,  mysql_set_charset("utf8");
-		mysql_query("SET NAMES 'utf8'", $db);
-		return $db;
+		$this->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
+		$this->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+		$this->SetMatchMode('extended2');
 	}
-    
-    function init()
-    {
+
+	function get_form()
+	{
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Bootstrap 模板文件</title>
-<link href="include/bootstrap/css/bootstrap.css" rel="stylesheet">
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="include/bootstrap/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container">
-  <div class="hero-unit well-large">
-    <h3 id="ad_search">负面新闻高级查询表单</h3>
-    <form action="" method="POST" id="ad_form">
-      <fieldset>
-      <legend>负面新闻高级查询表单</legend>
-      <table class="table table-striped table-bordered table-hover">
-        <tbody>
-          <tr>
-            <td colspan="2" >查询选项：</td>
-          </tr>
-          <tr>
-            <td align="right">
-            <label class="">
-            查询词:
-            <label>
-            </td>
-<<<<<<< HEAD
-            <td><input name="words" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
-=======
-            <td><input name="key" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
->>>>>>> 8aad20dcb3ad35cd21d71831d3d3725696cf6ac1
-            </td>
-          </tr>
-          <tr>
-            <td align="right"><label class="">归档:</label></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td align="right"><label class="">栏目:</label></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td align="right"><label class=""> 查询模式: </label></td>
-            <td><select name="how" id="how" onChange="searchMethod()" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-                <option value="all">全部单词all words</option>
-                <option value="any">每一个单词any words</option>
-                <option value="exact">准确词exact phrase</option>
-                <option value="boolean">boolean</option>
-              </select>
-              <label class=""> 范围</label>
-              <select name="where" id="where" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-                <option value="subject">标题</option>
-                <option value="subject">内容</option>
-                <option value="body" selected="selected">标题和内容</option>
-              </select></td>
-          </tr>
-          <tr>
-            <td align="right"><label class="">时间早于:</label>
-            </td>
-            <td><input name="newerval" id="newerval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-              <select name="newertype" id="newertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-                <option value="d">日</option>
-                <option value="w">周</option>
-                <option value="m">月</option>
-                <option value="y" selected="selected">年</option>
-              </select>
-              并且，时间晚于:
-              <input name="olderval" id="olderval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-              <select name="oldertype" id="oldertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-                <option value="d">日</option>
-                <option value="w">周</option>
-                <option value="m">月</option>
-                <option value="y" selected="selected">年</option>
-              </select></td>
-          </tr>
-          <tr>
-            <td align="right"><label class="">最少查询词:</label></td>
-            <td><input name="minwords" id="minwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-              <label class=""> 最多查询词:</label>
-              <input name="maxwords" id="maxwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            </td>
-          </tr>
-          <tr>
-            <td><label class=""> 查询结果 每页记录数: </label></td>
-            <td><input name="limit" id="limit" value="25" size="3" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-              排序方式
-              <select name="sort" id="sort" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-                <option value="r">相关性 relevance</option>
-                <option value="d">日期 date</option>
-                <option value="s">主题 title</option>
-                <option value="u">关注 guanzhu</option>
-                <option value="v">点击数 clicks</option>
-                <option value="p">回复 pinglun</option>
-                <option value="w">标签 tags</option>
-              </select>
-              <select name="way" id="way">
-                <option value="d">降序</option>
-                <option value="a">升序</option>
-              </select></td>
-          </tr>
-          <tr>
-            <td colspan="2"><button class="btn btn-primary" type="submit"> <i class="icon-white icon-search"></i>查询</button>
-              <button class="btn" type="rest"> 查询</button></td>
-          </tr>
-        </tbody>
-      </table>
-      </fieldset>
-    </form>
-  </div>
-</div>
-</body>
-</html>
+<form action="" method="POST" id="ad_form">
+  <fieldset>
+  <legend>负面新闻高级查询表单</legend>
+  <table class="table table-striped table-bordered table-hover">
+    <tbody>
+      <tr>
+        <th colspan="2" >查询选项：</th>
+      </tr>
+      <tr>
+        <td align="right"><label class="aaa">查询词:</label></td>
+        <td><input name="key" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+      </tr>
+      <tr>
+        <td align="right"><label class="">归档:</label></td>
+        <td><select name="category" id="category" onChange="" data-content="用户名栏不能为空。" data-original-title="用户名验证"></select></td>
+      </tr>
+      <tr>
+        <td align="right"><label class="">栏目:</label></td>
+        <td><select name="item" id="item" data-content="用户名栏不能为空。" data-original-title="用户名验证"></select></td>
+      </tr>
+      <tr>
+        <td align="right"><label class="">查询模式:</label></td>
+        <td><select name="how" id="how" onChange="searchMethod()" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            <option value="all">全部单词all words</option>
+            <option value="any">每一个单词any words</option>
+            <option value="exact">准确词exact phrase</option>
+            <option value="boolean">boolean</option>
+          </select>
+          <label class="">范围</label>
+          <select name="where" id="where" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            <option value="subject">标题</option>
+            <option value="content">内容</option>
+            <option value="sc" selected="selected">标题和内容</option>
+          </select></td>
+      </tr>
+      <tr>
+        <td align="right"><label class="">时间早于:</label></td>
+        <td><input name="newerval" id="newerval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+          <select name="newertype" id="newertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            <option value="d">日</option>
+            <option value="w">周</option>
+            <option value="m">月</option>
+            <option value="y" selected="selected">年</option>
+          </select>
+          并且，时间晚于:
+          <input name="olderval" id="olderval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+          <select name="oldertype" id="oldertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            <option value="d">日</option>
+            <option value="w">周</option>
+            <option value="m">月</option>
+            <option value="y" selected="selected">年</option>
+          </select></td>
+      </tr>
+      <tr>
+        <td align="right"><label class="">最少查询词:</label></td>
+        <td><input name="minwords" id="minwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+          <label class="">最多查询词:</label>
+          <input name="maxwords" id="maxwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证"></td>
+      </tr>
+      <tr>
+        <td><label class="">查询结果 每页记录数:</label></td>
+        <td><input name="limit" id="limit" value="25" size="3" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+          排序方式
+          <select name="sort" id="sort" data-content="用户名栏不能为空。" data-original-title="用户名验证">
+            <option value="r">相关性 relevance</option>
+            <option value="d">日期 date</option>
+            <option value="s">主题 title</option>
+            <option value="u">关注 guanzhu</option>
+            <option value="v">点击数 clicks</option>
+            <option value="p">回复 pinglun</option>
+            <option value="w">标签 tags</option>
+          </select>
+          <select name="way" id="way">
+            <option value="d">降序</option>
+            <option value="a">升序</option>
+          </select></td>
+      </tr>
+      <tr>
+        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查询</button>
+          <button class="btn" type="rest">查询</button></td>
+      </tr>
+    </tbody>
+  </table>
+  </fieldset>
+</form>
 <script type="text/javascript">
 $(function() {
 	$('input:text, select', '#ad_form').hover(function() {
@@ -240,11 +218,167 @@ $(function() {
 		$('#item').load('?cate_id=1&js_item=1');
 	});
 });
+</script>
+<?php    
+	}    
+    function init()
+    {
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>负面新闻高级查询表单</title>
+<link href="include/bootstrap/css/bootstrap.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="include/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="hero-unit well-large">
+    <h3 id="ad_search">负面新闻高级查询表单</h3>
+    <?php $this->get_form(); ?>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(function() {
+	$('#category').click(function() {
+		cate_id = $(this).attr('id');
+		$.getJSON("?js_item=1&cate_id="+cate_id, function(data) {
+			var items = [];
+			$.each(data, function(id, name) {
+				items.push('<option value="' + id + '">' + name + '</option>');
+			}
+			items.appendTo('#items');
+		});
+	});
+});
 $(window).load(function() {
-	// load category select list.
-	$('#cate').load('?cate=1');
+	$.getJSON('?js_category=1', function(data) {
+		console.log(data);
+		var cates = [];
+		$.each(data, function(key, val) {
+			cates.push('<option value="' + key + '">' + val + '</option>');
+		});
+		cates.appendTo('#category');
+	});
 });
 </script>
 <?php
 	}
+	
+	
+	function linktoself($params,$selflink= '') {
+		$a = array();
+		$b = explode('?',$_SERVER['REQUEST_URI']);
+		if (isset($b[1])) 
+			parse_str($b[1],$a);
+	
+		if (isset($params['value']) && isset($a[$params['name']])) {
+			if ($params['value'] == 'null') {
+				unset($a[$params['name']]);
+			} else {
+				$a[$params['name']] = $params['value'];
+			}
+	
+		} else {
+			foreach ($params as $key => $value)
+				$a[$key] = $value;
+		}
+	
+		if (!empty($params['delete'])) {
+			if (is_array($params['delete'])) {
+				foreach ($params['delete'] as $del) {
+					unset($a[$del]);
+				}
+			} else {
+				unset($a[$params['delete']]);
+			}
+			unset($a['delete']);
+		} 
+		if (empty($selflink)) {
+			$selflink = $_SERVER['SCRIPT_NAME'];
+		} 
+		if ($selflink == '/index.php') {
+			$selflink = '/';
+		}
+	
+		return htmlentities($selflink.(count($a)?("?".http_build_query($a,'','&')):''));
+	}
+	
+	
+	function pagesString($currentPage,$numberOfPages,$postfix = '',$extrahtml ='') {
+		static $r;
+		if (!empty($r))
+			return($r);
+	
+		if ($currentPage > 1) 
+			$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage-1))."$postfix\"$extrahtml>&lt; &lt; prev</a> ";
+		$start = max(1,$currentPage-5);
+		$endr = min($numberOfPages+1,$currentPage+8);
+	
+		if ($start > 1)
+			$r .= "<a href=\"".$this->linktoself(array('page'=>1))."$postfix\"$extrahtml>1</a> ... ";
+	
+		for($index = $start;$index<$endr;$index++) {
+			if ($index == $currentPage) 
+				$r .= "<b>$index</b> "; 
+			else
+				$r .= "<a href=\"".$this->linktoself(array('page'=>$index))."$postfix\"$extrahtml>$index</a> ";
+		}
+		if ($endr < $numberOfPages+1) 
+			$r .= "... ";
+	
+		if ($numberOfPages > $currentPage) 
+			$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage+1))."$postfix\"$extrahtml>next &gt;&gt;</a> ";
+	
+		return $r;
+	}
+
+	function pagination() {
+	
+            //Call Sphinxes BuildExcerpts function
+            if ($conf['page']['body'] == 'excerpt') {
+                $docs = array();
+                foreach ($ids as $c => $id) {
+                    $docs[$c] = strip_tags($rows[$id]['content']);
+                }
+                $reply = $cl->BuildExcerpts($docs, $conf['coreseek']['index'], $q);
+            }
+            
+            if ($numberOfPages > 1 && $currentPage > 1) {
+                print "<p class='pages'>".pagesString($currentPage,$numberOfPages)."</p>";
+            }
+            
+            //Actully display the Results
+            print "<ol class=\"results\" start=\"".($currentOffset+1)."\">";
+            foreach ($ids as $c => $id) {
+                $row = $rows[$id];
+                
+                $link = htmlentities(str_replace('$id',$row['id'],$conf['page']['link_format']));
+                print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
+                
+                if ($conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
+                    print ($reply[$c])."</li>";
+                else
+                    print htmlentities($row['content'])."</li>";
+            }
+            print "</ol>";
+            
+            if ($numberOfPages > 1) {
+                print "<p class='pages'>Page $currentPage of $numberOfPages. ";
+                printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$conf['page']['page_size'],$resultCount),$resultCount);
+                print pagesString($currentPage,$numberOfPages)."</p>";
+            }
+            
+            print "<pre class=\"results\">$query_info</pre>";
+
+	
+	
+	
+	
+	}	
 }
+?>

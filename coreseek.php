@@ -24,6 +24,12 @@ if (isset($_POST['key'])) {
 elseif(isset($_GET['test'])) {
 	$cl->__p('');
 }
+elseif(isset($_GET['js_category'])) {
+	echo json_encode($cl->get_categories());
+}
+elseif(isset($_GET['js_item'])) {
+	echo json_encode($cl->get_items($_GET['cate_id']));
+}
 else {
 	$cl->init();
 	exit;
@@ -37,8 +43,8 @@ $extended2 = array (
 	'屌丝 | 苍井空',
 	'屌丝 -苍井空',
 	'屌丝 !苍井空',
-	'@title 屌丝 @body 苍井空',
-	'@(title,body) 屌丝 @body 苍井空',
+	'@title 屌丝 @content 苍井空',
+	'@(title,content) 屌丝 @content 苍井空',
 	'屌丝 苍井空',
 	'@* 屌丝',
 	'屌丝 苍井空',
@@ -92,8 +98,15 @@ $query = "SELECT * from contents where cid in (".$ids.")";
 echo $query . "<br>\n";
 
 $res = mysql_query($query, $db);
-echo mysql_num_rows($res). "<br>\n";
 
+<<<<<<< HEAD
+=======
+if(mysql_num_rows($res)<=0) {
+	echo "<pre>没有找到相关结果: " . htmlentites($q) . "</pre>";
+	return;
+}
+
+>>>>>>> 7c6e427ce2bfbe5a727e18ebdabdb6d61f45b040
 echo '<table class="table table-striped table-bordered table-hover">';
 
 while ($row = mysql_fetch_array($res)) {
