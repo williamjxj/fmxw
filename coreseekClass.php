@@ -4,10 +4,11 @@ require_once(ROOT . 'etc/sphinxapi.php');
 
 class FMXW_Sphinx extends SphinxClient
 {
-	var $conf = array(), $now;
+	var $conf = array(), $db, $now;
 	function __construct() {
 		parent::SphinxClient();
 		$this->conf = $this->get_config();
+		$this->db = $this->mysql_connect_fmxw();
 	}
 
 	function get_mode($mode) {
@@ -44,14 +45,14 @@ class FMXW_Sphinx extends SphinxClient
 		$ary = array();
 		$sql = "select cid, name from categories order by weight";
 		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row[0], $row[1]);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
 		return $ary;
 	}
 	function get_items($cid) {
 		$ary = array();
 		$sql = "select iid, name from items where cid=$cid order by weight";
 		$res = mysql_query($sql);
-		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row[0], $row[1]);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
 		return $ary;
 	}
 
@@ -245,13 +246,14 @@ $(function() {
 <script type="text/javascript">
 $(function() {
 	$('#category').click(function() {
-		cate_id = $(this).attr('id');
+		cate_id = $(this).attr('value');
 		$.getJSON("?js_item=1&cate_id="+cate_id, function(data) {
 			var items = [];
+			console.log(data);
 			$.each(data, function(id, name) {
-				items.push('<option value="' + id + '">' + name + '</option>');
+				items.push('<option value="' + name[0] + '">' + name[1] + '</option>');
 			});
-			items.appendTo('#items');
+			$('#item').append(items);
 		});
 	});
 });
@@ -260,9 +262,9 @@ $(window).load(function() {
 		console.log(data);
 		var cates = [];
 		$.each(data, function(key, val) {
-			cates.push('<option value="' + key + '">' + val + '</option>');
+			cates.push('<option value="' + val[0] + '">' + val[1] + '</option>');
 		});
-		cates.appendTo('#category');
+		$('#category').append(cates);
 	});
 });
 </script>

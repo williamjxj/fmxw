@@ -95,12 +95,12 @@ $max_weight = 1000;
 // Max possible weight can be used to calculate absolute relevance for results.
 #$max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 
-$db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
+# $db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
 
 $query = "SELECT * from contents where cid in (".$ids.")";
 echo $query . "<br>\n";
 
-$res = mysql_query($query, $db);
+$res = mysql_query($query);
 
 if(mysql_num_rows($res)<=0) {
 	echo "<pre>没有找到相关结果: " . htmlentites($q) . "</pre>";
