@@ -10,16 +10,16 @@ require_once(ROOT . 'coreseekClass.php');
 try {
 	$cl = new FMXW_Sphinx();
 }
-catch(catch (Exception $e) {
+catch (Exception $e) {
     echo $e -> getMessage(), "line __LINE__.\n";
 }
-$cl->assign('config', $config);
+//$cl->assign('config', $config);
 
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']);
 //header("Content-Type: text/html; charset=utf-8");
 
-if (isset($_GET['key'])) {
-	$q = isset($_GET['key']) ? mysql_real_escape_string($_GET['key']) : "屌丝";
+if (isset($_POST['key'])) {
+	$q = isset($_POST['key']) ? mysql_real_escape_string($_POST['key']) : "屌丝";
 } 
 elseif(isset($_GET['test'])) {
 	$cl->__p('');

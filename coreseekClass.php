@@ -117,9 +117,9 @@ class FMXW_Sphinx extends SphinxClient
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Bootstrap 模板文件</title>
-<link href="../include/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="include/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="../include/bootstrap/js/bootstrap.min.js"></script>
+<script src="include/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -139,7 +139,11 @@ class FMXW_Sphinx extends SphinxClient
             查询词:
             <label>
             </td>
+<<<<<<< HEAD
             <td><input name="words" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+=======
+            <td><input name="key" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+>>>>>>> 8aad20dcb3ad35cd21d71831d3d3725696cf6ac1
             </td>
           </tr>
           <tr>
