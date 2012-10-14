@@ -69,7 +69,7 @@ else if ( $cl->GetLastWarning() ) {
 }
 
 // Do a query to get additional document info (you could use SphinxSE instead)
-$ids = join(",", array_keys($res['matches']);
+$ids = join(",", array_keys($res['matches']));
 
 echo "<pre>"; print_r($ids); echo "</pre>";
 
@@ -94,7 +94,7 @@ echo $query . "<br>\n";
 $res = mysql_query($query, $db);
 echo mysql_num_rows($res). "<br>\n";
 
-echo "<table>";
+echo '<table class="table table-striped table-bordered table-hover">';
 
 while ($row = mysql_fetch_array($res)) {
 	// Calculate relevance percentage
@@ -108,7 +108,6 @@ while ($row = mysql_fetch_array($res)) {
 	//echo "<pre>"; print_r($row); echo "</pre>";
 	echo "<tr>\n";
 	echo "<td>" . $row['title'] .  "</td>\n";
-	echo "<td>" . $row['content'] .  "</td>\n";
 	echo "</tr>\n";
 }
 echo "</table>";
