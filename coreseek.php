@@ -99,14 +99,11 @@ echo $query . "<br>\n";
 
 $res = mysql_query($query, $db);
 
-<<<<<<< HEAD
-=======
 if(mysql_num_rows($res)<=0) {
 	echo "<pre>没有找到相关结果: " . htmlentites($q) . "</pre>";
 	return;
 }
 
->>>>>>> 7c6e427ce2bfbe5a727e18ebdabdb6d61f45b040
 echo '<table class="table table-striped table-bordered table-hover">';
 
 while ($row = mysql_fetch_array($res)) {
