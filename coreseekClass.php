@@ -7,7 +7,7 @@ class FMXW_Sphinx extends SphinxClient
 	var $conf = array(), $now;
 	function __construct() {
 		parent::SphinxClient();
-		$this->conf = $this->set_sphinx();
+		$this->conf = $this->get_config();
 	}
 
 	function get_mode($mode) {
@@ -55,8 +55,8 @@ class FMXW_Sphinx extends SphinxClient
 		return $ary;
 	}
 
-	function set_sphinx() {
-		$conf = array(
+	function get_config() {
+		return $conf = array(
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
@@ -66,7 +66,7 @@ class FMXW_Sphinx extends SphinxClient
 				'host' => 'localhost',
 				'port' => 9312,
 				'index' => "contents increment_contents", 
-			)
+			),
 			'mysql' => array(
 				'host' => "localhost:3563",
 				'username' => "fmxw",
@@ -250,7 +250,7 @@ $(function() {
 			var items = [];
 			$.each(data, function(id, name) {
 				items.push('<option value="' + id + '">' + name + '</option>');
-			}
+			});
 			items.appendTo('#items');
 		});
 	});

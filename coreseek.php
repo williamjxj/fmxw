@@ -14,6 +14,8 @@ catch (Exception $e) {
     echo $e -> getMessage(), "line __LINE__.\n";
 }
 //$cl->assign('config', $config);
+$cl->set_coreseek_server();
+//$cl->set_sphinx_server();
 
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']);
 //header("Content-Type: text/html; charset=utf-8");
@@ -22,20 +24,21 @@ if (isset($_POST['key'])) {
 	$q = isset($_POST['key']) ? mysql_real_escape_string($_POST['key']) : "屌丝";
 } 
 elseif(isset($_GET['test'])) {
-	$cl->__p('');
+	echo "<pre>"; print_r($cl); echo "</pre>";
+	return;
 }
 elseif(isset($_GET['js_category'])) {
 	echo json_encode($cl->get_categories());
+	return;
 }
 elseif(isset($_GET['js_item'])) {
 	echo json_encode($cl->get_items($_GET['cate_id']));
+	return;
 }
 else {
 	$cl->init();
 	exit;
 }
-
-$cl->set_sphinx_server();
 
 
 //在扩展查询模式SPH_MATCH_EXTENDED2中可以使用如下特殊运算符：
@@ -55,7 +58,7 @@ $extended2 = array (
 
 //$cl->SetFilter( "is_dirty", array (1) );
 
-$cl->SetLimits(0,$cl->conf['page_size']); //current page and number of results
+$cl->SetLimits(0,$cl->conf['page']['page_size']); //current page and number of results
 
 // Some variables which are used throughout the script
 $now = time();
