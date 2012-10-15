@@ -4,7 +4,7 @@ cd $HOME/fmxw
 
 git add .
 
-git commit -a -m"update from server at `date`"
+git commit -a -m"update"
 
 git pull git@github.com:williamjxj/fmxw.git master
 
