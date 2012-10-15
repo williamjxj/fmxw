@@ -119,7 +119,7 @@ if(mysql_num_rows($res)<=0) {
 if(mysql_num_rows($res) > 0) {
 
 	$rows = array();
-	while($row = mysql_fetch_array($res)) {
+	while($row = mysql_fetch_assoc($res)) {
 		echo "<pre>"; print_r($row); echo "</pre>";
 		$rows[$row['cid']] = $row;
 	}
@@ -142,7 +142,7 @@ if(mysql_num_rows($res) > 0) {
 	foreach ($ids as $c => $id) {
 		$row = $rows[$id];
 		
-		$link = htmlentities(str_replace('$id',$row['id'],$cl->conf['page']['link_format']));
+		$link = htmlentities(str_replace('$id',$row['cid'],$cl->conf['page']['link_format']));
 		print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
 		
 		if ($cl->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))

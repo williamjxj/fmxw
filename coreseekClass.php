@@ -339,8 +339,5 @@ $(window).load(function() {
 		return $r;
 	}
 
-	function pagination($q, $res, $query_info)
-	{
-	}	
 }
 ?>
