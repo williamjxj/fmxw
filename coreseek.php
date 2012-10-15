@@ -20,7 +20,11 @@ $cl->set_coreseek_server();
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']);
 //header("Content-Type: text/html; charset=utf-8");
 
-if (isset($_POST['key'])) {
+if (isset($_POST['js_form'])) {
+	$q = mysql_real_escape_string($_POST['key']);
+	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
+}
+elseif (isset($_POST['key'])) {
 	$q = mysql_real_escape_string($_POST['key']);
 	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
 } 
@@ -60,7 +64,6 @@ $extended2 = array (
 	'屌丝 苍井空',
 );
 
-$cl->get_form();
 //empty()= !isset($var) || $var == false.
 if(empty($_GET['page'])) {
 	$currentPage = 1;
@@ -143,7 +146,7 @@ if(mysql_num_rows($res) > 0) {
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {
-		print "<p class='pages'>".$cl->pagesString($currentPage,$numberOfPages)."</p>";
+		print "<div class='pagination'>".$cl->pagesString($currentPage,$numberOfPages)."</div>";
 	}
 	
 	//Actully display the Results
@@ -162,9 +165,9 @@ if(mysql_num_rows($res) > 0) {
 	print "</ol>";
 	
 	if ($numberOfPages > 1) {
-		print "<p class='pages'>Page $currentPage of $numberOfPages. ";
+		print "<div class='pagination'>Page $currentPage of $numberOfPages. ";
 		printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$cl->conf['page']['page_size'],$resultCount),$resultCount);
-		print $cl->pagesString($currentPage,$numberOfPages)."</p>";
+		print $cl->pagesString($currentPage,$numberOfPages)."</div>";
 	}
 	
 	print "<pre class=\"results\">$query_info</pre>";

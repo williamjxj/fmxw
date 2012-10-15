@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8'); 
 
-$qqwry=new qqwry('fmxw/qqwry.dat');
+$qqwry=new qqwry('../etc/qqwry.dat');
 
 list($addr1,$addr2)=$qqwry->q('127.0.0.1');
 $addr1=iconv('GB2312','UTF-8',$addr1);

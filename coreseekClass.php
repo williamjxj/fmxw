@@ -119,7 +119,7 @@ class FMXW_Sphinx extends SphinxClient
 	function get_form()
 	{
 ?>
-<form action="" method="POST" id="ad_search">
+<form action="<?=$_SERVER['PHP_SELF'];?>" method="POST" id="search_form">
   <fieldset>
   <legend>负面新闻高级查询表单</legend>
   <table class="table table-striped table-bordered table-hover">
@@ -206,17 +206,33 @@ class FMXW_Sphinx extends SphinxClient
 </form>
 <script type="text/javascript">
 $(function() {
-	$('input:text, select', '#ad_search').hover(function() {
+	$('input:text, select', '#search_form').hover(function() {
 		$(this).popover('show');
 	});
 	$('#ad_search').click(function(){
-		var f = $('#ad_search');
+		var f = $('#search_form');
 		if($(f).is(':visible')) $(f).hide();
 		else $(f).animate().show();
 		return false;
 	});
-	$('#cate').live('change', function() {
-		$('#item').load('?cate_id=1&js_item=1');
+	$('#search_form').submit(function(e) {
+		var d = $('#div_list');
+		var f = $(this);
+		$.ajax({
+			url: f.attr('action'),
+			type: f.attr('method'),
+			data: f.serialize()+'&js_form=1',
+			cache: false,
+			beforeSend: function() {
+				$('<div></div>').addClass('ajaxloading').appendTo(d);
+				$('button:submit', f).attr('disabled', true);
+			},
+			success: function(data) {
+				d.html(data).fadeIn(100);
+				$('button:submit', f).attr('disabed', false);
+			}
+		});
+		return false;
 	});
 });
 </script>
@@ -240,6 +256,7 @@ $(function() {
     <h3 id="ad_search">负面新闻高级查询表单</h3>
     <?php $this->get_form(); ?>
   </div>
+  <div id="div_list"></div>
 </div>
 </body>
 </html>
@@ -255,6 +272,12 @@ $(function() {
 			});
 			$('#item').append(items);
 		});
+	});
+	$('a', 'div.pagination').live('click', function() {
+		var d = $('#div_list');
+		d.html($('<div></div>').addClass('ajaxloading'));
+		d.load($(this).attr('href')).fadeIn(200);
+		return false;
 	});
 });
 $(window).load(function() {
@@ -309,7 +332,6 @@ $(window).load(function() {
 	
 		return htmlentities($selflink.(count($a)?("?".http_build_query($a,'','&')):''));
 	}
-	
 	
 	function pagesString($currentPage,$numberOfPages,$postfix = '',$extrahtml ='') {
 		static $r;

@@ -37,7 +37,7 @@ else {
 ////////////////////////////////////////////
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="../include/bootstrap/css/bootstrap.css" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <div class="container">
   <div class="hero-unit">
