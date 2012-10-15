@@ -23,6 +23,7 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']
 if (isset($_POST['js_form'])) {
 	$q = mysql_real_escape_string($_POST['key']);
 	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
+	$h = $cl->get_parse();
 }
 elseif (isset($_POST['key'])) {
 	$q = mysql_real_escape_string($_POST['key']);
@@ -80,14 +81,11 @@ else {
 	}
 }
 
-//设置 返回的数据为数组结构
-// $c1->SetArrayResult(true);
-//$cl->SetFilter( "is_dirty", array (1) );
+//
+if($cl->h['limit'] > 100) $cl->h['limit'] = $cl->conf['page']['size'];
+if(empty($cl->h['limit'])) $cl->h['limit'] = 30;
 
-$cl->SetLimits($currentOffset,$cl->conf['page']['size']); //current page and number of results
-
-// Some variables which are used throughout the script
-$now = time();
+$cl->SetLimits($currentOffset,$cl->h['limit']); //current page and number of results
 
 // Do the search
 $res = $cl->Query($q, $cl->conf['coreseek']['index']);
@@ -173,30 +171,4 @@ if(mysql_num_rows($res) > 0) {
 	
 	print "<pre class=\"results\">$query_info</pre>";
 }
-
-/*
-echo '<table class="table table-striped table-bordered table-hover">';
-
-while ($row = mysql_fetch_array($res)) {
-	// Calculate relevance percentage
-	// $row['Percent'] = ceil($res['matches'][$row['B_Number']]['weight'] / $max_weight * 100);
-	//$matches[] = $row;
-	
-	// $res = $cl->buildExcerpts($row,"mysql",$q,$opts);
-	//echo "标题：".$row[1]."<br />";
-	//echo "内容：".$row[2]."<br />";
-	//echo "<hr>";
-	//echo "<pre>"; print_r($row); echo "</pre>";
-	echo "<tr>\n";
-	echo "<td>" . $row['title'] .  "</td>\n";
-	echo "</tr>\n";
-}
-echo "</table>";
-
-// Results are in the $matches array
-// echo nl2br(print_r($matches, true));
-
-//mysql_free_result($res);
-mysql_close();
-*/
 ?>
