@@ -21,7 +21,8 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']
 //header("Content-Type: text/html; charset=utf-8");
 
 if (isset($_POST['key'])) {
-	$q = isset($_POST['key']) ? mysql_real_escape_string($_POST['key']) : "屌丝";
+	$q = mysql_real_escape_string($_POST['key']);
+	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
 } 
 elseif(isset($_GET['page'])) {
 	echo "New Page: ".  $_GET['page'] . "<br>\n";
@@ -43,6 +44,9 @@ else {
 	exit;
 }
 
+if(empty($q)) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key'])?$_SESSION[PACKAGE][SEARCH]['key']:'';
+}
 
 //在扩展查询模式SPH_MATCH_EXTENDED2中可以使用如下特殊运算符：
 $extended2 = array (
@@ -102,7 +106,8 @@ if (! is_array($res["matches"])) {
 	return;
 }
 // Do a query to get additional document info (you could use SphinxSE instead)
-$ids = join(",", array_keys($res['matches']));
+$ids1 = array_keys($res['matches']);
+$ids = join(",", $ids1);
 
 # $db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
 
@@ -120,17 +125,21 @@ if(mysql_num_rows($res) > 0) {
 
 	$rows = array();
 	while($row = mysql_fetch_assoc($res)) {
-		echo "<pre>"; print_r($row); echo "</pre>";
+		// echo "<pre>"; print_r($row); echo "</pre>";
 		$rows[$row['cid']] = $row;
 	}
 	
 	//Call Sphinxes BuildExcerpts function
 	if ($cl->conf['page']['body'] == 'excerpt') {
 		$docs = array();
-		foreach ($ids as $c => $id) {
+		foreach ($ids1 as $c => $id) {
 			$docs[$c] = strip_tags($rows[$id]['content']);
 		}
 		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
+
+		//echo "<pre>"; print_r($ids1); echo "</pre>";
+		//echo "<pre>"; print_r($docs); echo "</pre>";
+		//echo "<pre>"; print_r($reply); echo "</pre>";
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {
@@ -139,16 +148,16 @@ if(mysql_num_rows($res) > 0) {
 	
 	//Actully display the Results
 	print "<ol class=\"results\" start=\"".($currentOffset+1)."\">";
-	foreach ($ids as $c => $id) {
+	foreach ($ids1 as $c => $id) {
 		$row = $rows[$id];
 		
 		$link = htmlentities(str_replace('$id',$row['cid'],$cl->conf['page']['link_format']));
-		print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
+		print "<li><a href=\"$link\">".($row['title'])."</a><br/>";
 		
 		if ($cl->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
 			print ($reply[$c])."</li>";
 		else
-			print htmlentities($row['content'])."</li>";
+			print $row['content']."</li>";
 	}
 	print "</ol>";
 	

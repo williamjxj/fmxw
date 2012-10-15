@@ -78,7 +78,7 @@ class FMXW_Sphinx extends SphinxClient
 				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
 				'body' => 'excerpt',
 				#the link for the title (only $id) placeholder supported
-				'link_format' => '?page_id=$id',
+				'link_format' => 'f3.php?cid=$id',
 				#Change this to FALSE on a live site!
 				'debug' => TRUE,
 				#How many results per page
