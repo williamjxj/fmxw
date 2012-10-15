@@ -120,6 +120,7 @@ if(mysql_num_rows($res) > 0) {
 
 	$rows = array();
 	while($row = mysql_fetch_array($res)) {
+		echo "<pre>"; print_r($row); echo "</pre>";
 		$rows[$row['cid']] = $row;
 	}
 	
