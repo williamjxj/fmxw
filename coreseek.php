@@ -23,6 +23,9 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'], $config['t2']
 if (isset($_POST['key'])) {
 	$q = isset($_POST['key']) ? mysql_real_escape_string($_POST['key']) : "屌丝";
 } 
+elseif(isset($_GET['page'])) {
+	echo "New Page: ".  $_GET['page'] . "<br>\n";
+}
 elseif(isset($_GET['test'])) {
 	echo "<pre>"; print_r($cl); echo "</pre>";
 	return;
@@ -116,7 +119,7 @@ if(mysql_num_rows($res)<=0) {
 if(mysql_num_rows($res) > 0) {
 
 	$rows = array();
-	while($row = mysql_fetch_array($res) {
+	while($row = mysql_fetch_array($res)) {
 		$rows[$row['cid']] = $row;
 	}
 	
