@@ -101,21 +101,6 @@ if (! is_array($res["matches"])) {
 // Do a query to get additional document info (you could use SphinxSE instead)
 $ids = join(",", array_keys($res['matches']));
 
-echo "<pre>"; print_r($ids); echo "</pre>";
-
-$opts = array(
-	#格式化摘要，高亮字体设置
-	#在匹配关键字之前插入的字符串，默认是<b>
-	"before_match" => "<span style='font-weight:bold;color:red'>",
-	#在匹配关键字之后插入的字符串，默认是</b>
-	"after_match" => "</span>"
-);
-
-$weights = 1;
-$max_weight = 1000;
-// Max possible weight can be used to calculate absolute relevance for results.
-#$max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
-
 # $db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
 
 $query = "SELECT * from contents where cid in (".$ids.")";
