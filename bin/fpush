@@ -4,7 +4,7 @@ cd $HOME/fmxw
 
 git add .
 
-git commit -a -m"update from server at `date`"
+git commit -a -m"update"
 
 # not work: git push origin master
 

@@ -339,48 +339,8 @@ $(window).load(function() {
 		return $r;
 	}
 
-	function pagination() {
-	
-            //Call Sphinxes BuildExcerpts function
-            if ($this->conf['page']['body'] == 'excerpt') {
-                $docs = array();
-                foreach ($ids as $c => $id) {
-                    $docs[$c] = strip_tags($rows[$id]['content']);
-                }
-                $reply = $cl->BuildExcerpts($docs, $this->conf['coreseek']['index'], $q);
-            }
-            
-            if ($numberOfPages > 1 && $currentPage > 1) {
-                print "<p class='pages'>".pagesString($currentPage,$numberOfPages)."</p>";
-            }
-            
-            //Actully display the Results
-            print "<ol class=\"results\" start=\"".($currentOffset+1)."\">";
-            foreach ($ids as $c => $id) {
-                $row = $rows[$id];
-                
-                $link = htmlentities(str_replace('$id',$row['id'],$this->conf['page']['link_format']));
-                print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
-                
-                if ($this->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
-                    print ($reply[$c])."</li>";
-                else
-                    print htmlentities($row['content'])."</li>";
-            }
-            print "</ol>";
-            
-            if ($numberOfPages > 1) {
-                print "<p class='pages'>Page $currentPage of $numberOfPages. ";
-                printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$this->conf['page']['page_size'],$resultCount),$resultCount);
-                print pagesString($currentPage,$numberOfPages)."</p>";
-            }
-            
-            print "<pre class=\"results\">$query_info</pre>";
-
-	
-	
-	
-	
+	function pagination($q, $res, $query_info)
+	{
 	}	
 }
 ?>

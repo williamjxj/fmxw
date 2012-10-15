@@ -63,10 +63,10 @@ else {
 	$currentPage = intval($_GET['page']);
 	if (empty($currentPage) || $currentPage < 1) {$currentPage = 1;}
 	
-	$currentOffset = ($currentPage -1)* $this->conf['page']['page_size'];
+	$currentOffset = ($currentPage -1)* $cl->conf['page']['page_size'];
 	
-	if ($currentOffset > ($this->conf['page']['max_matches']-$this->conf['page']['page_size']) ) {
-		die("Only the first {$this->conf['page']['max_matches']} results accessible");
+	if ($currentOffset > ($cl->conf['page']['max_matches']-$cl->conf['page']['page_size']) ) {
+		die("Only the first {$cl->conf['page']['max_matches']} results accessible");
 	}
 }
 
@@ -128,7 +128,49 @@ if(mysql_num_rows($res)<=0) {
 	return;
 }
 
-$cl->pagination();
+if(mysql_num_rows($res) > 0) {
+
+	$rows = array();
+	while($row = mysql_fetch_array($res) {
+		$rows[$row['cid']] = $row;
+	}
+	
+	//Call Sphinxes BuildExcerpts function
+	if ($cl->conf['page']['body'] == 'excerpt') {
+		$docs = array();
+		foreach ($ids as $c => $id) {
+			$docs[$c] = strip_tags($rows[$id]['content']);
+		}
+		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
+	}
+	
+	if ($numberOfPages > 1 && $currentPage > 1) {
+		print "<p class='pages'>".$cl->pagesString($currentPage,$numberOfPages)."</p>";
+	}
+	
+	//Actully display the Results
+	print "<ol class=\"results\" start=\"".($currentOffset+1)."\">";
+	foreach ($ids as $c => $id) {
+		$row = $rows[$id];
+		
+		$link = htmlentities(str_replace('$id',$row['id'],$cl->conf['page']['link_format']));
+		print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
+		
+		if ($cl->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
+			print ($reply[$c])."</li>";
+		else
+			print htmlentities($row['content'])."</li>";
+	}
+	print "</ol>";
+	
+	if ($numberOfPages > 1) {
+		print "<p class='pages'>Page $currentPage of $numberOfPages. ";
+		printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$cl->conf['page']['page_size'],$resultCount),$resultCount);
+		print $cl->pagesString($currentPage,$numberOfPages)."</p>";
+	}
+	
+	print "<pre class=\"results\">$query_info</pre>";
+}
 
 /*
 echo '<table class="table table-striped table-bordered table-hover">';
