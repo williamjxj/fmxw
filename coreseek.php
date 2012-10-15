@@ -53,30 +53,51 @@ $extended2 = array (
 	'屌丝 苍井空',
 );
 
+$cl->get_form();
+//empty()= !isset($var) || $var == false.
+if(empty($_GET['page'])) {
+	$currentPage = 1;
+	$currentOffset = 0;
+}
+else {
+	$currentPage = intval($_GET['page']);
+	if (empty($currentPage) || $currentPage < 1) {$currentPage = 1;}
+	
+	$currentOffset = ($currentPage -1)* $this->conf['page']['page_size'];
+	
+	if ($currentOffset > ($this->conf['page']['max_matches']-$this->conf['page']['page_size']) ) {
+		die("Only the first {$this->conf['page']['max_matches']} results accessible");
+	}
+}
+
 //设置 返回的数据为数组结构
 // $c1->SetArrayResult(true);
-
 //$cl->SetFilter( "is_dirty", array (1) );
 
-$cl->SetLimits(0,$cl->conf['page']['page_size']); //current page and number of results
+$cl->SetLimits($currentOffset,$cl->conf['page']['page_size']); //current page and number of results
 
 // Some variables which are used throughout the script
 $now = time();
 
-////////////////////////////////////
-
-$index = "contents";
-
 // Do the search
-$res = $cl->Query($q, $index);
+$res = $cl->Query($q, $cl->conf['coreseek']['index']);
 if ( $res === false ) {
 	echo "Query FAILED for $q: [at " . __FILE__ . ', ' . __LINE__. ']: ' . $cl->GetLastError() . "<br>\n";
-	exit;
+	return;
 }
 else if ( $cl->GetLastWarning() ) {
 	echo "WARNING for $q: [at " . __FILE__ . ', ' . __LINE__. ']: ' . $cl->GetLastWarning() . "<br>\n";
 }
 
+$query_info = "查询 【'".htmlentities($q)."'】 匹配结果为 ".count($res['matches'])." of 总共$res[total_found] matches in 时间$res[time] sec.\n";
+
+$resultCount = $res['total_found'];
+$numberOfPages = ceil($res['total']/$cl->conf['page']['page_size']);
+
+if (! is_array($res["matches"])) {
+	print "<pre class=\"results\">No Results for '".htmlentities($q)."'</pre>";
+	return;
+}
 // Do a query to get additional document info (you could use SphinxSE instead)
 $ids = join(",", array_keys($res['matches']));
 
@@ -107,6 +128,9 @@ if(mysql_num_rows($res)<=0) {
 	return;
 }
 
+$cl->pagination();
+
+/*
 echo '<table class="table table-striped table-bordered table-hover">';
 
 while ($row = mysql_fetch_array($res)) {
@@ -130,4 +154,5 @@ echo "</table>";
 
 //mysql_free_result($res);
 mysql_close();
+*/
 ?>

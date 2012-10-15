@@ -66,7 +66,7 @@ class FMXW_Sphinx extends SphinxClient
 			'sphinx' => array(
 				'host' => 'localhost',
 				'port' => 9312,
-				'index' => "contents increment_contents", 
+				'index' => "contents increment", 
 			),
 			'mysql' => array(
 				'host' => "localhost:3563",
@@ -119,7 +119,7 @@ class FMXW_Sphinx extends SphinxClient
 	function get_form()
 	{
 ?>
-<form action="" method="POST" id="ad_form">
+<form action="" method="POST" id="ad_search">
   <fieldset>
   <legend>负面新闻高级查询表单</legend>
   <table class="table table-striped table-bordered table-hover">
@@ -206,11 +206,11 @@ class FMXW_Sphinx extends SphinxClient
 </form>
 <script type="text/javascript">
 $(function() {
-	$('input:text, select', '#ad_form').hover(function() {
+	$('input:text, select', '#ad_search').hover(function() {
 		$(this).popover('show');
 	});
 	$('#ad_search').click(function(){
-		var f = $('#ad_form');
+		var f = $('#ad_search');
 		if($(f).is(':visible')) $(f).hide();
 		else $(f).animate().show();
 		return false;
@@ -342,12 +342,12 @@ $(window).load(function() {
 	function pagination() {
 	
             //Call Sphinxes BuildExcerpts function
-            if ($conf['page']['body'] == 'excerpt') {
+            if ($this->conf['page']['body'] == 'excerpt') {
                 $docs = array();
                 foreach ($ids as $c => $id) {
                     $docs[$c] = strip_tags($rows[$id]['content']);
                 }
-                $reply = $cl->BuildExcerpts($docs, $conf['coreseek']['index'], $q);
+                $reply = $cl->BuildExcerpts($docs, $this->conf['coreseek']['index'], $q);
             }
             
             if ($numberOfPages > 1 && $currentPage > 1) {
@@ -359,10 +359,10 @@ $(window).load(function() {
             foreach ($ids as $c => $id) {
                 $row = $rows[$id];
                 
-                $link = htmlentities(str_replace('$id',$row['id'],$conf['page']['link_format']));
+                $link = htmlentities(str_replace('$id',$row['id'],$this->conf['page']['link_format']));
                 print "<li><a href=\"$link\">".htmlentities($row['title'])."</a><br/>";
                 
-                if ($conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
+                if ($this->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
                     print ($reply[$c])."</li>";
                 else
                     print htmlentities($row['content'])."</li>";
@@ -371,7 +371,7 @@ $(window).load(function() {
             
             if ($numberOfPages > 1) {
                 print "<p class='pages'>Page $currentPage of $numberOfPages. ";
-                printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$conf['page']['page_size'],$resultCount),$resultCount);
+                printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$this->conf['page']['page_size'],$resultCount),$resultCount);
                 print pagesString($currentPage,$numberOfPages)."</p>";
             }
             
