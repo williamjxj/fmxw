@@ -145,17 +145,17 @@ class FMXW_Sphinx extends SphinxClient
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
-        <td align="right"><span class="alert">查询词:</span></td>
+        <td><span class="alert">查询词:</span></td>
         <td><input name="key" size="30" type="text" placeholder="比如：钓鱼岛争端 苍井空"  class="input-xlarge" data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" /></td>
       </tr>
       <tr>
         <td colspan="2"><table class="table">
             <tr>
-              <td align="right"><span class="">类别:</span></td>
+              <td><span class="">类别:</span></td>
               <td><select name="category" id="category" data-content="可选项：要查询哪个类别？" data-original-title="查询类别Category">
                   <option value="">--- 请选择 ---</option>
                 </select></td>
-              <td align="right"><span class="">栏目:</span></td>
+              <td><span class="">栏目:</span></td>
               <td><select name="item" id="item" data-content="可选项：要查询哪个栏目类别？" data-original-title="查询栏目Item">
                   <option value="">--- 请选择 ---</option>
                 </select></td>
@@ -165,7 +165,7 @@ class FMXW_Sphinx extends SphinxClient
       <tr>
         <td colspan="2"><table class="table">
             <tr>
-              <td align="right"><span class="">查询模式:</span></td>
+              <td><span class="">查询模式:</span></td>
               <td><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：。" data-original-title="查询模式">
                   <option value="all" selected="selected">匹配全部单词all words</option>
                   <option value="any">匹配任何一个单词any words</option>
@@ -184,7 +184,7 @@ class FMXW_Sphinx extends SphinxClient
       <tr>
         <td colspan="2"><table class="table">
             <tr>
-              <td align="right"><span class="">查询的起始时间</span></td>
+              <td><span class="">查询的起始时间</span></td>
               <td><input name="newerval" id="newerval" size="2" type="text" class="input-xlarge" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
                 <select name="newertype" id="newertype" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
                   <option value="d" selected="selected">天</option>
@@ -206,7 +206,7 @@ class FMXW_Sphinx extends SphinxClient
       <tr>
         <td colspan="2"><table class="table">
             <tr>
-              <td align="right"><span class="">最少查询词:</span></td>
+              <td><span class="">最少查询词:</span></td>
               <td><input name="minwords" id="minwords" size="4" type="text" class="input-xlarge" data-content="可选项：最少查询词。" data-original-title="最少查询词"></td>
               <td><span class="">最多查询词:</span></td>
               <td><input name="maxwords" id="maxwords" size="4" type="text" class="input-xlarge" data-content="可选项：最多查询词。" data-original-title="最多查询词"></td>
