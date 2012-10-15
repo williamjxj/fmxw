@@ -37,7 +37,25 @@ class FMXW_Sphinx extends SphinxClient
 		}
 		return $mode;
 	}
-		
+
+	function get_parse() {
+		$where      = $_POST['where'];      // 'subject' or 'body'
+		$tosearch   = $_POST['tosearch'];   // 'both' or 'main'
+		$how        = $_POST['how'];        // 'all', 'any', 'exact' or 'boolean'
+		$words      = $_POST['words'];      // search terms
+		$namebox    = $_POST['namebox'];    // search name
+		$newerval   = $_POST['newerval'];   // newer text
+		$newertype  = $_POST['newertype'];  // d(ay), w(eek), m(onth) or y(ear)
+		$olderval   = $_POST['olderval'];   // older text
+		$oldertype  = $_POST['oldertype'];  // d(ay), w(eek), m(onth) or y(ear)
+		$limit      = $_POST['limit'];      // # of results
+		$sort       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
+		$way        = $_POST['way'];        // (a)sc or (d)esc
+		$page       = $_POST['page'];       // page of results
+		$showmain   = $_POST['showmain'];   // show only one result per thread
+		$forum      = $_POST['forum'];      // which forum to search
+	}
+			
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
@@ -61,12 +79,14 @@ class FMXW_Sphinx extends SphinxClient
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
-				'index' => "contents", 
+				'index' => "contents",
+				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'sphinx' => array(
 				'host' => 'localhost',
 				'port' => 9312,
 				'index' => "contents increment", 
+				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'mysql' => array(
 				'host' => "localhost:3563",
@@ -76,13 +96,13 @@ class FMXW_Sphinx extends SphinxClient
 			),
 			'page' => array(
 				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
-				'body' => 'excerpt',
+				'content' => 'excerpt',
 				#the link for the title (only $id) placeholder supported
 				'link_format' => 'f3.php?cid=$id',
 				#Change this to FALSE on a live site!
 				'debug' => TRUE,
 				#How many results per page
-				'page_size' => 25,
+				'size' => 25,
 				#maximum number of results - should match sphinxes max_matches. default 1000
 				'max_matches' => 1000,
 			)
@@ -125,80 +145,98 @@ class FMXW_Sphinx extends SphinxClient
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
-        <th colspan="2" >查询选项：</th>
+        <td align="right"><span class="alert">查询词:</span></td>
+        <td><input name="key" size="30" type="text" placeholder="比如：钓鱼岛争端 苍井空"  class="input-xlarge" data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" /></td>
       </tr>
       <tr>
-        <td align="right"><label class="aaa">查询词:</label></td>
-        <td><input name="key" size="30" type="text" placeholder="钓鱼岛争端"  class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证" />
+        <td colspan="2"><table class="table">
+            <tr>
+              <td align="right"><span class="">类别:</span></td>
+              <td><select name="category" id="category" data-content="可选项：要查询哪个类别？" data-original-title="查询类别Category">
+                  <option value="">--- 请选择 ---</option>
+                </select></td>
+              <td align="right"><span class="">栏目:</span></td>
+              <td><select name="item" id="item" data-content="可选项：要查询哪个栏目类别？" data-original-title="查询栏目Item">
+                  <option value="">--- 请选择 ---</option>
+                </select></td>
+            </tr>
+          </table></td>
       </tr>
       <tr>
-        <td align="right"><label class="">归档:</label></td>
-        <td><select name="category" id="category" onChange="" data-content="用户名栏不能为空。" data-original-title="用户名验证"></select></td>
+        <td colspan="2"><table class="table">
+            <tr>
+              <td align="right"><span class="">查询模式:</span></td>
+              <td><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：。" data-original-title="查询模式">
+                  <option value="all" selected="selected">匹配全部单词all words</option>
+                  <option value="any">匹配任何一个单词any words</option>
+                  <option value="exact">准确匹配exact phrase</option>
+                  <option value="boolean">布尔boolean</option>
+                </select></td>
+              <td><span class="">查询范围</span></td>
+              <td><select name="where" id="where" data-content="可选项：请选择查询范围，缺省：标题和内容。" data-original-title="查询范围">
+                  <option value="sc" selected="selected">标题和内容</option>
+                  <option value="subject">标题</option>
+                  <option value="content">内容</option>
+                </select></td>
+            </tr>
+          </table></td>
       </tr>
       <tr>
-        <td align="right"><label class="">栏目:</label></td>
-        <td><select name="item" id="item" data-content="用户名栏不能为空。" data-original-title="用户名验证"></select></td>
+        <td colspan="2"><table class="table">
+            <tr>
+              <td align="right"><span class="">查询的起始时间</span></td>
+              <td><input name="newerval" id="newerval" size="2" type="text" class="input-xlarge" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
+                <select name="newertype" id="newertype" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
+                  <option value="d" selected="selected">天</option>
+                  <option value="w">周</option>
+                  <option value="m">月</option>
+                  <option value="y">年</option>
+                </select></td>
+              <td>查询的终止时间</td>
+              <td><input name="olderval" id="olderval" size="2" type="text" class="input-xlarge" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间。">
+                <select name="oldertype" id="oldertype" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间">
+                  <option value="d" selected="selected">天</option>
+                  <option value="w">周</option>
+                  <option value="m">月</option>
+                  <option value="y">年</option>
+                </select></td>
+            </tr>
+          </table></td>
       </tr>
       <tr>
-        <td align="right"><label class="">查询模式:</label></td>
-        <td><select name="how" id="how" onChange="searchMethod()" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            <option value="all">全部单词all words</option>
-            <option value="any">每一个单词any words</option>
-            <option value="exact">准确词exact phrase</option>
-            <option value="boolean">boolean</option>
-          </select>
-          <label class="">范围</label>
-          <select name="where" id="where" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            <option value="subject">标题</option>
-            <option value="content">内容</option>
-            <option value="sc" selected="selected">标题和内容</option>
-          </select></td>
-      </tr>
+        <td colspan="2"><table class="table">
+            <tr>
+              <td align="right"><span class="">最少查询词:</span></td>
+              <td><input name="minwords" id="minwords" size="4" type="text" class="input-xlarge" data-content="可选项：最少查询词。" data-original-title="最少查询词"></td>
+              <td><span class="">最多查询词:</span></td>
+              <td><input name="maxwords" id="maxwords" size="4" type="text" class="input-xlarge" data-content="可选项：最多查询词。" data-original-title="最多查询词"></td>
+            </tr>
+          </table></td>
       <tr>
-        <td align="right"><label class="">时间早于:</label></td>
-        <td><input name="newerval" id="newerval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-          <select name="newertype" id="newertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            <option value="d">日</option>
-            <option value="w">周</option>
-            <option value="m">月</option>
-            <option value="y" selected="selected">年</option>
-          </select>
-          并且，时间晚于:
-          <input name="olderval" id="olderval" value="" size="2" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-          <select name="oldertype" id="oldertype" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            <option value="d">日</option>
-            <option value="w">周</option>
-            <option value="m">月</option>
-            <option value="y" selected="selected">年</option>
-          </select></td>
-      </tr>
+        <td colspan="2"><table class="table">
+            <tr>
+              <td><span class="">每页记录数:</span></td>
+              <td><input name="limit" id="limit" value="25" size="3" type="text" class="input-xlarge" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数"></td>
+              <td><span class="">排序方式:</span></td>
+              <td><select name="sort" id="sort" data-content="查询结排序方式果。" data-original-title="查询结排序方式果">
+                  <option value="r">相关性 relevance</option>
+                  <option value="d">日期 date</option>
+                  <option value="s">主题 title</option>
+                  <option value="u">关注 guanzhu</option>
+                  <option value="v">点击数 clicks</option>
+                  <option value="p">回复 pinglun</option>
+                  <option value="w">标签 tags</option>
+                </select></td>
+              <td>排序</td>
+              <td><select name="way" id="way">
+                  <option value="d">降序</option>
+                  <option value="a">升序</option>
+                </select></td>
+            </tr>
+          </table></td>
       <tr>
-        <td align="right"><label class="">最少查询词:</label></td>
-        <td><input name="minwords" id="minwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-          <label class="">最多查询词:</label>
-          <input name="maxwords" id="maxwords" value="" size="4" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证"></td>
-      </tr>
-      <tr>
-        <td><label class="">查询结果 每页记录数:</label></td>
-        <td><input name="limit" id="limit" value="25" size="3" type="text" class="input-xlarge" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-          排序方式
-          <select name="sort" id="sort" data-content="用户名栏不能为空。" data-original-title="用户名验证">
-            <option value="r">相关性 relevance</option>
-            <option value="d">日期 date</option>
-            <option value="s">主题 title</option>
-            <option value="u">关注 guanzhu</option>
-            <option value="v">点击数 clicks</option>
-            <option value="p">回复 pinglun</option>
-            <option value="w">标签 tags</option>
-          </select>
-          <select name="way" id="way">
-            <option value="d">降序</option>
-            <option value="a">升序</option>
-          </select></td>
-      </tr>
-      <tr>
-        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查询</button>
-          <button class="btn" type="rest">查询</button></td>
+        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查 询 ！</button>
+          <button class="btn" type="rest">重 置</button></td>
       </tr>
     </tbody>
   </table>
@@ -262,7 +300,7 @@ $(function() {
 </html>
 <script type="text/javascript">
 $(function() {
-	$('#category').click(function() {
+	$('#category').change(function() {
 		cate_id = $(this).attr('value');
 		$.getJSON("?js_item=1&cate_id="+cate_id, function(data) {
 			var items = [];

@@ -73,9 +73,9 @@ else {
 	$currentPage = intval($_GET['page']);
 	if (empty($currentPage) || $currentPage < 1) {$currentPage = 1;}
 	
-	$currentOffset = ($currentPage -1)* $cl->conf['page']['page_size'];
+	$currentOffset = ($currentPage -1)* $cl->conf['page']['size'];
 	
-	if ($currentOffset > ($cl->conf['page']['max_matches']-$cl->conf['page']['page_size']) ) {
+	if ($currentOffset > ($cl->conf['page']['max_matches']-$cl->conf['page']['size']) ) {
 		die("Only the first {$cl->conf['page']['max_matches']} results accessible");
 	}
 }
@@ -84,7 +84,7 @@ else {
 // $c1->SetArrayResult(true);
 //$cl->SetFilter( "is_dirty", array (1) );
 
-$cl->SetLimits($currentOffset,$cl->conf['page']['page_size']); //current page and number of results
+$cl->SetLimits($currentOffset,$cl->conf['page']['size']); //current page and number of results
 
 // Some variables which are used throughout the script
 $now = time();
@@ -102,7 +102,7 @@ else if ( $cl->GetLastWarning() ) {
 $query_info = "查询 【'".htmlentities($q)."'】 匹配结果为 ".count($res['matches'])." of 总共$res[total_found] matches in 时间$res[time] sec.\n";
 
 $resultCount = $res['total_found'];
-$numberOfPages = ceil($res['total']/$cl->conf['page']['page_size']);
+$numberOfPages = ceil($res['total']/$cl->conf['page']['size']);
 
 if (! is_array($res["matches"])) {
 	print "<pre class=\"results\">No Results for '".htmlentities($q)."'</pre>";
@@ -114,6 +114,7 @@ $ids = join(",", $ids1);
 
 # $db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
 
+$query = $cl->conf['coreseek']['query'];
 $query = "SELECT * from contents where cid in (".$ids.")";
 echo $query . "<br>\n";
 
@@ -133,7 +134,7 @@ if(mysql_num_rows($res) > 0) {
 	}
 	
 	//Call Sphinxes BuildExcerpts function
-	if ($cl->conf['page']['body'] == 'excerpt') {
+	if ($cl->conf['page']['content'] == 'excerpt') {
 		$docs = array();
 		foreach ($ids1 as $c => $id) {
 			$docs[$c] = strip_tags($rows[$id]['content']);
@@ -157,7 +158,7 @@ if(mysql_num_rows($res) > 0) {
 		$link = htmlentities(str_replace('$id',$row['cid'],$cl->conf['page']['link_format']));
 		print "<li><a href=\"$link\">".($row['title'])."</a><br/>";
 		
-		if ($cl->conf['page']['body'] == 'excerpt' && !empty($reply[$c]))
+		if ($cl->conf['page']['content'] == 'excerpt' && !empty($reply[$c]))
 			print ($reply[$c])."</li>";
 		else
 			print $row['content']."</li>";
@@ -166,7 +167,7 @@ if(mysql_num_rows($res) > 0) {
 	
 	if ($numberOfPages > 1) {
 		print "<div class='pagination'>Page $currentPage of $numberOfPages. ";
-		printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$cl->conf['page']['page_size'],$resultCount),$resultCount);
+		printf("Result %d..%d of %d. ",($currentOffset)+1,min(($currentOffset)+$cl->conf['page']['size'],$resultCount),$resultCount);
 		print $cl->pagesString($currentPage,$numberOfPages)."</div>";
 	}
 	
