@@ -24,6 +24,7 @@ if (isset($_POST['js_form'])) {
 	$q = mysql_real_escape_string($_POST['key']);
 	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
 	$h = $cl->get_parse();
+	$cl->set_filter();
 }
 elseif (isset($_POST['key'])) {
 	$q = mysql_real_escape_string($_POST['key']);
@@ -97,20 +98,26 @@ else if ( $cl->GetLastWarning() ) {
 	echo "WARNING for $q: [at " . __FILE__ . ', ' . __LINE__. ']: ' . $cl->GetLastWarning() . "<br>\n";
 }
 
-$query_info = "查询 【'".htmlentities($q)."'】 匹配结果为 ".count($res['matches'])." of 总共$res[total_found] matches in 时间$res[time] sec.\n";
+if (! is_array($res["matches"])) {
+	print "<pre class=\"results\">查询 【'".$q."'】 没有发现匹配结果。</pre>";
+	return;
+}
+
+$query_info = "查询 【'".$q."'】 匹配结果为 ".count($res['matches'])." of 总共$res[total_found] matches in 时间$res[time] sec.\n";
 
 $resultCount = $res['total_found'];
 $numberOfPages = ceil($res['total']/$cl->conf['page']['size']);
 
-if (! is_array($res["matches"])) {
-	print "<pre class=\"results\">No Results for '".htmlentities($q)."'</pre>";
-	return;
-}
+
 // Do a query to get additional document info (you could use SphinxSE instead)
 $ids1 = array_keys($res['matches']);
 $ids = join(",", $ids1);
+//echo "<pre>"; print_r($res); echo "</pre>";
+$sphinx_res = $res['matches'];
+//echo "<pre>"; print_r($sphinx_res); echo "</pre>";
+$max_weight = (array_sum($cl->h['weights']) * count($res['words']) + 1) * 1000;
 
-# $db = $cl->mysql_connect_fmxw() or die("CAN'T connect");
+echo 'max-weight is' . $max_weight . "<br>\n";
 
 $query = $cl->conf['coreseek']['query'];
 $query = "SELECT * from contents where cid in (".$ids.")";
@@ -123,12 +130,15 @@ if(mysql_num_rows($res)<=0) {
 	return;
 }
 
+//echo "<pre>"; print_r($cl->h); echo "</pre>";
 if(mysql_num_rows($res) > 0) {
 
 	$rows = array();
 	while($row = mysql_fetch_assoc($res)) {
-		// echo "<pre>"; print_r($row); echo "</pre>";
+		$row['relevance'] = ceil($sphinx_res[$row['cid']]['weight'] / $max_weight * 100); // Calculate relevance percentage
 		$rows[$row['cid']] = $row;
+		// echo "<pre>"; print_r($row); echo "</pre>";
+		// echo "<pre>"; print_r($sphinx_res); echo "</pre>";
 	}
 	
 	//Call Sphinxes BuildExcerpts function
@@ -154,7 +164,7 @@ if(mysql_num_rows($res) > 0) {
 		$row = $rows[$id];
 		
 		$link = htmlentities(str_replace('$id',$row['cid'],$cl->conf['page']['link_format']));
-		print "<li><a href=\"$link\">".($row['title'])."</a><br/>";
+		print "<li><a href=\"$link\">".($row['title'])."</a>&nbsp;&nbsp;(" . $row['relevance'] .")<br/>";
 		
 		if ($cl->conf['page']['content'] == 'excerpt' && !empty($reply[$c]))
 			print ($reply[$c])."</li>";
