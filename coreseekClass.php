@@ -21,8 +21,8 @@ class FMXW_Sphinx extends SphinxClient
         $h = array();
         $q = mysql_real_escape_string($_POST['key']);
         $_SESSION[PACKAGE][SEARCH]['key'] = $h['key'] = $q;
-        $h['cate_id']   = intval($_POST['category']);
-        $h['item_id']   = intval($_POST['item']);
+        $h['cate_id']   = $_POST['category'] ? intval($_POST['category']) : 0;
+        $h['item_id']   = $_POST['item'] ? intval($_POST['item']) : 0;
         $h['how']        = $_POST['how'];        // 'all', 'any', 'exact' or 'boolean'
         $h['where']      = $_POST['where'];      // 'subject' or 'body'
         $h['newerval']   = intval($_POST['newerval']);   // newer text
@@ -32,15 +32,16 @@ class FMXW_Sphinx extends SphinxClient
         $h['limit']      = intval($_POST['limit']);      // # of results
         $h['sort']       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
         $h['way']        = $_POST['way'];        // (a)sc or (d)esc
-        $this->$h = $h;
+        $this->h = $h;
         return $h;
     }
 	
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
-	function get_sort() {
-		return array('d' => 'DESC', 'a' => 'ASC');
+	function get_sort($sort) {
+		$ary = array('d' => 'DESC', 'a' => 'ASC');
+		return $ary[$sort];
 	}
 	
     function get_matchmode($mode) {
@@ -120,15 +121,17 @@ class FMXW_Sphinx extends SphinxClient
         $this->get_matchmode($h['how']);
 		
 		// Search by subject only, or both body and subject?
-		$weights = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
+		$h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
 		//????????
-		$sphinxq = "@(".join(',', array_keys($weights)).") $sphinxq";
-		$this->SetFieldWeights($weights);
+		$h['key'] = "@(".join(',', array_keys($h['weights'])).") " . $h['key'];
+		$this->SetFieldWeights($h['weights']);
 
 		//排序模式
 		$sortfields  = array('r' => '@weight', 'd' => 'pubdate', 's' => 'title', 'u' => 'guanzhu', 'v' => 'clicks', 'p'=>'pinglun', 'w'=>'tags');
 		$sphway = "{$sortfields[$h['sort']]} {$this->get_sort($h['way'])}, @id {$this->get_sort($h['way'])}";
-		$this->SetSortMode(SPH_SORT_EXTEBDED, $sphway);
+
+		echo "<pre>"; print_r($sphway); echo "</pre>";
+		$this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
 		
 		//SetRankingMode （设置评分模式）
 		//SPH_RANK_PROXIMITY_BM25: 默认模式，同时使用词组评分和BM25评分，并且将二者结合。
@@ -136,7 +139,7 @@ class FMXW_Sphinx extends SphinxClient
 		$this->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
 		
 		//结果分组（聚类）
-		
+		$this->h = $h;
 	}
 
 	function get_categories() {
@@ -220,137 +223,100 @@ class FMXW_Sphinx extends SphinxClient
 	{
 ?>
 <form action="<?=$_SERVER['PHP_SELF']; ?>" method="POST" id="search_form">
-	<fieldset>
-		<legend>
-			负面新闻高级查询表单
-		</legend>
-		<table class="table table-striped table-bordered table-hover">
-			<tbody>
-				<tr>
-					<td><span class="alert">查询词:</span></td>
-					<td>
-					<input name="key" size="30" type="text" placeholder="比如：钓鱼岛争端 苍井空"  class="input-xlarge" data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<table class="table">
-						<tr>
-							<td><span class="">类别:</span></td>
-							<td>
-							<select name="category" id="category" data-content="可选项：要查询哪个类别？" data-original-title="查询类别Category">
-								<option value="">--- 请选择 ---</option>
-							</select></td>
-							<td><span class="">栏目:</span></td>
-							<td>
-							<select name="item" id="item" data-content="可选项：要查询哪个栏目类别？" data-original-title="查询栏目Item">
-								<option value="">--- 请选择 ---</option>
-							</select></td>
-						</tr>
-					</table></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<table class="table">
-						<tr>
-							<td><span class="">查询模式:</span></td>
-							<td>
-							<select name="how" id="how" data-content="可选项：请选择查询模式，缺省：扩展模式2。" data-original-title="查询模式">
-								<option value="ext2" selected="selected">扩展模式2</option>
-								<option value="ext">扩展模式</option>
-								<option value="all">匹配全部单词all words</option>
-								<option value="any">匹配任何一个单词any words</option>
-								<option value="exact">准确匹配exact phrase</option>
-								<option value="bool">布尔boolean</option>
-							</select></td>
-							<td><span class="">查询范围</span></td>
-							<td>
-							<select name="where" id="where" data-content="可选项：请选择查询范围，缺省：标题和内容。" data-original-title="查询范围">
-								<option value="sc" selected="selected">标题和内容</option>
-								<option value="subject">标题</option>
-								<option value="content">内容</option>
-							</select></td>
-						</tr>
-					</table></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<table class="table">
-						<tr>
-							<td><span class="">查询的起始时间</span></td>
-							<td>
-							<input name="newerval" id="newerval" size="2" type="text" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
-							<select name="newertype" id="newertype" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
-								<option value="d" selected="selected">天</option>
-								<option value="w">周</option>
-								<option value="m">月</option>
-								<option value="y">年</option>
-							</select></td>
-							<td>查询的终止时间</td>
-							<td>
-							<input name="olderval" id="olderval" size="2" type="text" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间。">
-							<select name="oldertype" id="oldertype" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间">
-								<option value="d" selected="selected">天</option>
-								<option value="w">周</option>
-								<option value="m">月</option>
-								<option value="y">年</option>
-							</select></td>
-						</tr>
-					</table></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<table class="table">
-						<tr>
-							<td><span class="">最少查询词:</span></td>
-							<td>
-							<input name="minwords" id="minwords" size="4" type="text" data-content="可选项：最少查询词。" data-original-title="最少查询词">
-							</td>
-							<td><span class="">最多查询词:</span></td>
-							<td>
-							<input name="maxwords" id="maxwords" size="4" type="text" data-content="可选项：最多查询词。" data-original-title="最多查询词">
-							</td>
-						</tr>
-					</table></td>
-				<tr>
-					<td colspan="2">
-					<table class="table">
-						<tr>
-							<td><span class="">每页记录数:</span></td>
-							<td>
-							<input name="limit" id="limit" value="25" size="3" type="text" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数">
-							</td>
-							<td><span class="">排序方式:</span></td>
-							<td>
-							<select name="sort" id="sort" data-content="查询结排序方式果。" data-original-title="查询结排序方式果">
-								<option value="r">相关性 relevance</option>
-								<option value="d">日期 date</option>
-								<option value="s">主题 title</option>
-								<option value="u">关注 guanzhu</option>
-								<option value="v">点击数 clicks</option>
-								<option value="p">回复 pinglun</option>
-								<option value="w">标签 tags</option>
-							</select></td>
-							<td>排序</td>
-							<td>
-							<select name="way" id="way">
-								<option value="d">降序</option>
-								<option value="a">升序</option>
-							</select></td>
-						</tr>
-					</table></td>
-				<tr>
-					<td colspan="2">
-					<button class="btn btn-primary" type="submit">
-						<i class="icon-white icon-search"></i>查 询 ！
-					</button>
-					<button class="btn" type="rest">
-						重 置
-					</button></td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
+  <fieldset>
+  <legend>负面新闻高级查询表单</legend>
+  <table class="table table-striped table-bordered table-hover">
+    <tbody>
+      <tr>
+        <td><span class="alert">查询词:</span></td>
+        <td><input name="key" size="30" type="text" placeholder="比如：钓鱼岛争端 苍井空"  class="input-xlarge" data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" /></td>
+      </tr>
+      <tr>
+        <td colspan="2"><table class="">
+            <tr>
+              <td><span class="">类别:</span></td>
+              <td><select name="category" id="category" data-content="可选项：要查询哪个类别？" data-original-title="查询类别Category">
+                  <option value="">--- 请选择 ---</option>
+                </select></td>
+              <td><span class="">栏目:</span></td>
+              <td><select name="item" id="item" data-content="可选项：要查询哪个栏目类别？" data-original-title="查询栏目Item">
+                  <option value="">--- 请选择 ---</option>
+                </select></td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td colspan="2"><table class="">
+            <tr>
+              <td><span class="">查询模式:</span></td>
+              <td><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：扩展模式2。" data-original-title="查询模式">
+                  <option value="ext2" selected="selected">扩展模式2</option>
+                  <option value="ext">扩展模式</option>
+                  <option value="all">匹配全部单词all words</option>
+                  <option value="any">匹配任何一个单词any words</option>
+                  <option value="exact">准确匹配exact phrase</option>
+                  <option value="bool">布尔boolean</option>
+                </select></td>
+              <td><span class="">查询范围</span></td>
+              <td><select name="where" id="where" data-content="可选项：请选择查询范围，缺省：标题和内容。" data-original-title="查询范围">
+                  <option value="sc" selected="selected">标题和内容</option>
+                  <option value="subject">标题</option>
+                  <option value="content">内容</option>
+                </select></td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td colspan="2"><table class="">
+            <tr>
+              <td><span class="">查询的起始时间</span></td>
+              <td><input name="newerval" id="newerval" size="2" type="text" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
+                <select name="newertype" id="newertype" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
+                  <option value="d" selected="selected">天</option>
+                  <option value="w">周</option>
+                  <option value="m">月</option>
+                  <option value="y">年</option>
+                </select></td>
+              <td>查询的终止时间</td>
+              <td><input name="olderval" id="olderval" size="2" type="text" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间。">
+                <select name="oldertype" id="oldertype" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间">
+                  <option value="d" selected="selected">天</option>
+                  <option value="w">周</option>
+                  <option value="m">月</option>
+                  <option value="y">年</option>
+                </select></td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td colspan="2"><table class="">
+            <tr>
+              <td><span class="">每页记录数:</span></td>
+              <td><input name="limit" id="limit" value="25" size="3" type="text" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数"></td>
+              <td><span class="">排序方式:</span></td>
+              <td><select name="sort" id="sort" data-content="查询结排序方式果。" data-original-title="查询结排序方式果">
+                  <option value="r">相关性 relevance</option>
+                  <option value="d">日期 date</option>
+                  <option value="s">主题 title</option>
+                  <option value="u">关注 guanzhu</option>
+                  <option value="v">点击数 clicks</option>
+                  <option value="p">回复 pinglun</option>
+                  <option value="w">标签 tags</option>
+                </select></td>
+              <td>排序</td>
+              <td><select name="way" id="way">
+                  <option value="d">降序</option>
+                  <option value="a">升序</option>
+                </select></td>
+            </tr>
+          </table></td>
+      <tr>
+        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查 询 ！</button>
+          <button class="btn" type="reset">重 置</button></td>
+      </tr>
+    </tbody>
+  </table>
+  </fieldset>
 </form>
 <script type="text/javascript">
     $(function() {
@@ -375,11 +341,11 @@ class FMXW_Sphinx extends SphinxClient
                 cache : false,
                 beforeSend : function() {
                     $('<div></div>').addClass('ajaxloading').appendTo(d);
-                    $('button:submit', f).attr('disabled', true);
+                    $('input[type="submit"]', f).attr('disabled', true);
                 },
                 success : function(data) {
+                    $('input[type="submit"]', f).attr('disabed', false);
                     d.html(data).fadeIn(100);
-                    $('button:submit', f).attr('disabed', false);
                 }
             });
             return false;
@@ -387,29 +353,30 @@ class FMXW_Sphinx extends SphinxClient
     }); 
 </script>
 <?php
-}
-function init()
-{
+	}
+	
+	function init()
+	{
 ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>负面新闻高级查询表单</title>
-		<link rel="stylesheet" type="text/css" href="include/bootstrap/css/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="css/dixi.css">
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="include/bootstrap/js/bootstrap.min.js"></script>
-	</head>
-	<body>
-		<div class="container">
-			<div class="hero-unit well-large">
-				<h3 id="ad_search" class="label">负面新闻高级查询表单</h3>
-				<?php $this -> get_form(); ?>
-			</div>
-			<div id="div_list"></div>
-		</div>
-	</body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>负面新闻高级查询表单</title>
+<link rel="stylesheet" type="text/css" href="include/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/dixi.css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="include/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="hero-unit well-large">
+    <h3 id="ad_search" class="label">负面新闻高级查询表单</h3>
+    <?php $this -> get_form(); ?>
+  </div>
+  <div id="div_list"></div>
+</div>
+</body>
 </html>
 <script type="text/javascript">
     $(function() {
@@ -443,73 +410,70 @@ function init()
     }); 
 </script>
 <?php
-}
+	}
 
-function linktoself($params,$selflink= '') {
-$a = array();
-$b = explode('?',$_SERVER['REQUEST_URI']);
-if (isset($b[1]))
-parse_str($b[1],$a);
+	function linktoself($params,$selflink= '') {
+		$a = array();
+		$b = explode('?',$_SERVER['REQUEST_URI']);
+		if (isset($b[1])) parse_str($b[1],$a);
+		
+		if (isset($params['value']) && isset($a[$params['name']])) {
+			if ($params['value'] == 'null') {
+				unset($a[$params['name']]);
+			} else {
+				$a[$params['name']] = $params['value'];
+			}		
+		} else {
+			foreach ($params as $key => $value)
+				$a[$key] = $value;
+		}
+			
+		if (!empty($params['delete'])) {
+			if (is_array($params['delete'])) {
+				foreach ($params['delete'] as $del) {
+					unset($a[$del]);
+				}
+			}
+			else {
+				unset($a[$params['delete']]);
+			}
+			unset($a['delete']);
+		}
+		if (empty($selflink)) {
+			$selflink = $_SERVER['SCRIPT_NAME'];
+		}
+		if ($selflink == '/index.php') {
+			$selflink = '/';
+		}		
+		return htmlentities($selflink.(count($a)?("?".http_build_query($a,'','&')):''));
+	}
 
-if (isset($params['value']) && isset($a[$params['name']])) {
-if ($params['value'] == 'null') {
-unset($a[$params['name']]);
-} else {
-$a[$params['name']] = $params['value'];
-}
+	function pagesString($currentPage,$numberOfPages,$postfix = '',$extrahtml ='') {
+		static $r;
+		if (!empty($r))
+			return($r);
+	
+		if ($currentPage > 1)
+			$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage-1))."$postfix\"$extrahtml>&lt; &lt; prev</a> ";
 
-} else {
-foreach ($params as $key => $value)
-$a[$key] = $value;
-}
-
-if (!empty($params['delete'])) {
-if (is_array($params['delete'])) {
-foreach ($params['delete'] as $del) {
-unset($a[$del]);
-}
-} else {
-unset($a[$params['delete']]);
-}
-unset($a['delete']);
-}
-if (empty($selflink)) {
-$selflink = $_SERVER['SCRIPT_NAME'];
-}
-if ($selflink == '/index.php') {
-$selflink = '/';
-}
-
-return htmlentities($selflink.(count($a)?("?".http_build_query($a,'','&')):''));
-}
-
-function pagesString($currentPage,$numberOfPages,$postfix = '',$extrahtml ='') {
-static $r;
-if (!empty($r))
-return($r);
-
-if ($currentPage > 1)
-$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage-1))."$postfix\"$extrahtml>&lt; &lt; prev</a> ";
-$start = max(1,$currentPage-5);
-$endr = min($numberOfPages+1,$currentPage+8);
-
-if ($start > 1)
-$r .= "<a href=\"".$this->linktoself(array('page'=>1))."$postfix\"$extrahtml>1</a> ... ";
-
-for($index = $start;$index<$endr;$index++) {
-if ($index == $currentPage)
-$r .= "<b>$index</b> ";
-else
-$r .= "<a href=\"".$this->linktoself(array('page'=>$index))."$postfix\"$extrahtml>$index</a> ";
-}
-if ($endr < $numberOfPages+1)
-$r .= "... ";
-
-if ($numberOfPages > $currentPage)
-$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage+1))."$postfix\"$extrahtml>next &gt;&gt;</a> ";
-
-return $r;
-}
-
+		$start = max(1,$currentPage-5);
+		$endr = min($numberOfPages+1,$currentPage+8);
+		
+		if ($start > 1)
+			$r .= "<a href=\"".$this->linktoself(array('page'=>1))."$postfix\"$extrahtml>1</a> ... ";
+		
+		for($index = $start;$index<$endr;$index++) {
+			if ($index == $currentPage)
+				$r .= "<b>$index</b> ";
+			else
+				$r .= "<a href=\"".$this->linktoself(array('page'=>$index))."$postfix\"$extrahtml>$index</a> ";
+		}
+		
+		if ($endr < $numberOfPages+1)
+			$r .= "... ";			
+		if ($numberOfPages > $currentPage)
+			$r .= "<a href=\"".$this->linktoself(array('page'=>$currentPage+1))."$postfix\"$extrahtml>next &gt;&gt;</a> ";	
+			return $r;
+	}
 }
 ?>
