@@ -1,0 +1,99 @@
+@charset "utf-8";
+/* 主要就是 reset bootstrap 设置的属性*/
+.clear {
+	clear: both;
+}
+ul {
+	list-style: none outside none;
+	margin: 0;
+	padding: 0;
+}
+.head1 {
+	color: #CC0000;
+	font-size: 14px;
+	font-weight:bold;
+	border-bottom: 1px dotted #DBDADA;
+	padding-top:6px;
+	padding-bottom:6px;
+	margin-bottom:6px;
+}
+.head1:hover {
+	color: #999999;
+}
+.table-bordered th, .table-bordered td {
+    border-left: 0;
+}
+#search_form input {
+	width:
+}
+#search_form select {
+	width: 
+}
+.box {
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+	border: 1px solid #C6D0DF;
+	color: #3E6D8E;
+	margin: 20px;
+	background: #fff;
+	box-shadow: 1px 1px 1px #888888;
+	text-align:center;
+	padding:10px;
+}
+.box p {
+	margin-top:12px;
+}
+.box2 {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #4999C7;
+	margin: 0;
+}
+.box3 {
+	background-color: #E0EAF1;
+	color: #3E6D8E;
+	font-size: 90%;
+	line-height: 1.8;
+	margin: 20px;
+	text-align:center;
+	padding:10px;
+}
+.box5 {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-color: #D2E1F1;
+	border-right: 1px solid #D2E1F1;
+	border-style: solid;
+	border-width: 1px;
+	border-top: 1px solid #DBDADA;
+}
+input:focus, select:focus {
+	background-color: lightyellow;
+}
+/******* table 部分*************/
+table tbody tr:hover {
+	background-color: #e1eafe;
+}
+div.ajaxloading {
+	height: 16px;
+	width: 16px;
+	background-color: #fff;
+	background-image: url(../images/spinner.gif);
+	background-position:  center center;
+	background-repeat: no-repeat;
+	opacity: 1;
+}
+div.ajaxloading * {
+	opacity: .8;
+}
+li.highlight {
+    background: none repeat scroll 0 0 #E5E3E3;
+    border: 1px solid #E7E5E6;
+    box-shadow: 1px 1px 1px #E7E5E6;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+}

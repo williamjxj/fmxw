@@ -224,21 +224,21 @@ class FMXW_Sphinx extends SphinxClient
 ?>
 <form action="<?=$_SERVER['PHP_SELF']; ?>" method="POST" id="search_form">
   <fieldset>
-  <legend>负面新闻高级查询表单</legend>
+  <div class="alert-heading">负面新闻高级查询表单</div>
   <table class="table table-striped table-bordered table-hover">
     <tbody>
       <tr>
-        <td><span class="alert">查询词:</span></td>
-        <td><input name="key" size="30" type="text" placeholder="比如：钓鱼岛争端 苍井空"  class="input-xlarge" data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" /></td>
+        <td><span class="alert alert-error fade in">请输入查询词:</span></td>
+        <td><input type="text" name="key" id="key" class="input-xlarge search-query" style="width:400px;height:35px;" placeholder="比如：钓鱼岛争端 苍井空"  data-content="请输入要查询的词，词组，语句。" data-original-title="查询关键词" /></td>
       </tr>
       <tr>
-        <td colspan="2"><table class="">
+        <td colspan="2"><table class="table8">
             <tr>
-              <td><span class="">类别:</span></td>
+              <td nowrap><span class="">类别:</span></td>
               <td><select name="category" id="category" data-content="可选项：要查询哪个类别？" data-original-title="查询类别Category">
                   <option value="">--- 请选择 ---</option>
                 </select></td>
-              <td><span class="">栏目:</span></td>
+              <td nowrap><span class="">栏目:</span></td>
               <td><select name="item" id="item" data-content="可选项：要查询哪个栏目类别？" data-original-title="查询栏目Item">
                   <option value="">--- 请选择 ---</option>
                 </select></td>
@@ -246,18 +246,18 @@ class FMXW_Sphinx extends SphinxClient
           </table></td>
       </tr>
       <tr>
-        <td colspan="2"><table class="">
+        <td colspan="2"><table class="table8">
             <tr>
-              <td><span class="">查询模式:</span></td>
-              <td><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：扩展模式2。" data-original-title="查询模式">
+              <td nowrap><span class="">查询模式:</span></td>
+              <td nowrap><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：扩展模式2。" data-original-title="查询模式">
                   <option value="ext2" selected="selected">扩展模式2</option>
                   <option value="ext">扩展模式</option>
-                  <option value="all">匹配全部单词all words</option>
-                  <option value="any">匹配任何一个单词any words</option>
-                  <option value="exact">准确匹配exact phrase</option>
-                  <option value="bool">布尔boolean</option>
+                  <option value="all">匹配全部单词</option>
+                  <option value="any">匹配任何一个单词</option>
+                  <option value="exact">准确匹配</option>
+                  <option value="bool">布尔</option>
                 </select></td>
-              <td><span class="">查询范围</span></td>
+              <td nowrap><span class="">查询范围</span></td>
               <td><select name="where" id="where" data-content="可选项：请选择查询范围，缺省：标题和内容。" data-original-title="查询范围">
                   <option value="sc" selected="selected">标题和内容</option>
                   <option value="subject">标题</option>
@@ -267,9 +267,9 @@ class FMXW_Sphinx extends SphinxClient
           </table></td>
       </tr>
       <tr>
-        <td colspan="2"><table class="">
+        <td colspan="2"><table class="table8">
             <tr>
-              <td><span class="">查询的起始时间</span></td>
+              <td nowrap><span class="">查询的起始时间</span></td>
               <td><input name="newerval" id="newerval" size="2" type="text" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
                 <select name="newertype" id="newertype" data-content="可选项：查询的起始时间。" data-original-title="查询的起始时间">
                   <option value="d" selected="selected">天</option>
@@ -277,7 +277,7 @@ class FMXW_Sphinx extends SphinxClient
                   <option value="m">月</option>
                   <option value="y">年</option>
                 </select></td>
-              <td>查询的终止时间</td>
+              <td nowrap>查询的终止时间</td>
               <td><input name="olderval" id="olderval" size="2" type="text" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间。">
                 <select name="oldertype" id="oldertype" data-content="可选项：查询的终止时间。" data-original-title="查询的终止时间">
                   <option value="d" selected="selected">天</option>
@@ -289,19 +289,19 @@ class FMXW_Sphinx extends SphinxClient
           </table></td>
       </tr>
       <tr>
-        <td colspan="2"><table class="">
+        <td colspan="2"><table class="table8">
             <tr>
-              <td><span class="">每页记录数:</span></td>
+              <td nowrap><span class="">每页记录数:</span></td>
               <td><input name="limit" id="limit" value="25" size="3" type="text" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数"></td>
-              <td><span class="">排序方式:</span></td>
+              <td nowrap><span class="">排序方式:</span></td>
               <td><select name="sort" id="sort" data-content="查询结排序方式果。" data-original-title="查询结排序方式果">
-                  <option value="r">相关性 relevance</option>
-                  <option value="d">日期 date</option>
-                  <option value="s">主题 title</option>
-                  <option value="u">关注 guanzhu</option>
-                  <option value="v">点击数 clicks</option>
-                  <option value="p">回复 pinglun</option>
-                  <option value="w">标签 tags</option>
+                  <option value="r">相关性</option>
+                  <option value="d">日期</option>
+                  <option value="s">主题</option>
+                  <option value="u">关注</option>
+                  <option value="v">点击数</option>
+                  <option value="p">回复</option>
+                  <option value="w">标签</option>
                 </select></td>
               <td>排序</td>
               <td><select name="way" id="way">
@@ -310,8 +310,8 @@ class FMXW_Sphinx extends SphinxClient
                 </select></td>
             </tr>
           </table></td>
-      <tr>
-        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查 询 ！</button>
+      <tr align="center">
+        <td colspan="2"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查 询</button>
           <button class="btn" type="reset">重 置</button></td>
       </tr>
     </tbody>
@@ -346,6 +346,7 @@ class FMXW_Sphinx extends SphinxClient
                 success : function(data) {
                     $('input[type="submit"]', f).attr('disabed', false);
                     d.html(data).fadeIn(100);
+					$('html,body').animate({scrollTop: $('#div_list').offset().top}, 'slow');
                 }
             });
             return false;
@@ -364,14 +365,15 @@ class FMXW_Sphinx extends SphinxClient
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>负面新闻高级查询表单</title>
 <link rel="stylesheet" type="text/css" href="include/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/dixi.css">
+<link rel="stylesheet" type="text/css" href="css/coreseek.css">
+<link rel="stylesheet" type="text/css" href="css/extra.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="include/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
-  <div class="hero-unit well-large">
-    <h3 id="ad_search" class="label">负面新闻高级查询表单</h3>
+  <div class="box">
+    <h3 id="ad_search" class="head1">负面新闻高级查询表单</h3>
     <?php $this -> get_form(); ?>
   </div>
   <div id="div_list"></div>
@@ -384,7 +386,7 @@ class FMXW_Sphinx extends SphinxClient
             cate_id = $(this).attr('value');
             $.getJSON("?js_item=1&cate_id=" + cate_id, function(data) {
                 var items = [];
-                console.log(data);
+                //console.log(data);
                 $.each(data, function(id, name) {
                     items.push('<option value="' + name[0] + '">' + name[1] + '</option>');
                 });
@@ -395,6 +397,7 @@ class FMXW_Sphinx extends SphinxClient
             var d = $('#div_list');
             d.html($('<div></div>').addClass('ajaxloading'));
             d.load($(this).attr('href')).fadeIn(200);
+			$('html,body').animate({scrollTop: $('#div_list').offset().top}, 'slow');
             return false;
         });
     });
