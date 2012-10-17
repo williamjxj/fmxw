@@ -7,41 +7,82 @@ require_once(ROOT . 'etc/sphinxapi_coreseek.php');
 
 class FMXW_Sphinx extends SphinxClient
 {
-	var $conf = array(), $db, $now, $h;
+	var $conf = array(), $db, $now, $dwmy, $st;
 	function __construct() {
 		parent::SphinxClient();
 		$this->conf = $this->get_config();
 		$this->db = $this->mysql_connect_fmxw();
 		// Some variables which are used throughout the script
 		$this->now = time();
-        $this->h = array();
+		$this->dwmy = $this->get_dwmy();
+		$this->st = $this->get_sort();
+
+		$timezone = "Asia/Shanghai";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
 	}
 
-    function get_parse() {
-        $h = array();
-        $q = mysql_real_escape_string($_POST['key']);
-        $_SESSION[PACKAGE][SEARCH]['key'] = $h['key'] = $q;
-        $h['cate_id']   = $_POST['category'] ? intval($_POST['category']) : 0;
-        $h['item_id']   = $_POST['item'] ? intval($_POST['item']) : 0;
-        $h['how']        = $_POST['how'];        // 'all', 'any', 'exact' or 'boolean'
-        $h['where']      = $_POST['where'];      // 'subject' or 'body'
-        $h['newerval']   = intval($_POST['newerval']);   // newer text
-        $h['newertype']  = $_POST['newertype'];  // d(ay), w(eek), m(onth) or y(ear)
-        $h['olderval']   = intval($_POST['olderval']);   // older text
-        $h['oldertype']  = $_POST['oldertype'];  // d(ay), w(eek), m(onth) or y(ear)
-        $h['limit']      = intval($_POST['limit']);      // # of results
-        $h['sort']       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
-        $h['way']        = $_POST['way'];        // (a)sc or (d)esc
-        $this->h = $h;
-        return $h;
-    }
-	
+	function get_config() {
+		return $conf = array(
+			'coreseek' => array(
+				'host' => 'localhost',
+				'port' => 9313,
+				'index' => "contents",
+				'query' => 'SELECT * from contents where cid in ($ids)',
+			),
+			'sphinx' => array(
+				'host' => 'localhost',
+				'port' => 9312,
+				'index' => "contents increment", 
+				'query' => 'SELECT * from contents where cid in ($ids)',
+			),
+			'mysql' => array(
+				'host' => "localhost:3563",
+				'username' => "fmxw",
+				'password' => "fmxw123456",
+				'database' => "fmxw",
+			),
+			'page' => array(
+				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
+				'content' => 'excerpt',
+				#the link for the title (only $id) placeholder supported
+				'link_format' => 'f3.php?cid=$id',
+				#Change this to FALSE on a live site!
+				'debug' => TRUE,
+				#How many results per page
+				'size' => 25,
+				#maximum number of results - should match sphinxes max_matches. default 1000
+				'max_matches' => 1000,
+			)
+		);
+	}
+	// 参看:/etc/my.cnf
+	function mysql_connect_fmxw()
+	{
+		$db = mysql_pconnect($this->conf['mysql']['host'], $this->conf['mysql']['username'], $this->conf['mysql']['password']) or die(mysql_error());
+		mysql_select_db($this->conf['mysql']['database'], $db);
+		//设置字符集,  mysql_set_charset("utf8");
+		mysql_query("SET NAMES 'utf8'", $db);
+		return $db;
+	}
+	function set_coreseek_server()
+	{
+		$this->SetServer($this->conf['coreseek']['host'], $this->conf['coreseek']['port']);		
+		$this->SetMatchMode( SPH_MATCH_EXTENDED2 );
+		$this->SetSortMode( SPH_SORT_RELEVANCE );
+		//$this->SetConnectTimeout ( 3 ); $this->SetArrayResult ( true );
+	}
+	function set_sphinx_server()
+	{
+		$this->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
+		$this->SetMatchMode ( SPH_MATCH_EXTENDED2 );
+		$this->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+	}
+
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
-	function get_sort($sort) {
-		$ary = array('d' => 'DESC', 'a' => 'ASC');
-		return $ary[$sort];
+	function get_sort() {
+		return array('d' => 'DESC', 'a' => 'ASC');
 	}
 	
     function get_matchmode($mode) {
@@ -108,27 +149,67 @@ class FMXW_Sphinx extends SphinxClient
 		}
 	}
 	
-	function set_filter() {
-	    $h = $this->h;
+    function get_parse() {
+        $h = array();
+        $q = mysql_real_escape_string($_POST['key']);
+        $_SESSION[PACKAGE][SEARCH]['key'] = $h['key'] = $q;
+        $h['cate_id']    = $_POST['category'] ? intval($_POST['category']) : 0;
+        $h['item_id']    = $_POST['item'] ? intval($_POST['item']) : 0;
+        $h['how']        = $_POST['how'];        // 'all', 'any', 'exact' or 'boolean'
+        $h['where']      = $_POST['where'];      // 'subject' or 'body'
+        $h['newerval']   = intval($_POST['newerval']);   // newer text
+        $h['newertype']  = $_POST['newertype'];  // d(ay), w(eek), m(onth) or y(ear)
+        $h['olderval']   = intval($_POST['olderval']);   // older text
+        $h['oldertype']  = $_POST['oldertype'];  // d(ay), w(eek), m(onth) or y(ear)
+        $h['limit']      = intval($_POST['limit']);      // # of results
+        $h['sort']       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
+        $h['way']        = $_POST['way'];        // (a)sc or (d)esc
+		
+		/* 将结果保存在SESSION中，以便翻页时调用*/
+        $_SESSION[PACKAGE][CS] = $h;
+        return $h;
+    }
+	
+	function set_filter()
+	{
+		if(empty($_SESSION[PACKAGE][CS])) {
+			echo "Impossible!!! Lost information at " . __FILE__ . ", " . __LINE__;
+			return;
+		}
+	    $h = $_SESSION[PACKAGE][CS];
+
 		if(!empty($h['olderval'])) {
-			$max = $this->now - $olderval * $this->get_dwmy[$oldertype];
-			$this->SetFilterRange('pubdate', 0, $max); //or: created?
+			$max = $this->now - $h['olderval'] * ($this->dwmy[$h['oldertype']]);
+			//echo "max-------[". $max."]". date("D, d M Y", $max) . "<br>\n";
+			$this->SetFilterRange('created', 0, $max);
 		}
 		if(!empty($h['newerval'])) {
-			$min = $this->now - $newerval * $this->get_dwmy[$newertype];
-			$this->SetFilterRange('pubdate', $min, $this->now); //or: created?
+			$min = $this->now - $h['newerval'] * ($this->dwmy[$h['newertype']]);
+			//echo "min-------[". $min."], [". $this->now."]". date("D, d M Y", $min).", ".date("D, d M Y", $this->now)."<br>\n";			
+			$this->SetFilterRange('created', $min, $this->now);
 		}
         $this->get_matchmode($h['how']);
 		
 		// Search by subject only, or both body and subject?
 		$h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
-		//????????
+
 		$h['key'] = "@(".join(',', array_keys($h['weights'])).") " . $h['key'];
 		$this->SetFieldWeights($h['weights']);
 
+		/**
+		 * http://www.php.net/manual/en/sphinxclient.setfilter.php
+		 * public bool SphinxClient::setFilter ( string $attribute , array $values [, bool $exclude = false ] )
+		 */
+		if(!empty($h['cate_id'])) {
+			$this->SetFilter('cate_id', array($h['cate_id'])); 
+		}
+		if(!empty($h['item_id'])) {
+			$this->SetFilter('iid', array($h['item_id']));
+		}
+
 		//排序模式
 		$sortfields  = array('r' => '@weight', 'd' => 'pubdate', 's' => 'title', 'u' => 'guanzhu', 'v' => 'clicks', 'p'=>'pinglun', 'w'=>'tags');
-		$sphway = "{$sortfields[$h['sort']]} {$this->get_sort($h['way'])}, @id {$this->get_sort($h['way'])}";
+		$sphway = "{$sortfields[$h['sort']]} {$this->st[$h['way']]}, @id {$this->st[$h['way']]}";
 
 		//echo "<pre>"; print_r($sphway); echo "</pre>"; //@weight DESC, @id DESC
 		$this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
@@ -139,7 +220,7 @@ class FMXW_Sphinx extends SphinxClient
 		$this->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
 		
 		//结果分组（聚类）
-		$this->h = $h;
+		if(!empty$h['weights']) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
 	}
 
 	function get_categories() {
@@ -155,68 +236,6 @@ class FMXW_Sphinx extends SphinxClient
 		$res = mysql_query($sql);
 		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
 		return $ary;
-	}
-
-	function get_config() {
-		return $conf = array(
-			'coreseek' => array(
-				'host' => 'localhost',
-				'port' => 9313,
-				'index' => "contents",
-				'query' => 'SELECT * from contents where cid in ($ids)',
-			),
-			'sphinx' => array(
-				'host' => 'localhost',
-				'port' => 9312,
-				'index' => "contents increment", 
-				'query' => 'SELECT * from contents where cid in ($ids)',
-			),
-			'mysql' => array(
-				'host' => "localhost:3563",
-				'username' => "fmxw",
-				'password' => "fmxw123456",
-				'database' => "fmxw",
-			),
-			'page' => array(
-				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
-				'content' => 'excerpt',
-				#the link for the title (only $id) placeholder supported
-				'link_format' => 'f3.php?cid=$id',
-				#Change this to FALSE on a live site!
-				'debug' => TRUE,
-				#How many results per page
-				'size' => 25,
-				#maximum number of results - should match sphinxes max_matches. default 1000
-				'max_matches' => 1000,
-			)
-		);
-	}
-	// 参看:/etc/my.cnf
-	function mysql_connect_fmxw()
-	{
-		$db = mysql_pconnect($this->conf['mysql']['host'], $this->conf['mysql']['username'], $this->conf['mysql']['password']) or die(mysql_error());
-		mysql_select_db($this->conf['mysql']['database'], $db);
-		//设置字符集,  mysql_set_charset("utf8");
-		mysql_query("SET NAMES 'utf8'", $db);
-		return $db;
-	}
-	function set_coreseek_server()
-	{
-		$this->SetServer($this->conf['coreseek']['host'], $this->conf['coreseek']['port']);
-		
-		//$this->SetConnectTimeout ( 3 );
-		//$this->SetArrayResult ( true );
-		$this->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
-		
-		//(any, all, exact, boolean, extended,extended2)
-		$mode = "extended2";
-		$this->SetMatchMode($mode);
-	}
-	function set_sphinx_server()
-	{
-		$this->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
-		$this->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
-		$this->SetMatchMode('extended2');
 	}
 
 	function get_form()
@@ -243,11 +262,11 @@ class FMXW_Sphinx extends SphinxClient
         <td nowrap><label class="alert" for="how">查询模式:</label></td>
         <td align="right"><select name="how" id="how" data-content="可选项：请选择查询模式，缺省：扩展模式2。" data-original-title="查询模式">
             <option value="ext2" selected="selected">扩展模式2</option>
-            <option value="ext">扩展模式</option>
+            <option value="ext">扩展模式： 变质食品 -(过期|火腿肠)</option>
             <option value="all">匹配全部单词</option>
             <option value="any">匹配任何一个单词</option>
-            <option value="exact">准确匹配</option>
-            <option value="bool">布尔</option>
+            <option value="exact">按顺序完整准确匹配</option>
+            <option value="bool">按照布尔表达式查询：钓鱼岛 -美国</option>
           </select></td>
         <td nowrap><label class="alert" for="where">查询范围</label></td>
         <td align="right"><select name="where" id="where" data-content="可选项：请选择查询范围，缺省：标题和内容。" data-original-title="查询范围">
@@ -294,8 +313,8 @@ class FMXW_Sphinx extends SphinxClient
       <tr>
         <td nowrap><label class="alert" for="limit">每页记录数:</label></td>
         <td align="right"><input name="limit" id="limit" value="25" size="3" type="text" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数"></td>
-        <td nowrap><label class="alert" for="limit">每页记录数:</label></td>
-        <td align="right"><input name="limit" id="limit" value="25" size="3" type="text" data-content="查询结果每页记录数。" data-original-title="查询结果每页记录数"></td>
+        <td nowrap><label class="alert" for=""></label></td>
+        <td align="right"></td>
       </tr>
       <tr align="center">
         <td colspan="4"><button class="btn btn-primary" type="submit"><i class="icon-white icon-search"></i>查 询</button>
@@ -360,7 +379,9 @@ class FMXW_Sphinx extends SphinxClient
 <body>
 <div class="container">
   <div class="box">
-    <div class="fmxwlogo"><h3 id="ad_search" class="head1">负面新闻高级查询表单</h3></div>
+    <div class="fmxwlogo">
+      <h3 id="ad_search" class="head1">负面新闻高级查询表单</h3>
+    </div>
     <?php $this -> get_form(); ?>
   </div>
   <div id="div_list"></div>
@@ -368,40 +389,42 @@ class FMXW_Sphinx extends SphinxClient
 </body>
 </html>
 <script type="text/javascript">
-    $(function() {
-        $('#category').change(function() {
-            cate_id = $(this).attr('value');
-            $.getJSON("?js_item=1&cate_id=" + cate_id, function(data) {
-                var items = [];
-                //console.log(data);
-                $.each(data, function(id, name) {
-                    items.push('<option value="' + name[0] + '">' + name[1] + '</option>');
-                });
-                $('#item').append(items);
-            });
-        });
-        $('a', 'div.pagination').live('click', function() {
-            var d = $('#div_list');
-            d.html($('<div></div>').addClass('ajaxloading'));
-            d.load($(this).attr('href')).fadeIn(200);
-			$('html,body').animate({scrollTop: $('#div_list').offset().top}, 'slow');
-            return false;
-        });
-    });
-    $(window).load(function() {
-        $.getJSON('?js_category=1', function(data) {
-            console.log(data);
-            var cates = [];
-            $.each(data, function(key, val) {
-                cates.push('<option value="' + val[0] + '">' + val[1] + '</option>');
-            });
-            $('#category').append(cates);
-        });
-    }); 
+$(function() {
+	$('#category').change(function() {
+		cate_id = $(this).attr('value');
+		$.getJSON("?js_item=1&cate_id=" + cate_id, function(data) {
+			var items = [];
+			//console.log(data);
+			$.each(data, function(id, name) {
+				items.push('<option value="' + name[0] + '">' + name[1] + '</option>');
+			});
+			$('#item').append(items);
+		});
+	});
+	$('a', 'div.pagination').live('click', function() {
+		var d = $('#div_list');
+		d.html($('<div></div>').addClass('ajaxloading'));
+		d.load($(this).attr('href')).fadeIn(200);
+		$('html,body').animate({scrollTop: $('#div_list').offset().top}, 'slow');
+		return false;
+	});
+	$('#key').focus();
+});
+$(window).load(function() {
+	$.getJSON('?js_category=1', function(data) {
+		// console.log(data);
+		var cates = [];
+		$.each(data, function(key, val) {
+			cates.push('<option value="' + val[0] + '">' + val[1] + '</option>');
+		});
+		$('#category').append(cates);
+	});
+}); 
 </script>
 <?php
 	}
 
+	//下面的是参考：http://www.nearby.org.uk/sphinx/example5.php?q=test&page=10
 	function linktoself($params,$selflink= '') {
 		$a = array();
 		$b = explode('?',$_SERVER['REQUEST_URI']);
@@ -468,5 +491,39 @@ class FMXW_Sphinx extends SphinxClient
 		$r .= "</ul>";
 		return $r;
 	}
+
+	//error, warning, status, fields+attrs, matches, total, total_found, time, words
+	function get_res($res) 
+	{
+		return array(
+			'total' => $res['total'],
+			'total_found' => $res['total_found'],
+			'time' => $res['time'],
+			'ids' => array_keys($res['matches']),
+		);		
+	}
+	
+	function __p($vars, $debug=true)
+	{
+        if (!$debug) return;
+        if (is_array($vars) || is_object($vars)) {
+            echo "<pre>"; print_r($vars); echo "</pre>";
+        } else
+            echo $vars . "<br>\n";
+    }
+	
+	function display_summary($results, $title="查询结果")
+	{
+?>
+<div class="alert alert-block">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h4>
+    <?=$title;?>
+  </h4>
+  <p><?php echo $results;?></p>
+</div>
+<?php	
+	}
+
 }
 ?>
