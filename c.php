@@ -31,7 +31,7 @@ elseif (isset($_POST['key'])) {
 	$_SESSION[PACKAGE][SEARCH]['key'] = $q;
 } 
 elseif(isset($_GET['page'])) {
-	echo "New Page: ".  $_GET['page'] . "<br>\n";
+	// what do here???
 }
 elseif(isset($_GET['test'])) {
 	echo "<pre>"; print_r($cl); echo "</pre>";
@@ -117,11 +117,9 @@ $sphinx_res = $res['matches'];
 //echo "<pre>"; print_r($sphinx_res); echo "</pre>";
 $max_weight = (array_sum($cl->h['weights']) * count($res['words']) + 1) * 1000;
 
-echo 'max-weight is' . $max_weight . "<br>\n";
-
 $query = $cl->conf['coreseek']['query'];
 $query = "SELECT * from contents where cid in (".$ids.")";
-echo $query . "<br>\n";
+// echo $query . "<br>\n";
 
 $res = mysql_query($query);
 

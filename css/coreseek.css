@@ -10,24 +10,26 @@ ul {
 }
 .head1 {
 	color: #CC0000;
-	font-size: 14px;
 	font-weight:bold;
-	border-bottom: 1px dotted #DBDADA;
-	padding-top:6px;
-	padding-bottom:6px;
-	margin-bottom:6px;
+	vertical-align:middle;
+	cursor:pointer;
 }
 .head1:hover {
-	color: #999999;
+	color: #9932CC;
+	opacity: 0.6;
+	text-decoration:underline;
 }
 .table-bordered th, .table-bordered td {
-    border-left: 0;
+	/*border-left: 0;*/
 }
 #search_form input {
-	width:
+ width: auto;
 }
 #search_form select {
-	width: 
+ width: auto;
+}
+#search_form .alert {
+	margin-bottom: 2px;
 }
 .box {
 	-moz-border-radius: 4px 4px 4px 4px;
@@ -90,10 +92,46 @@ div.ajaxloading * {
 	opacity: .8;
 }
 li.highlight {
-    background: none repeat scroll 0 0 #E5E3E3;
-    border: 1px solid #E7E5E6;
-    box-shadow: 1px 1px 1px #E7E5E6;
-    -moz-border-radius: 4px 4px 4px 4px;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
+	background: none repeat scroll 0 0 #E5E3E3;
+	border: 1px solid #E7E5E6;
+	box-shadow: 1px 1px 1px #E7E5E6;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+}
+.fmxwlogo {
+    background: url(../images/logo_290x96.png) no-repeat scroll left top transparent;
+    margin-left: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    height: 96px;
+}
+.table8 {
+	font-size:small;
+	background: #ffffff;
+	border-collapse:collapse;
+	width:100%;
+	background: #fff;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	padding-top: 6px;
+}
+.table8 caption.cp1 {
+	font-weight: bold;
+}
+.table8 tr.alt1 {
+	background: #e6e6e6;
+}
+.table8 tr.alt2 {
+	background-color: #f1f1f1;
+}
+.table8 th, .table8 td {
+	margin: 0;
+	/*text-align: center;*/
+	text-transform: capitalize;
+	text-weight: bold;
+	padding: 3px;
+}
+.table8 td a {
+	font-weight: bold;
+	display: inline;
 }
