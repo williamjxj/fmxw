@@ -6,7 +6,7 @@ defined('CS') or define('CS', 'coreseek_sphinx');
 defined('SEARCH') or define('SEARCH', 'search');
 defined("ROOT") or define("ROOT", "./");
 
-require_once(ROOT . 'coreseekClass.php');
+require_once(ROOT . 'adsearchClass.php');
 try {
 	$cl = new FMXW_Sphinx();
 }
@@ -98,10 +98,12 @@ $ids = implode(",", $ids1);
 
 $matches = $res['matches'];
 
-$max_weight = (array_sum($h['weights']) * count($res['words']) + 1) * 1000;
+// $cl->__p($res);
+// $max_weight = (array_sum($h['weights']) * count($res['words']) + 1) * 1000;
+$max_weight = (array_sum(array($h['weights'])) * count($res['words']) + 1) * 1000;
 
 $query = "SELECT * from contents where cid in (".$ids.")";
-//$query = $cl->conf['coreseek']['query'];
+// $query = $cl->conf['coreseek']['query'];
 
 $res = mysql_query($query);
 

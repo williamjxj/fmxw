@@ -10,7 +10,7 @@ require_once(ROOT . 'etc/sphinxapi_coreseek.php');
  */
 class FMXW_Sphinx extends SphinxClient
 {
-	var $conf=array(), $db, $now, $dwmy=array(), $st=array(), $q='', $h=array();
+	var $conf, $db, $now, $dwmy, $st, $q, $h;
 	function __construct() {
 	    
 		parent::SphinxClient();
@@ -22,9 +22,9 @@ class FMXW_Sphinx extends SphinxClient
 		$this->dwmy = $this->get_dwmy();
 		$this->st = $this->get_sort();
         //存储每次的查询词。
-        $this->q = $q;
+        $this->q = '';
         //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
-        $this->h = $h;
+        $this->h = array();
 
         // 如果不设置，date()等时间函数调用时，就会warning.
 		$timezone = "Asia/Shanghai";
@@ -194,7 +194,9 @@ class FMXW_Sphinx extends SphinxClient
             'p'=>'pinglun', 
             't'=>'tags'
         );
-        $sphway = "{$sortfields[$sort]} {$this->st[$h['way']]}, @id {$this->st[$h['way']]}";
+        $sphway = "{$sortfields[$sort]} {$this->st[$this->h['way']]},
+		@id {$this->st[$this->h['way']]}";
+		// @weight DESC, @id DESC
         $this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
         $this->__p($sphway);
     }
@@ -217,6 +219,8 @@ class FMXW_Sphinx extends SphinxClient
         $h['limit']      = intval($_POST['limit']);      // # of results
         $h['sort']       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
         $h['way']        = $_POST['way'];        // (a)sc or (d)esc		
+
+		$this->h = $h;
         return $h;
     }
 	
@@ -242,9 +246,17 @@ class FMXW_Sphinx extends SphinxClient
         $this->get_matchmode($h['how']);
 		
 		//(.) 'sc','subject','content'
-        $h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
-        $this->q = "@(".implode(',', array_keys($h['weights'])).") $this->q";
-        $this->SetFieldWeights($h['weights']);
+        // $h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
+        // $this->q = "@(".implode(',', array_keys($h['weights'])).") $this->q";
+        // $this->SetFieldWeights($h['weights']);
+
+		if ($h['where'] == 'subject' && $this->h['key']){
+			$this->q = "@title $this->q";
+			$weightsum = 1;
+		} else {
+			$this->SetFieldWeights(array('title' => 11, 'content' => 10));
+			$weightsum = 21;
+		}
 
 		/**
 		 * http://www.php.net/manual/en/sphinxclient.setfilter.php
@@ -274,12 +286,12 @@ class FMXW_Sphinx extends SphinxClient
         if(empty($h['limit']) || ($h['limit']>100)) $h['limit'] = $this->conf['page']['size'];
         
 		//结果分组（聚类）
-		if(!empty($h['weights'])) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
+		// if(!empty($h['weights'])) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
+		if ($weightsum) $h['weights'] = $weightsum;
         
         /* 将结果保存在SESSION中，以便翻页时调用*/
         $_SESSION[PACKAGE][CS] = $h;
         $_SESSION[PACKAGE][CS]['q'] = $this->q;
-        
 		return $h;
 	}
 
