@@ -3,7 +3,7 @@
  * etc/目录下有两个sphinxapi，一个是from sphinx2.0.5, 一个是from coreseek,用coreseek的！
  */
 defined('ROOT') or define('ROOT', './');
-require_once(ROOT . 'etc/sphinxapi_coreseek.php');
+require_once(ROOT . 'etc/coreseek.php');
 
 /**
  * 这里用继承，而不是创建新目标。
@@ -38,7 +38,7 @@ class FMXW_Sphinx extends SphinxClient
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
-				'index' => "contents",
+				'index' => "contents increment", //increment
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'sphinx' => array(
@@ -48,10 +48,10 @@ class FMXW_Sphinx extends SphinxClient
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'mysql' => array(
-				'host' => "localhost:3563",
+				'host' => "localhost",
 				'username' => "fmxw",
 				'password' => "fmxw123456",
-				'database' => "fmxw",
+				'database' => "dixi",
 			),
 			'page' => array(
 				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
@@ -198,7 +198,7 @@ class FMXW_Sphinx extends SphinxClient
 		@id {$this->st[$this->h['way']]}";
 		// @weight DESC, @id DESC
         $this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
-        $this->__p($sphway);
+        // $this->__p($sphway);
     }
     
     //当<form>提交时执行, 输入参数存入$_SESSION和object中.
@@ -595,6 +595,25 @@ $(window).load(function() {
   <p><?php echo $results;?></p>
 </div>
 <?php	
+	}
+
+	function pretty_print($result)
+	{
+		// query OK, pretty-print the result set
+		// begin with general statistics
+		$got = count ( $result["matches"] );
+		print "Query matched $result[total_found] documents total.<br>\n";
+		print "Showing matches 1 to $got of $result[total] accessible.<br>\n";
+
+		// print out matches themselves now
+		$n = 1;
+		foreach ( $result["matches"] as $match ) {
+			// print number, document ID, and weight
+			print "$n. id=$match[id], weight=$match[weight], <br>\n";
+			$n++;
+			// print group_id attribute value
+			print "group_id=$match[attrs][group_id]<br>\n";
+		}
 	}
 
 }

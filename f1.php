@@ -38,12 +38,12 @@ elseif (isset($_GET['cate_id'])) {
     $obj -> assign('list', $list);
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
 } 
-elseif ($_GET['iid']) {
+elseif (isset($_GET['iid'])) {
     $list = $obj -> get_item_contents($_GET['iid']);
     $obj -> assign('list', $list);
     $obj -> assign('ic_template', $tdir1 . 'item_contents.tpl.html');
 }
-elseif ($_GET['sitemap']) {
+elseif (isset($_GET['sitemap'])) {
     $sm = $obj -> get_sitemap($_GET['sitemap']);
     $info = $obj -> assemble_sitemap($sm);
     if (isset($_GET['js_sitemap'])) {
@@ -54,8 +54,8 @@ elseif ($_GET['sitemap']) {
         $obj -> assign('info', $info);
         $obj -> assign('sitemap_template', $tdir1 . 'sitemap.tpl.html');
     }
-} elseif ($_GET['f1_news']) {
-
+}
+elseif (isset($_GET['f1_news'])) {
 
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_tf', $obj -> get_footer_label($footer));
@@ -69,7 +69,8 @@ elseif ($_GET['sitemap']) {
 
     $obj -> display($tdir1 . 'news.tpl.html');
     exit ;
-} elseif ($_GET['f1_hot']) {
+}
+elseif (isset($_GET['f1_hot'])) {
     $rss = $obj -> get_rss($obj -> rss[$_GET['f1_hot']]);
     $obj -> assign('rss', $rss);
     $obj -> assign('rss_template', $tdir1 . 'rss.tpl.html');

@@ -70,6 +70,16 @@ $cl->SetLimits($currentOffset,$h['limit']); //current page and number of results
 /** 开始查询Coreseek-Sphinx索引，并得到相关信息。
  * error, warning, status, fields+attrs, matches, total, total_found, time, words 
  */
+
+$cl->SetArrayResult( true );
+
+//created, pubdate, tags, pinglun, guanzhu, clicks, createdby, language, iid, cate_id
+// $cl->SetGroupBy('pubdate', SPH_GROUPBY_MONTH, "@group DESC");
+//$cl->SetGroupBy ('cate_id', SPH_GROUPBY_ATTR, "@count desc");
+$cl->SetGroupBy ('clicks', SPH_GROUPBY_ATTR);
+//$cl->SetGroupBy ('guanzhu', SPH_GROUPBY_ATTR, "@count desc");
+//$cl->SetGroupBy ('pinglun', SPH_GROUPBY_ATTR, "@count desc");
+
 $res = $cl->Query($q, $cl->conf['coreseek']['index']);
 if ( $res === false ) {
 	echo "查询失败 - ".$q.": [at " . __FILE__ . ', ' . __LINE__. ']: ' . $cl->GetLastError() . "<br>\n";
@@ -78,6 +88,8 @@ if ( $res === false ) {
 else if ( $cl->GetLastWarning() ) {
 	echo "WARNING for ".$q.": [at " . __FILE__ . ', ' . __LINE__. ']: ' . $cl->GetLastWarning() . "<br>\n";
 }
+
+// $cl->pretty_print($res);
 
 if (empty($res["matches"])) {
 	$sec = "用时【" . $res['time'] . "】秒。";
@@ -105,6 +117,7 @@ $max_weight = (array_sum(array($h['weights'])) * count($res['words']) + 1) * 100
 $query = "SELECT * from contents where cid in (".$ids.")";
 // $query = $cl->conf['coreseek']['query'];
 
+//echo $query;
 $res = mysql_query($query);
 
 if(mysql_num_rows($res)<=0) {
@@ -126,7 +139,11 @@ if(mysql_num_rows($res) > 0) {
 		foreach ($ids1 as $c => $id) {
 			$docs[$c] = strip_tags($rows[$id]['content']);
 		}
+		//echo "<br>-------[".$q."],[".$q1."]----------<br>\n";
+		//$cl->__p($docs);
 		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
+		//echo "<br>-------[".$cl->conf['coreseek']['index']."],[".$q."]----------<br>\n";
+		//$cl->__p($reply);
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {

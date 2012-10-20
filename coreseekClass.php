@@ -3,7 +3,7 @@
  * etc/目录下有两个sphinxapi，一个是from sphinx2.0.5, 一个是from coreseek,用coreseek的！
  */
 defined('ROOT') or define('ROOT', './');
-require_once(ROOT . 'etc/sphinxapi_coreseek.php');
+require_once(ROOT . 'etc/coreseek.php');
 
 class FMXW_Sphinx extends SphinxClient
 {
@@ -26,7 +26,7 @@ class FMXW_Sphinx extends SphinxClient
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
-				'index' => "contents",
+				'index' => "contents increment",
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'sphinx' => array(
@@ -36,10 +36,10 @@ class FMXW_Sphinx extends SphinxClient
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'mysql' => array(
-				'host' => "localhost:3563",
+				'host' => "localhost",
 				'username' => "fmxw",
 				'password' => "fmxw123456",
-				'database' => "fmxw",
+				'database' => "dixi",
 			),
 			'page' => array(
 				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.

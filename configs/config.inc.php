@@ -129,6 +129,7 @@ function browser_id() {
         $id = "ie8";
     elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE 9'))
         $id = "ie9";
+	else $id = "Unkown"; //for googlebot.com
     return $id;
 }
 ?>

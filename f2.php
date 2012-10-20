@@ -30,10 +30,11 @@ elseif (isset($_POST['q'])) {
     $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
     $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
     if (!empty($key)) {
-        exec("/home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 &");
-        exec("/home/williamjxj/scraper/google/gg.pl '" . $key . "' >/dev/null 2>&1 &");
-        exec("/home/williamjxj/scraper/yahoo.pl '" . $key . "' >/dev/null 2>&1 &");
-        exec("/home/williamjxj/scraper/qq/soso.pl '" . $key . "' >/dev/null 2>&1 &");
+        exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        // exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/google/gg.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/yahoo/yahoo.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/qq/soso.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
     }
 } elseif (isset($_GET['page'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
