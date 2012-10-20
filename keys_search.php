@@ -15,7 +15,8 @@ try {
 	// connect mongoDB server: localhost:27017
 	$connection = new Mongo();
 	// select a database
-	$db = $connection->words_lib;
+	//$db = $connection->words_lib;
+	$db = $connection->comedy;
 }
 catch ( MongoConnectionException $e ) 
 {
@@ -24,15 +25,22 @@ catch ( MongoConnectionException $e )
 }
 
 // select a collection
-$collection = $db->search;
+$collection = $db->cartoons;
 
-if(isset($_GET['q']) && !empty($_GET['q'])) {
+if(!empty($_GET['q'])) {
 
-	$cursor = $collection->find();
+	$q = trim($_GET['q']);
+	$regex = new MongoRegex("/$q/i");
+	$cursor = $collection->find(array('title'=> $regex));
+	//$cursor = $collection->find( { title : /^Alex/i } );
+	//$cursor = $collection->find( { title : { $regext: '^Alex' $options: 'i' } } );
+	$a = array();
 	foreach($cursor as $c) {
 		//print_r(json_encode($c));
+		array_push($a, iconv('UTF-8', 'UTF-8//TRANSLIT', $c{'title'}));
 	}
-
+	echo json_encode($a);
+return;
 	defined('ROOT') or define('ROOT', './');
 	header('Content-Type: text/html; charset=utf-8'); 
 	// Twitter Bootstrap - Typeahead Plugin with MySQL.
