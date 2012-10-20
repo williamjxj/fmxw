@@ -118,7 +118,6 @@ $max_weight = (array_sum(array($h['weights'])) * count($res['words']) + 1) * 100
 $query = "SELECT * from contents where cid in (".$ids.")";
 // $query = $cl->conf['coreseek']['query'];
 
-echo $query;
 $res = mysql_query($query);
 
 if(mysql_num_rows($res)<=0) {
@@ -140,11 +139,11 @@ if(mysql_num_rows($res) > 0) {
 		foreach ($ids1 as $c => $id) {
 			$docs[$c] = strip_tags($rows[$id]['content']);
 		}
-		echo "<br>-------[".$q."],[".$q1."]----------<br>\n";
-		$cl->__p($docs);
+		//echo "<br>-------[".$q."],[".$q1."]----------<br>\n";
+		//$cl->__p($docs);
 		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
-		echo "<br>-------[".$cl->conf['coreseek']['index']."],[".$q."]----------<br>\n";
-		$cl->__p($reply);
+		//echo "<br>-------[".$cl->conf['coreseek']['index']."],[".$q."]----------<br>\n";
+		//$cl->__p($reply);
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {

@@ -138,7 +138,9 @@ if(mysql_num_rows($res) > 0) {
 		foreach ($ids1 as $c => $id) {
 			$docs[$c] = strip_tags($rows[$id]['content']);
 		}
+		//$cl->__p($docs);
 		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
+		//$cl->__p($reply);
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {
@@ -151,7 +153,7 @@ if(mysql_num_rows($res) > 0) {
 		$row = $rows[$id];
 		
 		$link = htmlentities(str_replace('$id',$row['cid'],$cl->conf['page']['link_format']));
-		print "<li><a href=\"$link\">".($row['title'])."</a>&nbsp;&nbsp;(" . $row['relevance'] .")<br/>";
+		print "<li><a href=\"$link\">".($row['title'])."</a>&nbsp;&nbsp;(" . $row['relevance'] ."%)<br/>";
 		
 		if ($cl->conf['page']['content'] == 'excerpt' && !empty($reply[$c]))
 			print ($reply[$c])."</li>";

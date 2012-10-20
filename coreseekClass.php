@@ -26,7 +26,7 @@ class FMXW_Sphinx extends SphinxClient
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
-				'index' => "contents",
+				'index' => "contents increment",
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'sphinx' => array(
