@@ -20,7 +20,7 @@ try {
 catch ( MongoConnectionException $e ) 
 {
     echo '<p>Couldn\'t connect to mongodb, is the "mongoD" process running?</p>';
-    exit();
+    exit;
 }
 
 // select a collection
@@ -30,7 +30,7 @@ if(isset($_GET['q']) && !empty($_GET['q'])) {
 
 	$cursor = $collection->find();
 	foreach($cursor as $c) {
-		print_r($c);
+		//print_r(json_encode($c));
 	}
 
 	defined('ROOT') or define('ROOT', './');
