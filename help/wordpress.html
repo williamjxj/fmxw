@@ -1,71 +1,53 @@
 <div style="width:620px;overflow:auto;border:1px inset #666;background-color:#eee;padding:2px;">
-  <h4>CentOS: add a 3rd open-source into PHP extension</h4>
-  In a <strong>Linux CentOS 64-Bit</strong> server, I have 2 sets of web environment:(web-server, database-server, tools, commands etc)
-  <ul>
-    <li>1 is default by CentOS itself;</li>
-    <li>1 is from xampp (apachefriends.org) package.</li>
-    <li>The web enironment doesn't include development tools; if need, I have to install by myself.</li>
-  </ul>
-  Sometimes they are conflicts with each other: php commands, mysql commands, httpd, conf files, log, lock files etc.
-  if missing path, they will point to wrong path, so I have to use: 
-  $ <strong>whereis, which, type</strong> 
-  to find the right location.
-  <p>This is not the worst. While I tried to add a 3rd-module as a php extension, the Ambiguous environments prevent it from working. I encountered some problems and when googled, I found the solutions are scattered and incomplete, so here I summarised what I did to make it successfully work from a very basic installed CentOS 6.2 server.</p>
-  <h4>Get CentOS version</h4>
-Because 3rd application needs Linux version supports, so first we need to find out CentOS server version, using the following commands:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">$ cat /etc/redhat-release
-$ cat /etc/issue
-CentOS release 6.2 (Final)
-//or:
-$ rpm -q centos-release
-centos-release-6-2.el6.centos.7.x86_64</code></pre>
-  <h4>Some potential issues</h4>
- problems: xampp's application are 32-bit LSB environments, which CentOS are 64-bits. It doesn't matter 32-bit xampp can work in 64-bit CentOS. But 64-bit 3rd pacakge can not work in 32-bit xmp PHP environment.
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">$ file /opt/lampp/bin/php
-php: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.2.0, stripped
+  <h4>CentOS 6.2: Install mongoDB server and PHP mongo extension</h4>
+mongoDB:
+A good reference is <a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-redhat-centos-or-fedora-linux/" title="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-redhat-centos-or-fedora-linux/">here</a>.
+The following are steps:
 
-$ file /usr/bin/php
-php: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.18, stripped</code></pre>
-  So do for other commands. 32-bit and 64-bit shared dynamic objects are not Compatible, so the package runned by /opt/lampp/bin/php *<strong>CAN NOT</strong>* compatible with /usr/sbin/php environment.
-  <p>Since the server has very basic installation, I had to install the development tools before the php-extension. </p>
-  The following development tools are needed to build the development environment:
-  1) g++/c++ enivronment(include autoconf, automake, m4, gnulib, libtool etc) which 3rd source codes are need to compile and build.
-  2) php development environment(include phpize, php-config etc) which extends 3rd library into PHP extension.
-
-CentOS has wonderful <strong>yum</strong> for the package management, while Unbuntu has <strong>apt-get</strong>. Here we use <strong>yum</strong> to install system development environment:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;"> $ yum grouplist
-1. for ./configure, make, automake, autoconf.
-$ sudo yum groupinstall 'Development tools'
-
-2. forphpize, php-chkconfigÐèÒªÖ®¡£
-$ sudo yum install php-devel</code></pre>
-That's it.
-  <h4>General steps for 3rd open sources installation</h4>
-  After setup the environment, it's time to install 3rd open-source PHP-extension. Suppose the library is called <strong>demo</strong>, Here I list the common steps to do so:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">//1. download sources:
-$ wget demo.tar.bz2
-$ tar xvjf demo.tar.bz2
-$ cd demo
-
-//2. compile and make install
-$ ./configure --prefix=...; make; sudo make install
-
-//3. Here we generate .so, .la files. Then add the libaray as php extension:
-$ cd php-extension
-
-//4. make sure the path of phpize and php-config are correct, not confusion
-$ whereis phpize; which php-config
-
-//5. make sure 'phpize', 'php-config' are in the right path.
-$ phpize
-$./configure --with-demo=... --with-php-config=`which php-config`
-$ make; make test; sudo make install</code></pre>
-  The key is to distinguish different pacakges in a single server, not to confuse with each other:<br />
-  <strong>Which php, phpize, php-config are you using?</strong> You can do some extra work in <strong>$HOME/.bash_profile</strong>, <strong>.bashrc</strong> to set PATH, and also make sure what files are in what directory.<br />
-  In order to avoid 2 or more versions of web-server and database-server running in the same CentOS server,
-the following files might be required to change:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">/etc/httpd/conf/httpd.conf
-/etc/php.ini
-/etc/my.cnf
+1) $ sudo vi /etc/yum.repos.d/10gen.repo:
+  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">[10gen]
+name=10gen Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
+gpgcheck=0
+enabled=1
 </code></pre>
+
+2) <strong>$ yum install mongo-10gen mongo-10gen-server</strong>
+
+3) <strong>/etc/mongod.conf, /etcrc.d/init.d/mongod</strong>
+
+<strong>$ sudo service mongod start/restart/stop</strong>
+
+<strong>$ sudo chkconfig mongod on</strong>
+ 
+4) This MongoDB instance will store its data files in the /var/lib/mongo and its log files in /var/log/mongo, 
+and run using the mongod user account.
+
+
+5) 
+$ sudo pecl install mongo
+
+$ sudo vi /etc/php.ini:
+  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">[mongo]
+extension=mongo.so
+</code></pre>
+
+$ sudo service httpd restart
+
+6) vi test_mongo.php:
+  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">
+&lt;php
+$m = new Mongo();
+print_r($m);
+and return:
+Mongo Object
+(
+    [connected] => 1
+    [status] => 
+    [server:protected] => 
+    [persistent:protected] => 
+)
+?></code></pre>
+
+Now a new mongo cache system is ready to use.
 </div>

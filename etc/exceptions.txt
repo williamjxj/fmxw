@@ -1,0 +1,4 @@
+// mmseg -b exceptions.txt
+.net => dotnet
+c# => csharp
+c++ => cplusplus

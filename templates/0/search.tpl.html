@@ -84,19 +84,21 @@
             source : function(typeahead, query) {
                 if (query.length == 0)
                     return false;
-                $.ajax({
-                    url : 'keys_search.php',
-                    type : 'GET',
-                    data : 'q=' + query,
-                    dataType : 'JSON',
-                    async : false,
-                    cache : false,
-                    beforeSend : function() {
-                    },
-                    success : function(data) {
-                        typeahead.process(data);
-                    }
-                });
+				setTimeout(function() {
+					$.ajax({
+						url : 'keys_search.php',
+						type : 'GET',
+						data : 'q=' + query,
+						dataType : 'JSON',
+						async : false,
+						cache : false,
+						beforeSend : function() {
+						},
+						success : function(data) {
+							typeahead.process(data);
+						}
+					});
+				}, 600);
             }
         });
     }); 

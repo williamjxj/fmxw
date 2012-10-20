@@ -3,30 +3,42 @@
  * etc/目录下有两个sphinxapi，一个是from sphinx2.0.5, 一个是from coreseek,用coreseek的！
  */
 defined('ROOT') or define('ROOT', './');
-require_once(ROOT . 'etc/sphinxapi_coreseek.php');
+require_once(ROOT . 'etc/coreseek.php');
 
+/**
+ * 这里用继承，而不是创建新目标。
+ */
 class FMXW_Sphinx extends SphinxClient
 {
-	var $conf = array(), $db, $now, $dwmy, $st;
+	var $conf, $db, $now, $dwmy, $st, $q, $h;
 	function __construct() {
+	    
 		parent::SphinxClient();
+		
 		$this->conf = $this->get_config();
 		$this->db = $this->mysql_connect_fmxw();
 		// Some variables which are used throughout the script
 		$this->now = time();
 		$this->dwmy = $this->get_dwmy();
 		$this->st = $this->get_sort();
+        //存储每次的查询词。
+        $this->q = '';
+        //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
+        $this->h = array();
 
+        // 如果不设置，date()等时间函数调用时，就会warning.
 		$timezone = "Asia/Shanghai";
-		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
+		if(function_exists('date_default_timezone_set'))
+            date_default_timezone_set($timezone);
 	}
 
+    //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
 	function get_config() {
 		return $conf = array(
 			'coreseek' => array(
 				'host' => 'localhost',
 				'port' => 9313,
-				'index' => "contents",
+				'index' => "contents increment",
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'sphinx' => array(
@@ -36,10 +48,10 @@ class FMXW_Sphinx extends SphinxClient
 				'query' => 'SELECT * from contents where cid in ($ids)',
 			),
 			'mysql' => array(
-				'host' => "localhost:3563",
+				'host' => "localhost",
 				'username' => "fmxw",
 				'password' => "fmxw123456",
-				'database' => "fmxw",
+				'database' => "dixi",
 			),
 			'page' => array(
 				#can use 'excerpt' to highlight using the query, or 'asis' to show description as is.
@@ -66,7 +78,8 @@ class FMXW_Sphinx extends SphinxClient
 	}
 	function set_coreseek_server()
 	{
-		$this->SetServer($this->conf['coreseek']['host'], $this->conf['coreseek']['port']);		
+		$this->SetServer($this->conf['coreseek']['host'], $this->conf['coreseek']['port']);
+        //以下是缺省设置，后面将会动态调整。
 		$this->SetMatchMode( SPH_MATCH_EXTENDED2 );
 		$this->SetSortMode( SPH_SORT_RELEVANCE );
 		//$this->SetConnectTimeout ( 3 ); $this->SetArrayResult ( true );
@@ -74,19 +87,23 @@ class FMXW_Sphinx extends SphinxClient
 	function set_sphinx_server()
 	{
 		$this->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
+        //以下是缺省设置，后面将会动态调整。
 		$this->SetMatchMode ( SPH_MATCH_EXTENDED2 );
 		$this->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
 	}
 
+    // 日，周，月，年有多少秒？
 	function get_dwmy() {
 		return array('d'=>'86400', 'w'=>'604800', 'm'=>'2678400', 'y'=>'31536000');
 	}
+    // 升序还是降序？
 	function get_sort() {
 		return array('d' => 'DESC', 'a' => 'ASC');
 	}
 	
-    function get_matchmode($mode) {
-        switch($mode){
+    // 由用户的查询模式<select>选择菜单，来决定查询模式。有关联性，所以不一定准确，仅仅试验。
+    function get_matchmode1($how) {
+        switch($how){
         case "ext2":
             $this->SetMatchMode(SPH_MATCH_EXTENDED2);
             break;
@@ -100,6 +117,7 @@ class FMXW_Sphinx extends SphinxClient
             $this->SetMatchMode(SPH_MATCH_ALL);
             break;
         case "exact":
+            //全字准确匹配
             $this->SetMatchMode(SPH_MATCH_PHRASE);
             break;
         case "bool":
@@ -111,12 +129,28 @@ class FMXW_Sphinx extends SphinxClient
         }
         return $mode;
     }
-
+    /**
+     * http://www.shroomery.org/forums/dosearch.php.txt
+     * 在这两个函数之间切换，看看效果。
+     * $this-h['key']不变，$this->变化。
+     */
+    function get_matchmode($how)
+    {
+        $this->SetMatchMode(SPH_MATCH_EXTENDED2);
+        $this->q = $how == 'bool' ? 
+            $this->h['key'] : preg_replace('/[\s\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]+/', ' ', $this->h['key']);
+        if ($how == 'any') {
+            $this->q = preg_replace("\s+", '|', $this->q);
+        } else if ($how == 'exact'){
+            $this->q = "\"$this->q\"";  
+        }        
+    }
 	/**
 	 * http://www.coreseek.cn/docs/coreseek_4.1-sphinx_2.0.1-beta.html#api-func-setfieldweights
 	 * SPH_SORT_RELEVANCE忽略任何附加的参数，永远按相关度评分排序。所有其余的模式都要求额外的排序子句，
-	 */
-	function get_sortmode($sort)
+     *  由用户的查询模式<select>选择菜单，来决定查询模式。有关联性，所以不一定准确，仅仅试验。
+     */
+	function get_sortmode1($sort)
 	{
         switch($sort){
         case "r":
@@ -125,34 +159,55 @@ class FMXW_Sphinx extends SphinxClient
             break;
         case "d":
 			//按照发布时间倒序排列获取的结果:attribute DESC, @weight DESC, @id ASC
-            $this->SetSortMode (SPH_SORT_ATTR_DESC, "pubdate");
+			//pubdate是varchar,所以用created(timestamp)
+            $this->SetSortMode (SPH_SORT_ATTR_DESC, "created");
 			//在SPH_SORT_TIME_SEGMENTS模式中，属性值被分割成“时间段”，然后先按时间段排序，再按相关度排序。 
-			$this->SetSortMode (SPH_SORT_TIME_SEGMENTS, "pubdate");
+			$this->SetSortMode (SPH_SORT_TIME_SEGMENTS, "created");
             break;
         case "s":
             $this->SetSortMode (SPH_SORT_EXTENDED, 'title, @weight DESC, @id DESC');
             break;
-        case "u":
+        case "g":
             $this->SetSortMode (SPH_SORT_EXTENDED, 'guanzhu DESC, @weight DESC, @id DESC');
             break;
-        case "v":
+        case "c":
             $this->SetSortMode (SPH_SORT_EXTENDED, 'clicks DESC, @weight DESC, @id DESC');
             break;
         case "p":
             $this->SetSortMode (SPH_SORT_EXTENDED, 'pinglun DESC, @rank DESC, @id DESC');
             break;
-        case "w":
+        case "t":
             $this->SetSortMode (SPH_SORT_EXTENDED, 'tags, @relevance DESC, @id DESC');
             break;
 		default:
 			$this->SetSortMode(SPH_SORT_RELEVANCE);
 		}
 	}
-	
-    function get_parse() {
+    function get_sortmode($sort)
+    {           
+        $sortfields  = array(
+            'r' => '@weight', 
+            'd' => 'pubdate', 
+            's' => 'title', 
+            'g' => 'guanzhu', 
+            'c' => 'clicks', 
+            'p'=>'pinglun', 
+            't'=>'tags'
+        );
+        $sphway = "{$sortfields[$sort]} {$this->st[$this->h['way']]},
+		@id {$this->st[$this->h['way']]}";
+		// @weight DESC, @id DESC
+        $this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
+        // $this->__p($sphway);
+    }
+    
+    //当<form>提交时执行, 输入参数存入$_SESSION和object中.
+    function get_parse() 
+    {
+        $_SESSION[PACKAGE][SEARCH]['key'] = $this->q = trim($_POST['key']);
+
         $h = array();
-        $q = mysql_real_escape_string($_POST['key']);
-        $_SESSION[PACKAGE][SEARCH]['key'] = $h['key'] = $q;
+        $h['key']        = $_POST['key'] ? trim($_POST['key']): '';
         $h['cate_id']    = $_POST['category'] ? intval($_POST['category']) : 0;
         $h['item_id']    = $_POST['item'] ? intval($_POST['item']) : 0;
         $h['how']        = $_POST['how'];        // 'all', 'any', 'exact' or 'boolean'
@@ -163,38 +218,45 @@ class FMXW_Sphinx extends SphinxClient
         $h['oldertype']  = $_POST['oldertype'];  // d(ay), w(eek), m(onth) or y(ear)
         $h['limit']      = intval($_POST['limit']);      // # of results
         $h['sort']       = $_POST['sort'];       // (r)elevance, (d)ate, (f)orum, (s)ubject or (u)sername
-        $h['way']        = $_POST['way'];        // (a)sc or (d)esc
-		
-		/* 将结果保存在SESSION中，以便翻页时调用*/
-        $_SESSION[PACKAGE][CS] = $h;
+        $h['way']        = $_POST['way'];        // (a)sc or (d)esc		
+
+		$this->h = $h;
         return $h;
     }
 	
+    //解析输入参数.
 	function set_filter()
 	{
-		if(empty($_SESSION[PACKAGE][CS])) {
-			echo "Impossible!!! Lost information at " . __FILE__ . ", " . __LINE__;
-			return;
-		}
-	    $h = $_SESSION[PACKAGE][CS];
+	    //这样做就是为了简单, 操作起来方便,也便于阅读.
+	    $h = $this->h;
 
+        //(.) 处理时间范围,如果用户选择,就设置属性范围 SetFilterRange()
 		if(!empty($h['olderval'])) {
-			$max = $this->now - $h['olderval'] * ($this->dwmy[$h['oldertype']]);
-			//echo "max-------[". $max."]". date("D, d M Y", $max) . "<br>\n";
+			$max = $this->now - $h['olderval'] * $this->dwmy[$h['oldertype']];
+			//echo "max[". $max."]". date("D, d M Y", $max) . "<br>\n";
 			$this->SetFilterRange('created', 0, $max);
 		}
 		if(!empty($h['newerval'])) {
-			$min = $this->now - $h['newerval'] * ($this->dwmy[$h['newertype']]);
-			//echo "min-------[". $min."], [". $this->now."]". date("D, d M Y", $min).", ".date("D, d M Y", $this->now)."<br>\n";			
+			$min = $this->now - $h['newerval'] * $this->dwmy[$h['newertype']];
+			//echo "min[". $min."], [". $this->now."]". date("D, d M Y", $min).", ".date("D, d M Y", $this->now)."<br>\n";			
 			$this->SetFilterRange('created', $min, $this->now);
 		}
+        
+        //(.) SetMatchMode(SPH_MATCH_EXTENDED2) 
         $this->get_matchmode($h['how']);
 		
-		// Search by subject only, or both body and subject?
-		$h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
+		//(.) 'sc','subject','content'
+        // $h['weights'] = $h['where'] == 'subject' ? array('title' => 1) : array('title' => 11, 'content' => 10);
+        // $this->q = "@(".implode(',', array_keys($h['weights'])).") $this->q";
+        // $this->SetFieldWeights($h['weights']);
 
-		$h['key'] = "@(".join(',', array_keys($h['weights'])).") " . $h['key'];
-		$this->SetFieldWeights($h['weights']);
+		if ($h['where'] == 'subject' && $this->h['key']){
+			$this->q = "@title $this->q";
+			$weightsum = 1;
+		} else {
+			$this->SetFieldWeights(array('title' => 11, 'content' => 10));
+			$weightsum = 21;
+		}
 
 		/**
 		 * http://www.php.net/manual/en/sphinxclient.setfilter.php
@@ -208,19 +270,29 @@ class FMXW_Sphinx extends SphinxClient
 		}
 
 		//排序模式
-		$sortfields  = array('r' => '@weight', 'd' => 'pubdate', 's' => 'title', 'u' => 'guanzhu', 'v' => 'clicks', 'p'=>'pinglun', 'w'=>'tags');
-		$sphway = "{$sortfields[$h['sort']]} {$this->st[$h['way']]}, @id {$this->st[$h['way']]}";
-
-		//echo "<pre>"; print_r($sphway); echo "</pre>"; //@weight DESC, @id DESC
-		$this->SetSortMode(SPH_SORT_EXTENDED, $sphway);
+		$this->get_sortmode($h['sort']);
 		
-		//SetRankingMode （设置评分模式）
-		//SPH_RANK_PROXIMITY_BM25: 默认模式，同时使用词组评分和BM25评分，并且将二者结合。
-		// SPH_RANK_WORDCOUNT, 根据关键词出现次数排序。这个排序器计算每个字段中关键字的出现次数，然后把计数与字段的权重相乘，最后将积求和，作为最终结果。 
-		$this->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+        if(empty($h['key'])) {
+            $this->SetRankingMode(SPH_RANK_NONE);
+        }
+        else {
+            //SetRankingMode （设置评分模式）
+            //SPH_RANK_PROXIMITY_BM25: 默认模式，同时使用词组评分和BM25评分，并且将二者结合。
+            // SPH_RANK_WORDCOUNT, 根据关键词出现次数排序。这个排序器计算每个字段中关键字的出现次数，然后把计数与字段的权重相乘，最后将积求和，作为最终结果。 
+            $this->SetRankingMode(SPH_RANK_PROXIMITY_BM25);            
+        }
 		
+        // 每页显示多少条记录？
+        if(empty($h['limit']) || ($h['limit']>100)) $h['limit'] = $this->conf['page']['size'];
+        
 		//结果分组（聚类）
-		if(!empty$h['weights']) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
+		// if(!empty($h['weights'])) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
+		if ($weightsum) $h['weights'] = $weightsum;
+        
+        /* 将结果保存在SESSION中，以便翻页时调用*/
+        $_SESSION[PACKAGE][CS] = $h;
+        $_SESSION[PACKAGE][CS]['q'] = $this->q;
+		return $h;
 	}
 
 	function get_categories() {
@@ -299,10 +371,10 @@ class FMXW_Sphinx extends SphinxClient
             <option value="r">相关性</option>
             <option value="d">日期</option>
             <option value="s">主题</option>
-            <option value="u">关注</option>
-            <option value="v">点击数</option>
+            <option value="g">关注</option>
+            <option value="c">点击数</option>
             <option value="p">回复</option>
-            <option value="w">标签</option>
+            <option value="t">标签</option>
           </select></td>
         <td><label class="alert" for="way">排序:</label></td>
         <td align="right"><select name="way" id="way">
@@ -483,7 +555,7 @@ $(window).load(function() {
 		}
 		
 		if ($endr < $numberOfPages+1)
-			$r .= " ...... ";			
+			$r .= " .... ";			
 
 		if ($numberOfPages > $currentPage)
 			$r .= "<li><a href=\"".$this->linktoself(array('page'=>$currentPage+1))."$postfix\"$extrahtml>next &gt;&gt;</a></li>";	
@@ -523,6 +595,25 @@ $(window).load(function() {
   <p><?php echo $results;?></p>
 </div>
 <?php	
+	}
+
+	function pretty_print($result)
+	{
+		// query OK, pretty-print the result set
+		// begin with general statistics
+		$got = count ( $result["matches"] );
+		print "Query matched $result[total_found] documents total.<br>\n";
+		print "Showing matches 1 to $got of $result[total] accessible.<br>\n";
+
+		// print out matches themselves now
+		$n = 1;
+		foreach ( $result["matches"] as $match ) {
+			// print number, document ID, and weight
+			print "$n. id=$match[id], weight=$match[weight], <br>\n";
+			$n++;
+			// print group_id attribute value
+			print "group_id=$match[attrs][group_id]<br>\n";
+		}
 	}
 
 }
