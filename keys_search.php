@@ -32,35 +32,47 @@ if(!empty($_GET['q'])) {
 	$cursor = $collection->find(array('key'=> $regex));
 	//$cursor = $collection->find( { key : /^Alex/i } );
 	//$cursor = $collection->find( { key : { $regext: '^Alex', $options: 'i' } } );
-
 	foreach($cursor as $c) {
 		array_push($ary, iconv('UTF-8', 'UTF-8//TRANSLIT', $c{'key'}));
 	}
 	//如果是an empty array，接着查询MySQL->dixi->keywords表， 否则返回结果。
-	if(!empty($ary) {
-		echo json_encode($a);
+	if(!empty($ary)) {
+		echo json_encode($ary);
 		return;
 	}
 	else {
 		// Twitter Bootstrap - Typeahead Plugin with MySQL.
-		// William Jiang on Aug 09, 2012.
+		//echo "William Jiang on Aug 09, 2012.\n";
 
 		$db = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
 		mysql_select_db('dixi', $db);
 		mysql_query("SET NAMES 'utf8'", $db);
 			
-		$query = "select keyword from keywords where keyword like '%" . $q . "%' order by kid";
+		$query = "select keyword from keywords where keyword like '%" . $q . "%' order by keyword";
+		//$query = "select keyword from keywords where keyword like '%" . $q . "%' order by kid";
 	
-		$res = $mdb2->query($query);	
-		if (PEAR::isError($res)) die($res->getMessage());
-		while($row = $res->fetchRow()) {
-			$ary[] = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
-			
-			//将取得的结果放入MongoDB的search表中，以后就可以直接从MongoDB中获得
-			$obj = array( "key" => $row[0], "count" => 1 );
-			$collection->insert($obj);
+		$res = mysql_query($query) or mysql_error();
+
+		if(mysql_num_rows($res)>0) {
+			while($row = mysql_fetch_array($res, MYSQL_NUM)) {
+				$ary[] = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
+				$cursor = $collection->find(array('key'=>$q));
+				$it = iterator_to_array($cursor);
+				// Objects with no properties are no longer considered empty. if(empty($cursor)) not work.
+				if(empty($it)) {
+					//将取得的结果放入MongoDB的search表中，以后就可以直接从MongoDB中获得
+					$obj = array( 'key' => $row[0], 'count' => 1 );
+					$collection->insert($obj);
+				}
+				else {
+					// foreach($cursor as $c) print_r($c);
+					//$connection->update(array('key'=>$q), array('$set'=>array('count'=>'+1')));
+				}
+			}
+			echo json_encode($ary);
 		}
-		echo json_encode($ary);
+		else
+			echo "[]"; //null json object:
 	}
 }
 /*else {
