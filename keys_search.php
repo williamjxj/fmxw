@@ -2,6 +2,11 @@
 /** http://stackoverflow.com/questions/4115366/whats-the-best-way-to-implement-autocomplete-in-the-server
  * I recommend using setTimeout() to wait for about 200ms before firing the ajax call. If in that 200ms, another keystroke is triggered, 
  * then cancel the last timeout and start another one. This is a really clean solution where it wouldn't hit the db with each keystroke. I have used it in the past and it works really well.
+ * /etc/mongod.conf, 27017, /var/lib/mongo, /var/run/mongodb/mongod.pod, /var/log/mongo/mongod.log
+ * 1. Mongo: a connection bwtween PHP and MOngoDb.
+ * 2. MongoDB: Instances of this class are used to interact with a database. 数据库一层的操作。
+ * 3. MongoCollection: Representations a database collection. 表一层的操作。 
+ * 4. MongoCursor: A cursor is used to iterate through the results of a database query. 
  */
 session_start();
 
