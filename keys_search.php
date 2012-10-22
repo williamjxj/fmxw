@@ -12,10 +12,9 @@ session_start();
  */
 try {
 	// connect mongoDB server: localhost:27017
-	$connection = new Mongo();
+	$m = new Mongo();
 	// select a database
-	//$db = $connection->words_lib;
-	$db = $connection->words_lib;
+	$db = $m->words_lib;
 }
 catch ( MongoConnectionException $e ) {
     die('<p>Couldn\'t connect to mongodb, is the "mongoD" process running?</p>');
@@ -28,12 +27,18 @@ $collection = $db->search;
 if(!empty($_GET['q'])) {
 
 	$q = trim($_GET['q']);
+
 	$regex = new MongoRegex("/$q/i");
 	$cursor = $collection->find(array('key'=> $regex));
-	//$cursor = $collection->find( { key : /^Alex/i } );
-	//$cursor = $collection->find( { key : { $regext: '^Alex', $options: 'i' } } );
-	foreach($cursor as $c) {
-		array_push($ary, iconv('UTF-8', 'UTF-8//TRANSLIT', $c{'key'}));
+	//$cursor = $collection->find( { key : /^Alex/i } ); //({ key : { $regext: '^Alex', $options: 'i'}});
+
+	$it = iterator_to_array($cursor);
+	if(! empty($it)) {
+		$count = 1;
+		foreach($cursor as $c) {
+			array_push($ary, iconv('UTF-8', 'UTF-8//TRANSLIT', $c{'key'}));
+			if( ++$count > 10) break;
+		}
 	}
 	//如果是an empty array，接着查询MySQL->dixi->keywords表， 否则返回结果。
 	if(!empty($ary)) {
@@ -42,41 +47,62 @@ if(!empty($_GET['q'])) {
 	}
 	else {
 		// Twitter Bootstrap - Typeahead Plugin with MySQL.
-		//echo "William Jiang on Aug 09, 2012.\n";
+		// echo "William Jiang on Aug 09, Oct2l, 2012.\n";
 
-		$db = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
-		mysql_select_db('dixi', $db);
-		mysql_query("SET NAMES 'utf8'", $db);
-			
-		$query = "select keyword from keywords where keyword like '%" . $q . "%' order by keyword";
-		//$query = "select keyword from keywords where keyword like '%" . $q . "%' order by kid";
-	
-		$res = mysql_query($query) or mysql_error();
+		$mysql = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
+		mysql_select_db('dixi', $mysql);
+		mysql_query("SET NAMES 'utf8'", $mysql);
 
-		if(mysql_num_rows($res)>0) {
-			while($row = mysql_fetch_array($res, MYSQL_NUM)) {
-				$ary[] = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
-				$cursor = $collection->find(array('key'=>$q));
-				$it = iterator_to_array($cursor);
-				// Objects with no properties are no longer considered empty. if(empty($cursor)) not work.
-				if(empty($it)) {
-					//将取得的结果放入MongoDB的search表中，以后就可以直接从MongoDB中获得
-					$obj = array( 'key' => $row[0], 'count' => 1 );
-					$collection->insert($obj);
-				}
-				else {
-					// foreach($cursor as $c) print_r($c);
-					//$connection->update(array('key'=>$q), array('$set'=>array('count'=>'+1')));
-				}
-			}
-			echo json_encode($ary);
-		}
-		else
-			echo "[]"; //null json object:
+		// 1. keywords
+		$query1 = "select keyword from keywords where keyword like '%" . $q . "%' order by keyword";
+		array_push_array($ary, mysql2mongo($collection, $query1));
+
+		// 2. key_related
+		$query2 = "select rk from key_related where keyword like '%" . $q . "%' order by rk";
+		array_push_array($ary, mysql2mongo($collection, $query2));
+
+		echo json_encode($ary);
 	}
 }
 /*else {
 	echo "输入的字符没有被识别。";
 }*/
+
+function mysql2mongo($c, $sql)
+{
+	$a = array();
+	$res = mysql_query($sql) or mysql_error();
+	if(mysql_num_rows($res)>0) {
+		while($row = mysql_fetch_array($res, MYSQL_NUM)) {
+			$t = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
+			$a[] = $t;
+			//将取得的结果放入MongoDB的search表中，以后就可以直接从MongoDB中获得
+			$obj = array( 'key' => $t, 'count' => 1 );
+			$c->insert($obj);
+		}
+	}
+	return $a;
+}
+function array_push_array(&$arr) {
+	$args = func_get_args();
+	array_shift($args);
+
+	if (!is_array($arr)) {
+		trigger_error(sprintf("%s: Cannot perform push on something that isn't an array!", __FUNCTION__), E_USER_WARNING);
+		return false;
+	}
+
+	foreach($args as $v) {
+		if (is_array($v)) {
+			if (count($v) > 0) {
+				array_unshift($v, &$arr);
+				call_user_func_array('array_push',  $v);
+			}
+		} else {
+			$arr[] = $v;
+		}
+	}
+	return count($arr);
+}
 
 ?>
