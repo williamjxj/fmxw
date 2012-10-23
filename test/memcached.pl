@@ -13,15 +13,12 @@ my $memd = new Cache::Memcached {
 	],
 };
 
-$memd->set("my_key", "Some value");
-$memd->set("object_key", { 'complex' => [ "object", 2, 4 ]});
+my $keyword = $memd->get("keyword");
+print Dumper($keyword);
 
-my $val = $memd->get("key1");
-print $val . "<br>\n";
-$val = $memd->get("object_key");
-if ($val) { print $val->{'complex'}->[2]; }
+my $include = $memd->get("include");
+print Dumper($include);
 
-$memd->incr("key");
-$memd->decr("key");
-$memd->incr("key", 2);
+my $exclude = $memd->get("exclude");
+print Dumper($exclude);
 
