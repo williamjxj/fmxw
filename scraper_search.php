@@ -21,8 +21,8 @@ function backend_scrape($key)
 	$got = $m->get($key); //utf8_encode();mb_detect_encoding();
 
 	if (empty($got)) {
-		if($m->getResultCode() == Memcached::RES_NOTFOUND) echo "没有设置<br>\n";
-		else echo "设置了，但是无法得到信息。[". $key . "]<br>\n";
+		//if($m->getResultCode() == Memcached::RES_NOTFOUND) echo "没有设置<br>\n";
+		//else echo "设置了，但是无法得到信息。[". $key . "]<br>\n";
 		$got = $m->get('default');
 	}
 
@@ -43,7 +43,7 @@ function backend_scrape($key)
 	}
     //这样比较整齐.
 	$search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
-	echo "<pre>"; print_r($got); print_r($ary); echo $search_key; echo "</pre>";
+	//echo "<pre>"; print_r($got); print_r($ary); echo $search_key; echo "</pre>";
 
 	$slog = "/tmp/scraper.log";
     $sdir = "/home/williamjxj/scraper/";
@@ -55,9 +55,9 @@ function backend_scrape($key)
 	);	
 	// exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
 	foreach ($scrapers as $s) {  
-		$t = "nohup " . $s . "  '" . $search_key . "' >" . $slog . " 2>&1 ";
-		echo $t . "<br>\n";
-		// exec($t);
+		$t = "nohup " . $s . "  '" . $search_key . "' >>" . $slog . " 2>&1 ";
+		//echo $t . "<br>\n";
+		exec($t);
 	}
 }
 ?>
