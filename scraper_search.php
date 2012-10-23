@@ -38,7 +38,7 @@ function backend_scrape($key)
 		$ary = array(
 			'key' => $key,
 			'include' => implode(' ', $got[0]),
-			'exclude' => implode(' ', $got[1]),
+			'exclude' => '-' . implode(' -', $got[1]),
 		);
 	}
     //这样比较整齐.
