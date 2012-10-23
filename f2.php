@@ -29,13 +29,11 @@ elseif (isset($_POST['q'])) {
     $obj -> assign("pagination", $pagination);
     $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
     $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
-    if (!empty($key)) {
-        exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
-        // exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
-        exec("nohup /home/williamjxj/scraper/google/gg.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
-        exec("nohup /home/williamjxj/scraper/yahoo/yahoo.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
-        exec("nohup /home/williamjxj/scraper/qq/soso.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
-    }
+
+    require_once('scraper_search.php');
+    backend_scrape($key);
+    return;
+    
 } elseif (isset($_GET['page'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
     $pagination = $obj -> draw();

@@ -1,8 +1,8 @@
 <?php
 function backend_scrape($key)
 {
+    $key = $key or $_SESSION[PACKAGE][SEARCH]['key'];
 	if (empty($key)) return;
-	$key = $key or $_SESSION[PACKAGE][SEARCH]['key'];
 
 	/*
 	$pattern = '//i';
@@ -13,7 +13,7 @@ function backend_scrape($key)
 		
 	//存放需要查询的关键词，和它的相关信息，并将它们生成一个字符串。
 	$ary = array();
-	// 如果Memcached 不存在，就生成实例。
+	//如果Memcached 不存在，就生成实例。
 	$m = new Memcached(); //memcached
 	$m->addServer('localhost', 11211);
 
@@ -26,31 +26,33 @@ function backend_scrape($key)
 		$got = $m->get('default');
 	}
 
+    //如果'default'也是空，memcached server reset或者stop了，就需要临时赋值。
 	if(empty($got)) {
 		$ary = array(
 			'key' => $key,
-			'include' => '+ 丑闻 最新负面新闻 曝光',
-			'exclude' => '- 优质 健康 营养 美味',
+			'include' => '丑闻 最新负面新闻 曝光',
+			'exclude' => '-优质 -健康 -营养 -美味',
 		);
 	}
 	else {
 		$ary = array(
-			'key' => implode(' ', $got['keyword']),
-			'include' => implode(' ', $got['include']),
-			'exclude' => implode(' ', $got['exclude']),
+			'key' => $key,
+			'include' => implode(' ', $got[0]),
+			'exclude' => implode(' ', $got[1]),
 		);
 	}
+    //这样比较整齐.
 	$search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
 	echo "<pre>"; print_r($got); print_r($ary); echo $search_key; echo "</pre>";
 
 	$slog = "/tmp/scraper.log";
+    $sdir = "/home/williamjxj/scraper/";
 	$scrapers = array(
-		'/home/williamjxj/scraper/baidu/search.pl',
-		'/home/williamjxj/scraper/google/gg.pl',
-		'/home/williamjxj/scraper/yahoo/yahoo.pl',
-		'/home/williamjxj/scraper/qq/soso.pl'
-	);
-	
+		$sdir.'baidu/search.pl',
+		$sdir.'google/gg.pl',
+		$sdir.'yahoo/yahoo.pl',
+		$sdir.'qq/soso.pl'
+	);	
 	// exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
 	foreach ($scrapers as $s) {  
 		$t = "nohup " . $s . "  '" . $search_key . "' >" . $slog . " 2>&1 ";
