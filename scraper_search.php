@@ -44,7 +44,7 @@ function backend_scrape($key)
 	echo "<pre>"; print_r($got); print_r($ary); echo $search_key; echo "</pre>";
 
 	$slog = "/tmp/scraper.log";
-	$scrapers = array
+	$scrapers = array(
 		'/home/williamjxj/scraper/baidu/search.pl',
 		'/home/williamjxj/scraper/google/gg.pl',
 		'/home/williamjxj/scraper/yahoo/yahoo.pl',
@@ -53,7 +53,7 @@ function backend_scrape($key)
 	
 	// exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
 	foreach ($scrapers as $s) {  
-		$t = "nohup " . $s . "'" . $search_key . "' >" . $slog . " 2>&1 ";
+		$t = "nohup " . $s . "  '" . $search_key . "' >" . $slog . " 2>&1 ";
 		echo $t . "<br>\n";
 		// exec($t);
 	}
