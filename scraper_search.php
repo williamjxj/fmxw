@@ -38,7 +38,7 @@ function backend_scrape($key)
 		$ary = array(
 			'key' => $key,
 			'include' => implode(' ', $got[0]),
-			'exclude' => implode(' ', $got[1]),
+			'exclude' => '-' . implode(' -', $got[1]),
 		);
 	}
     //这样比较整齐.
@@ -55,9 +55,9 @@ function backend_scrape($key)
 	);	
 	// exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
 	foreach ($scrapers as $s) {  
-		$t = "nohup " . $s . "  '" . $search_key . "' >" . $slog . " 2>&1 ";
+		$t = "nohup " . $s . "  '" . $search_key . "' >>" . $slog . " 2>&1 ";
 		echo $t . "<br>\n";
-		// exec($t);
+		exec($t);
 	}
 }
 ?>
