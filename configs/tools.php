@@ -22,4 +22,51 @@ function __p($vars) {
 	else
 		echo $vars . "<br>\n";
 }
+
+//访问IP统计
+function ip_block() 
+{
+	$m = new Memcached();
+	$m->addServer('localhost', 11211);
+	
+	do {
+		/* fetch IP list and its token */
+		$ips = $m->get('ip_block', null, $cas);
+		/* if list doesn't exist yet, create it and do
+		   an atomic add which will fail if someone else already added it */
+		if ($m->getResultCode() == Memcached::RES_NOTFOUND) {
+			$ips = array($_SERVER['REMOTE_ADDR']);
+			$m->add('ip_block', $ips);
+		/* otherwise, add IP to the list and store via compare-and-swap
+		   with the token, which will fail if someone else updated the list */
+		} else { 
+			$ips[] = $_SERVER['REMOTE_ADDR'];
+			$m->cas($cas, 'ip_block', $ips);
+		}   
+	} while ($m->getResultCode() != Memcached::RES_SUCCESS);
+}
+
+//注册用户控制
+function user_store()
+{
+	$m = new Memcached();
+	$m->addServer('localhost', 11211); //maybe other memcached server.
+	
+	do {
+		$users = $m->get('user_list', null, $cas);
+		if ($m->getResultCode() == Memcached::RES_NOTFOUND) {
+			$users = array($_SESSION[PACAKGE]['username']);
+			$m->add('user_list', $users);
+		} else { 
+			$users[] = $_SESSION[PACKAGE]['username'];
+			$m->cas($cas, 'user_list', $users);
+		}   
+	} while ($m->getResultCode() != Memcached::RES_SUCCESS);
+}
+
+setlocale(LC_ALL, 'zh_CN');
+//If you are looking for a getlocale() function simply pass 0 (zero) as the second parameter to setlocale().
+echo setlocale(LC_ALL, 0);
+
+
 ?>
