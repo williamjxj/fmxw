@@ -29,12 +29,8 @@ elseif (isset($_POST['q'])) {
     $obj -> assign("pagination", $pagination);
     $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
     $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
-
-    require_once('scraper_search.php');
-    backend_scrape($key);
-    // return; too slow.
-    
-} elseif (isset($_GET['page'])) {
+}
+elseif (isset($_GET['page'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
@@ -84,4 +80,10 @@ $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 $obj -> display($tdir2 . 'index.tpl.html');
+
+if (isset($_POST['q'])) {
+    require_once(ROOT.'scraper_search.php');
+    backend_scrape($key);
+    // return; too slow.
+}
 ?>
