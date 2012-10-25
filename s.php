@@ -25,6 +25,27 @@ if (isset($_POST['js_form'])) {
     $obj -> get_parse();
     $obj -> set_filter();
 } else {
+elseif (isset($_POST['q'])) {
+	//$obj -> assign('ss_template', $tdir1 . 'ss.tpl.html');
+    if (isset($_SESSION[PACKAGE][SEARCH]))
+        unset($_SESSION[PACKAGE][SEARCH]);
+    $key = trim($_POST['q']);
+    $obj -> assign('results', $obj -> select_contents_by_keyword($key));
+    $pagination = $obj -> draw();
+    $obj -> assign("pagination", $pagination);
+    $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
+	$obj -> assign('kr', $obj->get_key_related($key));
+	$obj -> assign('config', $config);
+		
+	$obj -> assign('_th', $obj -> get_header_label($header));
+	$obj -> assign('_tf', $obj -> get_footer_label($footer));
+	
+	$obj -> assign('sitemap', $obj -> get_sitemap());
+	$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
+	
+	$obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
+	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
+
 	$obj->display($tdir1 . 'ss.tpl.html');
 
     die('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOORRRRRRRRRRRRRRRRR');
