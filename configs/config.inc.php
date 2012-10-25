@@ -22,7 +22,8 @@ if (!isset($config)) {
   $config = array(
     'debug' => true, 
     'home' => HOME, 
-    'base' => ROOT, 
+    'base' => ROOT,
+	'search' => 's.php',
     'header' => array(
         'lang' => 'zh_CN', 
         'charset' => 'UTF-8', 
