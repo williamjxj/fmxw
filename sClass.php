@@ -8,6 +8,7 @@ class FMXW_Sphinx extends f12Class
 	function __construct() {
 	    parent::__construct();
 		$this->cl = new SphinxClient();
+		$this -> mdb2 = $this -> pear_connect_admin();
 		
 		$this->conf = $this->get_config();
 		$this->db = $this->mysql_connect_fmxw();

@@ -6,6 +6,13 @@ define("ROOT", "./");
 defined('CS') or define('CS', 'coreseek_sphinx');
 require_once (ROOT . "configs/config.inc.php");
 global $config;
+
+require_once (ROOT . "locales/f0.inc.php");
+global $header;
+global $search;
+global $list;
+global $footer;
+
 require_once (ROOT . 'sClass.php');
 set_lang();
 
@@ -25,11 +32,9 @@ if (isset($_POST['js_form'])) {
     $obj -> get_parse();
     $obj -> set_filter();
 } else {
-elseif (isset($_POST['q'])) {
-	//$obj -> assign('ss_template', $tdir1 . 'ss.tpl.html');
     if (isset($_SESSION[PACKAGE][SEARCH]))
         unset($_SESSION[PACKAGE][SEARCH]);
-    $key = trim($_POST['q']);
+    $key = trim($_GET['q']);
     $obj -> assign('results', $obj -> select_contents_by_keyword($key));
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
@@ -154,7 +159,7 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-if (isset($_POST['q'])) {
+if (isset($_GET['q'])) {
     $obj -> display($tdir1 . 'ss.tpl.html');
 } else {
     $obj -> display($tdir1 . 'index.tpl.html');
