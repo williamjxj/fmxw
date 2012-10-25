@@ -3,7 +3,6 @@
 session_start();
 error_reporting(E_ALL);
 define("ROOT", "./");
-defined('CS') or define('CS', 'coreseek_sphinx');
 require_once (ROOT . "configs/config.inc.php");
 global $config;
 
@@ -28,37 +27,14 @@ $obj -> set_coreseek_server();
 
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2']);
 
-if (isset($_POST['js_form'])) {
-    $obj -> get_parse();
+if (isset($_GET['q'])) {
+    if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+    $key = $q = trim($_GET['q']);
     $obj -> set_filter();
-} else {
-    if (isset($_SESSION[PACKAGE][SEARCH]))
-        unset($_SESSION[PACKAGE][SEARCH]);
-    $key = trim($_GET['q']);
-    $obj -> assign('results', $obj -> select_contents_by_keyword($key));
-    $pagination = $obj -> draw();
-    $obj -> assign("pagination", $pagination);
-    $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
-	$obj -> assign('kr', $obj->get_key_related($key));
-	$obj -> assign('config', $config);
-		
-	$obj -> assign('_th', $obj -> get_header_label($header));
-	$obj -> assign('_tf', $obj -> get_footer_label($footer));
-	
-	$obj -> assign('sitemap', $obj -> get_sitemap());
-	$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
-	
-	$obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
-	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
-
-	$obj->display($tdir1 . 'ss.tpl.html');
-
+}
+else {
     die('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOORRRRRRRRRRRRRRRRR');
 }
-
-$h = $_SESSION[PACKAGE][CS];
-$q = $_SESSION[PACKAGE][CS]['q'];
-$q1 = $_SESSION[PACKAGE][CS]['key'];
 
 // 设置当前页和开始的记录号码。
 //empty()= !isset($var) || $var == false.
@@ -70,14 +46,15 @@ if (empty($_GET['page'])) {
     if (empty($currentPage) || $currentPage < 1) {$currentPage = 1;
     }
 
-    $currentOffset = ($currentPage - 1) * $obj -> conf['page']['size'];
+    $currentOffset = ($currentPage - 1) * $obj -> conf['page']['limit'];
 
-    if ($currentOffset > ($obj -> conf['page']['max_matches'] - $obj -> conf['page']['size'])) {
+    if ($currentOffset > ($obj -> conf['page']['max_matches'] - $obj ->
+	conf['page']['limit'])) {
         die("Only the first {$obj->conf['page']['max_matches']} results accessible");
     }
 }
 
-$obj -> cl -> SetLimits($currentOffset, $h['limit']);
+$obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 //current page and number of results
 
 /** 开始查询Coreseek-Sphinx索引，并得到相关信息。
@@ -89,7 +66,7 @@ $obj -> cl -> SetArrayResult(true);
 //created, pubdate, tags, pinglun, guanzhu, clicks, createdby, language, iid, cate_id
 // $obj->cl->SetGroupBy('pubdate', SPH_GROUPBY_MONTH, "@group DESC");
 //$obj->cl->SetGroupBy ('cate_id', SPH_GROUPBY_ATTR, "@count desc");
-$obj -> SetGroupBy('clicks', SPH_GROUPBY_ATTR);
+$obj -> cl->SetGroupBy('clicks', SPH_GROUPBY_ATTR);
 //$obj->cl->SetGroupBy ('guanzhu', SPH_GROUPBY_ATTR, "@count desc");
 //$obj->cl->SetGroupBy ('pinglun', SPH_GROUPBY_ATTR, "@count desc");
 
@@ -109,9 +86,12 @@ if (empty($res["matches"])) {
 }
 
 $resultCount = $res['total_found'];
-$numberOfPages = ceil($res['total'] / $obj -> conf['page']['size']);
+$numberOfPages = ceil($res['total'] / $obj -> conf['page']['limit']);
 //Query 'test' retrieved 25 of 2617 matches in 0.000 sec.
-$query_info = "查询词：【" . $q . "】， 用时【" . $res['time'] . "】秒，匹配数【" . $res['total'] . "】, 总共【" . $res['total_found'] . "】条记录, 共【" . $numberOfPages . "】页，每页【" . $obj -> conf['page']['size'] . "】记录<br>\n";
+$query_info = "查询词：【" . $q . "】， 用时【" . $res['time'] .
+"】秒，匹配数【" . $res['total'] . "】, 总共【" .
+$res['total_found'] . "】条记录, 共【" . $numberOfPages .
+"】页，每页【" . $obj -> conf['page']['limit'] . "】记录<br>\n";
 
 $obj -> display_summary($query_info);
 
@@ -119,11 +99,12 @@ $ids1 = array_keys($res['matches']);
 $ids = implode(",", $ids1);
 
 $matches = $res['matches'];
+$weights = 10;
 
 // $obj->__p($res);
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
-// $max_weight = (array_sum($h['weights']) * count($res['words']) + 1) * 1000;
-$max_weight = (array_sum(array($h['weights'])) * count($res['words']) + 1) * 1000;
+// $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
+$max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
 
 $query = "SELECT * from contents where cid in (" . $ids . ")";
 // $query = $obj->conf['coreseek']['query'];
@@ -151,13 +132,26 @@ foreach ($ids1 as $c => $id) {
 //$obj->__p($docs);
 $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
 //echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
-//$obj->__p($reply);
+// $obj->__p($reply);
+
+
+$obj -> assign('results', $obj -> select_contents_by_keyword($key));
+$pagination = $obj -> draw();
+$obj -> assign("pagination", $pagination);
+$obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
+$obj -> assign('kr', $obj->get_key_related($key));
+$obj -> assign('config', $config);
+	
+$obj -> assign('_th', $obj -> get_header_label($header));
+$obj -> assign('_tf', $obj -> get_footer_label($footer));
 
 $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
+
+$obj->display($tdir1 . 'ss.tpl.html');
 
 if (isset($_GET['q'])) {
     $obj -> display($tdir1 . 'ss.tpl.html');

@@ -62,7 +62,7 @@ class FMXW_Sphinx extends f12Class
 				'database' => "dixi",
 			),
 			'page' => array(
-				'size' => 25,
+				'limit' => 25,
 				'max_matches' => 1000,
 			)
 		);
@@ -123,25 +123,22 @@ class FMXW_Sphinx extends f12Class
 		}
 
 		//排序模式
-		$this->get_sortmode($h['sort']);
+		// $this->get_sortmode($h['sort']);
 		
         if(empty($h['key'])) {
-            $this->SetRankingMode(SPH_RANK_NONE);
+            $this->cl->SetRankingMode(SPH_RANK_NONE);
         }
         else {
-            $this->SetRankingMode(SPH_RANK_PROXIMITY_BM25);            
+            $this->cl->SetRankingMode(SPH_RANK_PROXIMITY_BM25);            
         }
 		
         // 每页显示多少条记录？
-        if(empty($h['limit']) || ($h['limit']>100)) $h['limit'] = $this->conf['page']['size'];
+        if(empty($h['limit']) || ($h['limit']>100)) $h['limit'] =
+		$this->conf['page']['limit'];
         
 		//结果分组（聚类）
-		// if(!empty($h['weights'])) $_SESSION[PACKAGE][CS]['weights'] = $h['weights'];
-		if ($weightsum) $h['weights'] = $weightsum;
         
         /* 将结果保存在SESSION中，以便翻页时调用*/
-        $_SESSION[PACKAGE][CS] = $h;
-        $_SESSION[PACKAGE][CS]['q'] = $this->q;
 		return $h;
 	}
 
