@@ -7,7 +7,7 @@ class FMXW_Sphinx extends f12Class
 {
 	var $conf, $db, $now, $dwmy, $st, $q, $h;
 	function __construct() {
-	    
+	    parent::__construct();
 		$this->cl = new SphinxClient();
 		
 		$this->conf = $this->get_config();
