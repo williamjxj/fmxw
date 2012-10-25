@@ -1,5 +1,4 @@
 <?php
-defined('ROOT') or define('ROOT', './');
 require_once(ROOT . 'etc/coreseek.php');
 require_once(ROOT . 'f12Class.php');
 
@@ -21,13 +20,9 @@ class FMXW_Sphinx extends f12Class
         //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
         $this->h = array();
 
-        // 如果不设置，date()等时间函数调用时，就会warning.
-		$timezone = "Asia/Shanghai";
-		if(function_exists('date_default_timezone_set')) {
-			//能不能根据IP判断？
-			$_SESSION['timezone'] = $timezone;
-            date_default_timezone_set($_SESSION['timezone']);
-		}
+        $this -> lang = $_SESSION[PACKAGE]['language'];
+        $this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
+
 	}
 
 	// 加入 MongoDB 和 Memcached。
@@ -73,6 +68,7 @@ class FMXW_Sphinx extends f12Class
 		);
 	}
 	// 参看:/etc/my.cnf
+	//这里我用了overwrite,应为想用不同的用户来建立链接，提高访问性能。
 	function mysql_connect_fmxw()
 	{
 		$db = mysql_pconnect($this->conf['mysql']['host'], $this->conf['mysql']['username'], $this->conf['mysql']['password']) or die(mysql_error());
