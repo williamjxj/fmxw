@@ -18,10 +18,15 @@ $obj -> set_coreseek_server();
 //$obj->set_sphinx_server();
 //header("Content-Type: text/html; charset=utf-8");
 
+list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],
+$config['t2']);
+
 if (isset($_POST['js_form'])) {
     $obj -> get_parse();
     $obj -> set_filter();
 } else {
+	$obj->display($tdir1 . 'ss.tpl.html');
+
     die('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOORRRRRRRRRRRRRRRRR');
 }
 

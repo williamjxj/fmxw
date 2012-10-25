@@ -65,8 +65,8 @@
         $('#new_search').click(function(e) {
             e.preventDefault();
             form = document.getElementById('sf');
-            form.action = '{$config.f1.s}';
-            form.method = 'post';
+            form.action = 's.php'; //'{$config.f1.s}';
+            form.method = 'get';
             form.submit();
             return false;
         });
