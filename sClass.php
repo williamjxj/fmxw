@@ -5,7 +5,7 @@ require_once(ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class
 {
-	var $conf, $db, $now, $dwmy, $st, $q, $h;
+	var $conf, $db, $now, $dwmy, $st, $q, $h, $cl;
 	function __construct() {
 	    parent::__construct();
 		$this->cl = new SphinxClient();
@@ -20,14 +20,6 @@ class FMXW_Sphinx extends f12Class
         $this->q = '';
         //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
         $this->h = array();
-
-        // 如果不设置，date()等时间函数调用时，就会warning.
-		$timezone = "Asia/Shanghai";
-		if(function_exists('date_default_timezone_set')) {
-			//能不能根据IP判断？
-			$_SESSION['timezone'] = $timezone;
-            date_default_timezone_set($_SESSION['timezone']);
-		}
 	}
 
 	// 加入 MongoDB 和 Memcached。
