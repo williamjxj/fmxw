@@ -1,5 +1,4 @@
 <?php
-defined('ROOT') or define('ROOT', './');
 require_once(ROOT . 'etc/coreseek.php');
 require_once(ROOT . 'f12Class.php');
 
@@ -20,6 +19,9 @@ class FMXW_Sphinx extends f12Class
         $this->q = '';
         //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
         $this->h = array();
+
+        $this -> lang = $_SESSION[PACKAGE]['language'];
+        $this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
 	}
 
 	// 加入 MongoDB 和 Memcached。
@@ -65,6 +67,7 @@ class FMXW_Sphinx extends f12Class
 		);
 	}
 	// 参看:/etc/my.cnf
+	//这里我用了overwrite,应为想用不同的用户来建立链接，提高访问性能。
 	function mysql_connect_fmxw()
 	{
 		$db = mysql_pconnect($this->conf['mysql']['host'], $this->conf['mysql']['username'], $this->conf['mysql']['password']) or die(mysql_error());

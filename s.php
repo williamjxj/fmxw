@@ -6,7 +6,7 @@ define("ROOT", "./");
 defined('CS') or define('CS', 'coreseek_sphinx');
 require_once (ROOT . "configs/config.inc.php");
 global $config;
-require_once (ROOT . 'adsearchClass.php');
+require_once (ROOT . 'sClass.php');
 set_lang();
 
 try {
@@ -19,8 +19,7 @@ $obj -> set_coreseek_server();
 //$obj->set_sphinx_server();
 //header("Content-Type: text/html; charset=utf-8");
 
-list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],
-$config['t2']);
+list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2']);
 
 if (isset($_POST['js_form'])) {
     $obj -> get_parse();
