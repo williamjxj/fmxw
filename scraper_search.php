@@ -54,10 +54,17 @@ function backend_scrape($key)
 		$sdir.'qq/soso.pl'
 	);	
 	// exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
-	foreach ($scrapers as $s) {  
-		$t = "nohup " . $s . "  '" . $search_key . "' >>" . $slog . " 2>&1 ";
+	//foreach ($scrapers as $s) {  
+	//	$t = "nohup " . $s . "  '" . $search_key . "' >>" . $slog . " 2>&1 ";
 		//echo $t . "<br>\n";
-		exec($t);
-	}
+	//	exec($t);
+	//}
+	
+    defined('NP_BAIDU') or define('NP_BAIDU', '/home/williamjxj/pipes/.baidu');
+    
+    $pipe = fopen(NP_BAIDU, 'r+');
+    fwrite($pipe, $s);
+    fclose($pipe);
+
 }
 ?>

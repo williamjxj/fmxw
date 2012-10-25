@@ -24,10 +24,9 @@ class f12Class extends BaseClass
         $_SESSION[PACKAGE][SEARCH]['total_pages'] = $total_pages;
 
         //第一页：
-        $page = 1;
-        $_SESSION[PACKAGE][SEARCH]['page'] = $page;
+        $_SESSION[PACKAGE][SEARCH]['page'] = 1;
 
-        //当前从第几条记录开始显示�?
+        //当前从第几条记录开始显示?
         $row_no = 0;
 
         //生成新的查询语句�?
