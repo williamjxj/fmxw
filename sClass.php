@@ -180,7 +180,7 @@ class FMXW_Sphinx extends f12Class
 		
 		//如果找到这个关键词，直接用。
 		//如果没有找到这个关键词，就尽量match它。
-		$got = $m->findOne(array('key'=>$key);
+		$got = $m->findOne(array('key'=>$key));
 		if(! $got) {
 			$regex = new MongoRegex("/$key/i");
 			$cursor = $m->find(array('key'=> $regex));
