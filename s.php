@@ -106,8 +106,6 @@ if (empty($res["matches"])) {
     return;
 }
 
-$obj -> display_summary($query_info);
-
 $obj->set_session($res);
 
 //SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
