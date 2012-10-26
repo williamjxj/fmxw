@@ -31,8 +31,7 @@ if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
     $key = $q = $_SESSION[PACKAGE][SEARCH]['key'] = trim($_GET['q']);
 	
-	$ary = $obj->keywords($key);
-	$obj->__p($ary);
+	$obj->set_keywords($key);
     $obj -> set_filter();
 }
 else {
@@ -44,15 +43,16 @@ else {
 if (empty($_GET['page'])) {
     $currentPage = 1;
     $currentOffset = 0;
-} else {
+}
+else {
     $currentPage = intval($_GET['page']);
-    if (empty($currentPage) || $currentPage < 1) {$currentPage = 1;
+    if (empty($currentPage) || $currentPage < 1) {
+		$currentPage = 1;
     }
 
     $currentOffset = ($currentPage - 1) * $obj -> conf['page']['limit'];
 
-    if ($currentOffset > ($obj -> conf['page']['max_matches'] - $obj ->
-	conf['page']['limit'])) {
+    if ($currentOffset > ($obj->conf['page']['max_matches'] - $obj->conf['page']['limit'])) {
         die("Only the first {$obj->conf['page']['max_matches']} results accessible");
     }
 }
@@ -66,12 +66,7 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 $obj -> cl -> SetArrayResult(true);
 
-//created, pubdate, tags, pinglun, guanzhu, clicks, createdby, language, iid, cate_id
-// $obj->cl->SetGroupBy('pubdate', SPH_GROUPBY_MONTH, "@group DESC");
-//$obj->cl->SetGroupBy ('cate_id', SPH_GROUPBY_ATTR, "@count desc");
 $obj -> cl->SetGroupBy('clicks', SPH_GROUPBY_ATTR);
-//$obj->cl->SetGroupBy ('guanzhu', SPH_GROUPBY_ATTR, "@count desc");
-//$obj->cl->SetGroupBy ('pinglun', SPH_GROUPBY_ATTR, "@count desc");
 
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
@@ -98,19 +93,23 @@ $res['total_found'] . "】条记录, 共【" . $numberOfPages .
 
 $obj -> display_summary($query_info);
 
-$ids1 = array_keys($res['matches']);
-$ids = implode(",", $ids1);
+//SetArrayResult(true), $ary_ids = array_keys($res['matches']);
+$ary_ids = array_map("get_SetArrayResult_Ids", $res['matches']);
+$ids = implode(",", $ary_ids);
+$matchs = array();
+foreach($res['matches'] as $v) {
+	$matches[$v['id']] = $v['weight'];
+}
+//$obj->__p($matches);
+$weights = array('title'=>11, 'content'=>10);
 
-$matches = $res['matches'];
-$weights = 10;
-
-// $obj->__p($res);
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
 // $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 $max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
 
 $query = "SELECT * from contents where cid in (" . $ids . ")";
 //$query = $obj->conf['coreseek']['query'];
+echo $query . "<br>\n";
 
 $res = mysql_query($query);
 
@@ -121,20 +120,37 @@ if (mysql_num_rows($res) <= 0) {
 }
 
 $rows = array();
-while ($row = mysql_fetch_assoc($res, MYSQL_ASSOC)) {
+while ($row = mysql_fetch_array($res)) {
     $row['relevance'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100);
     $rows[$row['cid']] = $row;
 }
 
 //Call Sphinxes BuildExcerpts function
 $docs = array();
-foreach ($ids1 as $c => $id) {
+foreach ($ary_ids as $c => $id) {
     $docs[$c] = strip_tags($rows[$id]['content']);
 }
-//echo "<br>-------[".$q."],[".$q1."]----------<br>\n";
-$obj->__p($docs);
-$reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
+//$obj->__p($docs);
+//$obj->__p($obj->conf['coreseek']['index']);
+//$obj->__p($q);
+
+$newd = $obj->my_process($docs);
+// $obj->__p($newd);
+
+$reply = $obj -> cl -> BuildExcerpts($newd, $obj -> conf['coreseek']['index'], $q);
 echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
+
+if (!$reply) {
+	echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br>\n";
+	$newb = array();
+	foreach($newd as $d) {
+		$d1 = mb_substr($d, 0, 60);
+		echo "==========[".$d1 ."]<br>\n";
+		$newb[] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
+	}
+	$obj->__p($newb);
+}
+echo "----------------------------------================================<br>\n";
 $obj->__p($reply);
 
 exit;
@@ -161,5 +177,9 @@ if (isset($_GET['q'])) {
     $obj -> display($tdir1 . 'ss.tpl.html');
 } else {
     $obj -> display($tdir1 . 'index.tpl.html');
+}
+
+function get_SetArrayResult_Ids($a) {
+	return $a['id'];
 }
 ?>

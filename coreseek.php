@@ -107,7 +107,7 @@ $cl->display_summary($query_info);
 
 $ids1 = array_keys($res['matches']);
 $ids = implode(",", $ids1);
-
+//echo "<pre>"; print_r($res); echo "</pre>";
 $matches = $res['matches'];
 
 if(!empty($res['words']))
@@ -141,6 +141,7 @@ if(mysql_num_rows($res) > 0) {
 		//$cl->__p($docs);
 		$reply = $cl->BuildExcerpts($docs, $cl->conf['coreseek']['index'], $q);
 		//$cl->__p($reply);
+		//if(! $reply)  echo "WHY??????????????????????????<br>\n";
 	}
 	
 	if ($numberOfPages > 1 && $currentPage > 1) {

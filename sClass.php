@@ -4,7 +4,7 @@ require_once(ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class
 {
-	var $conf, $db, $now, $dwmy, $st, $q, $h, $cl;
+	var $conf, $db, $now, $dwmy, $st, $q, $h, $cl, $m;
 	function __construct() {
 	    parent::__construct();
 		$this->cl = new SphinxClient();
@@ -13,6 +13,8 @@ class FMXW_Sphinx extends f12Class
 		$this->conf = $this->get_config();
 		$this->db = $this->mysql_connect_fmxw();
 		// Some variables which are used throughout the script
+		$this->m = $this->get_mongo();
+		$this->memd = $this->get_memcached();
 		$this->now = time();
 		$this->dwmy = $this->get_dwmy();
 		$this->st = $this->get_sort();
@@ -31,24 +33,34 @@ class FMXW_Sphinx extends f12Class
 		$m = new Mongo();
 		$db = $m->search_lib;
 		$c = $db->keywords;
-		$this->mc = $c;
+		return $c;
 	}
 	// 连接到localhost:11211
 	function get_memcached() {
 		$memd = new Memcached();
 		$memd->addServer('localhost', 11211);
-		$this->memd = $memd;
+		return $memd;
 	}
 	
 	//不要插入keyword和tags表了，代替用
+	// not work: array("upsert" => true)
 	function set_keywords($key)
 	{
-		$this->m->update(
-			array('q'=>$key),
-			array('$inc'=>array('count'=>1), 'date'=>new MongoDate()),
-			array("upsert" => true)
-		);
-		return $this->m->findOne(array('q' => $key);
+		if(empty($key)) return;
+		$matched = $this->m->findOne(array('q'=>$key));
+		if (empty($matched)) {
+			$this->m->insert(array('q'=>$key, 'count'=>1, 'date'=>new MongoDate()));
+		}
+		else {
+			// quicker than 'q'?
+			$id = (string)$matched['_id'];
+			$this->m->update(
+				array('_id'=>new MongoId($id)),
+				array('$inc'=>array('count'=>1), '$set'=>array('date'=>new MongoDate())),
+				array('upsert'=>true)
+			);
+		}
+		return $this->m->findOne(array('q' => $key));
 	}
 	
     //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
@@ -147,6 +159,8 @@ class FMXW_Sphinx extends f12Class
         if(empty($h['limit']) || ($h['limit']>100)) $h['limit'] =
 		$this->conf['page']['limit'];
         
+		$this->cl->SetFieldWeights(array('title'=>11, 'content'=>10));
+
 		//结果分组（聚类）
         
         /* 将结果保存在SESSION中，以便翻页时调用*/
@@ -238,5 +252,29 @@ class FMXW_Sphinx extends f12Class
 <?php
     }
 
-    }
+	function mb_highlight($data, $query, $ins_before, $ins_after)
+	{
+		$result = '';
+		while (($poz = mb_strpos(mb_strtolower($data), mb_strtolower($query))) !== false)
+		{
+			$query_len = mb_strlen ($query);
+			$result .= mb_substr ($data, 0, $poz).  $ins_before.  mb_substr ($data, $poz, $query_len).  $ins_after;
+			$data = mb_substr ($data, $poz+$query_len);
+		}
+		if (empty($result)) $result = $data; //no keywords.
+		return $result;
+	}
+	function my_process($docs)
+	{
+		$newd = array();
+		foreach($docs as $str) {
+			$t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
+			$t = preg_replace("/^\s+/s", '', $t); //remove  leading space/lines.
+			$t = preg_replace("/\s+$/s", '', $t); //remove  leading space/lines.
+			$t = preg_replace("/&nbsp;/s", ' ', $t); //remove  leading space/lines.
+			$newd[] = trim($t);
+		}
+		return $newd;
+	}
+}
 ?>
