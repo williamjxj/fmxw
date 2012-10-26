@@ -60,20 +60,23 @@ class FMXW_Sphinx extends f12Class
 				array('upsert'=>true)
 			);
 		}
-		return $this->m->findOne(array('q' => $key));
+		//return $this->m->findOne(array('q' => $key));
 	}
 
     //以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
     function get_key_related($q) {
-        $sql = "select rid, rk, kurl from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
+        $sql = "select rid, rk from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
         }
-        $this->__p($res);
-        //foreach($res as $v) {
-          //  $this->m->insert(array($v));
-        //}
+        foreach($res as $v) {
+            $this->m->update(
+				array('key' => $v{'rk'}),
+				array('$inc'=>array('count'=>1), '$set'=>array('date'=>new MongoDate())),
+				array('upsert'=>true)
+			);
+        }
         return $res;
     }
 
@@ -211,7 +214,7 @@ class FMXW_Sphinx extends f12Class
 		//存放需要查询的关键词，和它的相关信息，并将它们生成一个字符串。
 		$ary = array();
 		//如果Memcached 不存在，就生成实例。
-		$m = $this->mc;
+		$m = $this->m;
 		
 		//如果找到这个关键词，直接用。
 		//如果没有找到这个关键词，就尽量match它。
@@ -284,14 +287,23 @@ class FMXW_Sphinx extends f12Class
 		if (empty($result)) $result = $data; //no keywords.
 		return $result;
 	}
+	function my_strip($str)
+	{
+		$t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
+		$t = preg_replace("/^\s+/s", '', $t); //remove leading space/lines.
+		$t = preg_replace("/\s+$/s", '', $t); //remove tail space/lines.
+		$t = preg_replace("/&nbsp;/s", ' ', $t);
+		return $t;
+	}
+	// Not use anymore.
 	function my_process($docs)
 	{
 		$newd = array();
 		foreach($docs as $str) {
 			$t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
-			$t = preg_replace("/^\s+/s", '', $t); //remove  leading space/lines.
-			$t = preg_replace("/\s+$/s", '', $t); //remove  leading space/lines.
-			$t = preg_replace("/&nbsp;/s", ' ', $t); //remove  leading space/lines.
+			$t = preg_replace("/^\s+/s", '', $t); //remove leading space/lines.
+			$t = preg_replace("/\s+$/g", '', $t); //remove tail space/lines.
+			$t = preg_replace("/&nbsp;/s", ' ', $t);
 			$newd[] = trim($t);
 		}
 		return $newd;
