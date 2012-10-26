@@ -29,7 +29,7 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2'])
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
-    $key = $q = $_SESSION[PACKAGE][SEARCH]['key'] = trim($_GET['q']);
+    $key = $q = empty($_GET['q']) ? '' : trim($_GET['q']);
 	
 	$obj->set_keywords($key);
     $obj -> set_filter();
@@ -86,12 +86,14 @@ if (empty($res["matches"])) {
 $resultCount = $res['total_found'];
 $numberOfPages = ceil($res['total'] / $obj -> conf['page']['limit']);
 //Query 'test' retrieved 25 of 2617 matches in 0.000 sec.
-$query_info = "查询词：【" . $q . "】， 用时【" . $res['time'] .
+$query_info = "查询词：【" . $q . "】， 用时约【" . $res['time'] .
 "】秒，匹配数【" . $res['total'] . "】, 总共【" .
 $res['total_found'] . "】条记录, 共【" . $numberOfPages .
 "】页，每页【" . $obj -> conf['page']['limit'] . "】记录<br>\n";
 
 $obj -> display_summary($query_info);
+
+$obj->session($res);
 
 //SetArrayResult(true), $ary_ids = array_keys($res['matches']);
 $ary_ids = array_map("get_SetArrayResult_Ids", $res['matches']);
@@ -107,20 +109,19 @@ $weights = array('title'=>11, 'content'=>10);
 // $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 $max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
 
-$query = "SELECT * from contents where cid in (" . $ids . ")";
-//$query = $obj->conf['coreseek']['query'];
+$query = $obj->generate_sql($ids);
 echo $query . "<br>\n";
 
 $res = mysql_query($query);
 
 if (mysql_num_rows($res) <= 0) {
-    $summary = "查询 【" . $q . "】 没有发现匹配结果。";
+    $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒";
     $obj -> display_summary($summary);
     return;
 }
 
 $rows = array();
-while ($row = mysql_fetch_array($res)) {
+while ($row = mysql_fetch_assoc($res)) {
     $row['relevance'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100);
     $rows[$row['cid']] = $row;
 }
@@ -130,34 +131,27 @@ $docs = array();
 foreach ($ary_ids as $c => $id) {
     $docs[$c] = strip_tags($rows[$id]['content']);
 }
-//$obj->__p($docs);
-//$obj->__p($obj->conf['coreseek']['index']);
-//$obj->__p($q);
 
 $newd = $obj->my_process($docs);
 // $obj->__p($newd);
 
+//BuildExcerpts没有成功.
 $reply = $obj -> cl -> BuildExcerpts($newd, $obj -> conf['coreseek']['index'], $q);
-echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
-
+//只好在手动做一遍。
 if (! $reply) {
 	$newb = array();
 	foreach($newd as $d) {
 		$d1 = mb_substr($d, 0, 60);
-		echo "==========[".$d1 ."]<br>\n";
 		$newb[] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
 	}
 	$obj->__p($newb);
 }
-echo "----------------------------------================================<br>\n";
-$obj->__p($reply);
 
-exit;
+$obj -> assign('results', $obj -> select_contents_by_keyword($key));
 
-/* $obj -> assign('results', $obj -> select_contents_by_keyword($key)); */
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
-$obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
+$obj -> assign("nav_template", $tdir1 . 'nav.tpl.html');	
 $obj -> assign('kr', $obj->get_key_related($key));
 $obj -> assign('config', $config);
 	
@@ -172,17 +166,13 @@ $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 $obj->display($tdir1 . 'ss.tpl.html');
 
-if (isset($_GET['q'])) {
-    $obj -> display($tdir1 . 'ss.tpl.html');
-} else {
-    $obj -> display($tdir1 . 'index.tpl.html');
-}
+$obj -> display($tdir1 . 'ss.tpl.html');
 
 $obj->backend_scrape($_GET['q']);
 
 exit;
 
-
+//array_map()的callback回调函数。
 function get_SetArrayResult_Ids($a) {
 	return $a['id'];
 }

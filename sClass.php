@@ -62,7 +62,21 @@ class FMXW_Sphinx extends f12Class
 		}
 		return $this->m->findOne(array('q' => $key));
 	}
-	
+
+    //以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
+    function get_key_related($q) {
+        $sql = "select rid, rk, kurl from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
+        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        $this->__p($res);
+        //foreach($res as $v) {
+          //  $this->m->insert(array($v));
+        //}
+        return $res;
+    }
+
     //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
 	function get_config() {
 		return $conf = array(
@@ -168,21 +182,26 @@ class FMXW_Sphinx extends f12Class
 	}
 
 	//error, warning, status, fields+attrs, matches, total, total_found, time, words
-	function get_res($res) 
+	function set_session($res) 
 	{
-		return array(
-			'total' => $res['total'],
-			'total_found' => $res['total_found'],
-			'time' => $res['time'],
-			'ids' => array_keys($res['matches']),
-		);
-		$total = $res['total'];
-		$total_pages = ceil($total / ROWS_PER_PAGE);
-		$_SESSION[PACKAGE][SEARCH]['total'] = $total;
-		$_SESSION[PACKAGE][SEARCH]['total_pages'] = $total_pages;				
-		$_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];				
-		$_SESSION[PACKAGE][SEARCH]['time'] = $$res['time'];	
-			
+		//根据 Sphinx Query返回的结果填充SESSION,该SESSION存于memcached中。
+		$_SESSION[PACKAGE][SEARCH]['key'] = empty($_GET['q']) ? '所有记录' : trim($_GET['q']);
+		$_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
+		$_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
+		$_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
+		$_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
+		$_SESSION[PACKAGE][SEARCH]['page'] = 1;
+	}
+    
+	function generate_sql($ids)
+	{
+        $lang_case = " and language = '" . $this -> lang . "' ";
+        //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc";
+        //$sql .= " limit  " . $row_no . "," . ROWS_PER_PAGE;
+        
+        $sql = "select cid, title, content, date(created) as date  from contents where cid in (" . $ids . ")";
+        $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;
+        return $sql;
 	}
 	
 	function backend_scrape($key)
