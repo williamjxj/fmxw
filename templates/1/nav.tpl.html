@@ -15,7 +15,7 @@
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
   <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?cid={$rts.cid}&js_get_content=1">{$rts.title} -<i>{$rts.date}</i></a>({$rts.r})<br />
-  {$rts.c}</li>
+  {$rts.content}</li>
   {/foreach}
 </ul>
 

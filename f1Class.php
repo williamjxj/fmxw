@@ -138,7 +138,7 @@ class f1Class extends f12Class {
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
             die($res -> getMessage());
-		if ($res[0]['category']) {
+		if (!empty($res[0]['category'])) {
 			$_SESSION[PACKAGE][SEARCH]['key'] = $res[0]['category'];
 			//array_push($_SESSION[PACKAGE][SEARCH], array('key' => $res[0]['category']));
 			//$this->__p($_SESSION);

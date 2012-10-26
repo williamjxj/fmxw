@@ -93,11 +93,10 @@ $res['total_found'] . "】条记录, 共【" . $numberOfPages .
 
 $obj -> display_summary($query_info);
 
-$obj->session($res);
+$obj->set_session($res);
 
-//SetArrayResult(true), $ary_ids = array_keys($res['matches']);
+//SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
 $ary_ids = array_map("get_SetArrayResult_Ids", $res['matches']);
-$ids = implode(",", $ary_ids);
 $matchs = array();
 foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
@@ -109,20 +108,21 @@ $weights = array('title'=>11, 'content'=>10);
 // $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 $max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
 
+$ids = implode(",", $ary_ids);
 $query = $obj->generate_sql($ids);
-echo $query . "<br>\n";
+// echo $query . "<br>\n";
 
-$res = mysql_query($query);
+$mres = mysql_query($query);
 
-if (mysql_num_rows($res) <= 0) {
+if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒";
     $obj -> display_summary($summary);
     return;
 }
 
 $rows = array();
-while ($row = mysql_fetch_assoc($res)) {
-    $row['relevance'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100);
+while ($row = mysql_fetch_assoc($mres)) {
+    $row['r'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100); //relevance
     $rows[$row['cid']] = $row;
 }
 
@@ -132,22 +132,23 @@ foreach ($ary_ids as $c => $id) {
     $docs[$c] = strip_tags($rows[$id]['content']);
 }
 
-$newd = $obj->my_process($docs);
-// $obj->__p($newd);
-
 //BuildExcerpts没有成功.
-$reply = $obj -> cl -> BuildExcerpts($newd, $obj -> conf['coreseek']['index'], $q);
+$reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
+
 //只好在手动做一遍。
-if (! $reply) {
-	$newb = array();
-	foreach($newd as $d) {
-		$d1 = mb_substr($d, 0, 60);
-		$newb[] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
+if (empty($reply)) {
+	foreach ($ary_ids as $c => $id) {
+		$d = mb_substr($rows[$id]['content'], 0, 100);
+		$d1 = $obj->my_strip( $d );
+		$rows[$id]['content'] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
 	}
-	$obj->__p($newb);
+}
+else {
+echo "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<br>\n";
+	// foreach($reply as $c=>$d) { }
 }
 
-$obj -> assign('results', $obj -> select_contents_by_keyword($key));
+$obj -> assign('results', $rows);
 
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
@@ -163,8 +164,6 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
-
-$obj->display($tdir1 . 'ss.tpl.html');
 
 $obj -> display($tdir1 . 'ss.tpl.html');
 
