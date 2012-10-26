@@ -30,7 +30,7 @@ class FMXW_Sphinx extends f12Class
 	function get_mongo() {
 		$m = new Mongo();
 		$db = $m->search_lib;
-		$c = $db->search;
+		$c = $db->keywords;
 		$this->mc = $c;
 	}
 	// 连接到localhost:11211
@@ -38,6 +38,17 @@ class FMXW_Sphinx extends f12Class
 		$memd = new Memcached();
 		$memd->addServer('localhost', 11211);
 		$this->memd = $memd;
+	}
+	
+	//不要插入keyword和tags表了，代替用
+	function set_keywords($key)
+	{
+		$this->m->update(
+			array('q'=>$key),
+			array('$inc'=>array('count'=>1), 'date'=>new MongoDate()),
+			array("upsert" => true)
+		);
+		return $this->m->findOne(array('q' => $key);
 	}
 	
     //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
@@ -150,18 +161,16 @@ class FMXW_Sphinx extends f12Class
 			'total_found' => $res['total_found'],
 			'time' => $res['time'],
 			'ids' => array_keys($res['matches']),
-		);		
+		);
+		$total = $res['total'];
+		$total_pages = ceil($total / ROWS_PER_PAGE);
+		$_SESSION[PACKAGE][SEARCH]['total'] = $total;
+		$_SESSION[PACKAGE][SEARCH]['total_pages'] = $total_pages;				
+		$_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];				
+		$_SESSION[PACKAGE][SEARCH]['time'] = $$res['time'];	
+			
 	}
 	
-	function __p($vars, $debug=true)
-	{
-        if (!$debug) return;
-        if (is_array($vars) || is_object($vars)) {
-            echo "<pre>"; print_r($vars); echo "</pre>";
-        } else
-            echo $vars . "<br>\n";
-    }
-
 	function backend_scrape($key)
 	{
 		if (empty($key)) return;

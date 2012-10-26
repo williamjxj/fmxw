@@ -29,7 +29,10 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2'])
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
-    $key = $q = trim($_GET['q']);
+    $key = $q = $_SESSION[PACKAGE][SEARCH]['key'] = trim($_GET['q']);
+	
+	$ary = $obj->keywords($key);
+	$obj->__p($ary);
     $obj -> set_filter();
 }
 else {
@@ -107,7 +110,7 @@ $weights = 10;
 $max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
 
 $query = "SELECT * from contents where cid in (" . $ids . ")";
-// $query = $obj->conf['coreseek']['query'];
+//$query = $obj->conf['coreseek']['query'];
 
 $res = mysql_query($query);
 
@@ -129,13 +132,14 @@ foreach ($ids1 as $c => $id) {
     $docs[$c] = strip_tags($rows[$id]['content']);
 }
 //echo "<br>-------[".$q."],[".$q1."]----------<br>\n";
-//$obj->__p($docs);
+$obj->__p($docs);
 $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
-//echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
-// $obj->__p($reply);
+echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
+$obj->__p($reply);
 
+exit;
 
-$obj -> assign('results', $obj -> select_contents_by_keyword($key));
+/* $obj -> assign('results', $obj -> select_contents_by_keyword($key)); */
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');	
