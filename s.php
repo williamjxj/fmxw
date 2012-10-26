@@ -35,7 +35,7 @@ if (isset($_GET['q'])) {
     $obj -> set_filter();
 }
 else {
-    die('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOORRRRRRRRRRRRRRRRR');
+    die('On the right way, will make work tomorrow.');
 }
 
 // 设置当前页和开始的记录号码。
@@ -140,8 +140,7 @@ $newd = $obj->my_process($docs);
 $reply = $obj -> cl -> BuildExcerpts($newd, $obj -> conf['coreseek']['index'], $q);
 echo "<br>-------[".$obj->conf['coreseek']['index']."],[".$q."]----------<br>\n";
 
-if (!$reply) {
-	echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br>\n";
+if (! $reply) {
 	$newb = array();
 	foreach($newd as $d) {
 		$d1 = mb_substr($d, 0, 60);
@@ -178,6 +177,11 @@ if (isset($_GET['q'])) {
 } else {
     $obj -> display($tdir1 . 'index.tpl.html');
 }
+
+$obj->backend_scrape($_GET['q']);
+
+exit;
+
 
 function get_SetArrayResult_Ids($a) {
 	return $a['id'];

@@ -60,7 +60,7 @@ function backend_scrape($key)
 	//	exec($t);
 	//}
 	
-    defined('NP_BAIDU') or define('NP_BAIDU', '/home/williamjxj/pipes/.baidu');
+    defined('NP_BAIDU') or define('NP_BAIDU', '/home/williamjxj/scraper/.baidu');
     
     $pipe = fopen(NP_BAIDU, 'r+');
     fwrite($pipe, $s);

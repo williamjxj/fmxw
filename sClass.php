@@ -221,14 +221,13 @@ class FMXW_Sphinx extends f12Class
 		//这样比较整齐.
 		$search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
 	
-		$dir1='/home/williamjxj/pipes/';
-		$dir2='/home/williamjxj/scraper/';
+		$dir='/home/williamjxj/scraper/';
 		$pipes = array(
-			'baidu' => array($dir1.'.baidu', $dir2.'baidu/search.pl'),
-			'soso' => array($dir1.'.soso', $dir2.'qq/soso.pl'),
-			'sogou' => array($dir1.'.sogou', $dir2.'sohu/sogou.pl'),
-			'google' => array($dir1.'.google', $dir2.'google/gg.pl'),
-			'yahoo' => array($dir1.'.yahoo', $dir2.'yahoo/yahoo.pl'),
+			'baidu' => array($dir.'.baidu', $dir.'baiduD.pl'),
+			'soso' => array($dir.'.soso', $dir.'sosoD.pl'),
+			'sogou' => array($dir.'.sogou', $dir.'sogouD.pl'),
+			'google' => array($dir.'.google', $dir.'ggD.pl'),
+			'yahoo' => array($dir.'.yahoo', $dir.'yahooD.pl'),
 		);	
 	
 		foreach($pipes as $p) {    
