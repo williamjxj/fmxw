@@ -222,9 +222,17 @@ class FMXW_Sphinx extends f12Class
 
         //如果'default'也是空，memcached server reset或者stop了，就需要临时赋值。
         if (empty($got)) {
-            $ary = array('key' => $key, 'include' => '最新负面新闻 丑闻曝光', 'exclude' => '-(优质 | 健康 | 营养 | 美味)', );
+            $ary = array(
+				'key' => $key, 
+				'include' => '最新负面新闻 丑闻曝光', 
+				'exclude' => '-(优质 | 健康 | 营养 | 美味)', 
+			);
         } else {
-            $ary = array('key' => $key, 'include' => implode(' ', $got[0]), 'exclude' => '-(' . implode(' | ', $got[1]) . ')', );
+            $ary = array(
+				'key' => $key, 
+				'include' => implode(' ', $got[0]), 
+				'exclude' => '-(' . implode(' | ', $got[1]) . ')', 
+			);
         }
         //这样比较整齐.
         $search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
@@ -289,6 +297,7 @@ class FMXW_Sphinx extends f12Class
     }
 
     function mb_highlight($data, $query, $ins_before, $ins_after) {
+		if (empty($query)) return $data;
         $result = '';
         while (($poz = mb_strpos(mb_strtolower($data), mb_strtolower($query))) !== false) {
             $query_len = mb_strlen($query);

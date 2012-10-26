@@ -121,7 +121,12 @@ $weights = array('title'=>11, 'content'=>10);
 
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
 // $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
-$max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
+if(empty($res['words'])) {
+	$max_weight = (array_sum(array($weights)) * count($res) + 1) * 1000;
+}
+else {
+	$max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
+}
 
 $ids = implode(",", $ary_ids);
 $query = $obj->generate_sql($ids);
