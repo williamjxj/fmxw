@@ -34,8 +34,31 @@ if (isset($_GET['q'])) {
 	$obj->set_keywords($key);
     $obj -> set_filter();
 }
+elseif(isset($_GET['js_get_content'])) {
+    $row = $obj->get_content_1($_GET['cid']);
+    $obj->assign('row', $row);
+    $obj->display($tdir2.'single.tpl.html');
+    return;
+} 
+elseif (isset($_GET['page'])) {
+    $obj -> assign('results', $obj -> select_contents_by_page());
+    $pagination = $obj -> draw();
+    $obj -> assign("pagination", $pagination);
+    // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
+    if (isset($_GET['js_page'])) {
+        $obj -> display($tdir2 . 'nav.tpl.html');
+        exit ;
+    } else {
+        echo "stop at: " . __FILE__ . ',' . __LINE__;
+        exit ;
+    }
+} 
+elseif (isset($_GET['test'])) {
+    header('Content-Type: text/html; charset=utf-8');
+}
 else {
-    die('On the right way, will make work tomorrow.');
+	echo "请输入查询词进行查询。";
+	return;
 }
 
 // 设置当前页和开始的记录号码。
@@ -82,14 +105,6 @@ if (empty($res["matches"])) {
     $obj -> display_summary($summary);
     return;
 }
-
-$resultCount = $res['total_found'];
-$numberOfPages = ceil($res['total'] / $obj -> conf['page']['limit']);
-//Query 'test' retrieved 25 of 2617 matches in 0.000 sec.
-$query_info = "查询词：【" . $q . "】， 用时约【" . $res['time'] .
-"】秒，匹配数【" . $res['total'] . "】, 总共【" .
-$res['total_found'] . "】条记录, 共【" . $numberOfPages .
-"】页，每页【" . $obj -> conf['page']['limit'] . "】记录<br>\n";
 
 $obj -> display_summary($query_info);
 
@@ -144,8 +159,9 @@ if (empty($reply)) {
 	}
 }
 else {
-echo "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<br>\n";
-	// foreach($reply as $c=>$d) { }
+	foreach($arys as $c => $id) {
+		$rows[$id]['content'] = $reply[$c];
+	}
 }
 
 $obj -> assign('results', $rows);
@@ -165,10 +181,17 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-$obj -> display($tdir1 . 'ss.tpl.html');
-
-$obj->backend_scrape($_GET['q']);
-
+if (isset($_GET['page'])) {
+    // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
+    if (isset($_GET['js_page']))
+        $obj -> display($tdir2 . 'nav.tpl.html');
+    else
+        echo "stop at: " . __FILE__ . ',' . __LINE__;
+} 
+else {
+	$obj -> display($tdir1 . 'ss.tpl.html');
+	$obj->backend_scrape($_GET['q']);
+}
 exit;
 
 //array_map()的callback回调函数。
