@@ -29,8 +29,14 @@ elseif (isset($_POST['q'])) {
     $obj -> assign("pagination", $pagination);
     $obj -> assign("nav_template", $tdir2 . 'nav.tpl.html');
     $obj -> assign('search_template', $tdir2 . 'search.tpl.html');
-}
-elseif (isset($_GET['page'])) {
+    if (!empty($key)) {
+        exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        // exec("nohup /home/williamjxj/scraper/baidu/search.pl '" . $key . "' >/dev/null 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/google/gg.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/yahoo/yahoo.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+        exec("nohup /home/williamjxj/scraper/qq/soso.pl '" . $key . "' >>/tmp/scraper.log 2>&1 ");
+    }
+} elseif (isset($_GET['page'])) {
     $obj -> assign('results', $obj -> select_contents_by_page());
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
@@ -80,10 +86,4 @@ $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 $obj -> display($tdir2 . 'index.tpl.html');
-
-if (isset($_POST['q'])) {
-    require_once(ROOT.'scraper_search.php');
-    backend_scrape($key);
-    // return; too slow.
-}
 ?>
