@@ -29,6 +29,7 @@ list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2'])
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+	//做过测试，'   '为真，empty('  ')为假。
     $key = $q = empty($_GET['q']) ? '' : trim($_GET['q']);
 	
 	$obj->set_keywords($key);
@@ -87,9 +88,9 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
  * error, warning, status, fields+attrs, matches, total, total_found, time, words
  */
 
-$obj -> cl -> SetArrayResult(true);
+//$obj -> cl->SetGroupBy('clicks', SPH_GROUPBY_ATTR);
 
-$obj -> cl->SetGroupBy('clicks', SPH_GROUPBY_ATTR);
+$obj -> cl -> SetArrayResult(true);
 
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
@@ -192,7 +193,7 @@ if (isset($_GET['page'])) {
         echo "stop at: " . __FILE__ . ',' . __LINE__;
 } 
 else {
-	$obj -> display($tdir1 . 'ss.tpl.html');
+	$obj -> display($tdir1 . 'index.tpl.html');
 	if (!empty($_GET['q']))
 		$obj->backend_scrape($_GET['q']);
 }
