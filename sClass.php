@@ -285,11 +285,10 @@ class FMXW_Sphinx extends f12Class
 				'exclude' => '-(优质 | 健康 | 营养 | 美味)', 
 			);
         } else {
-			echo "<pre>"; print_r($got); echo "</pre>";
             $ary = array(
 				'key' => $key, 
-				'include' => implode(' ', $got['include']), 
-				'exclude' => '-(' . implode(' | ', $got['exclude'])  . ')'
+				'include' => implode(' ', $got[0]), 
+				'exclude' => '-(' . implode(' | ', $got[1])  . ')'
 			);
         }
         //这样比较整齐.
