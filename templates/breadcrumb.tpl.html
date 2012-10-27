@@ -1,0 +1,18 @@
+<ul class="breadcrumb">
+	<li>
+		<i class="icon-home"></i><a href="{$config.home}">首页</a><span class="divider">/</span>
+	</li>
+	{if count($info.breadcrumb)>0}
+	{foreach $info.breadcrumb as $bb}
+	<li>
+		<a href="{$config.f1.s}?{$bb.link}">{$bb.name}</a><span class="divider">/</span>
+	</li>
+	{/foreach}
+	{/if}
+	<li class="active">
+		正文:
+	</li>
+	<li style="float:right">
+		{include file="{$config.shared}bshare.tpl.html"}
+	</li>
+</ul>
