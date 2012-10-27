@@ -150,7 +150,9 @@ class FMXW_Sphinx extends f12Class
     }
 
     //解析输入参数.
-    function set_filter() {
+    function set_filter($key) {
+        if(empty($key)) return;
+        
         //这样做就是为了简单, 操作起来方便,也便于阅读.
         $h = $this -> h;
 
@@ -160,19 +162,6 @@ class FMXW_Sphinx extends f12Class
         if (!empty($h['item_id'])) {
             $this -> SetFilter('iid', array($h['item_id']));
         }
-
-        //排序模式
-        // $this->get_sortmode($h['sort']);
-
-        if (empty($h['key'])) {
-            $this -> cl -> SetRankingMode(SPH_RANK_NONE);
-        } else {
-            $this -> cl -> SetRankingMode(SPH_RANK_PROXIMITY_BM25);
-        }
-
-        // 每页显示多少条记录？
-        if (empty($h['limit']) || ($h['limit'] > 100))
-            $h['limit'] = $this -> conf['page']['limit'];
 
         $this -> cl -> SetFieldWeights(array('title' => 11, 'content' => 10));
 
