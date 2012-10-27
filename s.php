@@ -1,5 +1,4 @@
 <?php
-//
 session_start();
 error_reporting(E_ALL);
 define("ROOT", "./");
@@ -26,6 +25,7 @@ $obj -> set_coreseek_server();
 //header("Content-Type: text/html; charset=utf-8");
 
 list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2']);
+$obj -> assign('config', $config);
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
@@ -33,7 +33,7 @@ if (isset($_GET['q'])) {
     $key = $q = empty($_GET['q']) ? '' : trim($_GET['q']);
 	
 	$obj->set_keywords($key);
-    $obj -> set_filter();
+    $obj -> set_filter($key);
 }
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
@@ -174,7 +174,6 @@ $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign("nav_template", $tdir1 . 'nav.tpl.html');	
 $obj -> assign('kr', $obj->get_key_related($key));
-$obj -> assign('config', $config);
 	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
@@ -193,7 +192,7 @@ if (isset($_GET['page'])) {
         echo "stop at: " . __FILE__ . ',' . __LINE__;
 } 
 else {
-	$obj -> display($tdir1 . 'index.tpl.html');
+	$obj -> display($tdir1 . 'ss.tpl.html');
 	if (!empty($_GET['q']))
 		$obj->backend_scrape($_GET['q']);
 }
