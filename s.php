@@ -102,7 +102,7 @@ if ($res === false) {
 if (empty($res["matches"])) {
     $sec = "用时【" . $res['time'] . "】秒。";
     $summary = "查询【" . $q . "】 没有发现匹配结果，" . $sec;
-    $obj -> display_summary($summary);
+    $obj -> __p($summary);
     return;
 }
 
@@ -134,7 +134,7 @@ $mres = mysql_query($query);
 
 if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒";
-    $obj -> display_summary($summary);
+    $obj -> __p($summary);
     return;
 }
 
@@ -193,7 +193,8 @@ if (isset($_GET['page'])) {
 } 
 else {
 	$obj -> display($tdir1 . 'ss.tpl.html');
-	$obj->backend_scrape($_GET['q']);
+	if (!empty($_GET['q']))
+		$obj->backend_scrape($_GET['q']);
 }
 exit;
 
