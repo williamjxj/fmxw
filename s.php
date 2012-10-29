@@ -157,7 +157,6 @@ $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $
 
 //只好在手动做一遍。
 if (empty($reply)) {
-	echo "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN";
 	foreach ($docs as $id => $ct) {
 		$d1 = $obj->my_strip( $ct );
 		$d2 = mb_substr($d1, 0, 150);
@@ -165,7 +164,6 @@ if (empty($reply)) {
 	}
 }
 else {
-	echo "9999999999999999999999999999999999999";
 	foreach($docs as $id => $ct) {
 		$rows[$id]['content'] = $reply[$id];
 	}
