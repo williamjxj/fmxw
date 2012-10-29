@@ -1,8 +1,6 @@
 {*foreach $smarty.session.fmxw.search as $s}{$s}{/foreach*}
 <form class="well form-search" action="{$url}" method="get" name="sf">
-  <input type="text" name="q" class="input-small search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="查询" />
-  <input type="hidden" value="web" name="sc" />
-  <input type="hidden" value="" />
+  <input type="text" name="q" id="q" class="input-small search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="查询" />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
   <img id="waiting" src="images/noimg.gif" width="16" height="16" border="0" />
   <div clear="sf_alert" class="alert" style="display:none;">
@@ -11,10 +9,8 @@
 </form>
 <script type="text/javascript">
 $(function() {
-	if('{$smarty.post.q}') $('input[name=q]', 'form.form-search').val('{$smarty.post.q}');
-
 	var no_typeahead=false, timer;
-	$('input[name="q"]', 'form.form-search').typeahead({
+	$('#q').typeahead({
 		source: function(typeahead, query) {
 			if(query.length==0) return false;
 			clearTimeout(timer);
@@ -39,5 +35,6 @@ $(function() {
 		  }, 200);
 		}
 	});
+	if('{$smarty.post.q}') $('input[name=q]', 'form.form-search').val('{$smarty.post.q}');	
 });
 </script>
