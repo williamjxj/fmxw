@@ -35,24 +35,14 @@ if (isset($_GET['q'])) {
 	$obj->set_keywords($key);
     $obj -> set_filter($key);
 }
+elseif (isset($_GET['page'])) {
+	$obj->__p($_GET);
+} 
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
     $obj->display($tdir2.'single.tpl.html');
     return;
-} 
-elseif (isset($_GET['page'])) {
-    $obj -> assign('results', $obj -> select_contents_by_page());
-    $pagination = $obj -> draw();
-    $obj -> assign("pagination", $pagination);
-    // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
-    if (isset($_GET['js_page'])) {
-        $obj -> display($tdir2 . 'nav.tpl.html');
-        exit ;
-    } else {
-        echo "stop at: " . __FILE__ . ',' . __LINE__;
-        exit ;
-    }
 } 
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
@@ -129,7 +119,7 @@ else {
 
 $ids = implode(",", $ary_ids);
 $query = $obj->generate_sql($ids);
-// echo $query . "<br>\n";
+//echo $query . "<br>\n";
 
 $mres = mysql_query($query);
 
@@ -186,10 +176,9 @@ $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 if (isset($_GET['page'])) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
-    if (isset($_GET['js_page']))
-        $obj -> display($tdir2 . 'nav.tpl.html');
-    else
-        echo "stop at: " . __FILE__ . ',' . __LINE__;
+    $pagination = $obj -> draw();
+    $obj -> assign("pagination", $pagination);
+	$obj -> display($tdir2 . 'nav.tpl.html');
 } 
 else {
 	$obj -> display($tdir1 . 'ss.tpl.html');
