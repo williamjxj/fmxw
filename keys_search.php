@@ -38,6 +38,7 @@ if(!empty($_GET['q'])) {
 	//$cursor = $collection->find( { key : /^Alex/i } ); //({ key : { $regext: '^Alex', $options: 'i'}});
 
 	$it = iterator_to_array($cursor);
+	// foreach ($it as $t)print_r($t);
 	if(! empty($it)) {
 		$count = 1;
 		foreach($cursor as $c) {
@@ -52,7 +53,7 @@ if(!empty($_GET['q'])) {
 	}
 	else {
 		// Twitter Bootstrap - Typeahead Plugin with MySQL.
-		// echo "William Jiang on Aug 09, Oct2l, 2012.\n";
+		//echo "William Jiang on Aug 09, Oct2l, 2012.\n";
 
 		$mysql = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
 		mysql_select_db('dixi', $mysql);
@@ -63,7 +64,7 @@ if(!empty($_GET['q'])) {
 		array_push_array($ary, mysql2mongo($collection, $query1));
 
 		// 2. key_related
-		$query2 = "select rk from key_related where keyword like '%" . $q . "%' order by rk";
+		$query2 = "select rk from key_related where keyword like '%" . $q . "%' and keyword != '" . $q . "' order by rk";
 		array_push_array($ary, mysql2mongo($collection, $query2));
 
 		echo json_encode($ary);
@@ -83,7 +84,7 @@ function mysql2mongo($c, $sql)
 			$a[] = $t;
 			//将取得的结果放入MongoDB的search表中，以后就可以直接从MongoDB中获得
 			$obj = array( 'key' => $t, 'count' => 1 );
-			$c->insert($obj);
+			$c->save($obj);
 		}
 	}
 	return $a;

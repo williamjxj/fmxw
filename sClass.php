@@ -48,7 +48,7 @@ class FMXW_Sphinx extends f12Class
     // not work: array("upsert" => true)
     function set_keywords($key) {
         if (empty($key))
-            return;
+            return;			
         $matched = $this -> m -> findOne(array('q' => $key));
         if (empty($matched)) {
             $this -> m -> insert(array('q' => $key, 'count' => 1, 'date' => new MongoDate()));
@@ -62,7 +62,15 @@ class FMXW_Sphinx extends f12Class
 			);
         }
         //return $this->m->findOne(array('q' => $key));
-    }
+		/*将关键词的相关词放在哪里？这里插入数据库的keywords表，Perl的Scraper从数据库中找到kid，然后将相关词插入key_related表。 */
+		$user = isset($_SESSION[PACKAGE]['username']) ? $_SESSION[PACKAGE]['username'] : '';
+		if (empty($user))
+			$user = basename(__FILE__) . ', search';
+
+		$query = "INSERT INTO keywords (keyword,createdby, created) VALUES " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
+		mysql_query($query);
+    
+	}
 
     //以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
     function get_key_related($q) {
