@@ -181,11 +181,11 @@ class FMXW_Sphinx extends f12Class
 	{
         //根据 Sphinx Query返回的结果填充SESSION,该SESSION存于memcached中。
         $_SESSION[PACKAGE][SEARCH]['key'] = empty($_GET['q']) ? '所有记录' : trim($_GET['q']);
+        $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
         $_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
         $_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
         $_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
         $_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
-        $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
     }
 
     function generate_sql($ids) {
@@ -308,8 +308,8 @@ class FMXW_Sphinx extends f12Class
     }
 
     function my_strip($str) {
-		$t = strip_tags($str);
-        $t = preg_replace("/^\s*lang=\"zh\">/", '', $t);
+		//$t = strip_tags($str);
+        $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
         $t = preg_replace("/^\s+/s", '', $t); //remove leading space/lines.
         $t = preg_replace("/\s+$/s", '', $t); //remove tail space/lines.
         $t = preg_replace("/&nbsp;/s", ' ', $t);

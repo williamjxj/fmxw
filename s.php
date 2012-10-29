@@ -88,70 +88,86 @@ if ($res === false) {
 }
 
 if (empty($res["matches"])) {
-    $sec = "用时【" . $res['time'] . "】秒。";
-    $summary = "查询【" . $q . "】 没有发现匹配结果，" . $sec;
+    $summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";;
     $obj -> __p($summary);
     return;
 }
 
 $obj->set_session($res);
 
-//SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
+/*
+ * SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
+ * 得到本次查询的所有的cids($_GET， 总共最多25条)。
+ */
 $ary_ids = array_map("get_SetArrayResult_Ids", $res['matches']);
+
+/* 将 cid=>weigth队放入matches中。
+ */
 $matchs = array();
 foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
 }
-//$obj->__p($matches);
+
+/* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
+ * 结果不对。
+ */
 $weights = array('title'=>11, 'content'=>10);
+$obj->cl->SetFieldWeights( $weights );
 
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
-// $max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 if(empty($res['words'])) {
-	$max_weight = (array_sum(array($weights)) * count($res) + 1) * 1000;
+	$max_weight = (array_sum($weights) * count($res) + 1) * 1000;
 }
 else {
-	$max_weight = (array_sum(array($weights)) * count($res['words']) + 1) * 1000;
+	$max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 }
 
+// 将ary_ids 由数组变成逗号分隔的字符串。
 $ids = implode(",", $ary_ids);
+// 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
 $query = $obj->generate_sql($ids);
 //echo $query . "<br>\n";
 
+// 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
 
 if (mysql_num_rows($mres) <= 0) {
-    $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒";
+    $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
     $obj -> __p($summary);
     return;
 }
 
+//生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
-    $row['r'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100); //relevance
+    $row['r'] = ceil($matches[$row['cid']] / $max_weight * 100); //relevance
     $rows[$row['cid']] = $row;
 }
 
-//Call Sphinxes BuildExcerpts function
+//strip_tags将所有'<>'全部去掉，很彻底。
 $docs = array();
-foreach ($ary_ids as $c => $id) {
-    $docs[$c] = strip_tags($rows[$id]['content']);
+foreach ($ary_ids as $id) {
+    $docs[$id] = strip_tags($rows[$id]['content']);
 }
 
-//BuildExcerpts没有成功.
+/* 这一步基本没有作用，应为返回总是FALSE.BuildExcerpts没有成功.
+ * Call Sphinxes BuildExcerpts function
+ */
 $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
 
 //只好在手动做一遍。
 if (empty($reply)) {
-	foreach ($ary_ids as $c => $id) {
-		$d = $obj->my_strip( $rows[$id]['content'] );
-		$d1 = mb_substr($d, 0, 150);
-		$rows[$id]['content'] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
+	echo "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN";
+	foreach ($docs as $id => $ct) {
+		$d1 = $obj->my_strip( $ct );
+		$d2 = mb_substr($d1, 0, 150);
+		$rows[$id]['content'] = $obj->mb_highlight($d2, $q, '<b>', '</b>');
 	}
 }
 else {
-	foreach($arys as $c => $id) {
-		$rows[$id]['content'] = $reply[$c];
+	echo "9999999999999999999999999999999999999";
+	foreach($docs as $id => $ct) {
+		$rows[$id]['content'] = $reply[$id];
 	}
 }
 
