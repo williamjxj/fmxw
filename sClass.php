@@ -185,7 +185,7 @@ class FMXW_Sphinx extends f12Class
         $_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
         $_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
         $_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
-        $_SESSION[PACKAGE][SEARCH]['page'] = 1;
+        $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
     }
 
     function generate_sql($ids) {
@@ -309,11 +309,9 @@ class FMXW_Sphinx extends f12Class
 
     function my_strip($str) {
 		$t = strip_tags($str);
-        $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
-        $t = preg_replace("/^\s+/s", '', $t);
-        //remove leading space/lines.
-        $t = preg_replace("/\s+$/s", '', $t);
-        //remove tail space/lines.
+        $t = preg_replace("/^\s*lang=\"zh\">/", '', $t);
+        $t = preg_replace("/^\s+/s", '', $t); //remove leading space/lines.
+        $t = preg_replace("/\s+$/s", '', $t); //remove tail space/lines.
         $t = preg_replace("/&nbsp;/s", ' ', $t);
         return $t;
     }

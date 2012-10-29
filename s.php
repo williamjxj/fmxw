@@ -35,9 +35,6 @@ if (isset($_GET['q'])) {
 	$obj->set_keywords($key);
     $obj -> set_filter($key);
 }
-elseif (isset($_GET['page'])) {
-	$obj->__p($_GET);
-} 
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
