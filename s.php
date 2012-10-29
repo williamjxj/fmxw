@@ -147,8 +147,8 @@ $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $
 //只好在手动做一遍。
 if (empty($reply)) {
 	foreach ($ary_ids as $c => $id) {
-		$d = mb_substr($rows[$id]['content'], 0, 100);
-		$d1 = $obj->my_strip( $d );
+		$d = $obj->my_strip( $rows[$id]['content'] );
+		$d1 = mb_substr($d, 0, 150);
 		$rows[$id]['content'] = $obj->mb_highlight($d1, $q, '<b>', '</b>');
 	}
 }
