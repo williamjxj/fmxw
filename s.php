@@ -191,7 +191,7 @@ if (isset($_GET['page'])) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-	$obj -> display($tdir2 . 'nav.tpl.html');
+	$obj -> display($tdir1 . 'nav.tpl.html');
 } 
 else {
 	$obj -> display($tdir1 . 'ss.tpl.html');
