@@ -131,6 +131,7 @@ class FMXW_Sphinx extends f12Class
         $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
         //以下是缺省设置，后面将会动态调整。
         $this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        //$this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetArrayResult(true);
     }
