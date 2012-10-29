@@ -83,5 +83,9 @@ $(function() {
 		});
 		return false;
 	});
+
+	{if $smarty.session.fmxw.search.key}
+		$('#q').val({$smarty.session.fmxw.search.key});
+	{/if}
 });
 </script>
