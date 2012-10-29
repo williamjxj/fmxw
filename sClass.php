@@ -74,7 +74,7 @@ class FMXW_Sphinx extends f12Class
 
     //以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
     function get_key_related($q) {
-        $sql = "select rid, rk from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
+        $sql = "select rid, rk, kurl from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
