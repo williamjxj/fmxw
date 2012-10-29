@@ -308,6 +308,7 @@ class FMXW_Sphinx extends f12Class
     }
 
     function my_strip($str) {
+		$t = strip_tags($str);
         $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
         $t = preg_replace("/^\s+/s", '', $t);
         //remove leading space/lines.
@@ -321,7 +322,7 @@ class FMXW_Sphinx extends f12Class
     function my_process($docs) {
         $newd = array();
         foreach ($docs as $str) {
-            $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);
+            $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);			
             $t = preg_replace("/^\s+/s", '', $t);
             //remove leading space/lines.
             $t = preg_replace("/\s+$/g", '', $t);
