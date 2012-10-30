@@ -1,4 +1,4 @@
-<div class="well box4"> 我要PK <strong>{$smarty.session.fmxw.search.key}</strong>
+<div class="well box4">
   <form id="form_fayan" class="form-horizontal" method="post" action="pk.php">
     <div class="control-group">
       <div class="controls">
@@ -21,9 +21,9 @@
         <textarea id="fayan" name="fayan" placeholder="文明上网，登录发贴。" style="width:98%" rows="8"></textarea>
       </div>
     </div>
-    <div> <img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a> </div>
     <div class="control-group">
       <div class="controls">
+		<img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a> 
         <input type="text" name="captcha" id="captcha-form" autocomplete="off" />
         <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发表评论</button>
       </div>
@@ -65,21 +65,13 @@ $(function() {
 		var tid = 'collapse' + count++;
 		
 		var f = $('#form_fayan');
-		$.post(f.attr('action'), f.serialize(), function(result) {
-			if(result=='N') {
-				$('#result').html('输入验证失败, 无法添加评论, 请重试。').show();
+		$.post(f.attr('action'), f.serialize()+'&js_pk=1', function(data) {
+			if(data=='N') {
+				$('#pk_result').html('输入验证失败, 无法添加评论, 请重试。').show();
 				return false;
 			}
-			var msg = '<div class="accordion-group">' + 
-					'<div class="accordion-heading">' +
-					' <a href="#' + tid + '" data-parent="#commentlist" data-toggle="collapse" class="accordion-toggle">' +
-					'{$user} 于 {$smarty.now|date_format:"%Y-%m-%d %T"} </a>' +
-					' </div> ' +
-					 ' <div class="accordion-body collapse in" id="' + tid + '">' +
-						'<div class="accordion-inner">' + $('#fayan').val() + '</div>' +
-				  '</div>' +
-				'</div>';
-			$(msg).prependTo('#commentlist');
+			$('#pk_result').html(data).fadeIn(100);
+			return false;
 		});		
 	});
 });

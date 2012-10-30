@@ -94,3 +94,6 @@
 	font-weight: bolder;
 	border: #000000 0px solid;
 }
+#form_fayan div.controls {
+	margin-left: 10px;
+}
