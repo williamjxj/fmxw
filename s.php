@@ -55,6 +55,8 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetFilterRange("created", $min, $obj->now);
 	}
 }
+elseif(isset($_GET['js_ct_search'])) {
+}
 elseif(isset($_GET['page'])) {
 }
 /* 控制器部分 */
