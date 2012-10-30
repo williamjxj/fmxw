@@ -79,6 +79,11 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 $obj -> cl -> SetArrayResult(true);
 
+// 86400
+$min = $obj->now - 86400;
+$obj->cl->SetFilterRange("created", $min, $obj->now);
+$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "created DESC");
+
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
@@ -141,7 +146,7 @@ if (mysql_num_rows($mres) <= 0) {
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
     $row['r'] = ceil($matches[$row['cid']] / $max_weight * 100); //relevance
-	if (!preg_match("/<b>/", $row['title']))
+	if (!preg_match("/(<b>|<em>)/", $row['title']))
 		$row['title'] = $obj->mb_highlight($row['title'], $q, '<b>', '</b>');
 
     $rows[$row['cid']] = $row;
@@ -167,6 +172,7 @@ if (empty($reply)) {
 	}
 }
 else {
+	echo "8888888888888888888888888888888888888888888888<br>\n";
 	foreach($docs as $id => $ct) {
 		$rows[$id]['content'] = $reply[$id];
 	}
