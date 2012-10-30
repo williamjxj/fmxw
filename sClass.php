@@ -331,5 +331,19 @@ class FMXW_Sphinx extends f12Class
         return $newd;
     }
 
+	function get_categories() {
+		$ary = array();
+		$sql = "select cid, name from categories order by weight";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
+		return $ary;
+	}
+	function get_items($cid) {
+		$ary = array();
+		$sql = "select iid, name from items where cid=$cid order by weight";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
+		return $ary;
+	}
 }
 ?>

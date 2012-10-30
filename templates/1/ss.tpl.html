@@ -23,6 +23,18 @@
         <li><a href="javascript:;" class="sort_by_time" id="month">一月内</a></li>
         <li><a href="javascript:;" class="sort_by_time" id="year">一年内</a></li>
       </ul>
+      <div>
+        <label class="alert" for="category">类别:</label>
+        <select name="category" id="category">
+          <option value="">--- 请选择 ---</option>
+        </select>
+      </div>
+      <div>
+        <label class="alert fade in" for="item">栏目:</label>
+        <select name="item" id="item">
+          <option value="">--- 请选择 ---</option>
+        </select>
+      </div>
       <!--ul id="sf" class="nav nav-list box">
         <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
         <li><a href="#baidu" rel="tooltip" title="百度">百度</a></li>
@@ -100,5 +112,26 @@ $(function() {
 			$('#pk').load('templates/1/pk.tpl.html').fadeIn(100);
 		return false;
 	});
+	$('#category').change(function() {
+		cate_id = $(this).attr('value');
+		$.getJSON("?js_item=1&cate_id=" + cate_id, function(data) {
+			var items = [];
+			//console.log(data);
+			$.each(data, function(id, name) {
+				items.push('<option value="' + name[0] + '">' + name[1] + '</option>');
+			});
+			$('#item').append(items);
+		});
+	});
 });
+$(window).load(function() {
+	$.getJSON('?js_category=1', function(data) {
+		// console.log(data);
+		var cates = [];
+		$.each(data, function(key, val) {
+			cates.push('<option value="' + val[0] + '">' + val[1] + '</option>');
+		});
+		$('#category').append(cates);
+	});
+}); 
 </script>
