@@ -1,6 +1,5 @@
 {config_load file="{$config.smarty}"}
-<i class="icon-time"></i><span class="curtime">{$smarty.now|date_format:'%Y-%m-%d %H:%M'}</span>
-<div class="btn-toolbar">  {if {$config.username}}
+<div class="btn-toolbar">  <i class="icon-time"></i><span class="curtime">{$smarty.now|date_format:'%Y-%m-%d %H:%M'}</span>{if {$config.username}}
   <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>{$config.username} <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li> <a href="#signup" rel="tooltip" title="{$_th.edit} {$config.username}"><i class="icon-edit"></i> {$_th.edit} {$config.username}</a> </li>

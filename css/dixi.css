@@ -294,6 +294,7 @@ div.container .label-warning {
 }
 .curtime {
 	color: #C09853;
+	display:inline;
 }
 /*********/
 .add_guanzhu {
