@@ -34,8 +34,15 @@
       </ul-->
     </div>
     <div class="span4" id="sr"> {include file="{$nav_template}"} </div>
+<<<<<<< HEAD
     <div class="span7" id="sd">
       <div id="pk"></div>
+=======
+    <div class="span7">
+	  <div id="sd"></div>
+      <div id="pk" style="display:none;"></div>
+      <div id="pk_result" class="box4" style="display:none;"></div>
+>>>>>>> 8f224084a64dfd483f5ba57401d5791c98566f00
       <div class="head1">网友在查</div>
       <ul class="nav nav-list nav-pills nav-stacked">
         {foreach $kr as $r}
@@ -86,11 +93,20 @@ $(function() {
 	});
 
 	{if $smarty.session.fmxw.search.key || $smarty.session.fmxw.search.key!='所有记录'}
-		$('#q').val({$smarty.session.fmxw.search.key});
+		$('#q').val('{$smarty.session.fmxw.search.key}');
 	{/if}
 	
 	$('#apk').click(function() {
+<<<<<<< HEAD
 		$('#pk').load('../2/pk.tpl.html').fadeIn(100);
+=======
+		if($('#pk').is(':visible')) {
+			$('#pk').hide();
+			$('#pk_result').hide();
+		}
+		else
+			$('#pk').load('templates/1/pk.tpl.html').fadeIn(100);
+>>>>>>> 8f224084a64dfd483f5ba57401d5791c98566f00
 		return false;
 	});
 });

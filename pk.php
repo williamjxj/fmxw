@@ -19,6 +19,7 @@ if (isset($_SESSION[PACKAGE]['username'])) {
     $config['username'] = $_SESSION[PACKAGE]['username'];
 }
 
+<<<<<<< HEAD
 if (isset($_GET['js_pk'])) {
 	echo "你已经成功提交了如下信息：";
 	
@@ -27,3 +28,13 @@ if (isset($_GET['js_pk'])) {
 } 
 
 ?>
+=======
+if (isset($_POST['js_pk'])) {
+	echo "你已经成功提交了如下信息：";
+	
+    echo json_encode($_POST);
+    exit ;
+} 
+
+?>
+>>>>>>> 8f224084a64dfd483f5ba57401d5791c98566f00
