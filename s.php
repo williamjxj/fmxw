@@ -56,6 +56,10 @@ if (isset($_GET['q'])) {
 	}
 }
 elseif(isset($_GET['js_ct_search'])) {
+	$obj->cl -> SetFilter('cate_id', array($_GET['cate_id']));
+	if (!empty($_GET[['item_id'])) {
+		$this->cl -> SetFilter('iid', array($_GET['item_id']));
+	}
 }
 elseif(isset($_GET['page'])) {
 }
