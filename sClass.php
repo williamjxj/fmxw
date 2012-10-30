@@ -164,12 +164,6 @@ class FMXW_Sphinx extends f12Class
         //这样做就是为了简单, 操作起来方便,也便于阅读.
         $h = $this -> h;
 
-        if (!empty($h['cate_id'])) {
-            $this -> SetFilter('cate_id', array($h['cate_id']));
-        }
-        if (!empty($h['item_id'])) {
-            $this -> SetFilter('iid', array($h['item_id']));
-        }
 
         $this -> cl -> SetFieldWeights(array('title' => 11, 'content' => 10));
 
