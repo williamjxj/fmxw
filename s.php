@@ -38,19 +38,19 @@ if (isset($_GET['q'])) {
 elseif(isset($_GET['page'])) {
 }
 elseif(isset($_GET['js_sortby'])) {
-	switch($_GET['js_sortby'])) {
+	switch($_GET['js_sortby']) {
 		case 'day':
 			$min = $obj->now - 86400;
 			break;
 		case 'week':
 			$min = $obj->now - 604800;
-			break:
+			break;
 		case 'month':
 			$min = $obj->now - 2678400;
-			break:
+			break;
 		case 'year':
 			$min = $obj->now - 31536000;
-			break:
+			break;
 		default:
 			$min = 0;
 	}
