@@ -125,14 +125,15 @@ $(function() {
 	});
 });
 $(window).load(function() {
-	$.getJSON('?js_category=1', function(data) {
-		console.log(data);
-		return;
+	$.getJSON('s.php?js_category=1', function(data) {
+		//console.log(data);
+		//return;
 		var cates = [];
 		$.each(data, function(key, val) {
 			cates.push('<option value="' + val[0] + '">' + val[1] + '</option>');
 		});
 		$('#category').append(cates);
+		//$(cates).appendTo('#category');
 	});
 }); 
 </script>
