@@ -58,7 +58,7 @@
 <script type="text/javascript">
 $(function() {
 	$('a.sort_by_time', '#tf1').click(function() {
-		$('div#sr').load('?js_sortby='+$(this).attr('id')+'&q='+{$smarty.session.fmxw.search.key});
+		$('div#sr').load('?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 	});
 	$('li.li3 a').live('click', function() {
 		$t = $(this);

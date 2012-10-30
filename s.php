@@ -213,7 +213,7 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-if (isset($_GET['page'])) {
+if (isset($_GET['page']) || isset($_GET['js_sortby'])) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
