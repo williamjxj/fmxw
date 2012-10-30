@@ -59,11 +59,11 @@ elseif(isset($_GET['page'])) {
 }
 /* 控制器部分 */
 elseif(isset($_GET['js_category'])) {
-	echo json_encode($obj->cl->get_categories());
+	echo json_encode($obj->get_categories());
 	return;
 }
 elseif(isset($_GET['js_item'])) {
-	echo json_encode($obj->cl->get_items($_GET['cate_id']));
+	echo json_encode($obj->get_items($_GET['cate_id']));
 	return;
 }
 elseif(isset($_GET['js_get_content'])) {
