@@ -16,14 +16,14 @@
 <div class="container-fluid" align="left">
   <div class="row-fluid">
     <div class="span1">
-      <ul id="tf" class="nav nav-tabs nav-stacked">
+      <ul id="tf1" class="nav nav-tabs nav-stacked">
         <li class="active"><a class="all" rel="tooltip">全部时间</a></li>
         <li><a href="javascript:;" class="day">一天内</a></li>
         <li><a href="javascript:;" class="week">一周内</a></li>
         <li><a href="javascript:;" class="month">一月内</a></li>
         <li><a href="javascript:;" class="year">一年内</a></li>
       </ul>
-      <ul id="sf" class="nav nav-list box">
+      <ul id="sf1" class="nav nav-list box">
         <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
         <li><a href="#baidu" rel="tooltip" title="百度">百度</a></li>
         <li><a href="#soso" rel="tooltip" title="腾讯网">搜搜</a></li>
@@ -54,7 +54,7 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('a.day', '#tf').click(function() {
+	$('a.day', '#tf1').click(function() {
 		alert('Haliluuya');
 	});
 	$('li.li3 a').live('click', function() {
@@ -85,7 +85,7 @@ $(function() {
 	});
 
 	{if $smarty.session.fmxw.search.key}
-		$('#q').val({$smarty.session.fmxw.search.key});
+		$('#q').val('{$smarty.session.fmxw.search.key}');
 	{/if}
 });
 </script>

@@ -5,7 +5,7 @@
 {/if}
 {$no=1+({$page}-1)*25}
 <div class="alert">
-  <button class="close" data-dismiss="alert">×</button>
+  <button type="button" class="close" data-dismiss="alert">×</button>
   查询：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
   匹配总数：&lt;<strong>{$smarty.session.fmxw.search.total}</strong>&gt;,
   页数：&lt;<strong>{$smarty.session.fmxw.search.page}/{$smarty.session.fmxw.search.total_pages}</strong>&gt; </div>
