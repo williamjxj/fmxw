@@ -17,8 +17,8 @@ class FMXW_Sphinx extends f12Class
         $this -> m = $this -> get_mongo();
         $this -> memd = $this -> get_memcached();
         $this -> now = time();
-        $this -> dwmy = $this -> get_dwmy();
-        $this -> st = $this -> get_sort();
+        //$this -> dwmy = $this -> get_dwmy();
+        //$this -> st = $this -> get_sort();
         //存储每次的查询词。
         $this -> q = '';
         //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
@@ -132,7 +132,6 @@ class FMXW_Sphinx extends f12Class
         //以下是缺省设置，后面将会动态调整。
         $this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
         //$this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
-        $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetArrayResult(true);
     }
 

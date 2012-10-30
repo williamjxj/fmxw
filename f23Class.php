@@ -8,7 +8,7 @@ class f23Class extends BaseClass
 		$fayan = mysql_real_escape_string($_POST['fayan']);
 		$cid = intval($_POST['cid']);
 		$author = mysql_real_escape_string($_POST['username']);
-        $sql = "insert into comments(content, create_time, author, cid) values('" . 
+        $sql = "insert into comments(comment, create_time, author, cid) values('" . 
 			$fayan . "', now(), '" . 
 			$author . "', " . $cid . ")";
 			echo $sql;
@@ -19,7 +19,7 @@ class f23Class extends BaseClass
     function get_comments_3($cid) {
         $ary = array();
         //$sql = "select id, content, author, create_time, cid, area from comments where cid=".$cid." order by id desc";
-        $sql = "select id, content, author, create_time, cid, area from comments order by rand()";
+        $sql = "select id, uid, comment, author, create_time, cid, area from comments order by rand()";
         $res = mysql_query($sql);
         while ($row = mysql_fetch_assoc($res)) {
             array_push($ary, $row);
@@ -28,7 +28,7 @@ class f23Class extends BaseClass
     }
     function get_comments($cid=0) {
         $ary = array();
-        $sql = "select id, content, author, date(create_time) created, create_time, cid, area, zhichi from comments order by rand() limit 0,5";
+        $sql = "select id, uid, comment, author, date(create_time) created, create_time, cid, area, zhichi from comments order by rand() limit 0,5";
         $res = mysql_query($sql);
         while ($row = mysql_fetch_assoc($res)) {
             array_push($ary, $row);
