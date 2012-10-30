@@ -35,6 +35,27 @@ if (isset($_GET['q'])) {
 	$obj->set_keywords($key);
     $obj -> set_filter($key);
 }
+elseif(isset($_GET['page'])) {
+}
+elseif(isset($_GET['js_sortby'])) {
+	switch($_GET['js_sortby'])) {
+		case 'day':
+			$min = $obj->now - 86400;
+			break;
+		case 'week':
+			$min = $obj->now - 604800;
+			break:
+		case 'month':
+			$min = $obj->now - 2678400;
+			break:
+		case 'year':
+			$min = $obj->now - 31536000;
+			break:
+		default:
+			$min = 0;
+	}
+	$obj->cl->SetFilterRange("created", $min, $obj->now);
+}
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
@@ -79,9 +100,6 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 $obj -> cl -> SetArrayResult(true);
 
-// 86400
-$min = $obj->now - 86400;
-$obj->cl->SetFilterRange("created", $min, $obj->now);
 $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "created DESC");
 
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);

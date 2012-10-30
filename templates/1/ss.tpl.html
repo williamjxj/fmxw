@@ -18,10 +18,10 @@
     <div class="span1">
       <ul id="tf1" class="nav nav-tabs nav-stacked">
         <li class="active"><a class="all" rel="tooltip">全部时间</a></li>
-        <li><a href="javascript:;" class="day">一天内</a></li>
-        <li><a href="javascript:;" class="week">一周内</a></li>
-        <li><a href="javascript:;" class="month">一月内</a></li>
-        <li><a href="javascript:;" class="year">一年内</a></li>
+        <li><a href="javascript:;" class="sort_by_time" id="day">一天内</a></li>
+        <li><a href="javascript:;" class="sort_by_time" id="week">一周内</a></li>
+        <li><a href="javascript:;" class="sort_by_time" id="month">一月内</a></li>
+        <li><a href="javascript:;" class="sort_by_time" id="year">一年内</a></li>
       </ul>
       <!--ul id="sf" class="nav nav-list box">
         <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
@@ -35,7 +35,7 @@
     </div>
     <div class="span4" id="sr"> {include file="{$nav_template}"} </div>
     <div class="span7">
-	  <div id="sd"></div>
+      <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
       <div class="head1">网友在查</div>
@@ -57,8 +57,8 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('a.day', '#tf1').click(function() {
-		alert('Haliluuya');
+	$('a.sort_by_time', '#tf1').click(function() {
+		$('div#sr').load('?js_sortby='+$(this).attr('id'));
 	});
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
@@ -92,16 +92,12 @@ $(function() {
 	{/if}
 	
 	$('#apk').click(function() {
-<<<<<<< HEAD
-		$('#pk').load('../2/pk.tpl.html').fadeIn(100);
-=======
 		if($('#pk').is(':visible')) {
 			$('#pk').hide();
 			$('#pk_result').hide();
 		}
 		else
 			$('#pk').load('templates/1/pk.tpl.html').fadeIn(100);
->>>>>>> 8f224084a64dfd483f5ba57401d5791c98566f00
 		return false;
 	});
 });
