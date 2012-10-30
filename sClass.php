@@ -235,7 +235,7 @@ class FMXW_Sphinx extends f12Class
         //这样比较整齐.
         $search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
 
-        $this -> write_named_pipes($search_key);
+        // $this -> write_named_pipes($search_key);
     }
 
     function write_named_pipes($search_key) {
@@ -251,7 +251,7 @@ class FMXW_Sphinx extends f12Class
         //每次点击都搜索，好像不太好。
         //改为：如果今天点击过了，就不再搜索了。
         foreach ($pipes as $p) {
-            $fifo = fopen($p[0]. ', ' . date("F j, Y, g:i a"), 'r+');
+            $fifo = fopen($p[0], 'r+');
             fwrite($fifo, $search_key);
             fclose($fifo);
         }

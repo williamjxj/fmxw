@@ -141,6 +141,9 @@ if (mysql_num_rows($mres) <= 0) {
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
     $row['r'] = ceil($matches[$row['cid']] / $max_weight * 100); //relevance
+	if (!preg_match("/<b>/", $row['title']))
+		$row['title'] = $obj->mb_highlight($row['title'], $q, '<b>', '</b>');
+
     $rows[$row['cid']] = $row;
 }
 
