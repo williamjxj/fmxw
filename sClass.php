@@ -251,7 +251,7 @@ class FMXW_Sphinx extends f12Class
         //每次点击都搜索，好像不太好。
         //改为：如果今天点击过了，就不再搜索了。
         foreach ($pipes as $p) {
-            $fifo = fopen($p[0], 'r+');
+            $fifo = fopen($p[0]. ', ' . date("F j, Y, g:i a"), 'r+');
             fwrite($fifo, $search_key);
             fclose($fifo);
         }
