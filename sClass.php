@@ -234,11 +234,11 @@ class FMXW_Sphinx extends f12Class
     function write_named_pipes($search_key) {
         $dir = '/home/williamjxj/scraper/';
         $pipes = array(
-			'baidu' => array($dir . '.baidu', $dir . 'baiduD.pl'), 
-			'soso' => array($dir . '.soso', $dir . 'sosoD.pl'), 
-			'sogou' => array($dir . '.sogou', $dir . 'sogouD.pl'), 
-			'google' => array($dir . '.google', $dir . 'ggD.pl'), 
-			'yahoo' => array($dir . '.yahoo', $dir . 'yahooD.pl'), 
+			'baidu' => array($dir . '.baidu'),
+			'soso' => array($dir . '.soso'),
+			'sogou' => array($dir . '.sogou'),
+			'google' => array($dir . '.google'),
+			'yahoo' => array($dir . '.yahoo'),
 		);
 
         //每次点击都搜索，好像不太好。

@@ -135,9 +135,16 @@ if ($res === false) {
 }
 
 if (empty($res["matches"])) {
-    $summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";;
-    $obj -> __p($summary);
-    return;
+    $summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
+	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+	$obj->cl->SetSortMode(SPH_SORT_RELEVANCE);
+	$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
+	if (empty($res["matches"])) {
+	    $summary = "查询【" . $q . "】 没有匹配结果，用时【" . $res['time'] . "】秒。";
+		$obj -> __p($summary);
+  		return;
+	}
 }
 
 $obj->set_session($res);
