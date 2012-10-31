@@ -130,7 +130,9 @@ class FMXW_Sphinx extends f12Class
     function set_coreseek_server() {
         $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
         //以下是缺省设置，后面将会动态调整。
-        $this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        //$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        //$this -> cl -> SetMatchMode(SPH_MATCH_ALL);
+        $this -> cl -> SetMatchMode(SPH_MATCH_PHRASE);
         //$this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetArrayResult(true);
     }
@@ -184,10 +186,9 @@ class FMXW_Sphinx extends f12Class
 
     function generate_sql($ids) {
         $lang_case = " and language = '" . $this -> lang . "' ";
-        //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc";
-        //$sql .= " limit  " . $row_no . "," . ROWS_PER_PAGE;
+        //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc limit  " . $row_no . "," . ROWS_PER_PAGE;
 
-        $sql = "select cid, title, content, date(created) as date  from contents where cid in (" . $ids . ")";
+        $sql = "select cid, title, content, date(created) as date, createdby  from contents where cid in (" . $ids . ") order by created desc";
         $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;
         return $sql;
     }
