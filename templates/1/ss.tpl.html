@@ -130,8 +130,7 @@ $(function() {
 		});
 	});
 	$('#ct_search').submit(function(e) {
-		$.post('{$url}', $(this).serialize()+'&js_ct_search=1', function() {
-		});
+		$('div#sr').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
 });
