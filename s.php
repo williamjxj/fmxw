@@ -208,9 +208,14 @@ $reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $
 //只好在手动做一遍。
 if (empty($reply)) {
 	foreach ($docs as $id => $ct) {
-		$d1 = $obj->my_strip( $ct );
-		$d2 = mb_substr($d1, 0, 150);
-		$rows[$id]['content'] = $obj->mb_highlight($d2, $q, '<b>', '</b>');
+		if (preg_match("/_top/", $rows[$id]['createdby'])) {
+			$rows[$id]['content'] = '';
+		}
+		else {
+			$d1 = $obj->my_strip( $ct );
+			$d2 = mb_substr($d1, 0, 150);
+			$rows[$id]['content'] = $obj->mb_highlight($d2, $q, '<b>', '</b>');
+		}
 	}
 }
 else {
