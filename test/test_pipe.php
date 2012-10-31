@@ -7,12 +7,21 @@
 <script src="include/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
+<a href="javacript:;" onclick="call_pl();">Call Perl </a>
+<div id="pp"></div>
 <form class="well form-search" action="<?=$_SERVER['PHP_SELF'];?>" method="get" name="search1">
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
 </form>
+<script type="text/javascript">
+;(function() {
+	function call_pl() {
+		$('#pp').load('./test/pp.pl'); 
+	}
+})();
+</script>
 <?php
-if(isset($_GET['q'])) {
+if(isset($_GET['qq'])) {
 	session_start();
 	error_reporting(E_ALL);
 	define("ROOT", "./");

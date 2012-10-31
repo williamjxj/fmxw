@@ -91,5 +91,9 @@ function Pinyin($_String, $_Code='UTF8')
 }
 
 //测试
+<<<<<<< HEAD
+echo Pinyin('苍井空','utf8'); //第二个参数“1”可随意设置即为utf8编码
+=======
 echo Pinyin('中文字','utf8'); //第二个参数“1”可随意设置即为utf8编码
+>>>>>>> 457dcb5e1f90ba3015149a9b6fccd8546d6a199e
 ?>
