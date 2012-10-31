@@ -130,7 +130,9 @@ class FMXW_Sphinx extends f12Class
     function set_coreseek_server() {
         $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
         //以下是缺省设置，后面将会动态调整。
-        $this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        //$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        //$this -> cl -> SetMatchMode(SPH_MATCH_ALL);
+        $this -> cl -> SetMatchMode(SPH_MATCH_PHRASE);
         //$this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetArrayResult(true);
     }
@@ -186,7 +188,7 @@ class FMXW_Sphinx extends f12Class
         $lang_case = " and language = '" . $this -> lang . "' ";
         //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc limit  " . $row_no . "," . ROWS_PER_PAGE;
 
-        $sql = "select cid, title, content, date(created) as date, createdby  from contents where cid in (" . $ids . ")";
+        $sql = "select cid, title, content, date(created) as date, createdby  from contents where cid in (" . $ids . ") order by created desc";
         $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;
         return $sql;
     }
@@ -233,11 +235,11 @@ class FMXW_Sphinx extends f12Class
     function write_named_pipes($search_key) {
         $dir = '/home/williamjxj/scraper/';
         $pipes = array(
-			'baidu' => array($dir . '.baidu', $dir . 'baiduD.pl'), 
-			'soso' => array($dir . '.soso', $dir . 'sosoD.pl'), 
-			'sogou' => array($dir . '.sogou', $dir . 'sogouD.pl'), 
-			'google' => array($dir . '.google', $dir . 'ggD.pl'), 
-			'yahoo' => array($dir . '.yahoo', $dir . 'yahooD.pl'), 
+			'baidu' => array($dir . '.baidu'),
+			'soso' => array($dir . '.soso'),
+			'sogou' => array($dir . '.sogou'),
+			'google' => array($dir . '.google'),
+			'yahoo' => array($dir . '.yahoo'),
 		);
 
         //每次点击都搜索，好像不太好。
