@@ -2,29 +2,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="include/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="../include/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="include/bootstrap/js/bootstrap.min.js"></script>
+<script src="../include/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<a href="javacript:;" onclick="call_pl();">Call Perl </a>
+<a href="javacript:;" onclick="return call_pl();">Call Perl </a>
 <div id="pp"></div>
 <form class="well form-search" action="<?=$_SERVER['PHP_SELF'];?>" method="get" name="search1">
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
 </form>
 <script type="text/javascript">
-;(function() {
 	function call_pl() {
-		$('#pp').load('./test/pp.pl'); 
+		$('#pp').load('./pp.cgi'); 
+		// work: $('#pp').load('./pp.php'); 
+		return false;
 	}
-})();
 </script>
 <?php
 if(isset($_GET['qq'])) {
 	session_start();
 	error_reporting(E_ALL);
-	define("ROOT", "./");
+	define("ROOT", "../");
 	require_once (ROOT . "configs/config.inc.php");
 	global $config;
 	
