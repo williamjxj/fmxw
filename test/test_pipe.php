@@ -15,8 +15,11 @@
 </form>
 <script type="text/javascript">
 	function call_pl() {
-		$('#pp').load('./pp.cgi'); 
-		// work: $('#pp').load('./pp.php'); 
+		$('#pp').load('../../scraper/google/fork_gg.cgi', {
+			'q' : $('#q').val()
+		}, function(data) {
+			console.log(data);
+		}); // work: $('#pp').load('./pp.php'); 
 		return false;
 	}
 </script>
