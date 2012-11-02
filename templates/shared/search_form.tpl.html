@@ -20,6 +20,7 @@ $(function() {
 					$('#waiting').attr('src', 'images/spinner.gif');
 				},
 				success : function(results) {
+
 					if(results.length === 0) {
 						//创建或清空4个id容纳cgi过来的内容。
 						var ids = ['baidu','soso','google','yahoo'];
@@ -27,37 +28,41 @@ $(function() {
 							if($('#'+val).length) $('#'+val).remove();
 						});
 						
-						$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) { $('<ul></ul>').attr('id', 'baidu').addClass('nav nav-pills nav-stacked').html(data).appendTo('#sr'); });
+						$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
+							$('<div></div>').attr('id', 'baidu').html(data.join()).appendTo('#sr');
+						});
 						$.getJSON('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
-							var ary = [];
+							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
-								t = '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
-								ary.push(t);
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							$('<div></div>').attr('id','#google').addClass('nav nav-pills nav-stacked').html(ary).appendTo('#sr');
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','google').html(txt).appendTo('#sr');
 						});
 						$.getJSON('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
-							var ary = [];
+							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
-								t = '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
-								ary.push(t);
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							$('<div></div>').attr('id','#soso').addClass('nav nav-pills nav-stacked').html(ary).appendTo('#sr');
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','soso').html(txt).appendTo('#sr');
 						});
+						/*
 						$.getJSON('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
-							var ary = [];
+							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
-								t = '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
-								ary.push(t);
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							$('<div></div>').attr('id','#yahoo').addClass('nav nav-pills nav-stacked').html(ary).appendTo('#sr');
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','yahoo').html(txt).appendTo('#sr');
 						});
+						*/
 					}
 					else {
 						$('div#sr').hide().html(results).fadeIn(500);
 					}
 					$('#waiting').attr('src', '');
-				});
+				}
 			});
 		}
 		return false;

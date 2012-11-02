@@ -31,14 +31,14 @@ if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
 
 	//做过测试，'   '为真，empty('  ')为假。
-	if(empty($_GET['q']) {
+	if(empty($_GET['q'])) {
 	    $key = $q = '';
 		$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 		$obj->cl->SetArrayResult(true);
 	}
 	else {
-	    $key = $q = trim($_GET['q'];
+	    $key = $q = trim($_GET['q']);
 		/**
 		 * mongoDB有这个关键词吗？
 		 * 有：更新，count+1,date.
@@ -46,7 +46,7 @@ if (isset($_GET['q'])) {
 		 */
 		$obj->set_keywords($key);
 		$obj->cl->SetMatchMode(SPH_MATCH_PHRASE);
-		$obj->cl->SetSortMode(SPH_SORT_EXTENDED);
+		$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
 		$obj->cl->SetArrayResult(true);
 		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
 	}
@@ -106,8 +106,14 @@ elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
 }
 else {
-	echo "请输入查询词进行查询。";
-	return;
+	//$obj->display("templates/shared/search_form.tpl.html");
+	//echo "请输入查询词进行查询。";
+	//return;
+}
+
+
+if(empty($_GET)) {
+	goto BASIC;
 }
 
 // 设置当前页和开始的记录号码。
@@ -158,7 +164,7 @@ if (empty($res["matches"])) {
 }
 else {
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-	$obj->cl->SetSortMode(SPH_SORT_RELEVANCE);
+	//$obj->cl->SetSortMode(SPH_SORT_RELEVANCE, "@relevance DESC, @id DESC");
 	$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 	if (empty($res["matches"])) {
 	    $summary = "查询【" . $q . "】 没有匹配结果，用时【" . $res['time'] . "】秒。";
@@ -256,9 +262,10 @@ $obj -> assign('results', $rows);
 
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
-$obj -> assign("nav_template", $tdir1 . 'nav.tpl.html');	
 $obj -> assign('kr', $obj->get_key_related($key));
 	
+BASIC:
+$obj -> assign("nav_template", $tdir1 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
 
@@ -274,10 +281,15 @@ if (isset($_GET['page']) || isset($_GET['js_sortby']) || isset($_GET['js_ct_sear
     $obj -> assign("pagination", $pagination);
 	$obj -> display($tdir1 . 'nav.tpl.html');
 } 
-else {
-	$obj -> display($tdir1 . 'ss.tpl.html');
+elseif(isset($_GET['q'])) {
+    $pagination = $obj -> draw();
+    $obj -> assign("pagination", $pagination);
+	$obj -> display($tdir1 . 'nav.tpl.html');
 	if (!empty($_GET['q']))
 		$obj->backend_scrape($_GET['q']);
+}
+else {
+	$obj -> display($tdir1 . 'ss.tpl.html');
 }
 exit;
 
