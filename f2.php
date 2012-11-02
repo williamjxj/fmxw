@@ -20,10 +20,10 @@ if(isset($_GET['js_get_content'])) {
 	$obj->display($tdir2.'single.tpl.html');
 	exit;
 }
-elseif (isset($_POST['q'])) {
+elseif (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH]))
         unset($_SESSION[PACKAGE][SEARCH]);
-    $key = trim($_POST['q']);
+    $key = trim($_GET['q']);
     $obj -> assign('results', $obj -> select_contents_by_keyword($key));
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);

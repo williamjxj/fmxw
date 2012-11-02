@@ -97,11 +97,11 @@ elseif (isset($_GET['page'])) {
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
 }
-elseif (isset($_POST['q'])) {
+elseif (isset($_GET['q'])) {
 	//$obj -> assign('ss_template', $tdir1 . 'ss.tpl.html');
     if (isset($_SESSION[PACKAGE][SEARCH]))
         unset($_SESSION[PACKAGE][SEARCH]);
-    $key = trim($_POST['q']);
+    $key = trim($_GET['q']);
     $obj -> assign('results', $obj -> select_contents_by_keyword($key));
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
@@ -122,7 +122,7 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-if (isset($_POST['q'])) {
+if (isset($_GET['q'])) {
 	$obj -> display($tdir1 . 'ss.tpl.html');
 }
 else {
