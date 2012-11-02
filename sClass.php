@@ -157,19 +157,6 @@ class FMXW_Sphinx extends f12Class
         }
     }
 
-    //解析输入参数.
-    function set_filter($key) {
-        if(empty($key)) return;
-        
-        //这样做就是为了简单, 操作起来方便,也便于阅读.
-        $h = $this -> h;
-
-
-        $this -> cl -> SetFieldWeights(array('title' => 11, 'content' => 10));
-
-        return $h;
-    }
-
     //error, warning, status, fields+attrs, matches, total, total_found, time, words
     function set_session($res) 
 	{

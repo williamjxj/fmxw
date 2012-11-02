@@ -29,11 +29,27 @@ $obj -> assign('config', $config);
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+
 	//做过测试，'   '为真，empty('  ')为假。
-    $key = $q = empty($_GET['q']) ? '' : trim($_GET['q']);
-	
-	$obj->set_keywords($key);
-    $obj -> set_filter($key);
+	if(empty($_GET['q']) {
+	    $key = $q = '';
+		$obj->cl->SetMatchMode(SPH_MATCH_ALL);
+		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+		$obj->cl->SetArrayResult(true);
+	}
+	else {
+	    $key = $q = trim($_GET['q'];
+		/**
+		 * mongoDB有这个关键词吗？
+		 * 有：更新，count+1,date.
+		 * 无： insert
+		 */
+		$obj->set_keywords($key);
+		$obj->cl->SetMatchMode(SPH_MATCH_PHRASE);
+		$obj->cl->SetSortMode(SPH_SORT_EXTENDED);
+		$obj->cl->SetArrayResult(true);
+		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
+	}
 
 	if(isset($_GET['js_sortby'])) {
 		switch($_GET['js_sortby']) {
@@ -135,8 +151,8 @@ if ($res === false) {
 }
 
 if (empty($res["matches"])) {
-    $summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
-		$obj -> __p($summary);
+    //$summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
+	//$obj -> __p($summary);
 	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
 	return;
 }
