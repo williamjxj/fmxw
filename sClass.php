@@ -162,7 +162,7 @@ class FMXW_Sphinx extends f12Class
     function set_session($res) 
 	{
         //根据 Sphinx Query返回的结果填充SESSION,该SESSION存于memcached中。
-        $_SESSION[PACKAGE][SEARCH]['key'] = empty($_GET['q']) ? '所有记录' : trim($_GET['q']);
+        $_SESSION[PACKAGE][SEARCH]['key'] = empty($_GET['q']) ? '' : trim($_GET['q']);
         $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
         $_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
         $_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
