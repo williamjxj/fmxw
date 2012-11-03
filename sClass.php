@@ -47,6 +47,7 @@ class FMXW_Sphinx extends f12Class
     //不要插入keyword和tags表了，代替用
     // not work: array("upsert" => true)
     function set_keywords($key) {
+		return;
         if (empty($key))
             return;			
         $matched = $this -> m -> findOne(array('q' => $key));

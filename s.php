@@ -281,6 +281,11 @@ if (isset($_GET['page']) || isset($_GET['js_sortby']) || isset($_GET['js_ct_sear
     $obj -> assign("pagination", $pagination);
 	$obj -> display($tdir1 . 'nav.tpl.html');
 } 
+elseif(isset($_GET['wc'])) {
+    $pagination = $obj -> draw();
+    $obj -> assign("pagination", $pagination);
+	$obj -> display($tdir1 . 'ss.tpl.html');
+}
 elseif(isset($_GET['q'])) {
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
