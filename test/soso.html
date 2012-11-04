@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+<body onload="d.flpage.reset();d.flso.reset();">
+<div id="top">
+  <p class="nav" id="s_bar"><a class="active" href="/">网页</a><a href="http://image.soso.com/image.cgi?sc=img&amp;pid=web.img&amp;ie=utf-8&amp;w=">图片</a><a href="http://video.soso.com/search/?pid=web.video&amp;w=">视频</a><a href="http://music.soso.com/music.cgi?sc=mus&amp;pid=web.music&amp;ie=utf-8&amp;w=">音乐</a><a href="http://wenwen.soso.com/z/SearchSolved.e?sp=S">问问</a><a href="http://news.soso.com/n.q?sc=news&amp;pid=web.news&amp;ie=utf-8&amp;ty=c&amp;w=">新闻</a><a href="http://map.soso.com/?pid=web.map&amp;ie=utf-8&amp;w=">地图</a><a href="/more.shtml?w=">更多»</a></p>
+  <p class="user" id="s_user"><a href="javascript:;" onclick="openLogin();return false;">登录</a></p>
+</div>
+<div id="header">
+  <h1 id="rLogo"><a href="http://www.soso.com/?ch=logo.rst" title="到搜搜首页"><img src="http://soso.qstatic.com/30d/img/logo/r_defaultLogo.jpg" alt="到搜搜首页"></a></h1>
+  <div class="sBox">
+    <form name="flpage" action="q" method="get">
+      <input name="sc" value="web" type="hidden">
+      <input name="bs" value="联邦技术移民" type="hidden">
+      <input name="ch" value="w.uf" type="hidden">
+      <input name="num" value="10" type="hidden">
+      <input name="w" smartpid="sb.rst" smartch="sb.c.rst" class="s_input" autocomplete="off" id="smart_input" value="联邦技术移民" onmousedown="clickSearchInput()" x-webkit-speech="" onwebkitspeechchange="st_get('input','speech.i',1)" type="text">
+      <input value="搜搜" class="s_button" type="submit">
+    </form>
+    <div id="smart_pop" style="display:none;"></div>
+  </div>
+  <div id="sInfo">搜索到约3,700,000项结果，用时0.115秒</div>
+</div>
+<div style="margin-left: 0px;" id="main">
+  <div id="l" ss_c="filter">
+    <div ss_c="guide.intel">
+      <ul id="nf">
+        <li><a class="now">全部结果</a></li>
+        <li><a href="http://news.soso.com/n.q?cf=web&amp;ch=web.cf.news&amp;pid=web.cf&amp;ie=utf-8&amp;w=%E8%81%94%E9%82%A6%E6%8A%80%E6%9C%AF%E7%A7%BB%E6%B0%91" onclick="st_get('web', 'w.cf.news',0);">新闻</a></li>
+        <li><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;ch=w.cf.here&amp;nset=5|7|12|1&amp;nf=2" onclick="st_get('web', 'w.cf.here',0);">问答</a></li>
+        <li><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;ch=w.cf.here&amp;nset=5|7|12|1&amp;nf=3" onclick="st_get('web', 'w.cf.here',0);">旅游</a></li>
+        <li><a href="http://image.soso.com/image.cgi?cf=web&amp;ch=web.cf.pic&amp;pid=web.cf&amp;ie=utf-8&amp;w=%E8%81%94%E9%82%A6%E6%8A%80%E6%9C%AF%E7%A7%BB%E6%B0%91" onclick="st_get('web', 'w.cf.image',0);">图片</a></li>
+      </ul>
+      <ul id="tf">
+        <li><a class="now">全部时间</a></li>
+        <li><a href="#">一天内</a></li>
+        <li><a href="#">一周内</a></li>
+        <li><a href="#">一月内</a></li>
+        <li><a href="#">一年内</a></li>
+        <li><a href="#">自定日期范围</a></li>
+        <li class="setdate" style="width:82px;display:none;">从:<br>
+          <input class="input_2" autocomplete="off" value="" id="ptfs" maxlength="8" type="text">
+          <em style="display:none;" id="tfwarn1">无效日期</em>到:<br>
+          <input class="input_2" autocomplete="off" value="" id="ptfe" maxlength="8" type="text">
+          <em style="display:none;" id="tfwarn2">无效日期</em>
+          <input name="" value="搜索" class="button" id="ptfsbt" type="button">
+        </li>
+      </ul>
+      <ul id="sf">
+        <li><a class="now" title="">全部来源</a></li>
+        <li><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;ch=w.sf&amp;sf=1&amp;sset=17942080539159409456|13276308312796098982|8954008697148590702" title="搜狐">搜狐</a></li>
+        <li><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;ch=w.sf&amp;sf=2&amp;sset=17942080539159409456|13276308312796098982|8954008697148590702" title="搜搜">搜搜</a></li>
+        <li><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;ch=w.sf&amp;sf=3&amp;sset=17942080539159409456|13276308312796098982|8954008697148590702" title="新浪网">新浪网</a></li>
+      </ul>
+      <dl id="shis">
+        <dt>搜索历史<span id="ophf" style="display:none;"> - <span id="openhf">启用</span></span></dt>
+        <dd><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;cid=s.idx.se&amp;pid=c.fil.his&amp;ch=w.fil.his" title="联邦技术移民">联邦技术移民</a></dd>
+        <dd><a href="/q?w=%CD%F5%B2%A8&amp;sc=web&amp;cid=s.idx.se&amp;pid=c.fil.his&amp;ch=w.fil.his" title="王波">王波</a></dd>
+        <dd><a href="/q?w=%BD%AF%CF%FE%BE%FC%20%B8%BA%C3%E6%D0%C2%CE%C5%C6%D8%B9%E2&amp;sc=web&amp;cid=s.idx.se&amp;pid=c.fil.his&amp;ch=w.fil.his" title="蒋晓军 负面新闻曝光">蒋晓军 负...</a></dd>
+        <dd><a href="/q?w=%BD%AF%CF%FE%BE%FC&amp;sc=web&amp;cid=s.idx.se&amp;pid=c.fil.his&amp;ch=w.fil.his" title="蒋晓军">蒋晓军</a></dd>
+        <dd><a href="/q?w=%B2%D4%BE%AE%BF%D5&amp;sc=web&amp;cid=s.idx.se&amp;pid=c.fil.his&amp;ch=w.fil.his" title="苍井空">苍井空</a></dd>
+      </dl>
+      <dl>
+        <span class="hiStop" id="chf"><span id="closehf">停用</span> - <span id="clearhf">清除历史</span></span>
+      </dl>
+    </div>
+    <p id="toggle" style="display: none;"><span class="">&nbsp;</span></p>
+  </div>
+  <div id="r">
+    <div id="result" class="result" ss_c="TIME_c">
+      <!--result list begin-->
+      <ol>
+        <li loc="1">
+          <div id="box_0_0" class="boxGoogleList selected">
+            <h3><a href="http://www.douban.com/group/topic/9188539/" class="tt tu" onclick="reportUrl(this,'1','1');st_get(this,'w.r',1,0,2);" target="_blank">加拿大<em>联邦</em><em>技术</em><em>移民</em>自测</a></h3>
+            <p class="ds">要看自己是否满足加拿大<em>联邦</em><em>技术</em><em>移民</em>，请参照下面的步骤：一：确定自己的职业，是否包含在此列表中，或者往这些职业上靠。自己的职业不在这张表上的朋友，...</p>
+            <div class="result_summary">
+              <div class="url"><cite>www.douban.com/group/topic/9188539/&nbsp;2012-07-04</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=4386669472546449252&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://www.douban.com/group/topic/9188539/" target="_blank" onclick="st_get(this,'w.r.cache',1);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="0" class="summaryshare" id="sws_0_0"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_0"><span style="" class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="2">
+          <div id="box_0_1" class="selected boxGoogleList">
+            <h3><a href="http://qq1826080587.wanye68.com/" class="tt tu" onclick="reportUrl(this,'1','2');st_get(this,'w.r',2,0,2);" target="_blank">四川加海加拿大<em>联邦</em><em>技术</em><em>移民</em>公司</a></h3>
+            <p class="ds">四川加海加拿大<em>联邦</em><em>技术</em><em>移民</em>公司 繁体 没有文章 分 类 没有分类 联系人:杨先生 手机:13056687190 电话：86-028-86699759 传真：86-028-86696019 E-mail：...</p>
+            <div class="result_summary">
+              <div class="url"><cite>qq1826080587.wanye68.com/&nbsp;2012-10-25</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=18024679473824486101&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://qq1826080587.wanye68.com/" target="_blank" onclick="st_get(this,'w.r.cache',2);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="1" class="summaryshare" id="sws_0_1"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_1"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="3">
+          <div id="box_0_2" class="selected boxGoogleList">
+            <h3><a href="http://goabroad.sohu.com/20120702/n347037722.shtml" class="tt tu" onclick="reportUrl(this,'1','3');st_get(this,'w.r',3,0,2);" target="_blank">加拿大<em>联邦</em><em>技术</em><em>移民</em>和投资移民全部暂停-搜狐出国</a></h3>
+            <p class="ds">2012年07月02日...关于加拿大<em>联邦</em><em>技术</em><em>移民</em>：2013年1月加拿大<em>联邦</em><em>技术</em><em>移民</em>项目有可能将重新接受申请，新的<em>联邦</em><em>技术</em><em>移民</em>一定不是现有政策的简单重复，对申请人而言还...</p>
+            <div class="result_summary">
+              <div class="url"><cite>goabroad.sohu.com/20120702/n347037722.sh...&nbsp;2012-07-02</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=12704001741130529381&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://goabroad.sohu.com/20120702/n347037722.shtml" target="_blank" onclick="st_get(this,'w.r.cache',3);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="2" class="summaryshare" id="sws_0_2"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_2"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="4">
+          <div id="box_0_3" class="selected boxGoogleList">
+            <h3><a href="http://post.tom.com/s/C7001DBA63.html" class="tt tu" onclick="reportUrl(this,'1','4');st_get(this,'w.r',4,0,2);" target="_blank">成功抢搭加拿大<em>联邦</em><em>技术</em><em>移民</em>227末班车</a></h3>
+            <p class="ds">2012年07月24日...鲲鹏移民加拿大<em>联邦</em><em>技术</em><em>移民</em>成功客户L女士最初咨询时，并不确定自己是否符合加拿大<em>技术</em><em>移民</em>的要求，也并没有打算近期办理加拿大移民，...</p>
+            <div class="result_summary">
+              <div class="url"><cite>post.tom.com/s/C7001DBA63.html&nbsp;2012-07-24</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=7724280021941481058&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://post.tom.com/s/C7001DBA63.html" target="_blank" onclick="st_get(this,'w.r.cache',4);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="3" class="summaryshare" id="sws_0_3"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_3"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="5">
+          <div id="box_0_4" class="selected boxGoogleList">
+            <h3><a href="http://tech.hexun.com/2012-06-29/143023571.html" class="tt tu" onclick="reportUrl(this,'1','5');st_get(this,'w.r',5,0,2);" target="_blank">加拿大<em>联邦</em><em>技术</em><em>移民</em>和投资移民全部暂停-科技频道-和讯网</a></h3>
+            <p class="ds">2012年06月29日...关于加拿大<em>联邦</em><em>技术</em><em>移民</em>：2013年1月加拿大<em>联邦</em><em>技术</em><em>移民</em>项目有可能将重新接受申请，新的<em>联邦</em><em>技术</em><em>移民</em>一定不是现有政策的简单重复，对申请人而言还...</p>
+            <div class="result_summary">
+              <div class="url"><cite>tech.hexun.com/2012-06-29/143023571.html&nbsp;2012-06-29</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=10252099767605846303&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://tech.hexun.com/2012-06-29/143023571.html" target="_blank" onclick="st_get(this,'w.r.cache',5);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="4" class="summaryshare" id="sws_0_4"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_4"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="6">
+          <div id="box_0_5" class="selected boxGoogleList">
+            <h3><a href="http://edu.163.com/special/yimin/canada-jsym.html" class="tt tu" onclick="reportUrl(this,'1','6');st_get(this,'w.r',6,0,2);" target="_blank">加拿大一刀切掉28万<em>联邦</em><em>技术</em><em>移民</em>申请_网易移民</a></h3>
+            <p class="ds">2012年07月09日...28万个在2008年2月27日前送件的<em>联邦</em><em>技术</em><em>移民</em>申请人案件岌岌可危。受<em>联邦</em><em>技术</em><em>移民</em>“一刀切”影响的申请人，4月30日在加拿大驻香港总领事馆前抗议。...</p>
+            <div class="result_summary">
+              <div class="url"><cite>edu.163.com/special/yimin/canada-jsym.ht...&nbsp;2012-07-09</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=4660717895080808677&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://edu.163.com/special/yimin/canada-jsym.html" target="_blank" onclick="st_get(this,'w.r.cache',6);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="5" class="summaryshare" id="sws_0_5"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_5"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="7">
+          <div id="box_0_6" class="selected boxGoogleList">
+            <h3><a href="http://www.flyabroadvisa.com/federal/" class="tt tu" onclick="reportUrl(this,'1','7');st_get(this,'w.r',7,0,2);" target="_blank">加拿大<em>技术</em><em>移民</em>-FLYabroad 签证工作室</a></h3>
+            <p class="ds">加拿大<em>技术</em><em>移民</em>一般说的是加拿大<em>联邦</em><em>技术</em><em>移民</em>，除了加拿大<em>联邦</em><em>技术</em><em>移民</em>外，加拿大<em>技术</em><em>移民</em>项目还包括魁北克<em>技术</em><em>移民</em>和各省的省提名<em>技术</em><em>移民</em>。...</p>
+            <div class="result_summary">
+              <div class="url"><cite>www.flyabroadvisa.com/federal/&nbsp;2012-07-01</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=18278345875616746996&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://www.flyabroadvisa.com/federal/" target="_blank" onclick="st_get(this,'w.r.cache',7);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="6" class="summaryshare" id="sws_0_6"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_6"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="8">
+          <div id="box_0_7" class="selected boxGoogleList">
+            <h3><a href="http://news.xinhuanet.com/abroad/2012-08/24/c_123626263.htm" class="tt tu" onclick="reportUrl(this,'1','8');st_get(this,'w.r',8,0,2);" target="_blank"><em>联邦</em><em>技术</em><em>移民</em>修订案，工作经验减至一年-新华出国-新华网</a></h3>
+            <p class="ds">2012年08月24日...<em>联邦</em><em>技术</em><em>移民</em>修订案，工作经验减至一年---...加拿大公民和移民部已经全面暂停加拿大<em>联邦</em><em>技术</em><em>移民</em>和<em>联邦</em>投资<em>移民</em>的新申请。当时移民部长尼康就表示从明年1月份...</p>
+            <div class="result_summary">
+              <div class="url"><cite>news.xinhuanet.com/abroad/2012-08/24/c_1...&nbsp;2012-08-24</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=12549273686047492692&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://news.xinhuanet.com/abroad/2012-08/24/c_123626263.htm" target="_blank" onclick="st_get(this,'w.r.cache',8);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="7" class="summaryshare" id="sws_0_7"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_7"><span class="iPre"><span class="iPreBox" style="height:74px;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="9">
+          <div id="box_0_8" class="selected boxGoogleList">
+            <h3><a href="http://finance.qq.com/a/20111107/005260.htm" class="tt tu" onclick="reportUrl(this,'1','9');st_get(this,'w.r',9,0,2);" target="_blank">2012年加拿大计划接收更多的<em>联邦</em><em>技术</em><em>移民</em>_财经_腾讯网</a></h3>
+            <p class="ds">2011年11月07日...2012年加拿大计划接收更多的<em>联邦</em><em>技术</em><em>移民</em>...而且调查中95%的<em>技术</em><em>移民</em>都表示<em>联邦</em><em>技术</em><em>移民</em>项目达到甚至超过了他们所预期的结果。这个评估也表明加拿大需要更多...</p>
+            <div class="result_summary">
+              <div class="url"><cite>finance.qq.com/a/20111107/005260.htm&nbsp;2011-11-07</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=8857255888005879049&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://finance.qq.com/a/20111107/005260.htm" target="_blank" onclick="st_get(this,'w.r.cache',9);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="8" class="summaryshare" id="sws_0_8"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_8"><span class="iPre"><span class="iPreBox" style="height:74px;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+        <li loc="10">
+          <div id="box_0_9" class="selected boxGoogleList">
+            <h3><a href="http://gd.qq.com/a/20120904/000411.htm" class="tt tu" onclick="reportUrl(this,'1','10');st_get(this,'w.r',10,0,2);" target="_blank">语言能力首当其冲 加拿大<em>联邦</em><em>技术</em><em>移民</em>“透风”_大粤网_腾讯网</a></h3>
+            <p class="ds">2012年09月04日...记者从业界了解到，就在8月中旬，加移民部长康尼公布了最新的<em>技术</em><em>移民</em>政策走向，以及<em>技术</em><em>移民</em>打分表的征求意见稿，最终版的方案预计将于今年底公布...</p>
+            <div class="result_summary">
+              <div class="url"><cite>gd.qq.com/a/20120904/000411.htm&nbsp;2012-09-04</cite>-<a href="http://snapshot.soso.com/snap.cgi?d=7226451065852027170&amp;w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;u=http://gd.qq.com/a/20120904/000411.htm" target="_blank" onclick="st_get(this,'w.r.cache',10);">快照</a></div>
+              <div class="sp"><span class="line">-</span><span shareindex="9" class="summaryshare" id="sws_0_9"><span class="yl1" onfocus="blur();">分享</span></span><span class="line2">-</span><span class="preview" id="pws_0_9"><span class="iPre"><span class="iPreBox" style="height: 71px; visibility: hidden;"><em class="iPreArr"></em></span></span></span></div>
+            </div>
+            <div class="highLight"></div>
+          </div>
+        </li>
+      </ol>
+      <!--result list end-->
+    </div>
+    <div id="side">
+      <div id="bar">
+        <div ss_c="search.hint.r">
+          <dl>
+            <dt>相关搜索</dt>
+            <dd><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">加拿大联邦技术移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%C1%AA%B0%EE%D6%C6%D2%A9%B8%B1%D6%F7%CF%AF%B3%CA%B4%C7&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">联邦制药副主席呈辞</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%C1%AA%B0%EE%B6%C0%C1%A2%BC%BC%CA%F5%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">联邦独立技术移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%B3%AC%BB%A5%C1%AA%CA%C0%BD%E7%D0%C2%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">超互联世界新移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">加拿大联邦投资移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">联邦投资移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1%D3%EB%C8%F8%CA%A1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">联邦投资移民与萨省</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F1%BD%F8%B6%C8&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">加拿大联邦移民进度</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%CA%B2%C3%B4%CA%C2%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">什么事加拿大联邦移民</a></dd>
+            <dd></dd>
+            <dd><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F129%CF%EE&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;ch=w.h.r" title="">加拿大联邦移民29项</a></dd>
+            <dd></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div id="bottom">
+      <div id="pager">
+        <div class="pg"><span class="current">1</span><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=2" class="flag_pg">2</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=3" class="flag_pg">3</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=4" class="flag_pg">4</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=5" class="flag_pg">5</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=6" class="flag_pg">6</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=7" class="flag_pg">7</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=8" class="flag_pg">8</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=9" class="flag_pg">9</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=10" class="flag_pg">10</a><a href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=11" class="flag_pg">11</a><a class="next" href="/q?w=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;lr=&amp;sc=web&amp;ch=w.p.b&amp;num=10&amp;gid=&amp;cin=&amp;site=&amp;sf=0&amp;sd=0&amp;nf=0&amp;pg=2">下一页&gt;</a></div>
+      </div>
+      <div ss_c="search.hint" id="rel">
+        <table cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <th rowspan="2" valign="top"><b>相关搜索：</b></th>
+              <td valign="top"><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=0&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">加拿大联邦技术移民</a></td>
+              <td valign="top"><a href="/q?w=%C1%AA%B0%EE%D6%C6%D2%A9%B8%B1%D6%F7%CF%AF%B3%CA%B4%C7&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=1&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">联邦制药副主席呈辞</a></td>
+              <td valign="top"><a href="/q?w=%C1%AA%B0%EE%B6%C0%C1%A2%BC%BC%CA%F5%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=2&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">联邦独立技术移民</a></td>
+              <td valign="top"><a href="/q?w=%B3%AC%BB%A5%C1%AA%CA%C0%BD%E7%D0%C2%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=3&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">超互联世界新移民</a></td>
+              <td valign="top"><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=4&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">加拿大联邦投资移民</a></td>
+            </tr>
+            <tr>
+              <td valign="top"><a href="/q?w=%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=5&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">联邦投资移民</a></td>
+              <td valign="top"><a href="/q?w=%C1%AA%B0%EE%CD%B6%D7%CA%D2%C6%C3%F1%D3%EB%C8%F8%CA%A1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=6&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">联邦投资移民与萨省</a></td>
+              <td valign="top"><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F1%BD%F8%B6%C8&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=7&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">加拿大联邦移民进度</a></td>
+              <td valign="top"><a href="/q?w=%CA%B2%C3%B4%CA%C2%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F1&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=8&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">什么事加拿大联邦移民</a></td>
+              <td valign="top"><a href="/q?w=%BC%D3%C4%C3%B4%F3%C1%AA%B0%EE%D2%C6%C3%F129%CF%EE&amp;sc=web&amp;pid=c.related&amp;ch=w.h&amp;gid=&amp;cin=&amp;num=10&amp;lr=&amp;htn=9&amp;bs=%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1">加拿大联邦移民29项</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="bSearch">
+        <div class="sBox">
+          <form name="flso" action="q" method="get">
+            <input name="sc" value="web" type="hidden">
+            <input name="bs" value="联邦技术移民" type="hidden">
+            <input name="ch" value="w.bf" type="hidden">
+            <input name="lr" value="" type="hidden">
+            <input name="num" value="10" type="hidden">
+            <input value="联邦技术移民" class="s_input" name="w" type="text">
+            <input class="s_button" value="搜搜" type="submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="footer" ss_c="tszz">
+  <p><a href="http://help.soso.com/help_web.shtml" target="_blank" onclick="st_get('web', 'w.func', 0);">帮助中心</a>|<a href="http://support.qq.com/beta2/simple/index.html?fid=394" target="_blank" onclick="st_get('web', 'w.func', 0);">反馈建议</a>|<a href="http://soso.qzone.qq.com" target="_blank">团队博客</a></p>
+  Copyright © 1998 - 2012 Tencent. All Rights Reserved. </div>
+<div id="pageMask" style="position:absolute;display:none;z-index:998;top:0;left:0;filter:alpha(opacity=50);opacity:0.5;background-color:#FFF;"></div>
+<div id="loginDiv" style="position: absolute; display: none; width: 400px; height: 330px; padding: 0px; z-index: 999; margin: 0px; left: 747px; top: 313px;" align="center"></div>
+<div id="qqShareDiv" style="position:absolute;display:none;width:490px;height:298px;padding:0;z-index:999;margin:0px;" align="center"></div>
+<script>var __kw = '%C1%AA%B0%EE%BC%BC%CA%F5%D2%C6%C3%F1',__kw8 = encodeURIComponent("\u8054\u90a6\u6280\u672f\u79fb\u6c11"),__pn = '1',__sd = '0',__sf = '0',__sset = '17942080539159409456|13276308312796098982|8954008697148590702',__tfmin='',__tfmax='',__nf='0',__nset='',__nqr = '0',__searchId = '03da070353457d8a59cd1515534f6392',__tagId = '25^25^25^0^42a^0',__previewkw = '&Aacute;&ordf;&deg;&icirc; &frac14;&frac14;&Ecirc;&otilde; &Ograve;&AElig;&Atilde;&ntilde;',__qrkw = '',__suidGray ='6';</script>
+<script>soso.mark('js_start');</script>
+<script type="text/javascript" src="/js/sosoweb_result_a.js?7209"></script>
+<script>soso.mark('js_end');</script>
+<script>soso.mark('gift_start');</script>
+<script type="text/javascript" src="http://faxin.soso.com/scripts/gift.js?6"></script>
+<script>soso.mark('gift_end');</script>
+<script>soso.mark('anjs_start');</script>
+<script>soso.mark('anjs_end');soso.mark('tcss_start');</script>
+<script type="text/javascript" src="http://soso.qstatic.com/30d/js/web/tcss.js"></script>
+<script>if (typeof(pgvMain) == 'function') {pgvMain();}soso.mark('tcss_end');soso.mark('page');</script>
+<script type="text/javascript" src="http://sosoid.qq.com/sosoid.php?searchid=03da070353457d8a59cd1515534f6392&amp;suid=9223394680&amp;uin=&amp;md=ceb2a"></script>
+</body>
+</html>

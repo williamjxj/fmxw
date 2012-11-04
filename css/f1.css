@@ -97,3 +97,16 @@
 #form_fayan div.controls {
 	margin-left: 10px;
 }
+.loadPic {
+	width:32px;
+	height:32px;
+	background:url(images/r_loadPic.gif) no-repeat;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-16px;
+	margin-left:-16px;
+	line-height:999em;
+	display:block;
+	overflow:hidden;
+}

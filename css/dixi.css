@@ -505,9 +505,9 @@ div.ajaxloading * {
 	background: url(http://mat1.gtimg.com/news/imgcss_article_qq/qqmail.png) no-repeat scroll 0 0 transparent;
 }
 li.highlight {
-    background: none repeat scroll 0 0 #E5E3E3;
+    background: none repeat scroll 0 0 #eeeeee;
     border: 1px solid #E7E5E6;
-    box-shadow: 1px 1px 1px #E7E5E6;
+    /*box-shadow: 1px 1px 1px #E7E5E6;*/
     -moz-border-radius: 4px 4px 4px 4px;
     -webkit-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;

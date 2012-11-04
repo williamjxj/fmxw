@@ -53,10 +53,10 @@
       <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
-      <div class="head1">网友在查</div>
-      <ul class="nav nav-list nav-pills nav-stacked">
+      <div class="alert"> <strong>网友在查:</strong> </div>
+      <ul class="nav nav-tabs nav-stacked">
         {foreach $kr as $r}
-        <li><a class="rk" href="{$r.kurl}">{$r.rk}</a></li>
+        <li><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></li>
         {/foreach}
       </ul>
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
