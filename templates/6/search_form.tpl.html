@@ -1,19 +1,21 @@
 {*foreach $smarty.session.fmxw.search as $s}{$s}{/foreach*}
 <form class="well form-search" action="{$config.search}" method="get" name="search_form" id="search_form">
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
+  <input type="hidden" name="fm6" value=""  />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
   <img id="waiting" width="16" height="16" border="0" />
 </form>
 <script type="text/javascript">
 $(function() {
 	$('#search_form').submit(function() {
+		sm = '#smiddle';
 		var f = $(this);
 		var kw = $('#q').val();
-		if($('#sr').length) {
+		if($(sm).length) {
 			$.ajax({
 				url :  f.attr('action'),
 				type : f.attr('method'),
-				data : 'q=' + kw,
+				data : f.serialize(),
 				async : false,
 				cache : false,
 				beforeSend : function() {
@@ -26,10 +28,10 @@ $(function() {
 						//var ids = ['baidu','soso','google','yahoo'];
 						//$.each(ids, function(key, val) { if($('#'+val).length) $('#'+val).remove(); });
 						
-						if($('#sr').length) $('#sr').empty();
+						if($(sm).length) $(sm).empty();
 
 						$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
-							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendTo('#sr');
+							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendTo(sm);
 						});
 						$.getJSON('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -37,7 +39,7 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','google').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','google').html(txt).appendTo(sm);
 						});
 						$.getJSON('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -45,7 +47,7 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','soso').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','soso').html(txt).appendTo(sm);
 						});
 						$.getJSON('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -53,11 +55,11 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','yahoo').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','yahoo').html(txt).appendTo(sm);
 						});
 					}
 					else {
-						$('div#sr').hide().html(results).fadeIn(500);
+						$(sm).hide().html(results).fadeIn(500);
 					}
 					$('#waiting').attr('src', '');
 				}

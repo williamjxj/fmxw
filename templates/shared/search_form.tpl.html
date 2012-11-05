@@ -9,7 +9,7 @@ $(function() {
 	$('#search_form').submit(function() {
 		var f = $(this);
 		var kw = $('#q').val();
-		if($('#sr').length) {
+		if($('#smiddle').length) {
 			$.ajax({
 				url :  f.attr('action'),
 				type : f.attr('method'),
@@ -26,10 +26,10 @@ $(function() {
 						//var ids = ['baidu','soso','google','yahoo'];
 						//$.each(ids, function(key, val) { if($('#'+val).length) $('#'+val).remove(); });
 						
-						if($('#sr').length) $('#sr').empty();
+						if($('#smiddle').length) $('#smiddle').empty();
 
 						$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
-							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendTo('#sr');
+							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendTo('#smiddle');
 						});
 						$.getJSON('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -37,7 +37,7 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','google').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','google').html(txt).appendTo('#smiddle');
 						});
 						$.getJSON('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -45,7 +45,7 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','soso').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','soso').html(txt).appendTo('#smiddle');
 						});
 						$.getJSON('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
@@ -53,11 +53,11 @@ $(function() {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
 							txt +='</ul>\n';
-							$('<div></div>').attr('id','yahoo').html(txt).appendTo('#sr');
+							$('<div></div>').attr('id','yahoo').html(txt).appendTo('#smiddle');
 						});
 					}
 					else {
-						$('div#sr').hide().html(results).fadeIn(500);
+						$('div#smiddle').hide().html(results).fadeIn(500);
 					}
 					$('#waiting').attr('src', '');
 				}
