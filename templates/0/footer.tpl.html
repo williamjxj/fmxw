@@ -1,17 +1,7 @@
 <div class="row">
-	<div class="span12 centered box">
-		<div class="btn-group sitemap">
-			{foreach $sitemap as $k=>$v} <a class="btn" href="{$config.f1.s}?sitemap={$k}">{$v}</a> {/foreach}
-		</div>
-		<p>
-			&copy;2012&nbsp;&nbsp; {$_tf.desc} &nbsp;&nbsp;<abbr title="{$_tf.desc} ">({$config.home})</abbr>
-			<br />
-			{$_tf.phone} <abbr title="{$config.phone}">{$config.phone}</abbr> {$_tf.email} <abbr title="{$config.email}">{$config.email}</abbr>
-		</p>
-	</div>
+  <div class="span12 centered box">
+    <div class="btn-group sitemap"> {foreach $sitemap as $k=>$v} <a class="btn" href="{$config.f1.s}?sitemap={$k}">{$v}</a> {/foreach} </div>
+    <p> &copy;2012&nbsp;&nbsp; {$_tf.desc} &nbsp;&nbsp;<abbr title="{$_tf.desc} ">({$config.home})</abbr> <br />
+      {$_tf.phone} <abbr title="{$config.phone}">{$config.phone}</abbr> {$_tf.email} <abbr title="{$config.email}">{$config.email}</abbr> </p>
+  </div>
 </div>
-<script type="text/javascript">
-$(window).load(function() {
-  $('input[name="q"]').focus();
-})
-</script>

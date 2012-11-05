@@ -40,9 +40,6 @@ $(function() {
 		}
 		return true;
 	});
-	$('#typeahead').focus(function() {
-		$('div.alert').hide();
-	})
 	var no_typeahead=false, timer;
 	$('#typeahead').typeahead({
 		source : function(typeahead, query) {

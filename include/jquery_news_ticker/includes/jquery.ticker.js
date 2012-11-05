@@ -418,7 +418,7 @@
 		htmlFeed: true,
 		debugMode: true,
 		controls: true,
-		titleText: 'Latest',	
+		titleText: '×îÐÂ²éÑ¯£º',	
 		direction: 'ltr',	
 		pauseOnItems: 3000,
 		fadeInSpeed: 600,
