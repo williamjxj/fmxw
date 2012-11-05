@@ -15,7 +15,7 @@
 </div>
 <div class="container-fluid" align="left">
   <div class="row-fluid">
-    <div class="span1">
+    <div class="span1" id="sleft">
       <ul id="tf1" class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
         <li><a href="javascript:;" class="sort_by_time" id="day">一天内</a></li>
@@ -48,23 +48,15 @@
         <li><a href="#tw.yahoo" rel="tooltip" title="雅虎">雅虎台湾</a></li>
       </ul-->
     </div>
-    <div class="span4" id="sr"> {include file="{$nav_template}"} </div>
-    <div class="span7">
+    <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
+    <div class="span7" id="sright">
       <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
-      <div class="alert"> <strong>网友在查:</strong> </div>
-      <span>
-        {foreach $kr as $r}
-        <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span>
-        {/foreach}
-      </span>
-      
-          {include file="{$config.t3}weibo.tpl.html"}
-    {include file="{$config.t6}news.tpl.html"}
-    {include file="{$config.t6}reping.tpl.html"} 
-    {include file="{$config.t6}pk.tpl.html"} 
-    
+      <div class="alert"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
+      {include file="{$config.t3}weibo.tpl.html"}
+      {include file="{$config.t6}news.tpl.html"}
+      {include file="{$config.t6}reping.tpl.html"}
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
@@ -79,7 +71,7 @@
 <script type="text/javascript">
 $(function() {
 	$('a.sort_by_time', '#tf1').click(function() {
-		$('div#sr').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
+		$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 	});
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
@@ -102,7 +94,7 @@ $(function() {
 			type: 'get',
 			url: url,
 			success: function(data) {
-				$('div#sr').hide().html(data).fadeIn(200);
+				$('div#smiddle').hide().html(data).fadeIn(200);
 			}
 		});
 		return false;
@@ -136,7 +128,7 @@ $(function() {
 		});
 	});
 	$('#ct_search').submit(function(e) {
-		$('div#sr').load('{$url}', $(this).serialize()+'&js_ct_search=1');
+		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
 });
