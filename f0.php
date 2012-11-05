@@ -42,7 +42,7 @@ else {
 	global $list;
     global $footer;
 
-	$tickers = array('ÍõÊ¯', 'ÎÂ¼Ò±¦', 'ÃÀ¹ú×ÜÍ³´óÑ¡');
+	$tickers = array('çŽ‹çŸ³', 'æ¸©å®¶å®', 'ç¾Žå›½æ€»ç»Ÿå¤§é€‰');
 	$obj -> assign('tickers', $tickers);
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_ts', $obj -> get_search_label($search));
