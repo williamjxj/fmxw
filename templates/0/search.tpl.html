@@ -12,19 +12,15 @@
   <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
     {/foreach} </span> </div>
   <br/>
-  <div class="span12">
-    <ul id="js-keys" class="js-hidden">
-      {*foreach $tickers as $tk}
+  <div class="span12 centered">
+    <ul id="js-news" class="js-hidden">
+      {foreach $tickers as $tk}
       <li class="news-item"><a href="#">{$tk}</a></li>
-      {/foreach*}
-        <li class="news-item"><a href="#">电话： 778-395-8811，传真：778-395-8812</a></li>
-  <li class="news-item"><a href="#">地址： Unit 307 14351， 104th Avenue， Surrey, B.C. V3T 1Y1</a></li>
-  <li class="news-item"><a href="#">邮件： <a href="mailto:pliew@shaw.ca">pliew@shaw.ca</a></a></li>
+      {/foreach}
     </ul>
   </div>
 </div>
 <div class="related_tag"> &nbsp; </div>
-<p>&nbsp; </p>
 <script type="text/javascript">
 $(function() {
 	$('#ns').click(function(e) {
@@ -75,6 +71,6 @@ $(function() {
 			}, 200);
 		}
 	});
-	$('#js-keys').ticker();
+	$('#js-news').ticker();
 });
 </script>
