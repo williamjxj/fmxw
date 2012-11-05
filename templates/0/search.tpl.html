@@ -1,109 +1,76 @@
-<!-- 如何防止hacker -->
 <div class="row">
-	<div class="span12 centered">
-		<form class="form-search" action="{$config.f2.s}" method="get" name="sf" id="sf">
-			<input type="text" name="q" id="typeahead" class="input-large search-query" style="width:400px; height:35px;" data-provide="typeahead" autocomplete="off"  placeholder="请输入关键词" />
-			<input type="hidden" name="wc" value="1"  />
-			<button type="submit" class="btn btn-primary">
-				<i class="icon-search icon-white"></i>{$_ts.search}
-			</button>
-			<img id="waiting" src="images/noimg.gif" width="16" height="16" border="0" />
-			<button type="button" class="btn btn-primary" id="new_search">
-				<i class="icon-search icon-white"></i>{$_ts.new_search}
-			</button>
-		</form>
-	</div>
-	<br/>
-	<div class="span12">
-		<span class="label label-warning">热门搜索词:</span>
-		<span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
-			{/foreach} </span>
-	</div>
+  <div class="span12 centered">
+    <form class="form-search" action="{$config.search}" method="get" name="sf" id="sf">
+      <input type="text" name="q" id="typeahead" class="input-large search-query" style="width:400px; height:35px;" data-provide="typeahead" autocomplete="off"  placeholder="请输入关键词" />
+      <input type="hidden" name="wc" value="1"  />
+      <button type="submit" class="btn btn-primary" id="ns"> <i class="icon-search icon-white"></i>{$_ts.new_search} </button>
+      <img id="waiting" src="images/noimg.gif" width="16" height="16" border="0" />
+      <button type="button" class="btn btn-primary" id="os"> <i class="icon-search icon-white"></i>{$_ts.old_search} </button>
+    </form>
+  </div>
+  <br/>
+  <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
+    {/foreach} </span> </div>
+  <br/>
+  <div class="span12">
+    <ul id="js-keys" class="js-hidden">
+      {foreach $rks as $k}
+      <li class="news-item"><a href="#">{$k}</a></li>
+    </ul>
+  </div>
 </div>
-<div class="related_tag">
-	&nbsp;
-</div>
-<p>&nbsp;
-	
-</p>
+<div class="related_tag"> &nbsp; </div>
+<p>&nbsp; </p>
 <script type="text/javascript">
-    $(function() {
-        $('a.post-tag').click(function(e) {
-            e.preventDefault();
-            var t = $(e.target);
-            $('#typeahead').val(t.attr('datasrc'));
-            $('#sf').trigger('submit');
-            return false;
-        });
-
-        //$(this).krk('a.post-tag', 'div.related_tag');
-        $('a.post-tag').mouseover(function(e) {
-            e.preventDefault();
-            var t1 = $(e.target);
-            var p1 = t1.position(), w1 = t1.width(), h1 = t1.outerHeight();
-            $('div.related_tag').hide();
-			
-            $('div.related_tag').load('?js_get_related=1&kw=' + t1.text(), function(data) {
-				if(! data) {
-					return false;
-				}
-                t2 = $(this);
-                var w2 = t2.outerWidth(), h2 = t2.outerHeight();
-				//console.log('width:' + w2 + ','+'height:' +h2);
-                t2.css({ top : p1.top+h1, left : p1.left })
-				.animate({ height : h2, width : w2 }, { queue : false, duration : 150 }).fadeIn(200);
-            });
-
-            return false;
-        });
-
-        $('#new_search').click(function(e) {
-            e.preventDefault();
-            form = document.getElementById('sf');
-            form.action = 's.php'; //'{$config.f1.s}';
-            form.method = 'get';
-            form.submit();
-            return false;
-        });
-        $('form#sf').submit(function() {
-            var t = $('#typeahead').val();
-            if (/^\s*$/.test(t)) {
-                $('#sf').attr('placeholder', '请输入关键词。');
-				$('#typeahead').focus();
-                return false;
-            }
-            return true;
-        });
-        $('#typeahead').focus(function() {
-            $('div.alert').hide();
-        })
-		var no_typeahead=false, timer;
-        $('#typeahead').typeahead({
-            source : function(typeahead, query) {
-                if(query.length==0) return false;
-				// if(no_typeahead) return false;
-				clearTimeout(timer);
-				timer=setTimeout(function() {
-					$.ajax({
-						url : 'keys_search.php',
-						type : 'GET',
-						data : 'q=' + query,
-						dataType : 'JSON',
-						async : false,
-						cache : false,
-						beforeSend : function() {
-							$('#waiting').attr('src', 'images/spinner.gif');
-						},
-						success : function(data) {
-							// if json is null, means no match, won't do again.
-							if(data.length === 0)
-								no_typeahead = true;
-							typeahead.process(data);
-							$('#waiting').attr('src', 'images/noimg.gif'); //http://placehold.it/16x16
-						}
-					});
-				}, 200);
-            }
-        });
-    }); 
+$(function() {
+	$('#js-keys').ticker();
+	$('#ns').click(function(e) {
+		e.preventDefault();
+		form = document.getElementById('sf');
+		form.action = 's.php'; //'{$config.f1.s}';
+		form.method = 'get';
+		form.submit();
+		return false;
+	});
+	$('form#sf').submit(function() {
+		var t = $('#typeahead').val();
+		if (/^\s*$/.test(t)) {
+			$('#sf').attr('placeholder', '请输入关键词。');
+			$('#typeahead').focus();
+			return false;
+		}
+		return true;
+	});
+	$('#typeahead').focus(function() {
+		$('div.alert').hide();
+	})
+	var no_typeahead=false, timer;
+	$('#typeahead').typeahead({
+		source : function(typeahead, query) {
+			if(query.length==0) return false;
+			// if(no_typeahead) return false;
+			clearTimeout(timer);
+			timer=setTimeout(function() {
+				$.ajax({
+					url : 'keys_sph_search.php',
+					type : 'GET',
+					data : 'q=' + query,
+					dataType : 'JSON',
+					async : false,
+					cache : false,
+					beforeSend : function() {
+						$('#waiting').attr('src', 'images/spinner.gif');
+					},
+					success : function(data) {
+						// if json is null, means no match, won't do again.
+						if(data.length === 0)
+							no_typeahead = true;
+						typeahead.process(data);
+						$('#waiting').attr('src', 'images/noimg.gif'); //http://placehold.it/16x16
+					}
+				});
+			}, 200);
+		}
+	});
+});
 </script>

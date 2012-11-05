@@ -1,0 +1,31 @@
+{$url={$config.f1.s}}
+{$t1={$config.t1}}
+{$t2={$config.t2}}
+{include file="{$config.t}base_layout.tpl.html"}
+<link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/UrlEncode.js"></script>
+</head>
+<body id="{$config.browser}">
+<div class="container">
+  <div id="header"> {include file="{$header_template}"} </div>
+  <div id="main"> {if {$ss_template}}
+    {include file="{$ss_template}"}
+    {elseif {$sitemap_template}}
+    {include file="{$sitemap_template}"}
+    {elseif {$rss_template}}
+    {include file="{$rss_template}"}
+    {elseif {$news_template}}
+    {include file="{$news_template}"}
+    {elseif {$cc_template}}
+    {include file="{$cc_template}"}
+    {elseif {$ic_template}}
+    {include file="{$ic_template}"}
+    {else}
+    {include file="{$search_template}"}
+    {/if} </div>
+  <div class="clear"></div>
+  <div id="footer"> {include file="{$footer_template}"} </div>
+</div>
+</body>
+</html>

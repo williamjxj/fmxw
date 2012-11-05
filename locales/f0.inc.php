@@ -70,13 +70,13 @@ $header = array(
     ),
 );
 $search = array(
-	'search' => array(
-		'cn' => '搜索负面新闻',
-		'en' => 'Search Negative News!',
+	'old_search' => array(
+		'cn' => '搜索负面新闻-旧版',
+		'en' => 'Search Negative News! - Old',
 	),
 	'new_search' => array(
-		'cn' => '搜索负面新闻-尝试版',
-		'en' => 'Search Negative News! - New',
+		'cn' => '搜索负面新闻',
+		'en' => 'Search Negative News!',
 	),
 );
 $list = array(

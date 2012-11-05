@@ -1,0 +1,15 @@
+{if !empty($pagination)}
+<div class="pages">
+  <div class="pagination">
+    <ul>
+      {foreach $pagination as $p}
+      {if preg_match("/{$page}/", $p)}
+      <li class="active">{$p}</li>
+      {else}
+      <li> {$p} </li>
+      {/if}
+      {/foreach}
+    </ul>
+  </div>
+</div>
+{/if}
