@@ -54,11 +54,17 @@
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
       <div class="alert"> <strong>网友在查:</strong> </div>
-      <ul class="nav nav-tabs nav-stacked">
+      <span>
         {foreach $kr as $r}
-        <li><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></li>
+        <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span>
         {/foreach}
-      </ul>
+      </span>
+      
+          {include file="{$config.3.weibo.tpl.html}"}
+    {include file="news.tpl.html"}
+    {include file="reping.tpl.html"} 
+    {include file="pk.tpl.html"} 
+    
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
