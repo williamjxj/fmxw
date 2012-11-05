@@ -223,7 +223,7 @@ class FMXW_Sphinx extends f12Class
         $pipes = array(
 			'baidu' => array($dir . '.baidu'),
 			'soso' => array($dir . '.soso'),
-			'sogou' => array($dir . '.sogou'),
+			//'sogou' => array($dir . '.sogou'),
 			'google' => array($dir . '.google'),
 			'yahoo' => array($dir . '.yahoo'),
 		);

@@ -24,7 +24,7 @@ $obj -> set_coreseek_server();
 //$obj->set_sphinx_server();
 //header("Content-Type: text/html; charset=utf-8");
 
-list($tdir0, $tdir1, $tdir2) = array($config['t0'], $config['t1'],$config['t2']);
+list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
 $obj -> assign('config', $config);
 
 if (isset($_GET['q'])) {
@@ -99,7 +99,7 @@ elseif(isset($_GET['js_item'])) {
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
-    $obj->display($tdir2.'single.tpl.html');
+    $obj->display($tdir6.'single.tpl.html');
     return;
 } 
 elseif (isset($_GET['test'])) {
@@ -265,36 +265,36 @@ $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($key));
 	
 BASIC:
-$obj -> assign("nav_template", $tdir1 . 'nav.tpl.html');	
+$obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
 
 $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
-$obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
+$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 if (isset($_GET['page']) || isset($_GET['js_sortby']) || isset($_GET['js_ct_search']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-	$obj -> display($tdir1 . 'nav.tpl.html');
+	$obj -> display($tdir6 . 'nav.tpl.html');
 } 
 elseif(isset($_GET['wc'])) {
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-	$obj -> display($tdir1 . 'ss.tpl.html');
+	$obj -> display($tdir6 . 'ss.tpl.html');
 }
 elseif(isset($_GET['q'])) {
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
-	$obj -> display($tdir1 . 'nav.tpl.html');
+	$obj -> display($tdir6 . 'nav.tpl.html');
 	if (!empty($_GET['q']))
 		$obj->backend_scrape($_GET['q']);
 }
 else {
-	$obj -> display($tdir1 . 'ss.tpl.html');
+	$obj -> display($tdir6 . 'ss.tpl.html');
 }
 exit;
 

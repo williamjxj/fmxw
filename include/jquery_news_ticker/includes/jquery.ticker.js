@@ -418,7 +418,7 @@
 		htmlFeed: true,
 		debugMode: true,
 		controls: true,
-		titleText: '×îÐÂ²éÑ¯£º',	
+		titleText: 'æœ€æ–°æŸ¥è¯¢ï¼š',	
 		direction: 'ltr',	
 		pauseOnItems: 3000,
 		fadeInSpeed: 600,

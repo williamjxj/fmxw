@@ -87,6 +87,7 @@ class f12Class extends BaseClass
     }
 
     function draw() {
+	$this->__p($_SESSION);
         $current_page = $_SESSION[PACKAGE][SEARCH]['page'] ? $_SESSION[PACKAGE][SEARCH]['page'] : 1;
         $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
         $links = array();
