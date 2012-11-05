@@ -20,17 +20,17 @@
     </ul>
   </div>
 </div>
-<div class="related_tag"> &nbsp; </div>
 <script type="text/javascript">
 $(function() {
-	$('#ns').click(function(e) {
+	$('#os').click(function(e) {
 		e.preventDefault();
 		form = document.getElementById('sf');
-		form.action = 's.php'; //'{$config.f1.s}';
+		form.action = 'f1.php';
 		form.method = 'get';
 		form.submit();
 		return false;
 	});
+	/*
 	$('form#sf').submit(function() {
 		var t = $('#typeahead').val();
 		if (/^\s*$/.test(t)) {
@@ -40,6 +40,7 @@ $(function() {
 		}
 		return true;
 	});
+	*/
 	var no_typeahead=false, timer;
 	$('#typeahead').typeahead({
 		source : function(typeahead, query) {
@@ -48,7 +49,7 @@ $(function() {
 			clearTimeout(timer);
 			timer=setTimeout(function() {
 				$.ajax({
-					url : 'keys_sph_search.php',
+					url : 'keys_search.php',
 					type : 'GET',
 					data : 'q=' + query,
 					dataType : 'JSON',
@@ -68,6 +69,6 @@ $(function() {
 			}, 200);
 		}
 	});
-	$('#js-news').ticker();
+	//$('#js-news').ticker();
 });
 </script>

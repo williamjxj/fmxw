@@ -82,6 +82,7 @@ if (!isset($config)) {
     't1' => 'templates/1/', 
     't2' => 'templates/2/', 
     't3' => 'templates/3/', 
+    't6' => 'templates/6/', 
     't8' => 'templates/8/', 
     'shared' => 'templates/shared/', 
     'smarty' => 'configs/smarty.ini', 
