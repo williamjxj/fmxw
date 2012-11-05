@@ -418,7 +418,7 @@
 		htmlFeed: true,
 		debugMode: true,
 		controls: true,
-		titleText: '最新热点信息',	
+		titleText: '鏈�杩戞煡璇細',	
 		direction: 'ltr',	
 		pauseOnItems: 3000,
 		fadeInSpeed: 600,
