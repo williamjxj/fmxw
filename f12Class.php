@@ -86,15 +86,16 @@ class f12Class extends BaseClass
         return $num[0];
     }
 
-    function draw() {
-	$this->__p($_SESSION); $this->__p($_GET);
+	// ?page=2&q=&_=1352151347461
+    function draw()
+	{
         $current_page = $_SESSION[PACKAGE][SEARCH]['page'] ? $_SESSION[PACKAGE][SEARCH]['page'] : 1;
         $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
         $links = array();
         $queryURL = '';
         if (count($_GET)) {
             foreach ($_GET as $key => $value) {
-                if ($key != 'page')
+                if ( $key=='q' )
                     $queryURL .= '&' . $key . '=' . $value;
             }
         }

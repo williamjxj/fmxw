@@ -11,7 +11,7 @@
   页数：&lt;<strong>{$smarty.session.fmxw.search.page}/{$smarty.session.fmxw.search.total_pages}</strong>&gt;,
   用时：&lt;<strong>{$smarty.session.fmxw.search.time}</strong>&gt;秒。</div>
 
-{include file="{$config.t2}pagination.tpl.html"}
+{include file="{$config.t6}pagination.tpl.html"}
 
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
@@ -20,4 +20,8 @@
   {/foreach}
 </ul>
 
-{include file="{$config.t2}pagination.tpl.html"}
+{include file="{$config.t6}pagination.tpl.html"}
+
+{if $smarty.get.page1}
+$.fmxw4.sina_weibo(q);
+{/if}

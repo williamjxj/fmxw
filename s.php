@@ -106,6 +106,10 @@ elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
 }
 else {
+	$key = $q = '';
+	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
+	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+	$obj->cl->SetArrayResult(true);
 	//$obj->display("templates/shared/search_form.tpl.html");
 	//echo "请输入查询词进行查询。";
 	//return;
@@ -283,7 +287,7 @@ if (isset($_GET['page']) || isset($_GET['js_sortby']) || isset($_GET['js_ct_sear
 } 
 elseif(isset($_GET['wc'])) {
     $pagination = $obj -> draw();
-    $obj -> assign("pagination", $pagination);
+	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
 }
 elseif(isset($_GET['q'])) {

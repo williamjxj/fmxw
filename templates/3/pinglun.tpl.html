@@ -34,13 +34,13 @@ $(function() {
 	$('a.btn[href="#login"]').click(function() {
 		var t = $('#login');
 		if (t.html().length>1) t.modal();
-		else t.load('{$config.general}help/login.tpl.html').modal();
+		else t.load('{$config.t8}login.tpl.html').modal();
 		return false;
 	});
 	$('a.btn[href="#signup"]').click(function(e) {
 		t = $('#signup'); 
 		if (t.html().length>1) t.modal();
-		else  t.load('{$config.general}help/signup.tpl.html').modal({ show: true });
+		else  t.load('{$config.t8}signup.tpl.html').modal({ show: true });
 		return false;
 	});
 	
