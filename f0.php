@@ -34,13 +34,16 @@ else if (isset($_GET['test'])) {
     $obj -> __p($obj -> get_keywords());
 	$obj -> __p($_COOKIE, false);$obj -> __p($_SESSION, false);
     exit;
-} else {
+} 
+else {
     require_once (ROOT . "locales/f0.inc.php");
     global $header;
 	global $search;
 	global $list;
     global $footer;
 
+	$tickers = array('王石', '温家宝', '美国总统大选');
+	$obj -> assign('tickers', $tickers);
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_ts', $obj -> get_search_label($search));
     $obj -> assign('_tl', $obj -> get_list_label($list));
