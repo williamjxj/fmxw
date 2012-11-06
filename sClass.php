@@ -343,7 +343,7 @@ class FMXW_Sphinx extends f12Class
 		$area = mysql_real_escape_string($arr[0],'|',$arr[1]);
 		
 		if(empty($_POST['author'])) 
-			$author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户'；
+			$author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户';
 		else $author = mysql_real_escape_string(trim($_POST['author']));
 
         $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area) values('" . 
