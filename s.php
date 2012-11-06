@@ -76,7 +76,7 @@ elseif(isset($_GET['js_pk'])) {
 	return;
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
-	$obj->insert_pk();
+	$pid = $obj->insert_pk();
 	//$obj->display($tdir6.'single.tpl.html');
 	echo "你已经成功提交了如下信息：";
     echo json_encode($_POST);
@@ -284,7 +284,8 @@ $obj -> assign('results', $rows);
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($key));
-	
+$obj -> assign('reping', $obj -> get_repings($key));
+
 BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));

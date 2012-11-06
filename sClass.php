@@ -90,6 +90,17 @@ class FMXW_Sphinx extends f12Class
         return $res;
     }
 
+	function get_repings($q){
+		$ary = array();
+		$sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_assoc($res)) {
+			array_push($ary, $row);
+		}
+		return $ary;
+	}
+	
+	
     //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
     function get_config() {
         return $conf = array(
@@ -333,14 +344,15 @@ class FMXW_Sphinx extends f12Class
 		$keyword = mysql_real_escape_string(trim($_POST['keyword']));
 		$pk = $_POST['pk'];
 		
-		if(empty($_POST['zhichi'])) $zhichi = 0;
-		else $zhichi = rand(10, 1000);
+		if(empty($_POST['zhichi'])) $zhichi = rand(10, 1000);
+		else $zhichi = $_POST['zhichi'];
 
 		$qqwry=new qqwry('etc/qqwry.dat');
 		$arr=$qqwry->q($_SERVER['REMOTE_ADDR']);
 		$arr[0]=iconv('GB2312','UTF-8',$arr[0]);
 		$arr[1]=iconv('GB2312','UTF-8',$arr[1]);
-		$area = mysql_real_escape_string($arr[0],'|',$arr[1]);
+		$area = $arr[1] ? $arr[0].'|'.$arr[1] : $arr[0];
+		$area = mysql_real_escape_string($area);
 		
 		if(empty($_POST['author'])) 
 			$author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户';
@@ -355,8 +367,8 @@ class FMXW_Sphinx extends f12Class
 			$area . "')";
 		
 		echo $sql;
-        //mysql_query($sql);
-		//return mysql_insert_id();
+        mysql_query($sql);
+		return mysql_insert_id();
     }	
 
 }

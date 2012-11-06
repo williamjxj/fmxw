@@ -5,7 +5,7 @@
   <div class="reping_item">
     <div class="t_info"><i class="icon-gift"></i> {$rp.author} <br>
       <span class="t_area">{$rp.area}</span></div>
-    <div class="t_txt">{$rp.content} <span class="t_date"> {$rp.created} <span class="t_reply"><a href="javascript:;" class="a_huifu">回复</a> <a href="javascript:;" class="a_zhichi" id="{$rp.id}">支持</a></span> </span> </div>
+    <div class="t_txt">{$rp.fayan} <span class="t_date"> {$rp.created} <span class="t_reply"><a href="javascript:;" class="a_huifu">回复</a> <a href="javascript:;" class="a_zhichi" id="{$rp.id}">支持</a></span> </span> </div>
     <div class="well" id="div_huifu_{$rp.id}" style="display:none;">
       <form name="huifuForm" id="huifuForm_{$rp.id}" method="post" action="javascript:;">
         <div class="control-group">
@@ -55,4 +55,4 @@ $(function() {
 	});
 });
 </script>
-{/if}
+{/if} 
