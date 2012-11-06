@@ -4,18 +4,18 @@
 {include file="{$config.t}base_layout.tpl.html"}
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="js/UrlEncode.js"></script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
   <div class="row-fluid">
-    <div class="span8"> {include file="{$config.t6}search_form.tpl.html"} </div>
+    <div class="span8"> {include file="{$config.shared}search_form.tpl.html"} </div>
     <div class="span4 alert"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> <a href="#pk" id="apk">关于 ‘{$smarty.session.fmxw.search.key}’，<strong class="pk">我要PK...</strong></a> </div>
   </div>
 </div>
+{$t1={$config.t1}}
 <div class="container-fluid" align="left">
   <div class="row-fluid">
-    <div class="span1" id="sleft">
+    <div class="span1">
       <ul id="tf1" class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
         <li><a href="javascript:;" class="sort_by_time" id="day">一天内</a></li>
@@ -48,15 +48,17 @@
         <li><a href="#tw.yahoo" rel="tooltip" title="雅虎">雅虎台湾</a></li>
       </ul-->
     </div>
-    <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
-    <div class="span7" id="sright">
+    <div class="span4" id="sr"> {include file="{$nav_template}"} </div>
+    <div class="span7">
       <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
-      <div class="alert"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
-      {include file="{$config.t3}weibo.tpl.html"}
-      {include file="{$config.t6}news.tpl.html"}
-      {include file="{$config.t6}reping.tpl.html"}
+      <div class="head1">网友在查</div>
+      <ul class="nav nav-list nav-pills nav-stacked">
+        {foreach $kr as $r}
+        <li><a class="rk" href="{$r.kurl}">{$r.rk}</a></li>
+        {/foreach}
+      </ul>
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
@@ -71,7 +73,7 @@
 <script type="text/javascript">
 $(function() {
 	$('a.sort_by_time', '#tf1').click(function() {
-		$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
+		$('div#sr').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 	});
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
@@ -94,7 +96,7 @@ $(function() {
 			type: 'get',
 			url: url,
 			success: function(data) {
-				$('div#smiddle').hide().html(data).fadeIn(200);
+				$('div#sr').hide().html(data).fadeIn(200);
 			}
 		});
 		return false;
@@ -110,7 +112,7 @@ $(function() {
 			$('#pk_result').hide();
 		}
 		else
-			$('#pk').load('templates/6/pk.tpl.html').fadeIn(100);
+			$('#pk').load('templates/1/pk.tpl.html').fadeIn(100);
 		return false;
 	});
 	
@@ -128,7 +130,7 @@ $(function() {
 		});
 	});
 	$('#ct_search').submit(function(e) {
-		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
+		$('div#sr').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
 });
