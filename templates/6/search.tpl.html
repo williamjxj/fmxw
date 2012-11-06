@@ -21,48 +21,48 @@ $(function() {
 				beforeSend : function() {
 					$('#waiting').attr('src', 'images/spinner.gif').css({ width:16px,height:16px });
 				},
-				SUCCESS : FUNCTION(RESULTS) {
+				success : function(results) {
 
-					IF(RESULTS.LENGTH === 0) {
-						//ň�Ż�ƈ�Ƹ�ǩ�4ĸ�IDŮ�Ǻ�CGIȿ�Ɲ�ǚ�ņ�Ů�À�
-						//VAR IDS = ['BAIDU','SOSO','GOOGLE','YAHOO'];
-						//$.EACH(IDS, FUNCTION(KEY, VAL) { IF($('#'+VAL).LENGTH) $('#'+VAL).REMOVE(); });
+					if(results.length === 0) {
+						//创建或清空4个id容纳cgi过来的内容。
+						//var ids = ['baidu','soso','google','yahoo'];
+						//$.each(ids, function(key, val) { if($('#'+val).length) $('#'+val).remove(); });
 						
-						IF($(SM).LENGTH) $(SM).EMPTY();
+						if($(sm).length) $(sm).empty();
 
-						$.GETjson('/CGI-BIN/BAIDU.CGI', { 'Q' : KW }, FUNCTION(DATA) {
-							$('<DIV></DIV>').ATTR('ID', 'BAIDU').HTML(DATA.JOIN("<BR>\N")).APPENDtO(SM);
+						$.getJS('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
+							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendto(sm);
 						});
-						$.GETjson('/CGI-BIN/GOOGLE.CGI', { 'Q' : KW }, FUNCTION(DATA) {
-							VAR TXT='<UL CLASS="NAV NAV-PILLS NAV-STACKED">';
-							$.EACH(DATA, FUNCTION(KEY, VAL) {
-								TXT += '<LI><A HREF="' + VAL[0] + '">' + VAL[1] + '</A><BR>' + VAL[2] + '</LI>';
+						$.getjson('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
+							var txt='<ul class="nav nav-pills nav-stacked">';
+							$.each(data, function(key, val) {
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							TXT +='</UL>\N';
-							$('<DIV></DIV>').ATTR('ID','GOOGLE').HTML(TXT).APPENDtO(SM);
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','google').html(txt).appendto(sm);
 						});
-						$.GETjson('/CGI-BIN/SOSO.CGI', { 'Q' : KW }, FUNCTION(DATA) {
-							VAR TXT='<UL CLASS="NAV NAV-PILLS NAV-STACKED">';
-							$.EACH(DATA, FUNCTION(KEY, VAL) {
-								TXT += '<LI><A HREF="' + VAL[0] + '">' + VAL[1] + '</A><BR>' + VAL[2] + '</LI>';
+						$.getjson('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
+							var txt='<ul class="nav nav-pills nav-stacked">';
+							$.each(data, function(key, val) {
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							TXT +='</UL>\N';
-							$('<DIV></DIV>').ATTR('ID','SOSO').HTML(TXT).APPENDtO(SM);
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','soso').html(txt).appendto(sm);
 						});
-						$.GETjson('/CGI-BIN/YAHOO.CGI', { 'Q' : KW }, FUNCTION(DATA) {
-							VAR TXT='<UL CLASS="NAV NAV-PILLS NAV-STACKED">';
-							$.EACH(DATA, FUNCTION(KEY, VAL) {
-								TXT += '<LI><A HREF="' + VAL[0] + '">' + VAL[1] + '</A><BR>' + VAL[2] + '</LI>';
+						$.getjson('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
+							var txt='<ul class="nav nav-pills nav-stacked">';
+							$.each(data, function(key, val) {
+								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 							});
-							TXT +='</UL>\N';
-							$('<DIV></DIV>').ATTR('ID','YAHOO').HTML(TXT).APPENDtO(SM);
+							txt +='</ul>\n';
+							$('<div></div>').attr('id','yahoo').html(txt).appendto(sm);
 						});
-						$.FMXW4.SINA_WEIBO(KW);
+						$.fmxw4.sina_weibo(kw);
 					}
-					ELSE {
-						$(SM).HIDE().HTML(RESULTS).FADEiN(500);
+					else {
+						$(sm).hide().html(results).fadein(500);
 					}
-					$('#WAITING').ATTR('SRC', 'IMAGES/space.gif').css({ width:0px,height:0px });
+					$('#waiting').attr('src', 'images/space.gif').css({ width:0px,height:0px });
 				}
 			});
 		}
