@@ -26,4 +26,5 @@ if (isset($_POST['js_pk'])) {
     exit ;
 } 
 
+//你已经成功提交了如下信息：{"pk":"N","fayan":"\u6587\u660e\u4e0a\u7f51","captcha":"genip","js_pk":"1"}
 ?>
