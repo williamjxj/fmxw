@@ -100,7 +100,7 @@
 .loadPic {
 	width:32px;
 	height:32px;
-	background:url(images/r_loadPic.gif) no-repeat;
+	background:url(../images/r_loadPic.gif) no-repeat;
 	position:absolute;
 	top:50%;
 	left:50%;
@@ -112,5 +112,4 @@
 }
 #waiting {
 	background-color:#F5F5F5;
-	background-image:url(images/space.gif);
 }
