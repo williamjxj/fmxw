@@ -30,10 +30,10 @@ $(function() {
 						
 						if($(sm).length) $(sm).empty();
 
-						$.getJS('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
+						$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
 							$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendto(sm);
 						});
-						$.getjson('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
+						$.getJSON('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -41,7 +41,7 @@ $(function() {
 							txt +='</ul>\n';
 							$('<div></div>').attr('id','google').html(txt).appendto(sm);
 						});
-						$.getjson('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
+						$.getJSON('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -49,7 +49,7 @@ $(function() {
 							txt +='</ul>\n';
 							$('<div></div>').attr('id','soso').html(txt).appendto(sm);
 						});
-						$.getjson('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
+						$.getJSON('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
 							var txt='<ul class="nav nav-pills nav-stacked">';
 							$.each(data, function(key, val) {
 								txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
