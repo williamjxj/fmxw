@@ -341,7 +341,7 @@ class FMXW_Sphinx extends f12Class
     function insert_pk() 
 	{
 		$fayan = mysql_real_escape_string(trim($_POST['fayan']));
-		$keyword = mysql_real_escape_string(trim($_POST['keyword']));
+		$keyword = mysql_real_escape_string(trim($_POST['kw']));
 		$pk = $_POST['pk'];
 		
 		if(empty($_POST['zhichi'])) $zhichi = rand(10, 1000);
