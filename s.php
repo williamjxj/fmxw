@@ -71,6 +71,13 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetFilterRange("created", $min, $obj->now);
 	}
 }
+elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
+	$obj->insert_pk();
+	//$obj->display($tdir6.'single.tpl.html');
+	echo "你已经成功提交了如下信息：";
+    echo json_encode($_POST);
+	return;
+}
 elseif(isset($_GET['js_ct_search'])) {
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
 	if (!empty($_GET['item'])) {

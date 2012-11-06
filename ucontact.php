@@ -12,6 +12,8 @@ class ContactUs extends Smarty {
         parent::__construct();
         $this -> db = mysql_connect_fmxw();
         $this -> template = ROOT . 'templates/8/contact.tpl.html';
+		$timezone = "Asia/Shanghai";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);		
     }
 
     function get_locale() {

@@ -326,5 +326,38 @@ class FMXW_Sphinx extends f12Class
 		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
 		return $ary;
 	}
+	
+    function insert_pk() 
+	{
+		$fayan = mysql_real_escape_string(trim($_POST['fayan']));
+		$keyword = mysql_real_escape_string(trim($_POST['keyword']));
+		$pk = $_POST['pk'];
+		
+		if(empty($_POST['zhichi'])) $zhichi = 0;
+		else $zhichi = rand(10, 1000);
+
+		$qqwry=new qqwry('etc/qqwry.dat');
+		$arr=$qqwry->q($_SERVER['REMOTE_ADDR']);
+		$arr[0]=iconv('GB2312','UTF-8',$arr[0]);
+		$arr[1]=iconv('GB2312','UTF-8',$arr[1]);
+		$area = mysql_real_escape_string($arr[0],'|',$arr[1]);
+		
+		if(empty($_POST['author'])) 
+			$author = isset($_SESSION[PACKAGE]['username']) :  $_SESSION[PACKAGE]['username'] : '访问用户'；
+		else $author = mysql_real_escape_string(trim($_POST['author']));
+
+        $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area) values('" . 
+			$pk		. "', '" .
+			$author . "', '" .
+			$keyword. "', " .
+			$zhichi . ", '" .
+			$fayan	. "', now(), '" . 
+			$area . "')";
+		
+		echo $sql;
+        //mysql_query($sql);
+		//return mysql_insert_id();
+    }	
+
 }
 ?>
