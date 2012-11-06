@@ -110,11 +110,9 @@ else {
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetArrayResult(true);
-	//$obj->display("templates/shared/search_form.tpl.html");
 	//echo "请输入查询词进行查询。";
 	//return;
 }
-
 
 if(empty($_GET)) {
 	goto BASIC;
