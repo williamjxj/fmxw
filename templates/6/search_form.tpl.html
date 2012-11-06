@@ -1,7 +1,7 @@
 {*foreach $smarty.session.fmxw.search as $s}{$s}{/foreach*}
 <form class="well form-search" action="{$config.search}" method="get" name="search_form" id="search_form">
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
-  <input type="hidden" name="fm6" value=""  />
+  <input type="hidden" name="fm6" value="1"  />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
   <img id="waiting" width="16" height="16" border="0" />
 </form>
