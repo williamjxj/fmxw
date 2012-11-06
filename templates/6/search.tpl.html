@@ -86,8 +86,8 @@ $(function() {
 					$('#waiting').attr('src', 'images/spinner.gif');					
 				},
 				success: function(data) {
-					typeahead.process(data);
 					$('#waiting').attr('src', 'images/space.gif');
+					typeahead.process(data);
 				}
 			});
 		  }, 200);
