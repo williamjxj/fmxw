@@ -3,7 +3,7 @@
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
   <input type="hidden" name="fm6" value="1"  />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
-  <img id="waiting" width="16" height="16" border="0" />
+  <img id="waiting" width="16" height="16" border="0" src="images/space.gif" />
 </form>
 <script type="text/javascript">
 $(function() {
@@ -62,7 +62,7 @@ $(function() {
 					else {
 						$(sm).hide().html(results).fadeIn(500);
 					}
-					$('#waiting').attr('src', 'images/noimg.gif');
+					$('#waiting').attr('src', 'images/space.gif');
 				}
 			});
 		}
@@ -87,7 +87,7 @@ $(function() {
 				},
 				success: function(data) {
 					typeahead.process(data);
-					$('#waiting').attr('src', 'images/noimg.gif');
+					$('#waiting').attr('src', 'images/space.gif');
 				}
 			});
 		  }, 200);
