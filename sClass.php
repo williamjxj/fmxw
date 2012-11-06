@@ -93,7 +93,6 @@ class FMXW_Sphinx extends f12Class
 	function get_repings($q){
 		$ary = array();
 		$sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";
-		echo $sql;
 		$res = mysql_query($sql);
 		while ($row = mysql_fetch_assoc($res)) {
 			array_push($ary, $row);

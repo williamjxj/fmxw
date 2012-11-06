@@ -285,6 +285,7 @@ $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($key));
 $obj -> assign('reping', $obj -> get_repings($key));
+$obj->__p($obj -> get_repings($key));
 
 BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
