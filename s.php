@@ -102,6 +102,10 @@ elseif(isset($_GET['js_get_content'])) {
     $obj->display($tdir6.'single.tpl.html');
     return;
 } 
+elseif(isset($_GET['js_news'])) {
+    $obj->display($tdir6.'news.tpl.html');
+    return;
+} 
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
 }

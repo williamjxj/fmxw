@@ -57,6 +57,7 @@ $(function() {
 							txt +='</ul>\n';
 							$('<div></div>').attr('id','yahoo').html(txt).appendTo(sm);
 						});
+						$.fmxw4.sina_weibo(kw);
 					}
 					else {
 						$(sm).hide().html(results).fadeIn(500);
