@@ -366,7 +366,6 @@ class FMXW_Sphinx extends f12Class
 			$fayan	. "', now(), '" . 
 			$area . "')";
 		
-		echo $sql;
         mysql_query($sql);
 		return mysql_insert_id();
     }	

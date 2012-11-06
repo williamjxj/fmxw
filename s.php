@@ -285,7 +285,7 @@ $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($key));
 $obj -> assign('reping', $obj -> get_repings($key));
-$obj->__p($obj -> get_repings($key));
+//$obj->__p($obj -> get_repings($key));
 
 BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
@@ -308,6 +308,7 @@ elseif(isset($_GET['fm0'])) {
     $pagination = $obj -> draw();
 	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
+	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q']));
 }
 elseif(isset($_GET['q'])) {
     $pagination = $obj -> draw();
