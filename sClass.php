@@ -218,12 +218,12 @@ class FMXW_Sphinx extends f12Class
         // $this -> write_named_pipes($search_key);
     }
 
+	//'sogou' => array($dir . '.sogou'),
     function write_named_pipes($search_key) {
         $dir = '/home/williamjxj/scraper/';
         $pipes = array(
 			'baidu' => array($dir . '.baidu'),
 			'soso' => array($dir . '.soso'),
-			//'sogou' => array($dir . '.sogou'),
 			'google' => array($dir . '.google'),
 			'yahoo' => array($dir . '.yahoo'),
 		);

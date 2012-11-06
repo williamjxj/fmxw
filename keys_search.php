@@ -55,17 +55,17 @@ if(!empty($_GET['q'])) {
 		// Twitter Bootstrap - Typeahead Plugin with MySQL.
 		//echo "William Jiang on Aug 09, Oct2l, 2012.\n";
 
-		$mysql = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
-		mysql_select_db('dixi', $mysql);
-		mysql_query("SET NAMES 'utf8'", $mysql);
+		$mydb = mysql_pconnect('localhost', 'dixitruth', 'dixi123456') or die(mysql_error());
+		mysql_select_db('dixi', $mydb);
+		mysql_query("SET NAMES 'utf8'", $mydb);
 
 		// 1. keywords
 		$query1 = "select keyword from keywords where keyword like '%" . $q . "%' order by keyword";
-		array_push_array($ary, mysql2mongo($collection, $query1));
+		array_push_array($ary, mysql2mongo($collection, $query1, $mydb));
 
 		// 2. key_related
 		$query2 = "select rk from key_related where keyword like '%" . $q . "%' and keyword != '" . $q . "' order by rk";
-		array_push_array($ary, mysql2mongo($collection, $query2));
+		array_push_array($ary, mysql2mongo($collection, $query2, $mydb));
 
 		echo json_encode($ary);
 	}
@@ -74,10 +74,11 @@ if(!empty($_GET['q'])) {
 	echo "输入的字符没有被识别。";
 }*/
 
-function mysql2mongo($c, $sql)
+function mysql2mongo($c, $sql, $mydb)
 {
 	$a = array();
-	$res = mysql_query($sql) or mysql_error();
+	$res = mysql_query($sql, $mydb) or mysql_error();
+	echo $sql;
 	if(mysql_num_rows($res)>0) {
 		while($row = mysql_fetch_array($res, MYSQL_NUM)) {
 			$t = iconv('UTF-8', 'UTF-8//TRANSLIT', $row[0]);
