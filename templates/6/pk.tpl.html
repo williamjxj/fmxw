@@ -45,7 +45,6 @@ $(function() {
 		return false;
 	});
 	
-	var count = 1;
 	var validator = $('#form_fayan').validate({
 		rules: { "fayan": "required" },
 		messages: { fayan: "" },
@@ -56,11 +55,13 @@ $(function() {
 			label.closest('.control-group').addClass('success');
 		}	
 	});
-	$('button:submit', '#form_fayan').click(function(e) {
+
+	var f = $('#form_fayan');
+	$('button:submit', f).click(function(e) {
 		e.preventDefault();
 		if(!validator.form()) {
-			$('#fayan').attr('placeholder', '请输入您的评论。');
-			$('#form_fayan').find('div.control-group').first().removeClass('success').addClass('error');
+			$('#fayan').attr('placeholder', '请输入您的PK评论。');
+			f.find('div.control-group').first().removeClass('success').addClass('error');
 			return false;
 		}
 		if($('#captcha-form').val()=='') {
@@ -68,15 +69,14 @@ $(function() {
 			return false;
 		}
 
-		var tid = 'collapse' + count++;
-		
-		var f = $('#form_fayan');
 		$.post(f.attr('action'), f.serialize()+'&js_pk=1', function(data) {
 			if(data=='N') {
 				$('#pk_result').html('输入验证失败, 无法添加评论, 请重试。').show();
 				return false;
 			}
-			$('#pk_result').html(data).fadeIn(100);
+			//$('#pk_result').html(data).fadeIn(100);
+			$('button:submit', f).attr('disabled', 'disabled');
+			f.
 			return false;
 		});		
 	});
