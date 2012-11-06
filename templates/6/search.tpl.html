@@ -62,7 +62,7 @@ $(function() {
 					else {
 						$(sm).hide().html(results).fadeIn(500);
 					}
-					$('#waiting').attr('src', '');
+					$('#waiting').attr('src', 'images/noimg.gif');
 				}
 			});
 		}
@@ -87,7 +87,7 @@ $(function() {
 				},
 				success: function(data) {
 					typeahead.process(data);
-					$('#waiting').attr('src', '');
+					$('#waiting').attr('src', 'images/noimg.gif');
 				}
 			});
 		  }, 200);
