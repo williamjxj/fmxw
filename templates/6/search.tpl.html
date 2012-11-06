@@ -7,7 +7,7 @@
 </form>
 <script type="text/javascript">
 $(function() {
-	$('#search_form').submit(function() {
+	$('#search_form1').submit(function() {
 		sm = '#smiddle';
 		var f = $(this);
 		var kw = $('#q').val();
@@ -65,6 +65,9 @@ $(function() {
 					$('#waiting').attr('src', 'images/space.gif');
 				}
 			});
+		}
+		else {
+			alert('sm is null, should not come here.');
 		}
 		return false;
 	});
