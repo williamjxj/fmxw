@@ -71,6 +71,10 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetFilterRange("created", $min, $obj->now);
 	}
 }
+elseif(isset($_GET['js_pk'])) {
+	$obj->display($tdir6.'pk.tpl.html');
+	return;
+}
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$obj->insert_pk();
 	//$obj->display($tdir6.'single.tpl.html');
