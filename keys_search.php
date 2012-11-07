@@ -12,7 +12,6 @@ if(empty($_GET['q'])) {
 $q = trim($_GET['q']);
 
 require_once(ROOT . 'coreseekClass.php');
-require_once(ROOT . 'configs/mysql-connect.php');
 
 $kss = new SphinxClient;
 $kss->SetServer('localhost', 9312);
@@ -41,7 +40,8 @@ if ($res['total'] > 0) {
 else {
 	die("No this keyword: ".$q."<br>\n");
 }
-	
+
+require_once(ROOT . 'configs/mysql-connect.php');	
 $db = mysql_connect_fmxw();
 
 //$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";

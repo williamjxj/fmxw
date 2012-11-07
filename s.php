@@ -188,10 +188,20 @@ if ($res === false) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 }
 
+$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
+
 if (empty($res["matches"])) {
     //$summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
 	//$obj -> __p($summary);
 	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
+	$obj -> assign('_th', $obj -> get_header_label($header));
+	$obj -> assign('_tf', $obj -> get_footer_label($footer));
+	
+	$obj -> assign('sitemap', $obj -> get_sitemap());
+	$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
+	
+	$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
+	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 	$obj->display($tdir6.'ns.tpl.html');
 	//if (!empty($q)) {
 	//	$obj->write_named_pipes($q); // $obj->backend_scrape($q);
@@ -201,7 +211,6 @@ if (empty($res["matches"])) {
 
 //取得数据成功后，设置SESSION.
 // $obj->set_session($res);
-$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
 $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
 $_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
 $_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
