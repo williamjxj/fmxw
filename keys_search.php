@@ -15,13 +15,13 @@ require_once(ROOT . 'coreseekClass.php');
 require_once(ROOT . 'configs/mysql-connect.php');
 
 $kss = new SphinxClient;
-$kss->StServer('localhost', 9312);
+$kss->SetServer('localhost', 9312);
 $kss->SetMatchMode(SPH_MATCH_EXTENDED2); //SPH_MATCH_ALL
 $kss->SetSortMode(SPH_SORT_EXTENDED,'@random');
 $kss->SetLimits(0, 10);
 //$kss->SetArrayResult(true);
 
-$index = 'keywords';
+$index = 'keyRelated delta';
 $res = $kss->Query($q, $index);
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $kss -> GetLastError() . "<br>\n";
@@ -30,7 +30,10 @@ if ($res === false) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $kss -> GetLastWarning() . "<br>\n";
 }
 
-echo "<pre>"; print_r($res); echo "</pre>";
+/*
+ error, warning, status, fields, attrs, matches, total, total_found, time=0.001, words.
+ echo "<pre>"; print_r($res); echo "</pre>";
+ */
 
 if ($res['total'] > 0) {
 	$ids = array_keys($res['matches']);
@@ -39,17 +42,17 @@ else {
 	die("No this keyword: ".$q."<br>\n");
 }
 	
-mysql_connect_fmxw();
+$db = mysql_connect_fmxw();
 
-//select keyword from keywords where keyword like '%" . $q . "%' order by keyword
-//select rk from key_related where keyword like '%" . $q . "%' and keyword != '" . $q . "' order by rk
-$sql = "select rid, rk, kurl from key_related where rid in ($ids)";
+//$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
+$sql = "select rk from key_related where rid in (" . implode(',',$ids) . ")";
+$ary = array();
 
-$kss_ret = mysql_query($sql);
+$kss_ret = mysql_query($sql, $db);
+while ($row = mysql_fetch_array($kss_ret, MYSQL_NUM)) {
+	array_push($ary, $row[0]);
+}
 
-echo "<pre>"; print_r($kss_ret); echo "</pre>";
-
-while ($row = mysql_fetch_assoc($kss_ret)) {}
-
-//greecho json_encode($ary);
+echo json_encode($ary);
+return json_encode($ary);
 ?>
