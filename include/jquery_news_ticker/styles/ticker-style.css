@@ -9,10 +9,10 @@
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	background-color: #f8f0db;
-	font-size: 0.75em;
+	font-size: 1em;
 }
 .ticker {
-	width: 710px;
+	width: 750px;
 	height: 23px;
 	display: block;
 	position: relative;
