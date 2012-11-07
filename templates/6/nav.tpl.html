@@ -37,6 +37,25 @@
 {*if $smarty.get.fm6}
 <script type="text/javascript">
 $(function() {
+	$.address.init(function(event) {
+		alert('testing1.');
+	}) .change(function(event) {
+		$t = $(this);
+		$('{$config.wait}').insertAfter(this);
+		$('#sd').load($(this).attr('href'), function() {
+			$(this).fadeIn(200);
+			$('li.li3').removeClass('highlight');
+			$t.parent('li.li3').addClass('highlight');
+			$t.next('img').remove();
+		});
+		alert('testing3');
+		return false;
+	});
+	$('li.li3 a').live('click', function() {
+		alert($(this).attr('href'));
+		return $(this).attr('href').replace(/^#/, '');
+	});
+
 	var q = '{$smarty.get.q}';
 	$.fmxw4.sina_weibo(q);
 });
