@@ -42,8 +42,11 @@ else {
 	global $list;
     global $footer;
 
-	$tickers = array('王石', '温家宝', '美国总统大选');
-	$obj -> assign('tickers', $tickers);
+	//最新查询
+    $obj->assign('keywords', $obj->get_latest_keywords());
+	//热门查询. $tickers = array('王石', '温家宝', '美国总统大选');
+	$obj -> assign('tickers', $obj->get_hotest_keywords());
+	
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_ts', $obj -> get_search_label($search));
     $obj -> assign('_tl', $obj -> get_list_label($list));
@@ -52,8 +55,6 @@ else {
     $obj -> assign('config', $config);
     $obj -> assign('sitemap', $obj -> get_sitemap());
 	$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
-
-    $obj->assign('keywords', $obj->get_keywords());
 
     $obj -> assign('header_template', $tdir . 'header0.tpl.html');
     $obj -> assign('search_template', $tdir . 'search.tpl.html');

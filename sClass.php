@@ -4,7 +4,7 @@ require_once (ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class 
 {
-    var $conf, $db, $now, $dwmy, $st, $q, $h, $cl, $m;
+    var $cl, $mdb2, $conf, $db, $memd, $now;
     function __construct() 
     {
         parent::__construct();
@@ -13,23 +13,21 @@ class FMXW_Sphinx extends f12Class
 
         $this -> conf = $this -> get_config();
         $this -> db = $this -> mysql_connect_fmxw();
-        // Some variables which are used throughout the script
-        $this -> m = $this -> get_mongo();
         $this -> memd = $this -> get_memcached();
         $this -> now = time();
+		
+		//已经在baseClass中定义了。
+        //$this -> lang = $_SESSION[PACKAGE]['language'];
+        //$this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
+        
+		// Some variables which are used throughout the script
+        // $this -> m = $this -> get_mongo();
         //$this -> dwmy = $this -> get_dwmy();
         //$this -> st = $this -> get_sort();
-        //存储每次的查询词。
-        $this -> q = '';
-        //存储parsed的查询表单的输入参数。$_SESSION已经有存储，这里只是方便调用。
-        $this -> h = array();
-
-        $this -> lang = $_SESSION[PACKAGE]['language'];
-        $this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
     }
 
     // 加入 MongoDB 和 Memcached。
-    // 连接到localhost:27017
+    //XX 连接到localhost:27017
     function get_mongo() {
         $m = new Mongo();
         $db = $m -> search_lib;
@@ -44,10 +42,8 @@ class FMXW_Sphinx extends f12Class
         return $memd;
     }
 
-    //不要插入keyword和tags表了，代替用
-    // not work: array("upsert" => true)
-    function set_keywords($key) {
-		return;
+    //XX 不要插入keyword和tags表了，代替用
+    function set_keywords_old($key) {
         if (empty($key))
             return;			
         $matched = $this -> m -> findOne(array('q' => $key));
@@ -73,8 +69,8 @@ class FMXW_Sphinx extends f12Class
     
 	}
 
-    //以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
-    function get_key_related($q) {
+	// XX 以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
+    function get_key_related_old($q) {
         $sql = "select rid, rk, kurl from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res)) {
@@ -142,8 +138,8 @@ class FMXW_Sphinx extends f12Class
     function set_coreseek_server() {
         $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
         //以下是缺省设置，后面将会动态调整。
-        //$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
-        $this -> cl -> SetMatchMode(SPH_MATCH_PHRASE);
+		$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
         $this -> cl -> SetArrayResult(true);
     }
 
@@ -190,6 +186,7 @@ class FMXW_Sphinx extends f12Class
         return $sql;
     }
 
+	// XX mongo数据库一律用shpinx代替！
     function backend_scrape_mongo($key) {
         if (empty($key))
             return;
@@ -248,6 +245,7 @@ class FMXW_Sphinx extends f12Class
         }
     }
 
+	//XX 找到匹配的添加词，添加到关键词之后用于查询。
     function backend_scrape($key) {
         if (empty($key))
             return;
@@ -285,6 +283,7 @@ class FMXW_Sphinx extends f12Class
         $this -> write_named_pipes($search_key);
     }
 
+	// 用于摘要。
     function mb_highlight($data, $query, $ins_before, $ins_after) {
 		if (empty($query)) return $data;
         $result = '';
@@ -308,7 +307,7 @@ class FMXW_Sphinx extends f12Class
         return $t;
     }
 
-    // Not use anymore.
+    //XX Not use anymore.
     function my_process($docs) {
         $newd = array();
         foreach ($docs as $str) {

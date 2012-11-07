@@ -52,11 +52,26 @@ class f0Class extends BaseClass
     public function get_list_label($list) {
         return $this->_get_label($list);
     }
-    
+ 
+    function get_latest_keywords() {
+        $sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
+        $res = $this -> mdb2 -> queryAll($sql);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        return $res;
+    }    
+    function get_hotest_keywords() {
+        $sql = "select keyword, total from keywords order by total desc limit 0," . PER_TOTAL; 
+        $res = $this -> mdb2 -> queryAll($sql);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        return $res;
+    }
     // keywords 表:提取最新的，查询次数最多的关键词.
     function get_keywords($order = '') {
-        if (!$order)
-            $order = ' order by updated desc, total desc';
+        if (!$order) $order = ' order by updated desc, total desc';
         $sql = "select keyword, total from keywords " . $order . " limit 0, " . PER_TOTAL;
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {

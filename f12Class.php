@@ -4,6 +4,7 @@ require_once (ROOT . "configs/base.inc.php");
 
 class f12Class extends BaseClass 
 {
+	//XX 用sphinx代替，该函数在s.php不再用之。
     function select_contents_by_keyword($key) {
         $this -> set_keywords($key);
         $t = '';
@@ -60,22 +61,25 @@ class f12Class extends BaseClass
         return $ary;
     }
 
+	// 还有用。
     function set_keywords($key) {
-        //将关键词写入keywords表�?
+        //将关键词写入keywords表
         if ($key != '') {
             $user = isset($_SESSION[PACKAGE]['username']) ? $_SESSION[PACKAGE]['username'] : '';
-            if (empty($user))
-                $user = basename(__FILE__) . ', search';
 
-            $query = "INSERT INTO keywords (keyword,createdby, created) VALUES " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
+            $query = "INSERT INTO keywords (keyword,createdby,created) VALUES " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
             mysql_query($query);
 
+			/**
+			性能原因，tags表不用了。
             $query = "insert into tags (name, createdby, created) values " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
             mysql_query($query);
+			*/
         }
         return true;
     }
 
+	//XX 100%不能用，因为太慢了。
 	//select count(*) from contents where content like '%微笑局长%' or title like '%微笑局长%' and language='中文'
     function get_contents_count($key) {
         $sql = "select count(*) from contents 
@@ -125,6 +129,7 @@ class f12Class extends BaseClass
         }
     }
 
+	//还有用，网友在查。
     function get_key_related($q) {
         $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
@@ -143,6 +148,7 @@ class f12Class extends BaseClass
         return $row;
     }
 
+	//应该没有用了。
     function select_contents_by_page() {
         //计算共有多少页？
         $total_pages = isset($_SESSION[PACKAGE][SEARCH]['total_pages']) ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
