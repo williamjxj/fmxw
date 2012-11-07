@@ -4,7 +4,7 @@ require_once (ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class 
 {
-    var $cl, $mdb2, $conf, $db, $memd, $now, $sort;
+    var $cl, $mdb2, $conf, $db, $memd, $now
     function __construct() 
     {
         parent::__construct();
@@ -24,6 +24,73 @@ class FMXW_Sphinx extends f12Class
         // $this -> m = $this -> get_mongo();
         //$this -> dwmy = $this -> get_dwmy();
         //$this -> st = $this -> get_sort();
+    }
+
+    //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
+    function get_config() {
+        return $conf = array(
+			'coreseek' => array(
+				'host' => 'localhost', 
+				'port' => 9313, 
+				'index' => "contents increment", 
+				'query' => 'SELECT * from contents where cid in ($ids)', 
+			), 
+			'sphinx' => array(
+				'host' => 'localhost', 
+				'port' => 9312, 
+				'index' => "keyRelated delta", 
+			), 
+			'mysql' => array(
+				'host' => "localhost", 
+				'username' => "fmxw", 
+				'password' => "fmxw123456", 
+				'database' => "dixi", 
+			), 
+			'page' => array(
+				'limit' => 25, 
+				'max_matches' => 1000, 
+			)
+		);
+    }
+
+    // 参看:/etc/my.cnf
+    //这里我用了overwrite,应为想用不同的用户来建立链接，提高访问性能。
+    function mysql_connect_fmxw() {
+        $db = mysql_pconnect($this -> conf['mysql']['host'], $this -> conf['mysql']['username'], $this -> conf['mysql']['password']) or die(mysql_error());
+        mysql_select_db($this -> conf['mysql']['database'], $db);
+        //设置字符集,  mysql_set_charset("utf8");
+        mysql_query("SET NAMES 'utf8'", $db);
+        return $db;
+    }
+
+    function set_coreseek_server() {
+        $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
+        //以下是缺省设置，后面将会动态调整。
+		$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
+        $this -> cl -> SetArrayResult(true);
+    }
+
+    // 日，周，月，年有多少秒？
+    function get_dwmy() {
+        return array('d' => '86400', 'w' => '604800', 'm' => '2678400', 'y' => '31536000');
+    }
+
+    // 升序还是降序？
+    function get_sort() {
+        return array('d' => 'DESC', 'a' => 'ASC');
+    }
+
+    function get_matchmode($q) {
+        //Choose an appriate mode (depending on the query)
+        $mode = SPH_MATCH_ALL;
+        if (strpos($q, '~') === 0) {
+            $q = preg_replace('/^\~/', '', $q);
+            if (substr_count($q, ' ') > 1)//over 2 words
+                $mode = SPH_MATCH_ANY;
+        } elseif (preg_match('/[\|\(\)"\/=-]/', $q)) {
+            $mode = SPH_MATCH_EXTENDED;
+        }
     }
 
     // 加入 MongoDB 和 Memcached。
@@ -86,6 +153,36 @@ class FMXW_Sphinx extends f12Class
         return $res;
     }
 
+    function set_sphinx_server()
+    {
+		// 'localhost', 9312, "keyRelated delta"
+        $this->cl->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
+        $this->cl->SetMatchMode ( SPH_MATCH_EXTENDED2 );
+		$this->cl->SetSortMode(SPH_SORT_EXTENDED,'@random');
+		$this->cl->SetLimits(0, 10);
+    }
+	// 替代f12Class的get_key_related, 用sphinx 的/etc/new9313.conf
+	function get_key_related($q) {
+		if (empty($q)) return;
+		$kss = $this->set_sphinx_server();
+		$res = $kss->Query($q, $this->conf['sphinx']['index']);
+		if ($res === false) {
+			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $kss -> GetLastError() . "<br>\n";
+			return;
+		} else if ($kss -> GetLastWarning()) {
+			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $kss -> GetLastWarning() . "<br>\n";
+		}
+		if($res['total']<=0) return;
+		$ids = array_keys($res['matches']);
+		$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
+		$ary = array();
+		echo $sql;
+		$r = mysql_query($sql);
+		while($row = mysql_fetch_array($r, MYSQL_NUM)) {
+			array_push($ary, $row);
+		}
+	}
+	
 	function get_repings($q){
 		$ary = array();
 		$sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";
@@ -97,74 +194,6 @@ class FMXW_Sphinx extends f12Class
 	}
 	
 	
-    //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
-    function get_config() {
-        return $conf = array(
-			'coreseek' => array(
-				'host' => 'localhost', 
-				'port' => 9313, 
-				'index' => "contents increment", 
-				'query' => 'SELECT * from contents where cid in ($ids)', 
-			), 
-			'sphinx' => array(
-				'host' => 'localhost', 
-				'port' => 9312, 
-				'index' => "contents increment", 
-				'query' => 'SELECT * from contents where cid in ($ids)', 
-			), 
-			'mysql' => array(
-				'host' => "localhost", 
-				'username' => "fmxw", 
-				'password' => "fmxw123456", 
-				'database' => "dixi", 
-			), 
-			'page' => array(
-				'limit' => 25, 
-				'max_matches' => 1000, 
-			)
-		);
-    }
-
-    // 参看:/etc/my.cnf
-    //这里我用了overwrite,应为想用不同的用户来建立链接，提高访问性能。
-    function mysql_connect_fmxw() {
-        $db = mysql_pconnect($this -> conf['mysql']['host'], $this -> conf['mysql']['username'], $this -> conf['mysql']['password']) or die(mysql_error());
-        mysql_select_db($this -> conf['mysql']['database'], $db);
-        //设置字符集,  mysql_set_charset("utf8");
-        mysql_query("SET NAMES 'utf8'", $db);
-        return $db;
-    }
-
-    function set_coreseek_server() {
-        $this -> cl -> SetServer($this -> conf['coreseek']['host'], $this -> conf['coreseek']['port']);
-        //以下是缺省设置，后面将会动态调整。
-		$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
-        $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
-        $this -> cl -> SetArrayResult(true);
-    }
-
-    // 日，周，月，年有多少秒？
-    function get_dwmy() {
-        return array('d' => '86400', 'w' => '604800', 'm' => '2678400', 'y' => '31536000');
-    }
-
-    // 升序还是降序？
-    function get_sort() {
-        return array('d' => 'DESC', 'a' => 'ASC');
-    }
-
-    function get_matchmode($q) {
-        //Choose an appriate mode (depending on the query)
-        $mode = SPH_MATCH_ALL;
-        if (strpos($q, '~') === 0) {
-            $q = preg_replace('/^\~/', '', $q);
-            if (substr_count($q, ' ') > 1)//over 2 words
-                $mode = SPH_MATCH_ANY;
-        } elseif (preg_match('/[\|\(\)"\/=-]/', $q)) {
-            $mode = SPH_MATCH_EXTENDED;
-        }
-    }
-
     //error, warning, status, fields+attrs, matches, total, total_found, time, words
     function set_session($res) 
 	{
