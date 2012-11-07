@@ -53,13 +53,16 @@ class f0Class extends BaseClass
         return $this->_get_label($list);
     }
  
-    function get_hotest_keywords() {
+    function get_latest_keywords() {
+		$str = '';
         $sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
-        $res = $this -> mdb2 -> queryAll($sql);
-        if (PEAR::isError($res)) {
-            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
-        }
-        return $res;
+        $res = $this -> mdb2 -> query($sql);
+        if (PEAR::isError($res)) die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+		while($row = $res->fetchRow()) {
+			$t = htmlspecialchars($row[0]);
+			$str .= '<a href="javascript:;" datasrc="'.$t.'" class="latest">'.$t.'</a>,&nbsp;';
+		}
+        return $str;
     }    
     function get_latest_keywords() {
         $sql = "select keyword, total from keywords order by total desc limit 0," . PER_TOTAL; 

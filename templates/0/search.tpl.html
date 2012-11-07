@@ -15,9 +15,7 @@
   <br/>
   <div class="span12 centered">
     <ul id="js-news" class="js-hidden">
-      {foreach $tickers as $tk}
-      <li class="news-item"><a href="javascript:;" datasrc="{$tk.0}" class="latest">{$tk.0}</a></li>
-      {/foreach}
+      <li class="news-item">{$tickers}</li>
     </ul>
   </div>
 </div>

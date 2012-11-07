@@ -4,7 +4,7 @@ require_once (ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class 
 {
-    var $cl, $mdb2, $conf, $db, $memd, $now;
+    var $cl, $mdb2, $conf, $db, $memd, $now, $sort;
     function __construct() 
     {
         parent::__construct();
