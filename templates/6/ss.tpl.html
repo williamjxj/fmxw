@@ -1,5 +1,5 @@
 {$url={$config.search}}
-{$t1={$config.t1}}
+{$t6={$config.t6}}
 {include file="{$config.t}base_layout.tpl.html"}
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
@@ -37,6 +37,13 @@
           <button class="btn btn-small btn-primary" type="submit" disabled="disabled"><i class="icon-white icon-search"></i>查 询</button>
         </form>
       </div>
+      <ul id="tf2" class="nav nav-list box">
+        <li><a href="javascript:;" id="clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
+        <li><a href="javascript:;" id="guanzhu" rel="tooltip" title="关注度">关注度</a></li>
+        <li><a href="javascript:;" id="pinglun" rel="tooltip" title="评论数">评论数</a></li>
+        <li><a href="javascript:;" id="likes" rel="tooltip" title="赞同">赞同</a></li>
+        <li><a href="javascript:;" id="fandui" rel="tooltip" title="反对">反对</a></li>
+      </ul>
       <!--ul id="sf" class="nav nav-list box">
         <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
         <li><a href="#baidu" rel="tooltip" title="百度">百度</a></li>
@@ -70,8 +77,13 @@
 <script type="text/javascript">
 $(function() {
 	$('a.sort_by_time', '#tf1').click(function() {
-		$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
+		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
+		$('div#smiddle').load('{$url}?js_sortby_dwmy='+$(this).attr('id'));
 	});
+	$('a', '#tf2').click(function() {
+		$('div#smiddle').load('{$url}?js_sortby_attr='+$(this).attr('id'));
+	});
+	
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
 		$('{$config.wait}').insertAfter(this);
@@ -84,6 +96,7 @@ $(function() {
 		return false;
 	});
 
+	//阅览右上角。
 	$('div.pagination a').live('click', function() {
 		$(this).html('{$config.wait}');
 		var url = $(this).attr('href');
@@ -99,10 +112,7 @@ $(function() {
 		return false;
 	});
 
-	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
-		$('#q').val('{$smarty.session.fmxw.search.key}');
-	{/if}
-	
+	//PK框的显示和隐藏。
 	$('#apk').click(function() {
 		if($('#pk').is(':visible')) {
 			$('#pk').hide();
@@ -126,10 +136,16 @@ $(function() {
 			$('button:submit', '#ct_search').attr('disabled', false);
 		});
 	});
+	
+	//排序框Form的提交。
 	$('#ct_search').submit(function(e) {
 		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
+	
+	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
+		$('#q').val('{$smarty.session.fmxw.search.key}');
+	{/if}
 });
 $(window).load(function() {
 	$.getJSON('{$url}?js_category=1', function(data) {

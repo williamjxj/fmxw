@@ -21,8 +21,6 @@ try {
 }
 
 $obj -> set_coreseek_server();
-//$obj->set_sphinx_server();
-//header("Content-Type: text/html; charset=utf-8");
 
 list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
 $obj -> assign('config', $config);
@@ -33,44 +31,73 @@ if (isset($_GET['q'])) {
 	//做过测试，'   '为真，empty('  ')为假。
 	if(empty($_GET['q'])) {
 	    $key = $q = '';
+		//ALL: SetMatchMode传递参数SPH_MATCH_ALL，然后在调用Query的时候指定要查询的索引是*
 		$obj->cl->SetMatchMode(SPH_MATCH_ALL);
+		
+		//Sort by time segments (last hour/day/week/month) in descending order, and then by relevance in descending order.
 		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
-		$obj->cl->SetArrayResult(true);
 	}
 	else {
 	    $key = $q = trim($_GET['q']);
-		/**
-		 * mongoDB有这个关键词吗？
-		 * 有：更新，count+1,date.
-		 * 无： insert
-		 */
+		/*XX mongoDB有这个关键词吗？有：更新，count+1,date. 无： insert */
 		$obj->set_keywords($key);
+		
+		/* requiring perfect match.
+		 * 准确匹配：将指定的全部词做为一个词组（不包括标点符号）构成查询
+		 */
 		$obj->cl->SetMatchMode(SPH_MATCH_PHRASE);
+		
 		$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
-		$obj->cl->SetArrayResult(true);
+
+		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
 		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
 	}
-
-	if(isset($_GET['js_sortby'])) {
-		switch($_GET['js_sortby']) {
-			case 'day':
-				$min = $obj->now - 86400;
-				break;
-			case 'week':
-				$min = $obj->now - 604800;
-				break;
-			case 'month':
-				$min = $obj->now - 2678400;
-				break;
-			case 'year':
-				$min = $obj->now - 31536000;
-				break;
-			default:
-				$min = 0;
-		}
-		$obj->cl->SetFilterRange("created", $min, $obj->now);
-	}
+	
+	//从首页来。
+	if(isset($_GET['fm0'])) {}
+	//从当前页来。
+	elseif(isset($_GET['fm6'])) {}
 }
+elseif(isset($_GET['js_ct_search'])) {
+	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
+	if (!empty($_GET['item'])) {
+		$obj->cl -> SetFilter('iid', array($_GET['item']));
+	}
+	//$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	// if (! empty($key)) $obj -> SetFilter("", array($key));
+	
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
+	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+}
+elseif(isset($_GET['js_sortby_dwmy'])) {
+	switch($_GET['js_sortby']) {
+		case 'day':
+			$min = $obj->now - 86400;
+			break;
+		case 'week':
+			$min = $obj->now - 604800;
+			break;
+		case 'month':
+			$min = $obj->now - 2678400;
+			break;
+		case 'year':
+			$min = $obj->now - 31536000;
+			break;
+		default:
+			$min = 0;
+	}
+	$obj->cl->SetFilterRange("created", $min, $obj->now);
+	
+	// $key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	// if (! empty($key)) $obj -> SetFilter("@title", $key);
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
+	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+}
+elseif(isset($_GET['js_sortby_attr'])) {
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
+	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
+}
+//以下不需要setmatchmode和setsortmode.
 elseif(isset($_GET['js_pk'])) {
 	$obj->display($tdir6.'pk.tpl.html');
 	return;
@@ -82,23 +109,6 @@ elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
     echo json_encode($_POST);
 	return;
 }
-elseif(isset($_GET['js_ct_search'])) {
-	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
-	if (!empty($_GET['item'])) {
-		$obj->cl -> SetFilter('iid', array($_GET['item']));
-	}
-	if (empty($q)) {
-		$key = $q = empty($_GET['q']) ? '' : trim($_GET['q']);
-		//$key = $q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	}
-	if (! empty($key)) {
-		$obj -> set_keywords($key);
-		$obj -> set_filter($key);
-	}
-}
-elseif(isset($_GET['page'])) {
-}
-/* 控制器部分 */
 elseif(isset($_GET['js_category'])) {
 	echo json_encode($obj->get_categories());
 	return;
@@ -107,31 +117,33 @@ elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items($_GET['cate_id']));
 	return;
 }
+elseif(isset($_GET['page'])) {
+	//翻页显示。
+}
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
     $obj->display($tdir6.'single.tpl.html');
     return;
-} 
-elseif(isset($_GET['js_news'])) {
-    $obj->display($tdir6.'news.tpl.html');
-    return;
-} 
+}
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
+	$obj->__p($_REQUEST);
+	$obj->__p($_SESSION);
+	return;
 }
+//要区分fm0，fm6吗？
 else {
+    if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
 	$key = $q = '';
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
+	
+	//Sort by time segments (last hour/day/week/month) in descending order, and then by relevance in descending order.
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetArrayResult(true);
-	//echo "请输入查询词进行查询。";
-	//return;
 }
 
-if(empty($_GET)) {
-	goto BASIC;
-}
+// if(empty($_GET))  goto BASIC;
 
 // 设置当前页和开始的记录号码。
 //empty()= !isset($var) || $var == false.
@@ -151,20 +163,13 @@ else {
         die("Only the first {$obj->conf['page']['max_matches']} results accessible");
     }
 }
-
-$obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 //current page and number of results
+$obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 /** 开始查询Coreseek-Sphinx索引，并得到相关信息。
  * error, warning, status, fields+attrs, matches, total, total_found, time, words
+ * $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "created DESC");
  */
-
-//$obj -> cl->SetGroupBy('clicks', SPH_GROUPBY_ATTR);
-
-$obj -> cl -> SetArrayResult(true);
-
-$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "created DESC");
-
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
@@ -178,22 +183,12 @@ if (empty($res["matches"])) {
 	//$obj -> __p($summary);
 	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
 	if (!empty($q)) {
-		$obj->write_named_pipes($q);
-		// $obj->backend_scrape($q);
+		$obj->write_named_pipes($q); // $obj->backend_scrape($q);
 	}
 	return;
 }
-else {
-	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-	//$obj->cl->SetSortMode(SPH_SORT_RELEVANCE, "@relevance DESC, @id DESC");
-	$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
-	if (empty($res["matches"])) {
-	    $summary = "查询【" . $q . "】 没有匹配结果，用时【" . $res['time'] . "】秒。";
-		$obj -> __p($summary);
-  		return;
-	}
-}
 
+//取得数据成功后，设置SESSION.
 $obj->set_session($res);
 
 /*
@@ -298,29 +293,17 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-if (isset($_GET['page']) || isset($_GET['js_sortby']) || isset($_GET['js_ct_search']) ) {
+if (isset($_GET['page']) || isset($_GET['js_sortby_dwmy'])  || isset($_GET['js_sortby_attr']) || isset($_GET['js_ct_search']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'nav.tpl.html');
 } 
-elseif(isset($_GET['fm0'])) {
+else {
     $pagination = $obj -> draw();
 	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
 	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q']));
-}
-elseif(isset($_GET['q'])) {
-    $pagination = $obj -> draw();
-    $obj -> assign("pagination", $pagination);
-	$obj -> display($tdir6 . 'nav.tpl.html');
-	if (!empty($_GET['q'])) {
-		$obj->write_named_pipes(trim($_GET['q']));
-		// $obj->backend_scrape($_GET['q']);
-	}
-}
-else {
-	$obj -> display($tdir6 . 'ss.tpl.html');
 }
 exit;
 
