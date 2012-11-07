@@ -16,7 +16,8 @@
 
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
-  <li class="li3"><span class="badge badge-warning">{$no++}</span> <a href="{$url}?cid={$rts.cid}&js_get_content=1">{$rts.title} -<i>{$rts.date}</i></a>
+  <li class="li3"><span class="badge badge-warning">{$no++}</span> <a
+  href="{$url}?cid={$rts.cid}&jsc=1" rel="address:{$url}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a>
   {if {$sort=='clicks'}}({$rts.clicks})
   {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
   {elseif {$sort=='pinglun'}} ({$rts.pinglun})

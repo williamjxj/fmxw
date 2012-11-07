@@ -130,7 +130,7 @@ elseif(isset($_GET['page'])) {
 	//翻页显示。
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 }
-elseif(isset($_GET['js_get_content'])) {
+elseif(isset($_GET['jsc'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
     $obj->display($tdir6.'single.tpl.html');
