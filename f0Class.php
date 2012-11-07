@@ -64,7 +64,7 @@ class f0Class extends BaseClass
 		}
         return $str;
     }    
-    function get_latest_keywords() {
+    function get_hotest_keywords() {
         $sql = "select keyword, total from keywords order by total desc limit 0," . PER_TOTAL; 
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {

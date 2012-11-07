@@ -94,7 +94,8 @@ if (!isset($config)) {
         'logo_290x96' => 'images/logo_290x96.png', 
         'logo_130x60' => 'images/logo_130x60.png', 
         'logo_20x12' => 'images/logo_20x12.png',
-    ), 'footer' => array(
+    ),
+	'footer' => array(
         'copyright' => '负面新闻网。底细，真相，事实传播媒体。', 
         'menu' => '负面新闻网。底细，真相，事实传播媒体。', 
     ),

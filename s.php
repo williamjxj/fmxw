@@ -27,6 +27,7 @@ $obj -> assign('config', $config);
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+    if (isset($_SESSION[PACKAGE]['sort'])) unset($_SESSION[PACKAGE]['sort']);
 
 	//做过测试，'   '为真，empty('  ')为假。
 	if(empty($_GET['q'])) {
@@ -60,9 +61,13 @@ if (isset($_GET['q'])) {
 }
 elseif(isset($_GET['js_ct_search'])) {
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
+	$_SESSION[PACKAGE]['sort'] = 'cate_id';
+
 	if (!empty($_GET['item'])) {
 		$obj->cl -> SetFilter('iid', array($_GET['item']));
+		$_SESSION[PACKAGE]['sort'] = 'iid';
 	}
+
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	// if (! empty($q)) $obj -> SetFilter("", array($q));
 	
@@ -88,7 +93,7 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 	}
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	// if (! empty($q)) $obj -> SetFilter("@title", $q);
-	$config['sort'] = $_GET['js_sortby_dwmy'];
+	$_SESSION[PACKAGE]['sort'] = 'created'; // $_GET['js_sortby_dwmy'];
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
@@ -96,7 +101,7 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 }
 elseif(isset($_GET['js_sortby_attr'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$config['sort'] = $_GET['js_sortby_attr'];
+	$_SESSION[PACKAGE]['sort'] = $_GET['js_sortby_attr'];
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
@@ -140,6 +145,7 @@ elseif (isset($_GET['test'])) {
 //要区分fm0，fm6吗？
 else {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+    if (isset($_SESSION[PACKAGE]['sort'])) unset($_SESSION[PACKAGE]['sort']);
 	$q = '';
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	
@@ -186,9 +192,11 @@ if (empty($res["matches"])) {
     //$summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
 	//$obj -> __p($summary);
 	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
-	if (!empty($q)) {
-		$obj->write_named_pipes($q); // $obj->backend_scrape($q);
-	}
+	echo "No record, trying search engines...";
+	
+	//if (!empty($q)) {
+	//	$obj->write_named_pipes($q); // $obj->backend_scrape($q);
+	//}
 	return;
 }
 
@@ -233,6 +241,13 @@ $ids = implode(",", $ary_ids);
 // $query = $obj->generate_sql($ids);
 // 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
 $query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
+if (!empty($_SESSION[PACKAGE]['sort'])) {
+	$query .= " ORDER BY " . $_SESSION[PACKAGE]['sort'] . " DESC ";
+	$t = $_SESSION[PACKAGE]['sort'];
+	if(preg_match("/(cate_id|iid)/", $t))
+		$query .= " , created DESC ";
+}
+// echo $query;
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
@@ -278,7 +293,7 @@ if (empty($reply)) {
 	}
 }
 else {
-	echo "8888888888888888888888888888888888888888888888<br>\n";
+	echo "Why Never Come Here: 88888888<br>\n";
 	foreach($docs as $id => $ct) {
 		$rows[$id]['content'] = $reply[$id];
 	}
