@@ -42,10 +42,10 @@ else {
 	global $list;
     global $footer;
 
-	//最新查询
-    $obj->assign('keywords', $obj->get_latest_keywords());
-	//热门查询. $tickers = array('王石', '温家宝', '美国总统大选');
-	$obj -> assign('tickers', $obj->get_hotest_keywords());
+	//热门查询
+    $obj->assign('keywords', $obj->get_hotest_keywords());
+	//最新查询. $tickers = array('王石', '温家宝', '美国总统大选');
+	$obj -> assign('tickers', $obj->get_latest_keywords());
 	
     $obj -> assign('_th', $obj -> get_header_label($header));
     $obj -> assign('_ts', $obj -> get_search_label($search));
