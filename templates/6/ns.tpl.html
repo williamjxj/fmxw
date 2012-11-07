@@ -38,14 +38,6 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('a.sort_by_time', '#tf1').click(function() {
-		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
-		$('div#smiddle').load('{$url}?js_sortby_dwmy='+$(this).attr('id'));
-	});
-	$('a', '#tf2').click(function() {
-		$('div#smiddle').load('{$url}?js_sortby_attr='+$(this).attr('id'));
-	});
-	
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
 		$('{$config.wait}').insertAfter(this);
@@ -54,22 +46,6 @@ $(function() {
 			$('li.li3').removeClass('highlight');
 			$t.parent('li.li3').addClass('highlight');
 			$t.next('img').remove();
-		});
-		return false;
-	});
-
-	//阅览右上角。
-	$('div.pagination a').live('click', function() {
-		$(this).html('{$config.wait}');
-		var url = $(this).attr('href');
-		//var t = new Date().getTime();
-		if (! /js_page=/.test(url)) url+='&js_page';
-		$.ajax({
-			type: 'get',
-			url: url,
-			success: function(data) {
-				$('div#smiddle').hide().html(data).fadeIn(200);
-			}
 		});
 		return false;
 	});
@@ -85,44 +61,13 @@ $(function() {
 		return false;
 	});
 	
-	$('#category').change(function() {
-		cate_id = $(this).attr('value');
-		$.getJSON("{$url}?js_item=1&cate_id=" + cate_id, function(data) {
-			var items ='<option value="0">Default</option>\n';
-			$.each(data, function(id, name) {
-				items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
-			});
-			$('#div_item').fadeIn(500);
-			//$('#item').empty().append(items);
-			$('#item').html(items);
-			$('button:submit', '#ct_search').attr('disabled', false);
-		});
-	});
-	
-	//排序框Form的提交。
-	$('#ct_search').submit(function(e) {
-		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
-		return false;
-	});
-
 	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
 	
 	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
 		$('#q').val('{$smarty.session.fmxw.search.key}');
 	{/if}
 });
-$(window).load(function() {
-	$.getJSON('{$url}?js_category=1', function(data) {
-		var cates='<option value="0">Default</option>\n';
-		$.each(data, function(key, val) {
-			cates += '<option value="' + parseInt(val[0]) + '">' + val[1] + '</option>\n';
-		});
-		$('#category').append(cates);
-	});
-}); 
-</script>
-<script type="text/javascript">
-;(function() {
+(function() {
 	sm = '#smiddle';
 	var kw = '{$smarty.session.fmxw.search.key}';
 	$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {

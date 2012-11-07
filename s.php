@@ -203,9 +203,9 @@ if (empty($res["matches"])) {
 	$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 	$obj->display($tdir6.'ns.tpl.html');
-	//if (!empty($q)) {
-	//	$obj->write_named_pipes($q); // $obj->backend_scrape($q);
-	//}
+	if (!empty($q)) {
+		$obj->write_named_pipes($q); // $obj->backend_scrape($q);
+	}
 	exit;
 }
 
