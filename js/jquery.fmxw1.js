@@ -68,6 +68,7 @@ $(function(){
   // For all links inside a .bbq widget, push the appropriate state onto the
   // history when clicked.
   $('.bbq a[href^=#]').live( 'click', function(e){
+											   alert('aaaaaaaaaaaaaaa');
     var state = {},
       
       // Get the id of this .bbq widget.
