@@ -87,6 +87,11 @@ $(function() {
 		$('div#smiddle').load('{$url}?js_sortby_attr='+$(this).attr('id'));
 	});
 	
+	$.address.init(function(event) {
+		alert('testing1.');
+	}) .change(function(event) {
+		alert('testing2.');
+	});
 	$('li.li3 a').live('click', function() {
 		$t = $(this);
 		$('{$config.wait}').insertAfter(this);
@@ -96,6 +101,7 @@ $(function() {
 			$t.parent('li.li3').addClass('highlight');
 			$t.next('img').remove();
 		});
+		alert('testing3');
 		return false;
 	});
 
@@ -147,9 +153,6 @@ $(function() {
 	});
 
 	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
-	$.address.init(function(event) {
-		alert('testing.');
-	});
 	
 	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
 		$('#q').val('{$smarty.session.fmxw.search.key}');
