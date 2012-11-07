@@ -30,7 +30,7 @@ if (isset($_GET['q'])) {
 
 	//做过测试，'   '为真，empty('  ')为假。
 	if(empty($_GET['q'])) {
-	    $key = $q = '';
+	    $q = '';
 		//ALL: SetMatchMode传递参数SPH_MATCH_ALL，然后在调用Query的时候指定要查询的索引是*
 		$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 		
@@ -38,9 +38,9 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	}
 	else {
-	    $key = $q = trim($_GET['q']);
+	    $q = trim($_GET['q']);
 		/*XX mongoDB有这个关键词吗？有：更新，count+1,date. 无： insert */
-		$obj->set_keywords($key);
+		$obj->set_keywords($q);
 		
 		/* requiring perfect match.
 		 * 准确匹配：将指定的全部词做为一个词组（不包括标点符号）构成查询
@@ -63,14 +63,14 @@ elseif(isset($_GET['js_ct_search'])) {
 	if (!empty($_GET['item'])) {
 		$obj->cl -> SetFilter('iid', array($_GET['item']));
 	}
-	//$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	// if (! empty($key)) $obj -> SetFilter("", array($key));
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	// if (! empty($q)) $obj -> SetFilter("", array($q));
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
 }
 elseif(isset($_GET['js_sortby_dwmy'])) {
-	switch($_GET['js_sortby']) {
+	switch($_GET['js_sortby_dwmy']) {
 		case 'day':
 			$min = $obj->now - 86400;
 			break;
@@ -86,14 +86,17 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 		default:
 			$min = 0;
 	}
-	$obj->cl->SetFilterRange("created", $min, $obj->now);
-	
-	// $key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	// if (! empty($key)) $obj -> SetFilter("@title", $key);
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	echo "-------------[" . $q . "]-----------------<br>\n";
+	// if (! empty($q)) $obj -> SetFilter("@title", $q);
+
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+	$obj->cl->SetFilterRange("created", $min, $obj->now);
 }
 elseif(isset($_GET['js_sortby_attr'])) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
 }
@@ -119,6 +122,7 @@ elseif(isset($_GET['js_item'])) {
 }
 elseif(isset($_GET['page'])) {
 	//翻页显示。
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 }
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
@@ -135,7 +139,7 @@ elseif (isset($_GET['test'])) {
 //要区分fm0，fm6吗？
 else {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
-	$key = $q = '';
+	$q = '';
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	
 	//Sort by time segments (last hour/day/week/month) in descending order, and then by relevance in descending order.
@@ -189,7 +193,13 @@ if (empty($res["matches"])) {
 }
 
 //取得数据成功后，设置SESSION.
-$obj->set_session($res);
+// $obj->set_session($res);
+$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
+$_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
+$_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
+$_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
+$_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
+$_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
 
 /*
  * SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
@@ -278,9 +288,9 @@ $obj -> assign('results', $rows);
 
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
-$obj -> assign('kr', $obj->get_key_related($key));
-$obj -> assign('reping', $obj -> get_repings($key));
-//$obj->__p($obj -> get_repings($key));
+$obj -> assign('kr', $obj->get_key_related($q));
+$obj -> assign('reping', $obj -> get_repings($q));
+//$obj->__p($obj -> get_repings($q));
 
 BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
