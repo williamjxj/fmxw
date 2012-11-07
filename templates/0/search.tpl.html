@@ -9,13 +9,13 @@
     </form>
   </div>
   <br/>
-  <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as $q} <a class="post-tag" href="javascript:;" datasrc="{$q.0}">{$q.0}</a>&nbsp;
+  <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as $rm} <a class="post-tag" href="javascript:;" datasrc="{$rm.0}">{$rm.0}($rm.1)</a>&nbsp;
     {/foreach} </span> </div>
   <br/>
   <div class="span12 centered">
     <ul id="js-news" class="js-hidden">
       {foreach $tickers as $tk}
-      <li class="news-item"><a href="#">{$tk}</a></li>
+      <li class="news-item"><a href="javascript:;" datasrc="{$tk.0}">{$tk.0}</a></li>
       {/foreach}
     </ul>
   </div>
@@ -25,9 +25,25 @@ $(function() {
 	$('#os').click(function(e) {
 		e.preventDefault();
 		form = document.getElementById('sf');
-		form.action = 's.php';
+		form.action = 'f1.php';
 		form.method = 'get';
 		form.submit();
+		return false;
+	});
+	//热门搜索词：
+	$('a.post-tag').click(function(e) {
+		e.preventDefault();
+		var t = $(e.target);
+		$('#typeahead').val(t.attr('datasrc'));
+		$('#sf').trigger('submit');
+		return false;
+	});
+	//最新查询：
+	$('a', '#js-news').click(function(e) {
+		e.preventDefault();
+		var t = $(e.target);
+		$('#typeahead').val(t.attr('datasrc'));
+		$('#sf').trigger('submit');
 		return false;
 	});
 	/*
@@ -39,8 +55,7 @@ $(function() {
 			return false;
 		}
 		return true;
-	});
-	*/
+	});	*/
 	var no_typeahead=false, timer;
 	$('#typeahead').typeahead({
 		source : function(typeahead, query) {
