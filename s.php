@@ -87,15 +87,16 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 			$min = 0;
 	}
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	echo "-------------[" . $q . "]-----------------<br>\n";
 	// if (! empty($q)) $obj -> SetFilter("@title", $q);
-
+	$config['sort'] = $_GET['js_sortby_dwmy'];
+	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetFilterRange("created", $min, $obj->now);
 }
 elseif(isset($_GET['js_sortby_attr'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$config['sort'] = $_GET['js_sortby_attr'];
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
@@ -148,7 +149,6 @@ else {
 }
 
 // if(empty($_GET))  goto BASIC;
-
 // 设置当前页和开始的记录号码。
 //empty()= !isset($var) || $var == false.
 if (empty($_GET['page'])) {
@@ -230,9 +230,9 @@ else {
 
 // 将ary_ids 由数组变成逗号分隔的字符串。
 $ids = implode(",", $ary_ids);
+// $query = $obj->generate_sql($ids);
 // 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
-$query = $obj->generate_sql($ids);
-//echo $query . "<br>\n";
+$query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
@@ -292,7 +292,7 @@ $obj -> assign('kr', $obj->get_key_related($q));
 $obj -> assign('reping', $obj -> get_repings($q));
 //$obj->__p($obj -> get_repings($q));
 
-BASIC:
+//BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
