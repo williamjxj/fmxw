@@ -192,12 +192,11 @@ if (empty($res["matches"])) {
     //$summary = "查询【" . $q . "】 没有发现匹配结果，用时【" . $res['time'] . "】秒。";
 	//$obj -> __p($summary);
 	//SPH_MATCH_PHRASE, 将整个查询看作一个词组，要求按顺序完整匹配; 找不到结果，就直接将显示抓取来的。
-	echo "No record, trying search engines...";
-	
+	$obj->display($tdir6.'ns.tpl.html');
 	//if (!empty($q)) {
 	//	$obj->write_named_pipes($q); // $obj->backend_scrape($q);
 	//}
-	return;
+	exit;
 }
 
 //取得数据成功后，设置SESSION.

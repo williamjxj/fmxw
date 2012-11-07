@@ -4,6 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/UrlEncode.js"></script>
+<script type="text/javascript" src="{$config.js.easing}"></script>
+<script type="text/javascript" src="js/jquery.fmxw1.js"></script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
@@ -14,48 +16,8 @@
 </div>
 <div class="container-fluid" align="left">
   <div class="row-fluid">
-    <div class="span1" id="sleft">
-      <ul id="tf1" class="nav nav-tabs nav-stacked">
-        <li class="active"><a href="javascript:;" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
-        <li><a href="javascript:;" class="sort_by_time" id="day">一天内</a></li>
-        <li><a href="javascript:;" class="sort_by_time" id="week">一周内</a></li>
-        <li><a href="javascript:;" class="sort_by_time" id="month">一月内</a></li>
-        <li><a href="javascript:;" class="sort_by_time" id="year">一年内</a></li>
-      </ul>
-      <div class="alert" style="margin-top:20px;padding:2px;">
-        <form action="{$url}" method="get" name="ct_search" id="ct_search">
-          <label for="category">类别:</label>
-          <select name="category" id="category" style="width:100%">
-            <option value="">--- 请选择 ---</option>
-          </select>
-          <div id="div_item" style="display:none">
-            <label for="item">栏目:</label>
-            <select name="item" id="item" style="width:100%">
-              <option value="">--- 请选择 ---</option>
-            </select>
-          </div>
-          <button class="btn btn-small btn-primary" type="submit" disabled="disabled"><i class="icon-white icon-search"></i>查 询</button>
-        </form>
-      </div>
-      <ul id="tf2" class="nav nav-list box">
-        <li><a href="javascript:;" id="clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
-        <li><a href="javascript:;" id="guanzhu" rel="tooltip" title="关注度">关注度</a></li>
-        <li><a href="javascript:;" id="pinglun" rel="tooltip" title="评论数">评论数</a></li>
-        <li><a href="javascript:;" id="likes" rel="tooltip" title="赞同">赞同</a></li>
-        <li><a href="javascript:;" id="fandui" rel="tooltip" title="反对">反对</a></li>
-      </ul>
-      <!--ul id="sf" class="nav nav-list box">
-        <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
-        <li><a href="#baidu" rel="tooltip" title="百度">百度</a></li>
-        <li><a href="#soso" rel="tooltip" title="腾讯网">搜搜</a></li>
-        <li><a href="#google" rel="tooltip" title="谷歌">谷歌</a></li>
-        <li><a href="#yahoo" rel="tooltip" title="雅虎">雅虎</a></li>
-        <li><a href="#hk.yahoo" rel="tooltip" title="雅虎">雅虎香港</a></li>
-        <li><a href="#tw.yahoo" rel="tooltip" title="雅虎">雅虎台湾</a></li>
-      </ul-->
-    </div>
-    <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
-    <div class="span7" id="sright">
+    <div class="span4" id="smiddle"></div>
+    <div class="span8" id="sright">
       <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
@@ -142,6 +104,8 @@ $(function() {
 		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
+
+	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
 	
 	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
 		$('#q').val('{$smarty.session.fmxw.search.key}');
@@ -156,4 +120,37 @@ $(window).load(function() {
 		$('#category').append(cates);
 	});
 }); 
+</script>
+<script type="text/javascript">
+;(function() {
+	sm = '#smiddle';
+	var kw = '{$smarty.session.fmxw.search.key}';
+	$.getJSON('/cgi-bin/baidu.cgi', { 'q' : kw }, function(data) {
+		$('<div></div>').attr('id', 'baidu').html(data.join("<br>\n")).appendTo(sm);
+	});
+	$.getJSON('/cgi-bin/google.cgi', { 'q' : kw }, function(data) {
+		var txt='<ul class="nav nav-pills nav-stacked">';
+		$.each(data, function(key, val) {
+			txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+		});
+		txt +='</ul>\n';
+		$('<div></div>').attr('id','google').html(txt).appendTo(sm);
+	});
+	$.getJSON('/cgi-bin/soso.cgi', { 'q' : kw }, function(data) {
+		var txt='<ul class="nav nav-pills nav-stacked">';
+		$.each(data, function(key, val) {
+			txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+		});
+		txt +='</ul>\n';
+		$('<div></div>').attr('id','soso').html(txt).appendTo(sm);
+	});
+	$.getJSON('/cgi-bin/yahoo.cgi', { 'q' : kw }, function(data) {
+		var txt='<ul class="nav nav-pills nav-stacked">';
+		$.each(data, function(key, val) {
+			txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+		});
+		txt +='</ul>\n';
+		$('<div></div>').attr('id','yahoo').html(txt).appendTo(sm);
+	});
+})(jQuery);
 </script>
