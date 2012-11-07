@@ -4,6 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/UrlEncode.js"></script>
+<script type="text/javascript" src="{$config.js.easing}"></script>
+<script type="text/javascript" src="js/jquery.fmxw1.js"></script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
@@ -142,6 +144,8 @@ $(function() {
 		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
+
+	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
 	
 	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
 		$('#q').val('{$smarty.session.fmxw.search.key}');
