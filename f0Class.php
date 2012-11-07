@@ -53,7 +53,7 @@ class f0Class extends BaseClass
         return $this->_get_label($list);
     }
  
-    function get_latest_keywords() {
+    function get_hotest_keywords() {
         $sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {
@@ -61,7 +61,7 @@ class f0Class extends BaseClass
         }
         return $res;
     }    
-    function get_hotest_keywords() {
+    function get_latest_keywords() {
         $sql = "select keyword, total from keywords order by total desc limit 0," . PER_TOTAL; 
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {
