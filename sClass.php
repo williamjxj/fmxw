@@ -4,7 +4,7 @@ require_once (ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class 
 {
-    var $cl, $mdb2, $conf, $db, $memd, $now
+    var $cl, $mdb2, $conf, $db, $memd, $now;
     function __construct() 
     {
         parent::__construct();
@@ -153,18 +153,16 @@ class FMXW_Sphinx extends f12Class
         return $res;
     }
 
-    function set_sphinx_server()
-    {
-		// 'localhost', 9312, "keyRelated delta"
-        $this->cl->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
-        $this->cl->SetMatchMode ( SPH_MATCH_EXTENDED2 );
-		$this->cl->SetSortMode(SPH_SORT_EXTENDED,'@random');
-		$this->cl->SetLimits(0, 10);
-    }
 	// 替代f12Class的get_key_related, 用sphinx 的/etc/new9313.conf
+	// 'localhost', 9312, "keyRelated delta"
 	function get_key_related($q) {
 		if (empty($q)) return;
-		$kss = $this->set_sphinx_server();
+		$kss = new SphinxClient;
+        $kss->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
+        $kss->SetMatchMode ( SPH_MATCH_EXTENDED2 );
+		$kss->SetSortMode(SPH_SORT_EXTENDED,'@random');
+		$kss->SetLimits(0, 10);
+
 		$res = $kss->Query($q, $this->conf['sphinx']['index']);
 		if ($res === false) {
 			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $kss -> GetLastError() . "<br>\n";
@@ -176,11 +174,12 @@ class FMXW_Sphinx extends f12Class
 		$ids = array_keys($res['matches']);
 		$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
 		$ary = array();
-		echo $sql;
+		//echo $sql;
 		$r = mysql_query($sql);
-		while($row = mysql_fetch_array($r, MYSQL_NUM)) {
+		while($row = mysql_fetch_assoc($r)) {
 			array_push($ary, $row);
 		}
+		return $ary;
 	}
 	
 	function get_repings($q){

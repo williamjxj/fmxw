@@ -54,5 +54,5 @@ while ($row = mysql_fetch_array($kss_ret, MYSQL_NUM)) {
 }
 
 echo json_encode($ary);
-return json_encode($ary);
+// return json_encode($ary);
 ?>
