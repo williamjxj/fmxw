@@ -48,9 +48,9 @@ if(isset($_GET['hoverCard'])) {
 	}
 	echo '<ul class="nav nav-pills nav-stacked">';
     while ($row = mysql_fetch_array($mret, MYSQL_NUM)) {
-        echo '<li><a id="rk_'.$row[0].'" href="'.$row[2].'">'.htmlspecialchars($row[1])."</a></li>\n";
+        echo '<li><a id="rk_'.$row[0].'" href="'.$row[2].'" style="padding-bottom:0px;">'.htmlspecialchars($row[1])."</a></li>\n";
     }
-    echo "</ul>\n";    
+    echo "</ul>\n";
 }
 //f0: auto suggest.
 else {
