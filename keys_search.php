@@ -40,17 +40,15 @@ $db = mysql_connect_fmxw();
 //f0: 首页的meego123.net
 if(isset($_GET['hoverCard'])) {
 	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
-	$ary = array();
-	$r = mysql_query($sql);
+	$mret = mysql_query($sql);
 
-    if(mysql_num_rows<=0) return;
+    if(mysql_num_rows($mret)<=0) return;
 ?>
 <div class="alert">
-  <button type="button" class="close" data-dismiss="alert" onclick="$('div.related_tag').hide();return false;">×</button>
   <strong>也查关联词:</strong> </div>
-<ul class="nav nav-tabs nav-stacked">
+    <ul class="nav nav-tabs nav-stacked">
 <?php
-    while ($row = mysql_fetch_array($kss_ret, MYSQL_NUM)) {
+    while ($row = mysql_fetch_array($mret, MYSQL_NUM)) {
         echo '<li><a id="rk_$row[0]" href="$row[2]">'.htmlspecialchars($row[1])."</a></li>\n";
     }
     echo "</ul>\n";    
@@ -61,8 +59,8 @@ else {
 	$sql = "select rk from key_related where rid in (" . implode(',',$ids) . ")";
 	$ary = array();
 	
-	$kss_ret = mysql_query($sql, $db);
-	while ($row = mysql_fetch_array($kss_ret, MYSQL_NUM)) {
+	$mret = mysql_query($sql, $db);
+	while ($row = mysql_fetch_array($mret, MYSQL_NUM)) {
 		array_push($ary, $row[0]);
 	}	
 	echo json_encode($ary);
