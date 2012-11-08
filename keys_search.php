@@ -42,10 +42,18 @@ if(isset($_GET['hoverCard'])) {
 	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
 	$ary = array();
 	$r = mysql_query($sql);
-	while($row = mysql_fetch_assoc($r)) {
-		array_push($ary, $row);
-	}
-	return $ary;
+
+    if(mysql_num_rows<=0) return;
+?>
+<div class="alert">
+  <button type="button" class="close" data-dismiss="alert" onclick="$('div.related_tag').hide();return false;">×</button>
+  <strong>也查关联词:</strong> </div>
+<ul class="nav nav-tabs nav-stacked">
+<?php
+    while ($row = mysql_fetch_array($kss_ret, MYSQL_NUM)) {
+        echo '<li><a id="rk_$row[0]" href="$row[2]">'.htmlspecialchars($row[1])."</a></li>\n";
+    }
+    echo "</ul>\n";    
 }
 //f0: auto suggest.
 else {
