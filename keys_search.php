@@ -41,7 +41,6 @@ $db = mysql_connect_fmxw();
 if(isset($_GET['hoverCard'])) {
 	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
 	$ary = array();
-	//echo $sql;
 	$r = mysql_query($sql);
 	while($row = mysql_fetch_assoc($r)) {
 		array_push($ary, $row);
