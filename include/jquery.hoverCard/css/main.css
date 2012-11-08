@@ -12,8 +12,8 @@ body{
 	position:absolute;
 	width:292px;
 	z-index:999;
-	height:194px;
-	overflow:hidden;
+	height:294px;
+	overflow:scroll;
 }
 .bm_hover_card .loading{
 	width:32px;
