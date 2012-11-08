@@ -82,7 +82,7 @@
 			$.ajax({
 				url:opts.url,
 				type:opts.type,
-				data:{"id":hoverObject.attr("bm_user_id")},
+				data:{"q":hoverObject.attr("datasrc")},
 				dataType:opts.dataType,
 				timeout:8000,
 				success:function(data){
