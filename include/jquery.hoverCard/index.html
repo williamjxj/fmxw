@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/hoverCard.js"></script>
+<title>My Hover Card</title>
+<style type="text/css">
+.content{
+	width:600px;
+	margin:0 auto;
+}
+.tab{
+	padding:20px;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+	$(".bind_hover_card").hoverCard({
+		url:"keys_search.php?hoverCard=1&q=123",
+		borederRadius:true
+	});
+	$("#error").hoverCard({
+		url:"error url",
+		errorText:"出错后，输出自定义文本"
+	});
+});
+</script>
+</head>
+
+<body>
+<div class="content">
+<div class="tab">资料卡：<a href="http://meego123.net" class="bind_hover_card" bm_user_id="1" target="_blank"><img src="images/my_avatar.jpg" /></a>&nbsp;&nbsp;&nbsp;<a href="http://meego123.net" target="_blank">Jamin's blog</a></div>
+<div class="tab">资料卡：<a href="http://meego123.net" class="bind_hover_card" bm_user_id="2" target="_blank">鼠标悬停在这里</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://meego123.net" id="error" target="_blank">数据加载失败</a>
+</div>
+<div class="tab"><span>加关注样式：</span><a href="http://meego123.net" class="add_follow" target="_blank"></a></div>
+<div class="tab"><span>已关注样式：</span><a href="http://meego123.net" class="had_follow" target="_blank"></a></div>
+<div class="tab"><span>加载中样式：</span><a href="http://meego123.net" class="btn_loading" target="_blank"></a></div>
+<div class="tab"><span>我自己样式：</span><a href="http://meego123.net" class="btn_self" target="_blank"></a></div>
+
+</div>
+<div style="display:none"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/4116055.asp" style="border:none" /></div>
+</body>
+</html>
