@@ -1,3 +1,4 @@
+<script type="text/javascript" src="js/hoverCard.js"></script>
 <div class="row">
   <div class="span12 centered">
     <form class="form-search" action="{$config.search}" method="get" name="sf" id="sf">
@@ -10,7 +11,7 @@
   </div>
   <br/>
   <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as
-  $rm} <a class="post-tag" href="javascript:;" datasrc="{$rm.0}">{$rm.0}({$rm.1})</a>&nbsp;
+  $rm} <a class="post-tag bind_hover_card" href="javascript:;" datasrc="{$rm.0}">{$rm.0}({$rm.1})</a>&nbsp;
     {/foreach} </span> </div>
   <br/>
   <div class="span12 centered">
@@ -37,6 +38,14 @@ $(function() {
 		$('#sf').trigger('submit');
 		return false;
 	});
+	$(".bind_hover_card").hoverCard({
+		url:"keys_search.php?hoverCard=1&q="+$(this).attr('datasrc'),
+		borederRadius:true
+	});
+	$("#error").hoverCard({
+		url:"error url",
+		errorText:"出错后，输出自定义文本"
+	});
 	//最新查询：
 	$('a.latest').live('click', function(e) {
 		e.preventDefault();
@@ -54,12 +63,12 @@ $(function() {
 			return false;
 		}
 		return true;
-	});	*/
-	var no_typeahead=false, timer;
+	});	
+	*/
+	var timer;
 	$('#typeahead').typeahead({
 		source : function(typeahead, query) {
 			if(query.length==0) return false;
-			// if(no_typeahead) return false;
 			clearTimeout(timer);
 			timer=setTimeout(function() {
 				$.ajax({
