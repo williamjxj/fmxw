@@ -37,7 +37,7 @@
 
 {*if $smarty.get.fm6}
 <script type="text/javascript">
-$(function() {
+$(window).load(function() {
 	var q = '{$smarty.get.q}';
 	$.fmxw4.sina_weibo(q);
 });
