@@ -30,8 +30,10 @@ if ($res === false) {
  error, warning, status, fields, attrs, matches, total, total_found, time=0.001, words.
  echo "<pre>"; print_r($res); echo "</pre>";
  */
-if ($res['total'] <= 0) return;
-
+if ($res['total'] <= 0) {
+	echo '<div class="alert">没有数据</div>';
+	return;
+}
 $ids = array_keys($res['matches']);
 
 require_once(ROOT . 'configs/mysql-connect.php');	
