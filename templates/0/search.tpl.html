@@ -32,7 +32,7 @@ $(function() {
 		return false;
 	});
 	//热门搜索词：
-	$('a.post-tag, a.latest').click(function(e) {
+	$("a.latest, a.post-tag").live('click', function(e) {
 		e.preventDefault();
 		var t = $(e.target);
 		$('#typeahead').val(t.attr('datasrc'));
