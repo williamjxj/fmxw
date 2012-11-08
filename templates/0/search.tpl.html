@@ -74,10 +74,9 @@ $(function() {
 					},
 					success : function(data) {
 						// if json is null, means no match, won't do again.
-						if(data.length === 0)
-							no_typeahead = true;
+						$('#waiting').attr('src', 'images/noimg.gif');
+						if(data==null || (data.length===0)) return;
 						typeahead.process(data);
-						$('#waiting').attr('src', 'images/noimg.gif'); //http://placehold.it/16x16
 					}
 				});
 			}, 200);
