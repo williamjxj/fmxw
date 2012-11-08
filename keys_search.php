@@ -41,7 +41,8 @@ $db = mysql_connect_fmxw();
 
 //f0: 首页的meego123.net
 if(isset($_GET['hoverCard'])) {
-	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
+	// avoid duplicated.
+	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ") group by rk";
 	$mret = mysql_query($sql);
 
     if(mysql_num_rows($mret)<=0) {

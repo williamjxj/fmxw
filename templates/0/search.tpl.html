@@ -32,7 +32,7 @@ $(function() {
 		return false;
 	});
 	//热门搜索词：
-	$('a.post-tag').click(function(e) {
+	$('a.post-tag, a.latest').click(function(e) {
 		e.preventDefault();
 		var t = $(e.target);
 		$('#typeahead').val(t.attr('datasrc'));
@@ -43,15 +43,11 @@ $(function() {
 		url:"keys_search.php?hoverCard=1",
 		borederRadius:true
 	});
-	$("#error").hoverCard({
-		url:"error url",
-		errorText:"出错后，输出自定义文本"
-	});
 	//最新查询：
-	$('a.latest').live('click', function(e) {
+	$('a', 'div.bm_hover_card_container').live('click', function(e) {
 		e.preventDefault();
 		var t = $(e.target);
-		$('#typeahead').val(t.attr('datasrc'));
+		$('#typeahead').val(t.text());
 		$('#sf').trigger('submit');
 		return false;
 	});
