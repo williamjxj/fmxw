@@ -42,14 +42,17 @@ if(isset($_GET['hoverCard'])) {
 	$sql = "select rid, rk, kurl from key_related where rid in (" . implode(',',$ids) . ")";
 	$mret = mysql_query($sql);
 
-    if(mysql_num_rows($mret)<=0) return;
+    if(mysql_num_rows($mret)<=0) {
+		echo "没有数据";
+		return;
+	}
 ?>
 <div class="alert">
   <strong>也查关联词:</strong> </div>
-    <ul class="nav nav-tabs nav-stacked">
+    <ul class="nav nav-pills nav-stacked">
 <?php
     while ($row = mysql_fetch_array($mret, MYSQL_NUM)) {
-        echo '<li><a id="rk_$row[0]" href="$row[2]">'.htmlspecialchars($row[1])."</a></li>\n";
+        echo '<li><a id="rk_'.$row[0].'" href="'.$row[2].'">'.htmlspecialchars($row[1])."</a></li>\n";
     }
     echo "</ul>\n";    
 }
