@@ -11,7 +11,7 @@ if(empty($_GET['q'])) {
 }
 $q = trim($_GET['q']);
 
-require_once(ROOT . 'coreseekClass.php');
+require_once(ROOT . 'etc/coreseek.php');
 
 $kss = new SphinxClient;
 $kss->SetServer('localhost', 9312);
