@@ -45,7 +45,7 @@ if(isset($_GET['hoverCard'])) {
 	while($row = mysql_fetch_assoc($r)) {
 		array_push($ary, $row);
 	}
-	return $ary;
+	echo json_encode($ary);
 }
 //f0: auto suggest.
 else {
