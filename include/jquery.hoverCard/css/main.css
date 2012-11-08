@@ -12,7 +12,7 @@ body{
 	position:absolute;
 	width:292px;
 	z-index:999;
-	height:294px;
+	height:194px;
 	overflow:scroll;
 }
 .bm_hover_card .loading{
