@@ -59,6 +59,8 @@ if (isset($_GET['q'])) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
 		if (empty($res["matches"])) {
+			$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
+
 			$obj -> assign('_th', $obj -> get_header_label($header));
 			$obj -> assign('_tf', $obj -> get_footer_label($footer));
 			
@@ -77,7 +79,9 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
-		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
+		//$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
+		$weights = array('title'=>11, 'content'=>10);
+		$obj->cl->SetFieldWeights( $weights );
 	}
 	
 	//从首页来。
@@ -266,8 +270,10 @@ foreach($res['matches'] as $v) {
 /* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
  * 结果不对。
  */
-$weights = array('title'=>11, 'content'=>10);
-$obj->cl->SetFieldWeights( $weights );
+if(empty($weights)) {
+	$weights = array('title'=>11, 'content'=>10);
+	//$obj->cl->SetFieldWeights( $weights );
+}
 
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
 if(empty($res['words'])) {
