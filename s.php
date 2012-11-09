@@ -74,6 +74,7 @@ if (isset($_GET['q'])) {
 			exit;
 		}
 
+		$obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
 		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
