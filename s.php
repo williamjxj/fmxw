@@ -79,8 +79,9 @@ if (isset($_GET['q'])) {
 
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
-		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
-		$obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
+		//$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
+		$weights = array('title'=>11, 'content'=>10);
+		$obj->cl->SetFieldWeights( $weights );
 	}
 	
 	//从首页来。
@@ -88,7 +89,11 @@ if (isset($_GET['q'])) {
 	//从当前页来。
 	elseif(isset($_GET['fm6'])) {
 		//试验：
+		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+		//http://www.nearby.org.uk/sphinx/searchtest.php?q=one&ranking=3
 		$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
+		//$obj->cl->SetRankingMode(SPH_RANK_SPH04);
+		//$obj->cl->SetIndexWeights();
 	
 	}
 }
@@ -273,8 +278,10 @@ foreach($res['matches'] as $v) {
 /* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
  * 结果不对。
  */
-$weights = array('title'=>11, 'content'=>10);
-$obj->cl->SetFieldWeights( $weights );
+if(empty($weights)) {
+	$weights = array('title'=>11, 'content'=>10);
+	//$obj->cl->SetFieldWeights( $weights );
+}
 
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
 if(empty($res['words'])) {
