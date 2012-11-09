@@ -49,7 +49,32 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetMatchMode(SPH_MATCH_PHRASE);
 		
 		$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+		$obj->cl->SetLimits(0, 10);
 
+		$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
+		if ($res === false) {
+			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
+			return;
+		} else if ($obj -> cl -> GetLastWarning()) {
+			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
+		}
+		if (empty($res["matches"])) {
+			$obj -> assign('_th', $obj -> get_header_label($header));
+			$obj -> assign('_tf', $obj -> get_footer_label($footer));
+			
+			$obj -> assign('sitemap', $obj -> get_sitemap());
+			$obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
+			
+			$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
+			$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
+			$obj->display($tdir6.'ns.tpl.html');
+			if (!empty($q)) {
+				$obj->write_named_pipes($q); // $obj->backend_scrape($q);
+			}
+			exit;
+		}
+
+		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
 		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
 	}
