@@ -55,7 +55,9 @@ class f0Class extends BaseClass
  
     function get_latest_keywords() {
 		$str = '';
-        $sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
+        //不准确，应该为updated,
+        //$sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
+        $sql = "select keyword from keywords order by updated desc limit 0," . PER_TOTAL; 
         $res = $this -> mdb2 -> query($sql);
         if (PEAR::isError($res)) die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
 		while($row = $res->fetchRow()) {

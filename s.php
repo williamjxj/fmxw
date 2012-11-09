@@ -95,7 +95,8 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 	// if (! empty($q)) $obj -> SetFilter("@title", $q);
 	$_SESSION[PACKAGE]['sort'] = 'created'; // $_GET['js_sortby_dwmy'];
 	
-	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+	//先按时间段（最近一小时/天/周/月）降序，再按相关度降序		
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetFilterRange("created", $min, $obj->now);
 }
@@ -103,7 +104,14 @@ elseif(isset($_GET['js_sortby_attr'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	$_SESSION[PACKAGE]['sort'] = $_GET['js_sortby_attr'];
 
-	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+	
+	/*
+	 * 内部属性的名字必须用特殊符号@开头，用户属性按原样使用就行了
+	 * @rank 和 @relevance 只是 @weight 的别名
+	 * SPH_SORT_ATTR_DESC 等价于"attribute DESC, @weight DESC, @id ASC"
+	  * =$obj->cl->SetSortMode(SPH_SORT_EXTENDED, $_GET['js_sortby_attr'].' desc, @weight DESC, @id ASC');
+	 */
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
 }
 //以下不需要setmatchmode和setsortmode.
@@ -178,7 +186,6 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 /** 开始查询Coreseek-Sphinx索引，并得到相关信息。
  * error, warning, status, fields+attrs, matches, total, total_found, time, words
- * $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "created DESC");
  */
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
