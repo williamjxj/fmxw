@@ -33,7 +33,9 @@ if (isset($_GET['q'])) {
 	if(empty($_GET['q'])) {
 	    $q = '';
 		//ALL: SetMatchMode传递参数SPH_MATCH_ALL，然后在调用Query的时候指定要查询的索引是*
-		$obj->cl->SetMatchMode(SPH_MATCH_ALL);
+		//$obj->cl->SetMatchMode(SPH_MATCH_ALL); 
+		//查询串是空的（即长度字符串为零）,SPH_MATCH_FULLSCAN模式自动代替其他指定的模式被激活
+		$obj->cl->SetMatchMode(SPH_MATCH_FULLSCAN);
 		
 		//Sort by time segments (last hour/day/week/month) in descending order, and then by relevance in descending order.
 		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
@@ -59,6 +61,7 @@ if (isset($_GET['q'])) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
 		if (empty($res["matches"])) {
+			$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
 			$obj -> assign('_th', $obj -> get_header_label($header));
 			$obj -> assign('_tf', $obj -> get_footer_label($footer));
 			
@@ -74,16 +77,20 @@ if (isset($_GET['q'])) {
 			exit;
 		}
 
-		$obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//参数必须是一个hash（关联数组），该hash将代表字段名字的字符串映射到一个整型的权值上。
 		$obj->cl->SetFieldWeights(array('title' => 11, 'content' => 10));
+		$obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
 	}
 	
 	//从首页来。
 	if(isset($_GET['fm0'])) {}
 	//从当前页来。
-	elseif(isset($_GET['fm6'])) {}
+	elseif(isset($_GET['fm6'])) {
+		//试验：
+		$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
+	
+	}
 }
 elseif(isset($_GET['js_ct_search'])) {
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));

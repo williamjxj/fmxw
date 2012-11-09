@@ -418,7 +418,7 @@
 		htmlFeed: true,
 		debugMode: true,
 		controls: true,
-		titleText: '最新查询：',	
+		titleText: '网友在查：',	
 		direction: 'ltr',	
 		pauseOnItems: 3000,
 		fadeInSpeed: 600,
