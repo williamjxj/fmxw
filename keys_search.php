@@ -63,7 +63,7 @@ else {
 	
 	$mret = mysql_query($sql, $db);
 	while ($row = mysql_fetch_array($mret, MYSQL_NUM)) {
-		array_push($ary, $row[0]);
+		array_push($ary, htmlspecialchars($row[0]));
 	}	
 	echo json_encode($ary);
 	// return json_encode($ary);

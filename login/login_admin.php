@@ -3,7 +3,7 @@
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 define('ROOT', '../');
-include_once(ROOT.'configs/mini-app.inc.php');
+include_once(ROOT.'configs/mysql-connect.php');
 
 
 class LoginAdmin 

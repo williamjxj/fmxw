@@ -4,7 +4,7 @@ require_once (ROOT . 'f12Class.php');
 
 class FMXW_Sphinx extends f12Class 
 {
-    var $cl, $mdb2, $conf, $db, $memd, $now;
+    var $cl, $mdb2, $conf, $db, $memd, $now, $pipes;
     function __construct() 
     {
         parent::__construct();
@@ -15,6 +15,7 @@ class FMXW_Sphinx extends f12Class
         $this -> db = $this -> mysql_connect_fmxw();
         $this -> memd = $this -> get_memcached();
         $this -> now = time();
+        $this -> pipes = $this -> get_pipes();
 		
 		//已经在baseClass中定义了。
         //$this -> lang = $_SESSION[PACKAGE]['language'];
@@ -26,6 +27,10 @@ class FMXW_Sphinx extends f12Class
         //$this -> st = $this -> get_sort();
     }
 
+    function get_pipes() {
+        $dir = '/home/williamjxj/scraper/';
+        return array($dir.'.baidu', $dir.'.soso', $dir.'.google', $dir.'.yahoo');
+    }
     //没有用constant, 而是用数组，因为变量较多，放在数组中便于调整。
     function get_config() {
         return $conf = array(
@@ -256,18 +261,10 @@ class FMXW_Sphinx extends f12Class
 
 	//'sogou' => array($dir . '.sogou'),
     function write_named_pipes($search_key) {
-        $dir = '/home/williamjxj/scraper/';
-        $pipes = array(
-			'baidu' => array($dir . '.baidu'),
-			'soso' => array($dir . '.soso'),
-			'google' => array($dir . '.google'),
-			'yahoo' => array($dir . '.yahoo'),
-		);
-
         //每次点击都搜索，好像不太好。
         //改为：如果今天点击过了，就不再搜索了。
-        foreach ($pipes as $p) {
-            $fifo = fopen($p[0], 'r+');
+        foreach ($this->pipes as $p) {
+            $fifo = fopen($p, 'r+');
             fwrite($fifo, $search_key);
             fclose($fifo);
         }
