@@ -91,10 +91,10 @@ if (isset($_GET['q'])) {
 		//试验：
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		//http://www.nearby.org.uk/sphinx/searchtest.php?q=one&ranking=3
-		$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
+		//$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
 		//$obj->cl->SetRankingMode(SPH_RANK_SPH04);
 		//$obj->cl->SetIndexWeights();
-	
+		$obj -> cl -> SetArrayResult(true);
 	}
 }
 elseif(isset($_GET['js_ct_search'])) {
@@ -275,12 +275,13 @@ foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
 }
 
+// $obj->__p($matches);
 /* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
  * 结果不对。
  */
 if(empty($weights)) {
 	$weights = array('title'=>11, 'content'=>10);
-	//$obj->cl->SetFieldWeights( $weights );
+	$obj->cl->SetFieldWeights( $weights );
 }
 
 // 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
@@ -288,6 +289,7 @@ if(empty($res['words'])) {
 	$max_weight = (array_sum($weights) * count($res) + 1) * 1000;
 }
 else {
+	//$obj->__p($res['words']);
 	$max_weight = (array_sum($weights) * count($res['words']) + 1) * 1000;
 }
 
@@ -296,27 +298,34 @@ $ids = implode(",", $ary_ids);
 // $query = $obj->generate_sql($ids);
 // 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
 $query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
+$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";
 if (!empty($_SESSION[PACKAGE]['sort'])) {
 	$query .= " ORDER BY " . $_SESSION[PACKAGE]['sort'] . " DESC ";
 	$t = $_SESSION[PACKAGE]['sort'];
 	if(preg_match("/(cate_id|iid)/", $t))
 		$query .= " , created DESC ";
 }
-// echo $query;
+//echo $query;
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
 
+/*
 if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
     $obj -> __p($summary);
     return;
 }
-
+*/
 //生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
-    $row['r'] = ceil($matches[$row['cid']] / $max_weight * 100); //relevance
+	//echo "[".$matches[$row['cid']]."], [".$max_weight."]<br>\n";
+    $relevance = ceil(($matches[$row['cid']] / $max_weight) * 100); //relevance
+	if($relevance>100) $relevance = 100;
+	if($relevance<1) $relevance = 1;
+	$row['r'] = $relevance;
+	//echo "[".$matches[$row['cid']]['weight']."], [".$relevance."]<br>\n";
 	if (!preg_match("/(<b>|<em>)/", $row['title']))
 		$row['title'] = $obj->mb_highlight($row['title'], $q, '<b>', '</b>');
 
@@ -362,7 +371,6 @@ $obj -> assign('kr', $obj->get_key_related($q));
 $obj -> assign('reping', $obj -> get_repings($q));
 //$obj->__p($obj -> get_repings($q));
 
-//BASIC:
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));

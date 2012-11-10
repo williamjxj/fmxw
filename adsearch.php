@@ -90,6 +90,7 @@ else if ( $cl->GetLastWarning() ) {
 }
 
 // $cl->pretty_print($res);
+$cl->__p($res['words']);
 
 if (empty($res["matches"])) {
 	$sec = "用时【" . $res['time'] . "】秒。";
@@ -129,7 +130,9 @@ if(mysql_num_rows($res)<=0) {
 if(mysql_num_rows($res) > 0) {
 	$rows = array();
 	while($row = mysql_fetch_assoc($res)) {
+		//$cl->__p($matches[$row['cid']]);
 		$row['relevance'] = ceil($matches[$row['cid']]['weight'] / $max_weight * 100);
+		echo "[".$matches[$row['cid']]['weight']."], [".$row['relevance']."]<br>\n";
 		$rows[$row['cid']] = $row;
 	}
 	
