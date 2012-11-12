@@ -19,7 +19,7 @@
   <div class="row-fluid">
     <div class="span1" id="sleft">
       <ul id="tf0" class="nav nav-tabs nav-stacked">
-        <li><a href="{$url}?q={$smarty.session.fmxw.search.key}&fm6=1" class="relevance" id="relevance" rel="tooltip">相关度</a></li>
+        <li><a href="{$url}?q={$smarty.session.fmxw.search.key}&fm8=1" class="relevance" id="relevance" rel="tooltip">相关度</a></li>
       </ul>
       <ul id="tf1" class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
@@ -83,20 +83,20 @@
 <script type="text/javascript">
 $(function() {
 	$('a.relevance', '#tf0').click(function() {
+		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 		$('div#smiddle').load($(this).attr('href'));
 		$('a', '#tf0').closest('li').removeClass('active');
 		$(this).closest('li').addClass('active');
 		return false;
 	});
 	$('a.sort_by_time', '#tf1').click(function() {
-		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
-		$('div#smiddle').load('{$url}?js_sortby_dwmy='+$(this).attr('id'));
+		$('div#smiddle').load($(this).attr('href'));
 		$('a.sort_by_time', '#tf1').closest('li').removeClass('active');
 		$(this).closest('li').addClass('active');
 		return false;
 	});
 	$('a', '#tf2').click(function() {
-		$('div#smiddle').load('{$url}?js_sortby_attr='+$(this).attr('id'));
+		$('div#smiddle').load($(this).attr('href'));
 		$('a', '#tf2').closest('li').removeClass('active');
 		$(this).closest('li').addClass('active');
 		return false;
