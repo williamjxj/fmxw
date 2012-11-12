@@ -298,25 +298,25 @@ $ids = implode(",", $ary_ids);
 // $query = $obj->generate_sql($ids);
 // 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
 $query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
+$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";
 if (!empty($_SESSION[PACKAGE]['sort'])) {
 	$query .= " ORDER BY " . $_SESSION[PACKAGE]['sort'] . " DESC ";
 	$t = $_SESSION[PACKAGE]['sort'];
 	if(preg_match("/(cate_id|iid)/", $t))
 		$query .= " , created DESC ";
 }
-else
-	$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";
-// echo $query;
+//echo $query;
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
 
+/*
 if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
     $obj -> __p($summary);
     return;
 }
-
+*/
 //生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
