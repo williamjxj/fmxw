@@ -26,7 +26,10 @@
   {elseif {$sort=='created'}} ({$rts.created})
   {elseif {$sort=='cate_id'}} ({$rts.category})
   {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
-  {else} ({$rts.r}%)
+  {else}
+  	{if !{$smarty.session.fmxw.sort}}
+	  ({$rts.r}%)
+	{/if}
   {/if}
   <br>
   {$rts.content}</li>
