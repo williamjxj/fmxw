@@ -18,7 +18,10 @@
 <div class="container-fluid" align="left">
   <div class="row-fluid">
     <div class="span1" id="sleft">
-      <ul id="tf1" class="nav nav-tabs nav-stacked">
+      <ul id="tf0" class="nav nav-tabs nav-stacked">
+        <li><a href="javascript:;" class="relevance" id="relevance" rel="tooltip">相关度</a></li>
+      </ul>
+      <ul id="tf1" class="nav nav-tabs nav-stacked box">
         <li class="active"><a href="javascript:;" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
         <li><a href="javascript:;" class="sort_by_time" id="day">一天内</a></li>
         <li><a href="javascript:;" class="sort_by_time" id="week">一周内</a></li>
@@ -40,7 +43,7 @@
           <button class="btn btn-small btn-primary" type="submit" disabled="disabled"><i class="icon-white icon-search"></i>查 询</button>
         </form>
       </div>
-      <ul id="tf2" class="nav nav-list box">
+      <ul id="tf2" class="nav nav-tabs nav-stacked box">
         <li><a href="javascript:;" id="clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
         <li><a href="javascript:;" id="guanzhu" rel="tooltip" title="关注度">关注度</a></li>
         <li><a href="javascript:;" id="pinglun" rel="tooltip" title="评论数">评论数</a></li>
@@ -79,12 +82,21 @@
 </div>
 <script type="text/javascript">
 $(function() {
+	$('a.relevance', '#tf0').click(function() {
+		$('div#smiddle').load('{$url}?q={$smarty.session.fmxw.search.key}&fm6=1');
+		$('a', '#tf0').removeClass('active');
+		$(this).addClass('active');
+	});
 	$('a.sort_by_time', '#tf1').click(function() {
 		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 		$('div#smiddle').load('{$url}?js_sortby_dwmy='+$(this).attr('id'));
+		$('a.sort_by_time', '#tf1').removeClass('active');
+		$(this).addClass('active');
 	});
 	$('a', '#tf2').click(function() {
 		$('div#smiddle').load('{$url}?js_sortby_attr='+$(this).attr('id'));
+		$('a', '#tf2').removeClass('active');
+		$(this).addClass('active');
 	});
 	
 	//http://www.dixitruth.com/fmxw/s.php#/s.php?cid=350099&jsc=1

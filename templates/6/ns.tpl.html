@@ -5,6 +5,7 @@
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/UrlEncode.js"></script>
 <script type="text/javascript" src="{$config.js.easing}"></script>
+<script type="text/javascript" src="include/jquery.address-1.4/jquery.address-1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery.fmxw1.js"></script>
 </head><body>
 <div class="container">
@@ -38,14 +39,40 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('li.li3 a').live('click', function() {
-		$t = $(this);
-		$('{$config.wait}').insertAfter(this);
-		$('#sd').load($(this).attr('href'), function() {
-			$(this).fadeIn(200);
-			$('li.li3').removeClass('highlight');
-			$t.parent('li.li3').addClass('highlight');
-			$t.next('img').remove();
+	$.address.init(function(event) { 
+		return false;
+	}).
+	change(function(event) {
+		if(event.value=='/') return false;
+		u = event.value.replace(/^\//,'');
+		$t = $('[rel="address:' + u + '"]');
+		$('{$config.wait}').insertAfter($t);
+		if($('#sd').length) {
+			$('#sd').load(u, function() {
+				$(this).fadeIn(200);
+				$('li.li3').removeClass('highlight');
+				$t.parent('li.li3').addClass('highlight');
+				$t.next('img').remove();
+			});
+		}
+		else {
+			alert('sd not exist.');
+		}
+		return false;
+	});
+
+	//阅览右上角。
+	$('div.pagination a').live('click', function() {
+		$(this).html('{$config.wait}');
+		var url = $(this).attr('href');
+		//var t = new Date().getTime();
+		if (! /js_page=/.test(url)) url+='&js_page';
+		$.ajax({
+			type: 'get',
+			url: url,
+			success: function(data) {
+				$('div#smiddle').hide().html(data).fadeIn(200);
+			}
 		});
 		return false;
 	});
