@@ -512,3 +512,7 @@ li.highlight {
     -webkit-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;
 }
+#tf0 li.active a, #tf1 li.active a, #tf2 li.active a {
+    background: none repeat scroll 0 0 #eeeeee;
+    border: 1px solid #E7E5E6;
+}
