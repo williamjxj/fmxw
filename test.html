@@ -17,7 +17,8 @@
 <script type="text/javascript">
 $(function() {
 	$('form').click(function() {
-		var kw = UrlEncode($('#q').val());
+		//var kw = UrlEncode($('#q').val());
+		var kw = $('#q').val();
 		$.get($(this).attr('action'), {q: kw}, function(data) {
 			console.log(data);
 			//$('#soso').html(data);
