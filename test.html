@@ -19,9 +19,13 @@ $(function() {
 	$('form').click(function() {
 		//var kw = UrlEncode($('#q').val());
 		var kw = $('#q').val();
-		$.get($(this).attr('action'), {q: kw}, function(data) {
-			console.log(data);
-			//$('#soso').html(data);
+		$.getJSON($(this).attr('action'), { 'q' : kw }, function(data) {
+			var txt='<ul class="nav nav-pills nav-stacked">';
+			$.each(data, function(key, val) {
+				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+			});
+			txt +='</ul>\n';
+			$('<div></div>').html(txt).appendTo('#soso');
 		});
 	});
 });
