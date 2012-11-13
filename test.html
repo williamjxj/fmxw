@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="js/UrlEncode.js"></script>
 </head>
 <body>
 <h3>SOSO</h3>
@@ -16,9 +17,10 @@
 <script type="text/javascript">
 $(function() {
 	$('form').click(function() {
-		var kw = $('#q').val();
+		var kw = UrlEncode($('#q').val());
 		$.get($(this).attr('action'), {q: kw}, function(data) {
-			$('#soso').html(data);
+			console.log(data);
+			//$('#soso').html(data);
 		});
 	});
 });
