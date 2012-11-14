@@ -1,5 +1,43 @@
 //添加namespace: 2012-10-03
 ;(function($) {
+	$.news = {
+		tengxun_news : function(q) {
+			alert('tengxun_news');return false;
+			$.getJSON('/cgi-bin/news_tengxun.cgi', { 'q' : q }, function(data) {
+				var txt='<ul class="nav nav-pills nav-stacked">';
+				$.each(data, function(key, val) {
+					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+				});
+				txt +='</ul>\n';
+				$('<div></div>').html(txt).appendTo('#tengxun_news');
+			});
+		},
+		netease_news : function(q) {
+			alert('news_163');return false;
+			$.getJSON('/cgi-bin/news_163.cgi'), { 'q' : q }, function(data) {
+				var txt='<ul class="nav nav-pills nav-stacked">';
+				$.each(data, function(key, val) {
+					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+				});
+				txt +='</ul>\n';
+				$('<div></div>').html(txt).appendTo('#163_news');
+			});
+		},
+		sougou_news : function(q) {
+			alert('news_sougo');return false;
+			$.getJSON('/cgi-bin/news_sougo.cgi'), { 'q' : q }, function(data) {
+				var txt='<ul class="nav nav-pills nav-stacked">';
+				$.each(data, function(key, val) {
+					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+				});
+				txt +='</ul>\n';
+				$('<div></div>').html(txt).appendTo('#sohu_news');
+			});
+		}
+	};
+})(jQuery);
+
+;(function($) {
     $.fmxw4 = {
         sina_weibo : function(q) {
             var attrs = {
@@ -79,7 +117,7 @@
             $.extend(attrs, $.fmxw4.defaults);
             attrs.src += UrlEncode(q);
             $('#sohu_wb').html($('<iframe></iframe>').attr(attrs));
-        },
+        }
     };
 
     $.fmxw4.defaults = {

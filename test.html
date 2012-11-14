@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="js/UrlEncode.js"></script>
+<!--script type="text/javascript" src="js/UrlEncode.js"></script-->
 </head>
 <body>
 <h3>SOSO</h3>
+<<<<<<< HEAD
 <form id="f1" name="f1" action="abc.php" method="get">
 <input type="text" name="q1" />
 <input type="submit" value="submit" name="submit" />
@@ -14,14 +14,34 @@
 <form action="/cgi-bin/soso_news1111.cgi" method="get">
   <input type="text" name="q" id="q" value="文学城" />
   <input type="submit" name="" value="Submit" />
+=======
+<form action="/scraper/qq/soso1.cgi" method="get" id="sf">
+  <input type="text" name="q" id="q" style="width:399px" placeholder="请输入关键词" value="文学城" />
+  <input type="submit" value="Submit" />
+>>>>>>> 122424c512d385d47370ff660b89eb9e85c7fb62
 </form>
 <div id="soso"></div>
 </body>
 </html>
 <script type="text/javascript">
 $(function() {
+<<<<<<< HEAD
 	$('form').submit(function() {
 		alert('aaaa');
+=======
+	$('#sf').submit(function() {
+		$('#soso').empty();
+		//var kw = UrlEncode($('#q').val());
+		var kw = $('#q').val();
+		$.getJSON($(this).attr('action'), { 'q' : kw }, function(data) {
+			var txt='<ul class="nav nav-pills nav-stacked">';
+			$.each(data, function(key, val) {
+				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+			});
+			txt +='</ul>\n';
+			$('<div></div>').html(txt).appendTo('#soso');
+		});
+>>>>>>> 122424c512d385d47370ff660b89eb9e85c7fb62
 		return false;
 	});
 });

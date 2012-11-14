@@ -30,3 +30,24 @@ document.write('"><\/script>');
     </div>
   </div>
 </div>
+<script type="text/javascript">
+$(function() {
+	$('#div_news a').click(function(e) {
+		e.preventDefault();
+		$t = $(this).attr('href');
+		if(/tengxun_news/.test($t)) {
+			$t.html($('<div class="ajaxloading"></div>'));
+			$.fmxw4.netease_weibo(q);
+		}
+		else if(/163_news/.test($t)) {
+		}
+		else if(/sohu_news/.test($t)) {
+		}
+		else {
+			//id=baidu_news
+		}
+		$(this).tab('show');
+		return false;
+	});
+});
+</script>
