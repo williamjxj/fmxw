@@ -6,42 +6,47 @@
 </head>
 <body>
 <h3>SOSO</h3>
-<<<<<<< HEAD
-<form id="f1" name="f1" action="abc.php" method="get">
-<input type="text" name="q1" />
-<input type="submit" value="submit" name="submit" />
-</form>
-<form action="/cgi-bin/soso_news1111.cgi" method="get">
-  <input type="text" name="q" id="q" value="文学城" />
-  <input type="submit" name="" value="Submit" />
-=======
-<form action="/scraper/qq/soso1.cgi" method="get" id="sf">
-  <input type="text" name="q" id="q" style="width:399px" placeholder="请输入关键词" value="文学城" />
+<form action="">
+  <input type="text" name="q" id="q" style="width:399px" placeholder="请输入关键词" value="王波" />
   <input type="submit" value="Submit" />
->>>>>>> 122424c512d385d47370ff660b89eb9e85c7fb62
 </form>
-<div id="soso"></div>
+<div id="tengxun_news"></div>
+<div id="163_news"></div>
+<div id="sohu_news"></div>
 </body>
 </html>
 <script type="text/javascript">
 $(function() {
-<<<<<<< HEAD
 	$('form').submit(function() {
-		alert('aaaa');
-=======
-	$('#sf').submit(function() {
-		$('#soso').empty();
+		$('#163_news, #sohu_news, #tengxun_news').empty();
 		//var kw = UrlEncode($('#q').val());
-		var kw = $('#q').val();
-		$.getJSON($(this).attr('action'), { 'q' : kw }, function(data) {
+		var q = $('#q').val();
+		
+		$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { 'q' : q }, function(data) {
 			var txt='<ul class="nav nav-pills nav-stacked">';
 			$.each(data, function(key, val) {
 				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 			});
 			txt +='</ul>\n';
-			$('<div></div>').html(txt).appendTo('#soso');
+			$('#tengxun_news').html(txt);
 		});
->>>>>>> 122424c512d385d47370ff660b89eb9e85c7fb62
+		$.getJSON('/cgi-bin/threads/news_163.cgi', { 'q' : q }, function(data) {
+			var txt='<ul class="nav nav-pills nav-stacked">';
+			$.each(data, function(key, val) {
+				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+			});
+			txt +='</ul>\n';
+			$('#163_news').html(txt);
+		});
+		$.getJSON('/cgi-bin/threads/news_sogou.cgi', { 'q' : q }, function(data) {
+			var txt='<ul class="nav nav-pills nav-stacked">';
+			$.each(data, function(key, val) {
+				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+			});
+			txt +='</ul>\n';
+			$('#sohu_news').html(txt);
+		});
+
 		return false;
 	});
 });
