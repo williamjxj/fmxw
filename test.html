@@ -5,13 +5,15 @@
 <!--script type="text/javascript" src="js/UrlEncode.js"></script-->
 </head>
 <body>
-<h3>SOSO</h3>
 <form action="">
   <input type="text" name="q" id="q" style="width:399px" placeholder="请输入关键词" value="王波" />
   <input type="submit" value="Submit" />
 </form>
+<h2>Tengxun</h2>
 <div id="tengxun_news"></div>
+<h2>163</h2>
 <div id="163_news"></div>
+<h2>Sohu</h2>
 <div id="sohu_news"></div>
 </body>
 </html>
@@ -46,7 +48,6 @@ $(function() {
 			txt +='</ul>\n';
 			$('#sohu_news').html(txt);
 		});
-
 		return false;
 	});
 });
