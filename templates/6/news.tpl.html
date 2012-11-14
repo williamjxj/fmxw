@@ -32,16 +32,22 @@ document.write('"><\/script>');
 </div>
 <script type="text/javascript">
 $(function() {
+	var q = '{$smarty.session.fmxw.search.key}';
 	$('#div_news a').click(function(e) {
 		e.preventDefault();
-		$t = $(this).attr('href');
-		if(/tengxun_news/.test($t)) {
-			$t.html($('<div class="ajaxloading"></div>'));
-			$.fmxw4.netease_weibo(q);
+		if(/^\s*$/.test(q)) return false;
+		t = $(this).attr('href');
+		if(/tengxun_news/.test(t)) {
+			$(t).html($('<div class="ajaxloading"></div>'));
+			$.news.tengxun_news(q);
 		}
-		else if(/163_news/.test($t)) {
+		else if(/163_news/.test(t)) {
+			$(t).html($('<div class="ajaxloading"></div>'));
+			$.news.netease_news(q);
 		}
-		else if(/sohu_news/.test($t)) {
+		else if(/sohu_news/.test(t)) {
+			$(t).html($('<div class="ajaxloading"></div>'));
+			$.news.sogou_news(q);
 		}
 		else {
 			//id=baidu_news

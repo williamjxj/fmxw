@@ -2,8 +2,7 @@
 ;(function($) {
 	$.news = {
 		tengxun_news : function(q) {
-			alert('tengxun_news');return false;
-			$.getJSON('/cgi-bin/news_tengxun.cgi', { 'q' : q }, function(data) {
+			$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { 'q' : q }, function(data) {
 				var txt='<ul class="nav nav-pills nav-stacked">';
 				$.each(data, function(key, val) {
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -13,8 +12,7 @@
 			});
 		},
 		netease_news : function(q) {
-			alert('news_163');return false;
-			$.getJSON('/cgi-bin/news_163.cgi'), { 'q' : q }, function(data) {
+			$.getJSON('/cgi-bin/threads/news_163.cgi', { 'q' : q }, function(data) {
 				var txt='<ul class="nav nav-pills nav-stacked">';
 				$.each(data, function(key, val) {
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -23,9 +21,8 @@
 				$('<div></div>').html(txt).appendTo('#163_news');
 			});
 		},
-		sougou_news : function(q) {
-			alert('news_sougo');return false;
-			$.getJSON('/cgi-bin/news_sougo.cgi'), { 'q' : q }, function(data) {
+		sogou_news : function(q) {
+			$.getJSON('/cgi-bin/threads/news_sogou.cgi', { 'q' : q }, function(data) {
 				var txt='<ul class="nav nav-pills nav-stacked">';
 				$.each(data, function(key, val) {
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
