@@ -8,7 +8,7 @@
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 				});
 				txt +='</ul>\n';
-				$('<div></div>').html(txt).appendTo('#tengxun_news');
+				$('#tengxun_news').html(txt);
 			});
 		},
 		netease_news : function(q) {
@@ -18,7 +18,7 @@
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 				});
 				txt +='</ul>\n';
-				$('<div></div>').html(txt).appendTo('#163_news');
+				$('#163_news').html(txt);
 			});
 		},
 		sogou_news : function(q) {
@@ -28,7 +28,7 @@
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
 				});
 				txt +='</ul>\n';
-				$('<div></div>').html(txt).appendTo('#sohu_news');
+				$('#sohu_news').html(txt);
 			});
 		}
 	};

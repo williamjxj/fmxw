@@ -19,15 +19,9 @@ document.write(t);
 document.write('"><\/script>');
 </script>
     </div>
-    <div class="tab-pane" id="tengxun_news">
-      <p>{$q}</p>
-    </div>
-    <div class="tab-pane" id="163_news">
-      <p>{$q}</p>
-    </div>
-    <div class="tab-pane" id="sohu_news">
-      <p>{$q}</p>
-    </div>
+    <div class="tab-pane" id="tengxun_news"></div>
+    <div class="tab-pane" id="163_news"></div>
+    <div class="tab-pane" id="sohu_news"></div>
   </div>
 </div>
 <script type="text/javascript">
@@ -37,17 +31,24 @@ $(function() {
 		e.preventDefault();
 		if(/^\s*$/.test(q)) return false;
 		t = $(this).attr('href');
+		// alert('[' + $(t).length + '], [' + $(t).html().length + ']'); //1,0
 		if(/tengxun_news/.test(t)) {
-			$(t).html($('<div class="ajaxloading"></div>'));
-			$.news.tengxun_news(q);
+			if($(t).html().length==0) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.news.tengxun_news(q);
+			}
 		}
 		else if(/163_news/.test(t)) {
-			$(t).html($('<div class="ajaxloading"></div>'));
-			$.news.netease_news(q);
+			if($(t).html().length==0) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.news.netease_news(q);
+			}
 		}
 		else if(/sohu_news/.test(t)) {
-			$(t).html($('<div class="ajaxloading"></div>'));
-			$.news.sogou_news(q);
+			if($(t).html().length==0) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.news.sogou_news(q);
+			}
 		}
 		else {
 			//id=baidu_news
