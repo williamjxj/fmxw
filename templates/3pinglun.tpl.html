@@ -1,42 +1,36 @@
-<ul class="nav nav-tabs" id="myTab">
+<ul class="nav nav-tabs" id="Tab3">
   <li class="active"><a href="#disqus">Disqus</a></li>
   <li><a href="#pinglunla">评论啦</a></li>
   <li><a href="#uyan">友言</a></li>
 </ul>
 <div class="tab-content">
-  <div class="tab-pane active" id="disqus">...</div>
-  <div class="tab-pane" id="pinglunla">...</div>
-  <div class="tab-pane" id="uyan">...</div>
+  <div class="tab-pane active" id="disqus"></div>
+  <div class="tab-pane" id="pinglunla"></div>
+  <div class="tab-pane" id="uyan"></div>
 </div>
 {*include file="templates/shared/disqus.tpl.html"} 
 {include file="templates/shared/pinglunla.tpl.html"}
 {include file="templates/shared/uyan.tpl.html"*}
 <script type="text/javascript">
 $(function(){
-  $('#myTab a').click(function(e) {
+  $('#Tab3 a').click(function(e) {
 	e.preventDefault();
 	var t = $(this).attr('href');
-	if(/disqus/.test(t)) {
-		alert($(t).html().length+','+t);
-		if($(t).html().length==0) {
-			$(t).load('templates/shared/disqus.tpl.html');
-		}
-	}
-	else if(/pinglunla/.test(t)) {
-		alert($(t).html().length+','+t);
+	if(/pinglunla/.test(t)) {
 		if($(t).html().length==0) {
 			$(t).load('templates/shared/pinglunla.tpl.html');
 		}
 	}
 	else if(/uyan/.test(t)) {
-		alert($(t).html().length+','+t);
 		if($(t).html().length==0) {
 			$(t).load('templates/shared/uyan.tpl.html');
 		}
 	}
-	else alert('should not come here');
 	$(this).tab('show');
 	return false;
   });
+});
+$(window).load(function() {
+	$('#disqus').load('templates/shared/disqus.tpl.html');
 });
 </script>
