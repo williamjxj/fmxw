@@ -25,6 +25,7 @@ $(function() {
 		var q = $('#q').val();
 		
 		$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { 'q' : q }, function(data) {
+		alert(data);
 			var txt='<ul class="nav nav-pills nav-stacked">';
 			$.each(data, function(key, val) {
 				txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -32,6 +33,7 @@ $(function() {
 			txt +='</ul>\n';
 			$('#tengxun_news').html(txt);
 		});
+		/*
 		$.getJSON('/cgi-bin/threads/news_163.cgi', { 'q' : q }, function(data) {
 			var txt='<ul class="nav nav-pills nav-stacked">';
 			$.each(data, function(key, val) {
@@ -48,6 +50,7 @@ $(function() {
 			txt +='</ul>\n';
 			$('#sohu_news').html(txt);
 		});
+		*/
 		return false;
 	});
 });
