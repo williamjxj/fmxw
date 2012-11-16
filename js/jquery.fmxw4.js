@@ -2,7 +2,12 @@
 ;(function($) {
 	$.news = {
 		tengxun_news : function(q) {
-			$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { 'q' : q }, function(data) {
+			var kw = UrlEncode(q);
+			$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { q : kw }, function(data) {
+				if(data==null || (typeof data==='undefined') || (data.length==0)) {
+					$('#tengxun_news').html('No Data for ['+q+'], ['+kw+']');
+					return false;
+				}
 				var txt='<ul class="nav nav-pills nav-stacked">';
 				$.each(data, function(key, val) {
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
@@ -22,7 +27,12 @@
 			});
 		},
 		sogou_news : function(q) {
-			$.getJSON('/cgi-bin/threads/news_sogou.cgi', { 'q' : q }, function(data) {
+			var kw = UrlEncode(q);
+			$.getJSON('/cgi-bin/threads/news_sogou.cgi', { q : kw }, function(data) {
+				if (data == null || ( typeof data === 'undefined') || (data.length == 0)) {// data is null.
+					$('#sohu_news').html('No Data for [' + q + '], [' + kw + ']');
+					return false;
+				}
 				var txt='<ul class="nav nav-pills nav-stacked">';
 				$.each(data, function(key, val) {
 					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
