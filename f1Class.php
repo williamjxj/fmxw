@@ -28,23 +28,29 @@ class f1Class extends f12Class {
 
     ///////////// RSS 操作函数  ////////////
 
-    function get_rss($rss_url) {
-
+    function get_rss($rss_url)
+	{
         $rawFeed = file_get_contents($rss_url);
 
-        if (preg_match("/(shishuoxinci|weekhotspot)/", $rss_url)) {
-            //$rawFeed = iconv("GB2312", "UTF-8", $rawFeed);
+        //if (preg_match("/(shishuoxinci|weekhotspot)/", $rss_url)) {
+        if (preg_match("/(shishuoxinci|weekhot|keyword|hotman)/", $rss_url)) {
+            //$rawFeed = iconv("GB2312", "UTF-8//TRANSLIT", $rawFeed);
             //$rawFeed = iconv("UTF-8", "GB2312", $rawFeed);
-            // $rawFeed = mb_convert_encoding($rawFeed, "GB2312", "UTF-8");
+             $rawFeed = mb_convert_encoding($rawFeed, "UTF-8", "GB2312");
             //$rawFeed = preg_replace_callback('/<!\[CDATA\[(.*)\]\]>/', 'filter_xml', $rawFeed);
             // $this -> write_file($rawFeed);
             // $this->__p($rawFeed); exit;
             // return $rawFeed;
             return $this -> parse_premature($rawFeed);
         }
-        $xml = simplexml_load_string($rawFeed);
-        if (count($xml) == 0)
-            return;
+
+        if (preg_match("/keyword/", $rss_url)) {
+            $rawFeed = iconv("GB2312", "UTF-8", $rawFeed);
+		}
+		$xml = simplexml_load_string($rawFeed);
+		// echo $rss_url; $this->__p($xml);
+
+        if (count($xml) == 0) return;
 
         $ary = array();
         foreach ($xml->channel->item as $item) {
