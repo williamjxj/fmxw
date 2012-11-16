@@ -1,53 +1,33 @@
 <div style="width:620px;overflow:auto;border:1px inset #666;background-color:#eee;padding:2px;">
-  <h4>CentOS 6.2: Install mongoDB server and PHP mongo extension</h4>
-mongoDB:
-A good reference is <a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-redhat-centos-or-fedora-linux/" title="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-redhat-centos-or-fedora-linux/">here</a>.
-The following are steps:
+  <h4>Perl Octets, and utf8</h4>
 
-1) $ sudo vi /etc/yum.repos.d/10gen.repo:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">[10gen]
-name=10gen Repository
-baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
-gpgcheck=0
-enabled=1
+Perl has 2 types of encodes:
+Ascii (octets)
+utf8 (string)
+
+
+<a href="http://blog.chinaunix.net/uid-20639775-id-3382620.html" title="关于perl中中文乱码的解决办法">http://blog.chinaunix.net/uid-20639775-id-3382620.html</a>
+
+一、  字符串读入乱码
+读入的内容乱码有两种情形：
+1.   字符串本来不是utf8编码的, 应该先把它转成utf8编码, 并且使它的utf8 flag处于开启状态. 比如下面将gbk转换成utf8编码。
+  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;">my $out=decode("gbk",$str);
+my $url='http://www.baidu.com';
+my $content=get $url;
+die "Couldn't get $url" unless defined $content;
+my $out=decode("gbk",$content);
+print $out,"\n";
 </code></pre>
+字符串编码本来就是utf8, 只是utf8 flag没有打开, 那么你可以使用以下方式中的任一种来开启utf8 flag
+<pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;">
+$str = Encode::decode_utf8($str);
+$str = Encode::decode("utf8", $str);
+Encode::_utf8_on($str);
+</pre></pre>
 
-2) <strong>$ yum install mongo-10gen mongo-10gen-server</strong>
+二、  字符串输出乱码
+字符串在程序内被正确地处理后, 要展现给用户. 这时我们需要把字符串从perl internal form转化成用户能接受的形式. 简单地说, 就是把字符串从utf8编码转换成输出的编码或表现界面的编码. 这时候, 我们使用如下代码来将utf8的编码转换成其他的编码：
 
-3) <strong>/etc/mongod.conf, /etcrc.d/init.d/mongod</strong>
-
-<strong>$ sudo service mongod start/restart/stop</strong>
-
-<strong>$ sudo chkconfig mongod on</strong>
- 
-4) This MongoDB instance will store its data files in the /var/lib/mongo and its log files in /var/log/mongo, 
-and run using the mongod user account.
-
-
-5) 
-$ sudo pecl install mongo
-
-$ sudo vi /etc/php.ini:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">[mongo]
-extension=mongo.so
-</code></pre>
-
-$ sudo service httpd restart
-
-6) vi test_mongo.php:
-  <pre style="font-size:12px;border-left:1px solid #ccc;line-height:20px;background:url('http://williamjxj.files.wordpress.com/2010/11/pre_code_bg_ylw.gif') repeat-y left top;width:580px;overflow:auto;margin:20px;padding:0;"><code style="display:block;background-color:transparent;color:#000;margin:0 0 0 40px;padding:18px 0;">
-&lt;php
-$m = new Mongo();
-print_r($m);
-and return:
-Mongo Object
-(
-    [connected] => 1
-    [status] => 
-    [server:protected] => 
-    [persistent:protected] => 
-)
-?></code></pre>
-
-Now a new mongo cache system is ready to use.
+点击(此处)折叠或打开
+$str = Encode::encode('charset', $str);
 </div>
