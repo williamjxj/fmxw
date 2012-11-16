@@ -3,7 +3,8 @@
   <h3>最新更新</h3>
   <ul class="nav nav-tabs" id="div_news">
     <li class="active"> <a data-toggle="tab" href="#baidu_news">百度</a></li>
-    <li><a href="#tengxun_news" data-toggle="tab">腾讯</a></li>
+    <!--li><a href="#tengxun_news" data-toggle="tab">腾讯</a></li-->
+    <li><a href="#360_news" data-toggle="tab">360搜索</a></li>
     <li><a href="#163_news" data-toggle="tab">网易</a></li>
     <li><a href="#sohu_news" data-toggle="tab">搜狐</a></li>
   </ul>
@@ -20,6 +21,7 @@ document.write('"><\/script>');
 </script>
     </div>
     <div class="tab-pane" id="tengxun_news"></div>
+    <div class="tab-pane" id="360_news"></div>
     <div class="tab-pane" id="163_news"></div>
     <div class="tab-pane" id="sohu_news"></div>
   </div>
@@ -32,12 +34,19 @@ $(function() {
 		if(/^\s*$/.test(q)) return false;
 		t = $(this).attr('href');
 		// alert('[' + $(t).length + '], [' + $(t).html().length + ']'); //1,0
-		if(/tengxun_news/.test(t)) {
+		
+		if(/360_news/.test(t)) {
+			if($(t).html().length==0) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.news.360_news(q);
+			}
+		}
+		/* else if(/tengxun_news/.test(t)) {
 			if($(t).html().length==0) {
 				$(t).html($('<div class="ajaxloading"></div>'));
 				$.news.tengxun_news(q);
 			}
-		}
+		}*/
 		else if(/163_news/.test(t)) {
 			if($(t).html().length==0) {
 				$(t).html($('<div class="ajaxloading"></div>'));

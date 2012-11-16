@@ -5,7 +5,7 @@
 			var kw = UrlEncode(q);
 			$.getJSON('/cgi-bin/threads/news_tengxun.cgi', { q : kw }, function(data) {
 				if(data==null || (typeof data==='undefined') || (data.length==0)) {
-					$('#tengxun_news').html('No Data for ['+q+'], ['+kw+']');
+					$('#tengxun_news').html('没有关于['+q+'], ['+kw+'] 的数据。');
 					return false;
 				}
 				var txt='<ul class="nav nav-pills nav-stacked">';
@@ -14,6 +14,21 @@
 				});
 				txt +='</ul>\n';
 				$('#tengxun_news').html(txt);
+			});
+		},
+		360_news : function(q) {
+			var kw = UrlEncode(q);
+			$.getJSON('/cgi-bin/threads/news_360.cgi', { q : kw }, function(data) {
+				if(data==null || (typeof data==='undefined') || (data.length==0)) {
+					$('#360_news').html('没有关于['+q+'], ['+kw+'] 的数据。');
+					return false;
+				}
+				var txt='<ul class="nav nav-pills nav-stacked">';
+				$.each(data, function(key, val) {
+					txt += '<li><a href="' + val[0] + '">' + val[1] + '</a><br>' + val[2] + '</li>';
+				});
+				txt +='</ul>\n';
+				$('#360_news').html(txt);
 			});
 		},
 		netease_news : function(q) {
@@ -30,7 +45,7 @@
 			var kw = UrlEncode(q);
 			$.getJSON('/cgi-bin/threads/news_sogou.cgi', { q : kw }, function(data) {
 				if (data == null || ( typeof data === 'undefined') || (data.length == 0)) {// data is null.
-					$('#sohu_news').html('No Data for [' + q + '], [' + kw + ']');
+					$('#sohu_news').html('没有关于['+q+'], ['+kw+'] 的数据。');
 					return false;
 				}
 				var txt='<ul class="nav nav-pills nav-stacked">';
