@@ -1,0 +1,102 @@
+<head>
+<meta charset="{$config.header.charset}">
+<meta name="description" content="{$config.header.desc}">
+<meta name="keywords" content="{$config.header.keywords}">
+<title>{$config.header.title}</title>
+<link rel="shortcut icon" href="{$config.favicon}">
+<link rel="stylesheet" type="text/css" href="{$config.css.bootstrap}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{$config.css.fmxw}" media="screen" />
+<script type="text/javascript" src="{$config.js.jquery}"></script>
+<script type="text/javascript" src="{$config.js.gb_big5}"></script>
+<script type="text/javascript" src="{$config.js.ga}"></script>
+<script type="text/javascript" src="{$config.js.cookie}"></script>
+<script type="text/javascript" src="{$config.js.bts}"></script>
+</head>
+<body>
+<div class="container">
+  <div id="header"> {include file="{$header_template}"} </div>
+  <div id="news">
+    <div class="row">
+      <div class="span6 box5">
+        <!--国内-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=civilnews&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--国际-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=internews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--军事-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=mil&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--财经新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=finannews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--互联网新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=internet&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--房产新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=housenews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--汽车新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=autonews&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--体育新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=sportnews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--娱乐新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=enternews&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--游戏新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=gamenews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--教育新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=edunews&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--女人新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=healthnews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 box5">
+        <!--社会新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=socianews&pn=1&tn=newsbrofcu"></script>
+      </div>
+      <div class="span6 box5">
+        <!--科技新闻-->
+        <script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=technnews&pn=1&tn=newsbrofcu"></script>
+      </div>
+    </div>
+  </div>
+  <div id="footer"> {include file="{$footer_template}"} </div>
+</div>
+</body>
+<script type="text/javascript">
+$(function() {
+	$('div.span6').hide();
+});
+$(window).load(function() {
+	$('img[src="http://www.baidu.com/search/img/slogo-news.gif"]', 'a[href="http://news.baidu.com').empty().remove();
+	$('div.span6').show();
+});
+</script>
