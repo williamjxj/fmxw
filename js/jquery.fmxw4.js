@@ -16,9 +16,8 @@
 				$('#tengxun_news').html(txt);
 			});
 		},
-		360_news : function(q) {
-			var kw = UrlEncode(q);
-			$.getJSON('/cgi-bin/threads/news_360.cgi', { q : kw }, function(data) {
+		i360_news : function(q) {
+			$.getJSON('/cgi-bin/threads/news_360.cgi', { q : q }, function(data) {
 				if(data==null || (typeof data==='undefined') || (data.length==0)) {
 					$('#360_news').html('没有关于['+q+'], ['+kw+'] 的数据。');
 					return false;

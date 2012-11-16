@@ -38,7 +38,7 @@ $(function() {
 		if(/360_news/.test(t)) {
 			if($(t).html().length==0) {
 				$(t).html($('<div class="ajaxloading"></div>'));
-				$.news.360_news(q);
+				$.news.i360_news(q);
 			}
 		}
 		/* else if(/tengxun_news/.test(t)) {
