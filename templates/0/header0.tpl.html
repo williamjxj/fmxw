@@ -1,15 +1,15 @@
 <div class="row">
-	<div class="span12">
-		{include file="{$config.t}base_header.tpl.html"}
-	</div>
+  <div class="span12"> {include file="{$config.t}base_header.tpl.html"} </div>
 </div>
 <div class="row" id="logo">
-	<div class="span8">
-		<a href="{$config.home}" rel="tooltip" title="{$config.header.title}"><img src="{$config.logo.logo_290x96}" /> </a>
-	</div>
-	<div class="span3">
-		<p><a href="/dixi/" class="alert">上个版本</a></p>
-        <p>&nbsp;</p>
-		<p><a href="./coreseek.php" class="alert">高级搜索(测试版)</a></p>
-	</div>
+  <div class="span8"> <a href="{$config.home}" rel="tooltip" title="{$config.header.title}"><img src="{$config.logo.logo_290x96}" /> </a> </div>
+  <div class="span3">
+    <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-list-alt icon-white"></i>&nbsp; <span>选项</span><span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><i class="icon-search icon-white"></i> <a href="/dixi/" class="alert">上个版本</a></li>
+        <li><i class="icon-search icon-white"></i> <a href="./coreseek.php" class="alert">高级搜索(测试版)</a> </li>
+        <li><i class="icon-search icon-white"></i> <a href="#" id="os" class="alert">{$_ts.old_search}</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
