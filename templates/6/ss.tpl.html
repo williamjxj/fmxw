@@ -12,8 +12,7 @@
   <div id="header"> {include file="{$header_template}"} </div>
   <div class="row-fluid">
     <div class="span8"> {include file="{$config.t6}search.tpl.html"} </div>
-	<div class="span4 alert" style="display:none"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> 关于<a href="#pk"
-	id="apk"></a>, <strong class="pk">我要PK...</strong></div>
+	<div class="span4 alert" style="display:none"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> 关于<span	id="apk"></span>, <strong class="pk"><a href="#pk">我要PK...</a></strong></div>
   </div>
 </div>
 <div class="container-fluid" align="left">
@@ -65,8 +64,10 @@
     <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
     <div class="span7" id="sright">
       <div id="sd"></div>
+      <!--
       <div id="pk" style="display:none;"></div>
       <div id="pk_result" class="box4" style="display:none;"></div>
+      -->
       <div class="alert"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
       <div id="news">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="weibo">{include file="{$config.t6}news.tpl.html"}</div>
@@ -148,12 +149,15 @@ $(function() {
 
 	//PK框的显示和隐藏。
 	$('#apk').click(function() {
+	/*
 		if($('#pk').is(':visible')) {
 			$('#pk').hide();
 			$('#pk_result').hide();
 		}
 		else
 			$('#pk').load('{$config.search}?js_pk=1').fadeIn(100);
+	*/
+		$('html,body').animate({scrollTop: $('#3pinglun').offset().top}, 'slow');
 		return false;
 	});
 	
