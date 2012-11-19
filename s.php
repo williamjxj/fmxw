@@ -114,7 +114,7 @@ elseif(isset($_GET['js_ct_search'])) {
 }
 elseif(isset($_GET['js_sortby_dwmy'])) {
 	switch($_GET['js_sortby_dwmy']) {
-		case 'day':
+		case 'day24':
 			$min = $obj->now - 86400;
 			break;
 		case 'week':
@@ -195,7 +195,7 @@ else {
 	$q = '';
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	
-	//Sort by time segments (last hour/day/week/month) in descending order, and then by relevance in descending order.
+	//Sort by time segments (last hour/day24/week/month) in descending order, and then by relevance in descending order.
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetArrayResult(true);
 }
