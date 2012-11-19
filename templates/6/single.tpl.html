@@ -28,10 +28,10 @@
   </div>
 </div>
 <script type="text/javascript">
-$(window).load(function() {
-	if($('#apk').length) {
-		alert('{$row.title}');
-		$('#apk').html('{$row.title}').closest('div').show();
-	}
+$(function() {
+	var tt = $('#apk');
+	if(! tt.closest('div').is(':visible')) tt.closest('div').show();
+	tt.html('{$row.title}');
+	return false;
 });
 </script>
