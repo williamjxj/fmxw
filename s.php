@@ -56,7 +56,7 @@ if (isset($_GET['q'])) {
 		$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 		if ($res === false) {
 			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
-			return;
+			exit;
 		} else if ($obj -> cl -> GetLastWarning()) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
@@ -159,11 +159,11 @@ elseif(isset($_GET['js_pks1'])) {
     $cid = intval($_GET['cid']);    
     $obj -> assign('reping', $obj -> get_repings_by_cid($cid));
 	$obj->display($tdir6.'reping.tpl.html');
-	return;
+	exit;
 }
 elseif(isset($_GET['js_pks2'])) {
     $obj->display($tdir6.'pk.tpl.html');
-    return;
+    exit;
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$pid = $obj->insert_pk();
@@ -172,15 +172,15 @@ elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
         $obj->display($tdir6.'reping.tpl.html');       
     }
     else echo "N";
-	return;
+	exit;
 }
 elseif(isset($_GET['js_category'])) {
 	echo json_encode($obj->get_categories());
-	return;
+	exit;
 }
 elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items($_GET['cate_id']));
-	return;
+	exit;
 }
 elseif(isset($_GET['page'])) {
 	//翻页显示。
@@ -190,7 +190,7 @@ elseif(isset($_GET['jsc'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
     $obj->display($tdir6.'single.tpl.html');
-    return;
+    exit;
 }
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
@@ -198,7 +198,7 @@ elseif (isset($_GET['test'])) {
 	$obj->__p($_SESSION);
     //$obj -> assign('reping', $obj -> get_repings($q));
     //$obj->__p($obj -> get_repings($q));
-	return;
+	exit;
 }
 //要区分fm0，fm6吗？
 else {
@@ -240,7 +240,7 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
-    return;
+    exit;
 } else if ($obj -> cl -> GetLastWarning()) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 }
@@ -326,7 +326,7 @@ $mres = mysql_query($query);
 if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
     $obj -> __p($summary);
-    return;
+    exit;
 }
 
 //生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
