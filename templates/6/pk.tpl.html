@@ -22,14 +22,13 @@
       </div>
     </div>
     <div class="control-group">
-      <div class="controls">
-		<img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a> 
+      <div class="controls"> <img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="change-image">看不清?换一张。</a>
         <input type="text" name="captcha" id="captcha-form" autocomplete="off" />
-		{if {$smarty.session.fmxw.username}} 
+        {if {$smarty.session.fmxw.username}}
         <input type="text" name="author" value="{$smarty.session.fmxw.username}" />
-		{else} 
+        {else}
         <input type="text" name="author" placeholder="您的大名" />
-		{/if}
+        {/if}
         <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发表评论</button>
         <input name="kw" type="hidden" value="{$smarty.session.fmxw.search.key}" />
         <input name="cid" type="hidden" value="{$smarty.get.cid}" />
@@ -70,7 +69,7 @@ $(function() {
 			return false;
 		}
 
-		$.post(f.attr('action'), f.serialize()+'&js_pk=1', function(data) {
+		$.post(f.attr('action'), f.serialize(), function(data) {
 			if(data=='N') {
 				$('#pks1').html('重复插入，无法添加评论, 请重试。').show();
 				return false;

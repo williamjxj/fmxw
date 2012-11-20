@@ -268,8 +268,8 @@ class FMXW_Sphinx extends f12Class
         // $this -> write_named_pipes($search_key);
     }
 
-	//'sogou' => array($dir . '.sogou'),
-    function write_named_pipes($search_key) {
+	//XX 'sogou' => array($dir . '.sogou'),
+    function write_named_pipes_old($search_key) {
         //每次点击都搜索，好像不太好。
         //改为：如果今天点击过了，就不再搜索了。
         foreach ($this->pipes as $p) {
@@ -277,6 +277,23 @@ class FMXW_Sphinx extends f12Class
             fwrite($fifo, $search_key);
             fclose($fifo);
         }
+    }
+    function write_named_pipes($search_key) {
+        $dir = '/home/williamjxj/scraper/';
+        //劣质 过期 腐烂 变质 腐败 丑闻 最新负面新闻 曝光 内部 传闻
+        $keys = array($search_key, $search_key.'(负面|丑闻|真相)(新闻|评价|曝光)', $search_key);
+        $fh = fopen($dir.'/logs/web.log', 'a+') or die("Can't open file at __FILE__");
+        
+        foreach( array('.baidu', '.soso', '.google', '.yahoo') as $p) {
+            $fifo = fopen($dir.$p, 'r+');
+            foreach($keys as $k) {
+                fwrite($fifo, $k);
+                fwrite($fh, $k);                
+            }
+            fclose($fifo);            
+        }
+        fflush($fh);
+        fclose($fh);
     }
 
 	//XX 找到匹配的添加词，添加到关键词之后用于查询。
