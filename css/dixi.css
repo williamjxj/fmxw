@@ -133,12 +133,16 @@ li.li3:nth-child(even) {
 	border-left: 1px solid #DBDADA;
 	border-right: 1px solid #DBDADA;
 	border-bottom: 1px solid #DBDADA;
-	min-height: 60px;
+	min-height: 100px;
 	max-height:300px;
 	overflow:hidden;
 }
 .tab2 {
 	overflow-y:scroll;
+}
+.tab3 {
+	max-height:500px;
+	overflow:scroll;
 }
 .head1 {
 	color: #CC0000;
