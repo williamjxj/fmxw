@@ -367,26 +367,19 @@ div.ajaxloading * {
 	border-color: #C8D8F2;
 	border-style: solid;
 	border-width: 1px;
-	font-size: 12px;
-	line-height: 20px;
 	margin: 0 auto;
 	margin-top:20px;
 	overflow: hidden;
 }
-.reping h2 {
-	background-color: #F5F8FD;
-	height: 28px;
-	line-height: 26px;
-	padding: 10px 20px 0;
-	margin:0px;
-}
-.reping h2 .title {
-	color: #464646;
-	float: left;
-	font-family: "微软雅黑,黑体";
-	font-size: 18px;
-	font-weight: bold;
-	line-height: 18px;
+.reping h3 {
+	font-family: "微软雅黑", "黑体";
+	font-size: 16px;
+	font-weight: bolder;
+	line-height: 30px;
+	height: 30px;
+	text-align:center;
+	color: #A90000;
+	display:inline;
 	padding-left: 24px;
 }
 /*每段的定义*/
@@ -462,15 +455,17 @@ div.ajaxloading * {
 	padding: 0 2px 0;
 	border-bottom: 1px solid #C8D8F2;
 	margin-bottom:4px;
+	margin-top:20px;
 }
 .weibo h3 {
 	font-family: "微软雅黑", "黑体";
 	font-size: 16px;
 	font-weight:bolder;
-	line-height: 33px;
+	line-height: 30px;
 	text-align:center;
 	display:inline;
 	color: #A90000;
+	padding-left: 24px;
 }
 .weibo:hover, .weibo:focus {
 	color: #FF0000;
