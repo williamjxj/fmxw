@@ -261,7 +261,7 @@ if (empty($res["matches"])) {
 	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 	$obj->display($tdir6.'ns.tpl.html');
 	if (!empty($q)) {
-		$obj->write_named_pipes($q); // $obj->backend_scrape($q);
+		$obj->write_named_pipes($q, __LINE__); // $obj->backend_scrape($q);
 	}
 	exit;
 }
@@ -401,7 +401,7 @@ else {
     $pagination = $obj -> draw();
 	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
-	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q']));
+	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q'], __LINE__));
 }
 exit;
 
