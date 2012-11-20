@@ -1,5 +1,4 @@
-<div class="row reping">
-  {foreach $reping as $rp}
+<div class="row reping"> {foreach $reping as $rp}
   <div class="reping_item">
     <div class="t_info"><i class="icon-gift"></i> {$rp.author} <br>
       <span class="t_area">{$rp.area}</span></div>
@@ -14,6 +13,8 @@
         <div class="control-group">
           <div class="controls">
             <button type="submit" class="btn btn-success btn-small"><i class="icon-comment icon-white"></i> 提交评论</button>
+            <input type="hidden" name="cid" value="{$rp.cid}" />
+            <input type="hidden" name="kw" value="{$rp.keyword}" />
           </div>
         </div>
       </form>

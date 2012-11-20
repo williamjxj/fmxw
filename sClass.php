@@ -187,9 +187,9 @@ class FMXW_Sphinx extends f12Class
 		return $ary;
 	}
 	
-	function get_repings($q){
+	function get_repings_by_cid($cid){
 		$ary = array();
-		$sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";
+		$sql = "select * from pk where cid=". $cid . " ORDER BY id DESC";
 		$res = mysql_query($sql);
 		while ($row = mysql_fetch_assoc($res)) {
 			array_push($ary, $row);
@@ -197,6 +197,15 @@ class FMXW_Sphinx extends f12Class
 		return $ary;
 	}
 	
+    function get_repings_by_keyword($q){
+        $ary = array();
+        $sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";
+        $res = mysql_query($sql);
+        while ($row = mysql_fetch_assoc($res)) {
+            array_push($ary, $row);
+        }
+        return $ary;
+    }
 	
     //error, warning, status, fields+attrs, matches, total, total_found, time, words
     function set_session($res) 
@@ -366,6 +375,7 @@ class FMXW_Sphinx extends f12Class
 	{
 		$fayan = mysql_real_escape_string(trim($_POST['fayan']));
 		$keyword = mysql_real_escape_string(trim($_POST['kw']));
+        $cid = intval($_POST['cid']);
 		$pk = $_POST['pk'];
 		
 		if(empty($_POST['zhichi'])) $zhichi = rand(10, 1000);
@@ -382,13 +392,14 @@ class FMXW_Sphinx extends f12Class
 			$author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户';
 		else $author = mysql_real_escape_string(trim($_POST['author']));
 
-        $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area) values('" . 
+        $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area, cid) values('" . 
 			$pk		. "', '" .
 			$author . "', '" .
 			$keyword. "', " .
 			$zhichi . ", '" .
 			$fayan	. "', now(), '" . 
-			$area . "')";
+			$area . "', " .
+            $cid . ")";
 		
         mysql_query($sql);
 		return mysql_insert_id();

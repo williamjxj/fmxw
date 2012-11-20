@@ -1,4 +1,4 @@
-<div class="well box4">
+<div class="box4">
   <form id="form_fayan" class="form-horizontal" method="post" action="{$config.search}">
     <div class="control-group">
       <div class="controls">
@@ -32,6 +32,7 @@
 		{/if}
         <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发表评论</button>
         <input name="kw" type="hidden" value="{$smarty.session.fmxw.search.key}" />
+        <input name="cid" type="hidden" value="{$smarty.get.cid}" />
       </div>
     </div>
   </form>

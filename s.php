@@ -84,18 +84,18 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetFieldWeights( $weights );
 	}
 	
-	//从首页来。
-	if(isset($_GET['fm0'])) {}
-	//从当前页来。
-	elseif(isset($_GET['fm6'])) {
-		//试验：
-		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-		//http://www.nearby.org.uk/sphinx/searchtest.php?q=one&ranking=3
-		//$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
-		//$obj->cl->SetRankingMode(SPH_RANK_SPH04);
-		//$obj->cl->SetIndexWeights();
-		$obj -> cl -> SetArrayResult(true);
-	}
+	/* 不区分从首页还是当前页，因为‘disqus',评论等会记录所有参数。这样，同一个cid的评论可能因为 fm0=0或fm6=1而不能识别。
+     * 从首页来。if(isset($_GET['fm0'])) {}
+	 * 从当前页来。
+	 * elseif(isset($_GET['fm6'])) {}
+     */
+
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+    $obj -> cl -> SetArrayResult(true);
+	//http://www.nearby.org.uk/sphinx/searchtest.php?q=one&ranking=3
+	//$obj->cl->SetRankingMode(SPH_RANK_WORDCOUNT);
+	//$obj->cl->SetRankingMode(SPH_RANK_SPH04);
+	//$obj->cl->SetIndexWeights();
 }
 elseif(isset($_GET['js_ct_search'])) {
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
@@ -153,14 +153,22 @@ elseif(isset($_GET['js_sortby_attr'])) {
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
 }
 //以下不需要setmatchmode和setsortmode.
-elseif(isset($_GET['js_pk'])) {
-	$obj->display($tdir6.'pk.tpl.html');
+/* 显示顺序：（1）是显示评论列表js_reping；（2）当用户点击要发表评论时，js_pk（3）当用户提交评论后自动刷新评论列表。
+ */
+elseif(isset($_GET['js_reping'])) {
+    $cid = intval($_GET['cid']);    
+    $obj -> assign('reping', $obj -> get_repings_by_cid($cid));
+	$obj->display($tdir6.'reping.tpl.html');
 	return;
+}
+elseif(isset($_GET['js_pk'])) {
+    $obj->display($tdir6.'pk.tpl.html');
+    return;
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$pid = $obj->insert_pk();
 	//$obj->display($tdir6.'single.tpl.html');
-	echo "你已经成功提交了如下信息：";
+	//echo "你已经成功提交了如下信息：";
     echo json_encode($_POST);
 	return;
 }
@@ -186,6 +194,8 @@ elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
 	$obj->__p($_REQUEST);
 	$obj->__p($_SESSION);
+    //$obj -> assign('reping', $obj -> get_repings($q));
+    //$obj->__p($obj -> get_repings($q));
 	return;
 }
 //要区分fm0，fm6吗？
@@ -368,8 +378,6 @@ $obj -> assign('results', $rows);
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($q));
-$obj -> assign('reping', $obj -> get_repings($q));
-//$obj->__p($obj -> get_repings($q));
 
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));

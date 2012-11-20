@@ -29,9 +29,10 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	var tt = $('#apk');
-	if(! tt.closest('div').is(':visible')) tt.closest('div').show();
-	tt.html('{$row.title}');
+	var tt1 = $('#apk'), tt2 = $('#apk_cid');
+	if(! tt1.closest('div').is(':visible')) tt1.closest('div').show();
+	tt1.html('{$row.title}');
+	tt2.text('{$row.cid}');
 	return false;
 });
 </script>
