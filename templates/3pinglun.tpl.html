@@ -10,9 +10,9 @@
     <div class="tab-pane active" id="disqus"></div>
     <div class="tab-pane" id="pinglunla"></div>
     <div class="tab-pane" id="pks">
-	  <div id="reping">暂无评论</div>	
-	  <div id="pks1"></div>
-	</div>
+      <div id="pks1">暂无评论</div>
+      <div id="pks2"></div>
+    </div>
     <div class="tab-pane" id="uyan"></div>
   </div>
 </div>
@@ -22,18 +22,18 @@ $(function(){
 	e.preventDefault();
 	var t = $(this).attr('href');
 	if(/pks/.test(t)) {
-		var t = $('#reping'), cid=$('#apk_cid').text();
+		var t = $('#pks1'), cid=$('#apk_cid').text();
 		t.html($('<div class="ajaxloading"></div>'));
-		t.load('{$config.search}?js_reping=1&cid='+cid, function(data) {
+		t.load('{$config.search}?js_pks1=1&cid='+cid, function(data) {
 			alert('data: ' + data);
 			if(data==null) t.html('暂无评论。');
 			else t.html(data);
 		});
-		if($('#pks1').html().length==0) {
-			$('#pks1').load('{$config.search}?js_pk=1&cid='+cid);
+		if($('#pks2').html().length==0) {
+			$('#pks2').load('{$config.search}?js_pks2=1&cid='+cid);
 		}
 	}
-	if(/pinglunla/.test(t)) {
+	else if(/pinglunla/.test(t)) {
 		if($(t).html().length==0) {
 			$(t).load('templates/shared/pinglunla.tpl.html');
 		}

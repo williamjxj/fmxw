@@ -155,13 +155,13 @@ elseif(isset($_GET['js_sortby_attr'])) {
 //以下不需要setmatchmode和setsortmode.
 /* 显示顺序：（1）是显示评论列表js_reping；（2）当用户点击要发表评论时，js_pk（3）当用户提交评论后自动刷新评论列表。
  */
-elseif(isset($_GET['js_reping'])) {
+elseif(isset($_GET['js_pks1'])) {
     $cid = intval($_GET['cid']);    
     $obj -> assign('reping', $obj -> get_repings_by_cid($cid));
 	$obj->display($tdir6.'reping.tpl.html');
 	return;
 }
-elseif(isset($_GET['js_pk'])) {
+elseif(isset($_GET['js_pks2'])) {
     $obj->display($tdir6.'pk.tpl.html');
     return;
 }
