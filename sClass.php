@@ -287,12 +287,12 @@ class FMXW_Sphinx extends f12Class
         $fh = fopen($dir.'/logs/web.log', 'a+') or die("Can't open file at __FILE__");
         
         foreach($ary as $p) {
-            $fifo = fopen($dir.$p, 'w+');
             foreach($keys as $k) {
+                $fifo = fopen($dir.$p, 'w+');
                 fwrite($fifo, $k);
+                fclose($fifo);            
                 fwrite($fh, $where. ', ' . $p.'-'.$count++.', ['.$k."]\n");                
             }
-            fclose($fifo);            
         }
         fflush($fh);
         fclose($fh);
