@@ -9,7 +9,10 @@
   <div class="tab-content tab1 tab3">
     <div class="tab-pane active" id="disqus"></div>
     <div class="tab-pane" id="pinglunla"></div>
-    <div class="tab-pane" id="pks"></div>
+    <div class="tab-pane" id="pks">
+	  <div id="pks1"></div>
+	  <div id="reping">{include file="{$config.t6}reping.tpl.html"}</div>	
+	</div>
     <div class="tab-pane" id="uyan"></div>
   </div>
 </div>
@@ -19,8 +22,8 @@ $(function(){
 	e.preventDefault();
 	var t = $(this).attr('href');
 	if(/pks/.test(t)) {
-		if($(t).html().length==0) {
-			$(t).load('s.php?js_pk=1');
+		if($('#pks1').html().length==0) {
+			$('#pks1').load('s.php?js_pk=1');
 		}
 	}
 	if(/pinglunla/.test(t)) {

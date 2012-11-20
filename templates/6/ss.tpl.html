@@ -68,7 +68,6 @@
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="news">{include file="{$config.t6}news.tpl.html"}</div>
       <div id="3pingluns">{include file="{$config.t}3pinglun.tpl.html"}</div>
-      <!--div id="reping">{include file="{$config.t6}reping.tpl.html"}</div-->
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
@@ -145,14 +144,6 @@ $(function() {
 
 	//PK框的显示和隐藏。
 	$('#ypk').click(function() {
-	/*
-		if($('#pk').is(':visible')) {
-			$('#pk').hide();
-			$('#pk_result').hide();
-		}
-		else
-			$('#pk').load('{$config.search}?js_pk=1').fadeIn(100);
-	*/
 		if($('#3pingluns').length)
 			$('html,body').animate({ scrollTop: $('#3pingluns').offset().top }, 'slow');
 		return false;
