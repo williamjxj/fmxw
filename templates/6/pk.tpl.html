@@ -72,12 +72,14 @@ $(function() {
 
 		$.post(f.attr('action'), f.serialize()+'&js_pk=1', function(data) {
 			if(data=='N') {
-				$('#pks1').html('输入验证失败, 无法添加评论, 请重试。').show();
+				$('#pks1').html('重复插入，无法添加评论, 请重试。').show();
 				return false;
 			}
-			$('#pks1').html(data).effect('highlight', 3000);
-			$('button:submit', f).attr('disabled', 'disabled');
-			//$('html,body').animate({ scrollTop: $('#reping').offset().top }, 'slow');
+			$('html,body').animate({ scrollTop: $('#pks1').offset().top }, 100);
+			$('#pks1').html(data);
+			$('#pks1 div.reping_item:first-child').animate({ backgroundColor: 'LightGoldenRodYellow' }, 3000);
+
+			f.get(0).reset(); //$('button:submit', f).attr('disabled', 'disabled');
 			return false;
 		});
 	});

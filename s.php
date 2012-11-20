@@ -167,8 +167,11 @@ elseif(isset($_GET['js_pks2'])) {
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$pid = $obj->insert_pk();
-    $obj -> assign('reping', $obj -> get_repings_by_cid($_POST['cid']));
-    $obj->display($tdir6.'reping.tpl.html');
+    if($pid) {
+        $obj -> assign('reping', $obj -> get_repings_by_cid($_POST['cid']));
+        $obj->display($tdir6.'reping.tpl.html');       
+    }
+    else echo "N";
 	return;
 }
 elseif(isset($_GET['js_category'])) {
