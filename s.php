@@ -401,7 +401,7 @@ else {
     $pagination = $obj -> draw();
 	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
-	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q'], __LINE__));
+	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q']), __LINE__);
 }
 exit;
 
