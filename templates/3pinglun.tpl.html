@@ -1,9 +1,11 @@
+<div class="row reping">
+  <h2><span class="title"> 网友热评</span></h2>
 <ul class="nav nav-tabs" id="Tab3">
   <li class="active"><a href="#disqus">Disqus</a></li>
   <li><a href="#pinglunla">评论啦</a></li>
   <li><a href="#uyan">友言</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content tab1 tab2">
   <div class="tab-pane active" id="disqus"></div>
   <div class="tab-pane" id="pinglunla"></div>
   <div class="tab-pane" id="uyan"></div>
@@ -11,6 +13,7 @@
 {*include file="templates/shared/disqus.tpl.html"} 
 {include file="templates/shared/pinglunla.tpl.html"}
 {include file="templates/shared/uyan.tpl.html"*}
+</div>
 <script type="text/javascript">
 $(function(){
   $('#Tab3 a').click(function(e) {

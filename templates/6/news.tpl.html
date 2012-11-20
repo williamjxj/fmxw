@@ -1,5 +1,5 @@
 {$q={$smarty.session.fmxw.search.key}}
-<div class="well">
+<div class="weibo">
   <h3>最新更新</h3>
   <ul class="nav nav-tabs" id="div_news">
     <li class="active"> <a data-toggle="tab" href="#baidu_news">百度</a></li>
@@ -8,8 +8,8 @@
     <li><a href="#163_news" data-toggle="tab">网易</a></li>
     <li><a href="#sohu_news" data-toggle="tab">搜狐</a></li>
   </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="baidu_news">
+  <div class="tab-content tab1 tab2">
+    <div class="tab-pane fade active in" id="baidu_news">
       <script type="text/javascript">
 var t1 = UrlEncode('{$q}');
 var t2='http://news.baidu.com/ns?word=title%3A';

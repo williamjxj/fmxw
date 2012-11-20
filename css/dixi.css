@@ -137,6 +137,9 @@ li.li3:nth-child(even) {
 	max-height:300px;
 	overflow:hidden;
 }
+.tab2 {
+	overflow-y:scroll;
+}
 .head1 {
 	color: #CC0000;
 	font-size: 14px;
