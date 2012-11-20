@@ -377,6 +377,7 @@ class FMXW_Sphinx extends f12Class
 		$keyword = mysql_real_escape_string(trim($_POST['kw']));
         $cid = intval($_POST['cid']);
 		$pk = $_POST['pk'];
+        $captcha = $_POST['captcha'];
 		
 		if(empty($_POST['zhichi'])) $zhichi = rand(10, 1000);
 		else $zhichi = $_POST['zhichi'];
@@ -392,14 +393,15 @@ class FMXW_Sphinx extends f12Class
 			$author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户';
 		else $author = mysql_real_escape_string(trim($_POST['author']));
 
-        $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area, cid) values('" . 
+        $sql = "insert into pk(pk, author, keyword, zhichi, fayan, created, area, cid, captcha) values('" . 
 			$pk		. "', '" .
 			$author . "', '" .
 			$keyword. "', " .
 			$zhichi . ", '" .
 			$fayan	. "', now(), '" . 
 			$area . "', " .
-            $cid . ")";
+            $cid . ", '" .
+            $captcha . "')";
 		
         mysql_query($sql);
 		return mysql_insert_id();

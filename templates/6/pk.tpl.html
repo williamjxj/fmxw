@@ -71,11 +71,12 @@ $(function() {
 		}
 
 		$.post(f.attr('action'), f.serialize()+'&js_pk=1', function(data) {
+			alert(data);
 			if(data=='N') {
 				$('#pk_result').html('输入验证失败, 无法添加评论, 请重试。').show();
 				return false;
 			}
-			//$('#pk_result').html(data).fadeIn(100);
+			$('#pks2').html(data).fadeIn(100);
 			$('button:submit', f).attr('disabled', 'disabled');
 			//$('html,body').animate({ scrollTop: $('#reping').offset().top }, 'slow');
 			return false;

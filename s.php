@@ -167,9 +167,8 @@ elseif(isset($_GET['js_pks2'])) {
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$pid = $obj->insert_pk();
-	//$obj->display($tdir6.'single.tpl.html');
-	//echo "你已经成功提交了如下信息：";
-    echo json_encode($_POST);
+    $obj -> assign('reping', $obj -> get_repings_by_cid($_POST['cid']));
+    $obj->display($tdir6.'reping.tpl.html');
 	return;
 }
 elseif(isset($_GET['js_category'])) {

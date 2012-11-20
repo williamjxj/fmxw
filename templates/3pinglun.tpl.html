@@ -26,8 +26,8 @@ $(function(){
 			var t = $('#pks1'), cid=$('#apk_cid').text();
 			t.html($('<div class="ajaxloading"></div>'));
 			t.load('{$config.search}?js_pks1=1&cid='+cid, function(data) {
-				alert('data: [' + data + ']');
-				console.log(data);
+				//alert('data: [' + data + ']');
+				//console.log(data);
 				if(data==null || data=='') t.html('暂无评论。');
 				else t.html(data);
 			});
