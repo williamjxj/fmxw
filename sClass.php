@@ -279,16 +279,17 @@ class FMXW_Sphinx extends f12Class
         }
     }
     function write_named_pipes($search_key) {
+        $count = 1;
         $dir = '/home/williamjxj/scraper/';
         //劣质 过期 腐烂 变质 腐败 丑闻 最新负面新闻 曝光 内部 传闻
         $keys = array($search_key, $search_key.'(负面|丑闻|真相)(新闻|评价|曝光)', $search_key);
         $fh = fopen($dir.'/logs/web.log', 'a+') or die("Can't open file at __FILE__");
         
         foreach( array('.baidu', '.soso', '.google', '.yahoo') as $p) {
-            $fifo = fopen($dir.$p, 'r+');
+            $fifo = fopen($dir.$p, 'w+');
             foreach($keys as $k) {
-                fwrite($fifo, '['.$k."]\n");
-                fwrite($fh, $p.', ['.$k."]\n");                
+                fwrite($fifo, $k);
+                fwrite($fh, $p.'-'.$count++.', ['.$k."]\n");                
             }
             fclose($fifo);            
         }
