@@ -5,7 +5,7 @@
       <span class="t_area">{$rp.area}</span></div>
     <div class="t_txt">{$rp.fayan} <span class="t_date"> {$rp.created} <span class="t_reply"><a href="javascript:;" class="a_huifu">回复</a> <a href="javascript:;" class="a_zhichi" id="{$rp.id}">支持</a></span> </span> </div>
     <div class="well" id="div_huifu_{$rp.id}" style="display:none;">
-      <form name="huifuForm" id="huifuForm_{$rp.id}" method="post" action="javascript:;">
+      <form name="huifuForm" id="huifuForm_{$rp.id}" method="post" action="{$config.search}">
         <div class="control-group">
           <div class="controls">
             <textarea name="t_huifu" placeholder="文明上网，登录发贴。" style="width:100%" rows="6"></textarea>
@@ -24,6 +24,10 @@
   {/foreach} </div>
 <script type="text/javascript">
 $(function() {
+	$(form).submit(function(e) {
+		e.preventDefault();
+		var f1 = $(this).attr('id');
+	});
 	$('div.reping_item').hover(
 		function() {
 			$(this).find('span.t_reply').show();
