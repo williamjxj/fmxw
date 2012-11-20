@@ -12,7 +12,7 @@
   <div id="header"> {include file="{$header_template}"} </div>
   <div class="row-fluid">
     <div class="span8"> {include file="{$config.t6}search.tpl.html"} </div>
-	<div class="span4 alert" style="display:none"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> 关于<span	id="apk"></span>, <strong class="pk"><a href="#pk">我要PK...</a></strong></div>
+	<div class="span4 alert" style="display:none"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> 关于<span	id="apk"></span>, <a href="javascript:;" id="pk" class="pk">我要PK...</a></div>
   </div>
 </div>
 <div class="container-fluid" align="left">
@@ -148,7 +148,7 @@ $(function() {
 	});
 
 	//PK框的显示和隐藏。
-	$('#apk').click(function() {
+	$('#pk').click(function() {
 	/*
 		if($('#pk').is(':visible')) {
 			$('#pk').hide();
