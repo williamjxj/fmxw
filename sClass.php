@@ -403,7 +403,8 @@ class FMXW_Sphinx extends f12Class
             $cid . ", '" .
             $captcha . "')";
 		
-        mysql_query($sql);
+        $res = mysql_query($sql);
+        if(! $res) return false;
 		return mysql_insert_id();
     }	
 
