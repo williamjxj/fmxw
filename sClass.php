@@ -287,8 +287,8 @@ class FMXW_Sphinx extends f12Class
         foreach( array('.baidu', '.soso', '.google', '.yahoo') as $p) {
             $fifo = fopen($dir.$p, 'r+');
             foreach($keys as $k) {
-                fwrite($fifo, $k);
-                fwrite($fh, $k);                
+                fwrite($fifo, '['.$k."]\n");
+                fwrite($fh, $p.', ['.$k."]\n");                
             }
             fclose($fifo);            
         }
