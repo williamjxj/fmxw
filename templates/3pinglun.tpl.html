@@ -1,18 +1,16 @@
 <div class="row reping">
   <h3>网友热评</h3>
   <ul class="nav nav-tabs" id="Tab3">
-    <li class="active"><a href="#disqus">添加评论</a></li>
-    <!--<li><a href="#pinglunla">评论啦</a></li>-->
-    <li><a href="#pks">PK 擂台</a></li>
+    <li class="active"><a href="#pks">PK 擂台</a></li>
+    <li><a href="#disqus">添加评论</a></li>
     <li><a href="#uyan">其它相关评论</a></li>
   </ul>
   <div class="tab-content tab1 tab3">
-    <div class="tab-pane active" id="disqus"></div>
-    <div class="tab-pane" id="pinglunla"></div>
-    <div class="tab-pane" id="pks">
+    <div class="tab-pane active" id="pks">
       <div id="pks1">暂无评论</div>
       <div id="pks2"></div>
     </div>
+    <div class="tab-pane" id="disqus"></div>
     <div class="tab-pane" id="uyan"></div>
   </div>
 </div>
@@ -26,8 +24,6 @@ $(function(){
 			var t = $('#pks1'), cid=$('#apk_cid').text();
 			t.html($('<div class="ajaxloading"></div>'));
 			t.load('{$config.search}?js_pks1=1&cid='+cid, function(data) {
-				//alert('data: [' + data + ']');
-				//console.log(data);
 				if(data==null || data=='') t.html('暂无评论。');
 				else t.html(data);
 			});
@@ -37,6 +33,11 @@ $(function(){
 	else if(/pinglunla/.test(t)) {
 		if($(t).html().length==0) {
 			$(t).load('templates/shared/pinglunla.tpl.html');
+		}
+	}
+	else if(/disqus/.test(t)) {
+		if($(t).html().length==0) {
+			$(t).load('templates/shared/disqus.tpl.html');
 		}
 	}
 	else if(/uyan/.test(t)) {
@@ -49,6 +50,7 @@ $(function(){
   });
 });
 $(window).load(function() {
-	$('#disqus').load('templates/shared/disqus.tpl.html');
+	//var cid=$('#apk_cid').text();
+	//$('#pk1').load('{$config.search}?js_pks1=1&cid='+cid);
 });
 </script>

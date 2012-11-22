@@ -82,7 +82,6 @@
 <script type="text/javascript">
 $(function() {
 	$('a.relevance', '#tf0').click(function() {
-		//$('div#smiddle').load('{$url}?js_sortby='+$(this).attr('id')+'&q={$smarty.session.fmxw.search.key}');
 		$('div#smiddle').load($(this).attr('href'));
 		$('a', '#tf0').closest('li').removeClass('active');
 		$(this).closest('li').addClass('active');
@@ -101,8 +100,6 @@ $(function() {
 		return false;
 	});
 	
-	//http://www.dixitruth.com/fmxw/s.php#/s.php?cid=350099&jsc=1
-	//		/s.php?cid=350099&jsc=1
 	$.address.init(function(event) { 
 		return false;
 	}).
@@ -117,7 +114,6 @@ $(function() {
 				$('li.li3').removeClass('highlight');
 				$t.parent('li.li3').addClass('highlight');
 				$t.next('img').remove();
-				//if('{$smarty.session.fmxw.search.title}') $('#apk').html({$smarty.session.fmxw.search.title}).closest('div').show();
 			});
 		}
 		else {
@@ -130,7 +126,6 @@ $(function() {
 	$('div.pagination a').live('click', function() {
 		$(this).html('{$config.wait}');
 		var url = $(this).attr('href');
-		//var t = new Date().getTime();
 		if (! /js_page=/.test(url)) url+='&js_page';
 		$.ajax({
 			type: 'get',
@@ -157,7 +152,6 @@ $(function() {
 				items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
 			});
 			$('#div_item').fadeIn(500);
-			//$('#item').empty().append(items);
 			$('#item').html(items);
 			$('button:submit', '#ct_search').attr('disabled', false);
 		});

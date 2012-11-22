@@ -288,9 +288,9 @@ class FMXW_Sphinx extends f12Class
         
         foreach($ary as $p) {
             foreach($keys as $k) {
-             //   $fifo = fopen($dir.$p, 'w+');
-              //  fwrite($fifo, $k);
-             //   fclose($fifo);            
+                $fifo = fopen($dir.$p, 'w+');
+                fwrite($fifo, $k);
+                fclose($fifo);
                 fwrite($fh, $where. ', ' . $p.'-'.$count++.', ['.$k."]\n");                
             }
         }

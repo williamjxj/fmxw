@@ -27,7 +27,6 @@
   {elseif {$sort=='cate_id'}} ({$rts.category})
   {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
   {else}
-  	{*if !{$smarty.session.fmxw.sort} && {$smarty.session.fmxw.search.key}*}
   	{if {$smarty.session.fmxw.search.key}}
 	  ({$rts.r}%)
 	{/if}
