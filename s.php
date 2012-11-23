@@ -56,7 +56,7 @@ if (isset($_GET['q'])) {
 		$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 		if ($res === false) {
 			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
-			exit;
+			return;
 		} else if ($obj -> cl -> GetLastWarning()) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
@@ -74,7 +74,7 @@ if (isset($_GET['q'])) {
 			if (!empty($q)) {
 				$obj->write_named_pipes($q); // $obj->backend_scrape($q);
 			}
-			exit;
+			return;
 		}
 
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
@@ -112,8 +112,8 @@ elseif(isset($_GET['js_ct_search'])) {
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
 }
-elseif(isset($_GET['js_sortby_dwmy'])) {
-	switch($_GET['js_sortby_dwmy']) {
+elseif(isset($_GET['js_dwmy'])) {
+	switch($_GET['js_dwmy']) {
 		case 'day24':
 			$min = $obj->now - 86400;
 			break;
@@ -131,16 +131,36 @@ elseif(isset($_GET['js_sortby_dwmy'])) {
 	}
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	// if (! empty($q)) $obj -> SetFilter("@title", $q);
-	$_SESSION[PACKAGE]['sort'] = 'created'; // $_GET['js_sortby_dwmy'];
+	$_SESSION[PACKAGE]['sort'] = 'created'; // $_GET['js_dwmy'];
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	//先按时间段（最近一小时/天/周/月）降序，再按相关度降序		
 	$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	$obj->cl->SetFilterRange("created", $min, $obj->now);
 }
-elseif(isset($_GET['js_sortby_attr'])) {
+elseif(isset($_GET['js_core'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$_SESSION[PACKAGE]['sort'] = $_GET['js_sortby_attr'];
+	switch($_GET['js_core']) {
+		//负面度
+		case 1:
+			$ek = '(负面|丑闻|真相)(新闻|评价|曝光)';
+			break;
+		//相关度
+		case 2:
+			$re = 1;
+			break;
+		//评论数
+		case 3:
+			$pl = 1;
+			break;
+		default:
+	}
+	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+
+}
+elseif(isset($_GET['js_attr'])) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$_SESSION[PACKAGE]['sort'] = $_GET['js_attr'];
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	
@@ -148,9 +168,9 @@ elseif(isset($_GET['js_sortby_attr'])) {
 	 * 内部属性的名字必须用特殊符号@开头，用户属性按原样使用就行了
 	 * @rank 和 @relevance 只是 @weight 的别名
 	 * SPH_SORT_ATTR_DESC 等价于"attribute DESC, @weight DESC, @id ASC"
-	  * =$obj->cl->SetSortMode(SPH_SORT_EXTENDED, $_GET['js_sortby_attr'].' desc, @weight DESC, @id ASC');
+	  * =$obj->cl->SetSortMode(SPH_SORT_EXTENDED, $_GET['js_attr'].' desc, @weight DESC, @id ASC');
 	 */
-	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_sortby_attr']);
+	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_attr']);
 }
 //以下不需要setmatchmode和setsortmode.
 /* 显示顺序：（1）是显示评论列表js_reping；（2）当用户点击要发表评论时，js_pk（3）当用户提交评论后自动刷新评论列表。
@@ -159,11 +179,11 @@ elseif(isset($_GET['js_pks1'])) {
     $cid = intval($_GET['cid']);    
     $obj -> assign('reping', $obj -> get_repings_by_cid($cid));
 	$obj->display($tdir6.'reping.tpl.html');
-	exit;
+	return;
 }
 elseif(isset($_GET['js_pks2'])) {
     $obj->display($tdir6.'pk.tpl.html');
-    exit;
+    return;
 }
 elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 	$pid = $obj->insert_pk();
@@ -172,15 +192,15 @@ elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
         $obj->display($tdir6.'reping.tpl.html');       
     }
     else echo "N";
-	exit;
+	return;
 }
 elseif(isset($_GET['js_category'])) {
 	echo json_encode($obj->get_categories());
-	exit;
+	return;
 }
 elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items($_GET['cate_id']));
-	exit;
+	return;
 }
 elseif(isset($_GET['page'])) {
 	//翻页显示。
@@ -190,7 +210,7 @@ elseif(isset($_GET['jsc'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
     $obj->display($tdir6.'single.tpl.html');
-    exit;
+    return;
 }
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');
@@ -198,7 +218,7 @@ elseif (isset($_GET['test'])) {
 	$obj->__p($_SESSION);
     //$obj -> assign('reping', $obj -> get_repings($q));
     //$obj->__p($obj -> get_repings($q));
-	exit;
+	return;
 }
 //要区分fm0，fm6吗？
 else {
@@ -240,7 +260,7 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
-    exit;
+    return;
 } else if ($obj -> cl -> GetLastWarning()) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 }
@@ -263,7 +283,7 @@ if (empty($res["matches"])) {
 	if (!empty($q)) {
 		$obj->write_named_pipes($q, __LINE__); // $obj->backend_scrape($q);
 	}
-	exit;
+	return;
 }
 
 //取得数据成功后，设置SESSION.
@@ -326,7 +346,7 @@ $mres = mysql_query($query);
 if (mysql_num_rows($mres) <= 0) {
     $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
     $obj -> __p($summary);
-    exit;
+    return;
 }
 
 //生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
@@ -391,7 +411,7 @@ $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-if (isset($_GET['page']) || isset($_GET['js_sortby_dwmy'])  || isset($_GET['js_sortby_attr']) || isset($_GET['js_ct_search']) || isset($_GET['fm8']) ) {
+if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_ct_search']) || isset($_GET['js_core']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
