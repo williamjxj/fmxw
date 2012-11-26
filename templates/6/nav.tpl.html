@@ -1,4 +1,4 @@
-{$sort=$smarty.session.fmxw.sort}
+{$sort=$smarty.session.fmxw.search.sort}
 {if $smarty.get.page}
 {$page=$smarty.get.page}
 {else}
@@ -11,29 +11,46 @@
   匹配总数：&lt;<strong>{$smarty.session.fmxw.search.total_found}</strong>&gt;,
   页数：&lt;<strong>{$smarty.session.fmxw.search.page}/{$smarty.session.fmxw.search.total_pages}</strong>&gt;,
   用时：&lt;<strong>{$smarty.session.fmxw.search.time}</strong>&gt;秒。</div>
-
 {include file="{$config.t6}pagination.tpl.html"}
-
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
   <li class="li3"><span class="badge badge-warning">{$no++}</span> <a
-  href="{$url}?cid={$rts.cid}&jsc=1" rel="address:{$url}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a>
-  {if {$sort=='clicks'}}({$rts.clicks})
-  {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
-  {elseif {$sort=='pinglun'}} ({$rts.pinglun})
-  {elseif {$sort=='likes'}} ({$rts.likes})
-  {elseif {$sort=='fandui'}} ({$rts.fandui})
-  {elseif {$sort=='created'}} ({$rts.created})
-  {elseif {$sort=='cate_id'}} ({$rts.category})
-  {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
-  {else}
-  	{if {$smarty.session.fmxw.search.key}}
-	  ({$rts.r}%)
-	{/if}
-  {/if}
-  <br>
-  {$rts.content}</li>
+  href="{$url}?cid={$rts.cid}&jsc=1" rel="address:{$url}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a> {if {$sort=='clicks'}}({$rts.clicks})
+    {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
+    {elseif {$sort=='pinglun'}} ({$rts.pinglun})
+    {elseif {$sort=='likes'}} ({$rts.likes})
+    {elseif {$sort=='fandui'}} ({$rts.fandui})
+    {elseif {$sort=='created'}} ({$rts.created})
+    {elseif {$sort=='cate_id'}} ({$rts.category})
+    {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
+    {else}
+    {if {$smarty.session.fmxw.search.key}}
+    ({$rts.r}%)
+    {/if}
+    {/if}
+    {if ! $comment_count}
+    <div class="comment"><span class="count">12</span>
+      <p>评论</p>
+    </div>
+    {/if} 
+    <span class="t_reply"><a href="javascript:;" class="talk fancybox.ajax" href="{$config.g}?js_talk=1">我要发言</a></span>
+    <br>
+    {$rts.content}</li>
   {/foreach}
 </ul>
-
-{include file="{$config.t6}pagination.tpl.html"}
+<script type="text/javascript">
+$(function() {
+	$('.talk').fancybox({
+		maxWidth	: 800,
+		maxHeight	: 600,
+		fitToView	: false,
+		width		: '70%',
+		height		: '70%',
+		autoSize	: false,
+		closeClick	: false,
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
+});
+</script>
+{include file="{$config.t6}pagination.tpl.html"} 

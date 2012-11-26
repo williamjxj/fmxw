@@ -1,4 +1,5 @@
-{$url={$config.search}}
+{$url={$config.ag}}
+{$q={$smarty.session.fmxw.search.key}}
 {$t6={$config.t6}}
 {include file="{$config.t}base_layout.tpl.html"}
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
@@ -7,6 +8,9 @@
 <script type="text/javascript" src="{$config.js.easing}"></script>
 <script type="text/javascript" src="include/jquery.address-1.4/jquery.address-1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery.fmxw1.js"></script>
+<!--加入fancybox-->
+<link rel="stylesheet" type="text/css" href="include/fancybox/source/jquery.fancybox.css?v=2.1.3" media="screen" />
+<script type="text/javascript" src="include/fancybox/source/jquery.fancybox.pack.js?v=2.1.3"></script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
@@ -19,18 +23,20 @@
   <div class="row-fluid">
     <div class="span1" id="sleft">
       <ul id="tf0" class="nav nav-tabs nav-stacked">
-        <li><a href="{$url}?q={$smarty.session.fmxw.search.key}&fm8=1" class="relevance" id="relevance" rel="tooltip">相关度</a></li>
+        <li><a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
+        <li><a href="{$url}?js_core=2" rel="tooltip" title="相关度">相关度</a></li>
+        <li><a href="{$url}?js_core=3" rel="tooltip" title="评论数">评论数</a></li>
       </ul>
       <br />
       <ul id="tf1" class="nav nav-tabs nav-stacked">
-        <li class="active"> <a href="{$url}?js_sortby_dwmy=all" class="sort_by_time" id="all" rel="tooltip">全部时间</a></li>
-        <li><a href="{$url}?js_sortby_dwmy=day24" class="sort_by_time" id="day">一天内</a></li>
-        <li><a href="{$url}?js_sortby_dwmy=week" class="sort_by_time" id="week">一周内</a></li>
-        <li><a href="{$url}?js_sortby_dwmy=month" class="sort_by_time" id="month">一月内</a></li>
-        <li><a href="{$url}?js_sortby_dwmy=year" class="sort_by_time" id="year">一年内</a></li>
+        <li class="active"> <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
+        <li><a href="{$url}?js_dwmy=day24" rel="tooltip" title="一天内的数据">一天内</a></li>
+        <li><a href="{$url}?js_dwmy=week" rel="tooltip" title="一月内的数据">一周内</a></li>
+        <li><a href="{$url}?js_dwmy=month" rel="tooltip" title="一月内的数据">一月内</a></li>
+        <li><a href="{$url}?js_dwmy=year" rel="tooltip" title="一年内的数据">一年内</a></li>
       </ul>
       <div class="alert" style="margin-top:20px;padding:2px;">
-        <form action="{$url}" method="get" name="ct_search" id="ct_search">
+        <form action="{$config.search}" method="get" name="ct_search" id="ct_search">
           <label for="category">类别:</label>
           <select name="category" id="category" style="width:100%">
             <option value="">--- 请选择 ---</option>
@@ -45,26 +51,17 @@
         </form>
       </div>
       <ul id="tf2" class="nav nav-tabs nav-stacked">
-        <li><a href="{$url}?js_sortby_attr=clicks" id="clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
-        <li><a href="{$url}?js_sortby_attr=guanzhu" id="guanzhu" rel="tooltip" title="关注度">关注度</a></li>
-        <li><a href="{$url}?js_sortby_attr=pinglun" id="pinglun" rel="tooltip" title="评论数">评论数</a></li>
-        <li><a href="{$url}?js_sortby_attr=likes" id="likes" rel="tooltip" title="赞同">赞同</a></li>
-        <li><a href="{$url}?js_sortby_attr=fandui" id="fandui" rel="tooltip" title="反对">反对</a></li>
+        <li><a href="{$url}?js_attr=clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
+        <li><a href="{$url}?js_attr=guanzhu" rel="tooltip" title="关注度">关注度</a></li>
+        <li><a href="{$url}?js_attr=pinglun" rel="tooltip" title="评论数">评论数</a></li>
+        <li><a href="{$url}?js_attr=likes" rel="tooltip" title="赞同">赞同</a></li>
+        <li><a href="{$url}?js_attr=fandui" rel="tooltip" title="反对">反对</a></li>
       </ul>
-      <!--ul id="sf" class="nav nav-list box">
-        <li class="active"><a class="all" rel="tooltip" title="全部来源">全部来源</a></li>
-        <li><a href="#baidu" rel="tooltip" title="百度">百度</a></li>
-        <li><a href="#soso" rel="tooltip" title="腾讯网">搜搜</a></li>
-        <li><a href="#google" rel="tooltip" title="谷歌">谷歌</a></li>
-        <li><a href="#yahoo" rel="tooltip" title="雅虎">雅虎</a></li>
-        <li><a href="#hk.yahoo" rel="tooltip" title="雅虎">雅虎香港</a></li>
-        <li><a href="#tw.yahoo" rel="tooltip" title="雅虎">雅虎台湾</a></li>
-      </ul-->
     </div>
     <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
     <div class="span7" id="sright">
       <div id="sd"></div>
-      <div class="alert"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
+      <div class="alert" style="margin-top:12px"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="news">{include file="{$config.t6}news.tpl.html"}</div>
       <div id="3pingluns">{include file="{$config.t}3pinglun.tpl.html"}</div>
@@ -81,21 +78,14 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('a.relevance', '#tf0').click(function() {
-		$('div#smiddle').load($(this).attr('href'));
-		$('a', '#tf0').closest('li').removeClass('active');
-		$(this).closest('li').addClass('active');
-		return false;
-	});
-	$('a.sort_by_time', '#tf1').click(function() {
-		$('div#smiddle').load($(this).attr('href'));
-		$('a.sort_by_time', '#tf1').closest('li').removeClass('active');
-		$(this).closest('li').addClass('active');
-		return false;
-	});
-	$('a', '#tf2').click(function() {
-		$('div#smiddle').load($(this).attr('href'));
-		$('a', '#tf2').closest('li').removeClass('active');
+	{if {$q} || {$q}!='所有记录'}
+		$('#q').val('{$q}');
+	{/if}
+	
+	var $main = $('div#smiddle');
+	$('a', '#sleft').click(function() {
+		$main.html($('<div class="ajaxloading"></div>')).load($(this).attr('href'));
+		$('a', '#sleft').closest('li').removeClass('active');
 		$(this).closest('li').addClass('active');
 		return false;
 	});
@@ -131,13 +121,13 @@ $(function() {
 			type: 'get',
 			url: url,
 			success: function(data) {
-				$('div#smiddle').hide().html(data).fadeIn(200);
+				$main.hide().html(data).fadeIn(200);
 			}
 		});
 		return false;
 	});
 
-	//PK框的显示和隐藏。
+	//PK框的显示和隐藏。 替换掉！！！
 	$('#apk_form').click(function() {
 		if($('#3pingluns').length)
 			$('html,body').animate({ scrollTop: $('#3pingluns').offset().top }, 'slow');
@@ -147,7 +137,7 @@ $(function() {
 	$('#category').change(function() {
 		cate_id = $(this).attr('value');
 		$.getJSON("{$url}?js_item=1&cate_id=" + cate_id, function(data) {
-			var items ='<option value="0">Default</option>\n';
+			var items ='<option value="0">- 所有栏目 -</option>\n';
 			$.each(data, function(id, name) {
 				items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
 			});
@@ -159,19 +149,16 @@ $(function() {
 	
 	//排序框Form的提交。
 	$('#ct_search').submit(function(e) {
-		$('div#smiddle').load('{$url}', $(this).serialize()+'&js_ct_search=1');
+		$main.load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
 
 	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
-	
-	{if $smarty.session.fmxw.search.key || {$smarty.session.fmxw.search.key}!='所有记录'}
-		$('#q').val('{$smarty.session.fmxw.search.key}');
-	{/if}
+
 });
 $(window).load(function() {
 	$.getJSON('{$url}?js_category=1', function(data) {
-		var cates='<option value="0">Default</option>\n';
+		var cates='<option value="0">- 所有类别 -</option>\n';
 		$.each(data, function(key, val) {
 			cates += '<option value="' + parseInt(val[0]) + '">' + val[1] + '</option>\n';
 		});

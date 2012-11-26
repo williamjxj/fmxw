@@ -1,10 +1,9 @@
 <?php
 require_once (ROOT . 'etc/coreseek.php');
-require_once (ROOT . 'f12Class.php');
 
-class FMXW_Sphinx extends f12Class 
+class FMXW extends BaseClass 
 {
-    var $cl, $mdb2, $conf, $db, $memd, $now, $pipes;
+    var $cl, $mdb2, $conf, $db, $memd, $now, $pipes, $search;
     function __construct() 
     {
         parent::__construct();
@@ -16,15 +15,46 @@ class FMXW_Sphinx extends f12Class
         $this -> memd = $this -> get_memcached();
         $this -> now = time();
         $this -> pipes = $this -> get_pipes();
-		
-		//已经在baseClass中定义了。
-        //$this -> lang = $_SESSION[PACKAGE]['language'];
-        //$this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
-        
-		// Some variables which are used throughout the script
-        // $this -> m = $this -> get_mongo();
-        //$this -> dwmy = $this -> get_dwmy();
-        //$this -> st = $this -> get_sort();
+        $this->search = $this->init_search();
+    }
+
+    /*
+     * 这里维护一个数组，存放所有关于'search'的信息。将它传递给$_SESSION[PACKAGE][SEARCH]
+     */
+    function init_search() {
+        return array(
+            'q' => '',
+            'e' => '( 负面|丑闻|真相 ) | ( 新闻|评价|曝光 )',
+            'key' => '',
+            'page' => 1,
+            'total' => 0,
+            'total_pages' => 0,
+            'total_found' => 0,
+            'time' => 0,
+            'category' => '',
+            'cate_id' => 0,
+            'item' => '',
+            'iid' => 0,
+            'cid' => 0,
+            'dwmy' => '', //day24,week,month,year
+            'core' => 1, //1-负面度,2-相关度,3-评论数
+            'attr' => '', //clicks,guanzhu,pinglun,likes,fandui
+            'sort' => '',
+        );       
+    }
+    function unset_search() {
+        foreach(array_keys($_SESSION[PACKAGE][SEARCH]) as $k) unset($$_SESSION[PACKAGE][SEARCH][$k]);
+    }
+    
+    function set_keywords($key) {
+        //将关键词写入keywords表
+        if ($key != '') {
+            $user = isset($_SESSION[PACKAGE]['username']) ? $_SESSION[PACKAGE]['username'] : '';
+
+            $query = "INSERT INTO keywords (keyword,createdby,created) VALUES " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
+            mysql_query($query);
+        }
+        return true;
     }
 
     function get_pipes() {
@@ -86,76 +116,11 @@ class FMXW_Sphinx extends f12Class
         return array('d' => 'DESC', 'a' => 'ASC');
     }
 
-    function get_matchmode($q) {
-        //Choose an appriate mode (depending on the query)
-        $mode = SPH_MATCH_ALL;
-        if (strpos($q, '~') === 0) {
-            $q = preg_replace('/^\~/', '', $q);
-            if (substr_count($q, ' ') > 1)//over 2 words
-                $mode = SPH_MATCH_ANY;
-        } elseif (preg_match('/[\|\(\)"\/=-]/', $q)) {
-            $mode = SPH_MATCH_EXTENDED;
-        }
-    }
-
-    // 加入 MongoDB 和 Memcached。
-    //XX 连接到localhost:27017
-    function get_mongo() {
-        $m = new Mongo();
-        $db = $m -> search_lib;
-        $c = $db -> keywords;
-        return $c;
-    }
-
     // 连接到localhost:11211
     function get_memcached() {
         $memd = new Memcached();
         $memd -> addServer('localhost', 11211);
         return $memd;
-    }
-
-    //XX 不要插入keyword和tags表了，代替用
-    function set_keywords_old($key) {
-        if (empty($key))
-            return;			
-        $matched = $this -> m -> findOne(array('q' => $key));
-        if (empty($matched)) {
-            $this -> m -> insert(array('q' => $key, 'count' => 1, 'date' => new MongoDate()));
-        } else {
-            // quicker than 'q'?
-            $id = (string)$matched['_id'];
-            $this -> m -> update(
-				array('_id' => new MongoId($id)), 
-				array('$inc' => array('count' => 1), '$set' => array('date' => new MongoDate())), 
-				array('upsert' => true)
-			);
-        }
-        //return $this->m->findOne(array('q' => $key));
-		/*将关键词的相关词放在哪里？这里插入数据库的keywords表，Perl的Scraper从数据库中找到kid，然后将相关词插入key_related表。 */
-		$user = isset($_SESSION[PACKAGE]['username']) ? $_SESSION[PACKAGE]['username'] : '';
-		if (empty($user))
-			$user = basename(__FILE__) . ', search';
-
-		$query = "INSERT INTO keywords (keyword,createdby, created) VALUES " . "('" . $key . "', '" . $user . "', now()) ON DUPLICATE KEY UPDATE total=total+1";
-		mysql_query($query);
-    
-	}
-
-	// XX 以后修改之，现在mongoDB对应项为空，所以需要从mysql传过来。
-    function get_key_related_old($q) {
-        $sql = "select rid, rk, kurl from key_related where keyword like '%" . $q . "%' order by rand() limit 0, " . TAB_LIST;
-        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($res)) {
-            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
-        }
-        foreach ($res as $v) {
-            $this -> m -> update(
-				array('key' => $v{'rk'}), 
-				array('$inc' => array('count' => 1), '$set' => array('date' => new MongoDate())), 
-				array('upsert' => true)
-			);
-        }
-        return $res;
     }
 
 	// 替代f12Class的get_key_related, 用sphinx 的/etc/new9313.conf
@@ -206,18 +171,6 @@ class FMXW_Sphinx extends f12Class
         }
         return $ary;
     }
-	
-    //error, warning, status, fields+attrs, matches, total, total_found, time, words
-    function set_session($res) 
-	{
-        //根据 Sphinx Query返回的结果填充SESSION,该SESSION存于memcached中。
-        $_SESSION[PACKAGE][SEARCH]['key'] = empty($_GET['q']) ? '' : trim($_GET['q']);
-        $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
-        $_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
-        $_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
-        $_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
-        $_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
-    }
 
     function generate_sql($ids) {
         $lang_case = " and language = '" . $this -> lang . "' ";
@@ -228,57 +181,7 @@ class FMXW_Sphinx extends f12Class
         return $sql;
     }
 
-	// XX mongo数据库一律用shpinx代替！
-    function backend_scrape_mongo($key) {
-        if (empty($key))
-            return;
-
-        //存放需要查询的关键词，和它的相关信息，并将它们生成一个字符串。
-        $ary = array();
-        //如果Memcached 不存在，就生成实例。
-        $m = $this -> m;
-
-        //如果找到这个关键词，直接用。
-        //如果没有找到这个关键词，就尽量match它。
-        $got = $m -> findOne(array('key' => $key));
-        if (!$got) {
-            $regex = new MongoRegex("/$key/i");
-            $got = $m -> findOne(array('key' => $regex));
-            //返回第一个就可以，如果返回所有的，就没有必要。
-            //$got = iterator_to_array($cursor);
-        }
-
-        //如果'default'也是空，memcached server reset或者stop了，就需要临时赋值。
-        if (empty($got)) {
-            $ary = array(
-				'key' => $key, 
-				'include' => '最新负面新闻 丑闻曝光', 
-				'exclude' => '-(优质 | 健康 | 营养 | 美味)', 
-			);
-        } else {
-            $ary = array(
-				'key' => $key, 
-				'include' => implode(' ', $got[0]), 
-				'exclude' => '-(' . implode(' | ', $got[1]) . ')', 
-			);
-        }
-        //这样比较整齐.
-        $search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
-
-        // $this -> write_named_pipes($search_key);
-    }
-
-	//XX 'sogou' => array($dir . '.sogou'),
-    function write_named_pipes_old($search_key) {
-        //每次点击都搜索，好像不太好。
-        //改为：如果今天点击过了，就不再搜索了。
-        foreach ($this->pipes as $p) {
-            $fifo = fopen($p, 'r+');
-            fwrite($fifo, $search_key);
-            fclose($fifo);
-        }
-    }
-    function write_named_pipes($search_key, $where) {
+    function write_named_pipes($search_key, $where='行数') {
         $count = 1;
         $dir = '/home/williamjxj/scraper/';
         //劣质 过期 腐烂 变质 腐败 丑闻 最新负面新闻 曝光 内部 传闻
@@ -296,44 +199,6 @@ class FMXW_Sphinx extends f12Class
         }
         fflush($fh);
         fclose($fh);
-    }
-
-	//XX 找到匹配的添加词，添加到关键词之后用于查询。
-    function backend_scrape($key) {
-        if (empty($key))
-            return;
-
-        //存放需要查询的关键词，和它的相关信息，并将它们生成一个字符串。
-        $ary = array();
-        $m = $this -> memd;
-
-        //根据查询关键词，从memcached中找相关的include,exclude。
-        $got = $m -> get($key);
-        //utf8_encode();mb_detect_encoding();
-
-        if (empty($got)) {
-            //if($m->getResultCode() == Memcached::RES_NOTFOUND) echo "没有设置<br>\n";
-            //else echo "设置了，但是无法得到信息。[". $key . "]<br>\n";
-            $got = $m -> get('default');
-        }
-
-        //如果'default'也是空，memcached server reset或者stop了，就需要临时赋值。
-        if (empty($got)) {
-            $ary = array(
-				'key' => $key, 
-				'include' => '最新负面新闻 丑闻曝光', 
-				'exclude' => '-(优质 | 健康 | 营养 | 美味)', 
-			);
-        } else {
-            $ary = array(
-				'key' => $key, 
-				'include' => implode(' ', $got[0]), 
-				'exclude' => '-(' . implode(' | ', $got[1])  . ')'
-			);
-        }
-        //这样比较整齐.
-        $search_key = $ary['key'] . ' ' . $ary['include'] . ' ' . $ary['exclude'];
-        $this -> write_named_pipes($search_key);
     }
 
 	// 用于摘要。
@@ -358,21 +223,6 @@ class FMXW_Sphinx extends f12Class
         $t = preg_replace("/\s+$/s", '', $t); //remove tail space/lines.
         $t = preg_replace("/&nbsp;/s", ' ', $t);
         return $t;
-    }
-
-    //XX Not use anymore.
-    function my_process($docs) {
-        $newd = array();
-        foreach ($docs as $str) {
-            $t = preg_replace("/^\s*lang=\"zh\">/", '', $str);			
-            $t = preg_replace("/^\s+/s", '', $t);
-            //remove leading space/lines.
-            $t = preg_replace("/\s+$/g", '', $t);
-            //remove tail space/lines.
-            $t = preg_replace("/&nbsp;/s", ' ', $t);
-            $newd[] = trim($t);
-        }
-        return $newd;
     }
 
 	function get_categories() {
@@ -427,5 +277,67 @@ class FMXW_Sphinx extends f12Class
 		return mysql_insert_id();
     }	
 
+    function draw()
+    {
+        $current_page = $_SESSION[PACKAGE][SEARCH]['page'] ? $_SESSION[PACKAGE][SEARCH]['page'] : 1;
+        $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
+        $links = array();
+        $queryURL = '';
+		/**
+        if (count($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if ( $key=='q' ) $queryURL .= '&' . $key . '=' . $value;
+            }
+        }
+        foreach($_SESSION[PACKAGE][SEARCH] as $k=$v) {
+          $queryURL .= '&' . $k . '=' . urlencode($v);
+        }
+		*/
+        if (($total_pages) > 1) {
+            if ($current_page != 1) {
+                $links[] = '<a href="?page=1' . $queryURL . '">&laquo;&laquo; 首页 </a>';
+                $links[] = '<a href="?page=' . ($current_page - 1) . $queryURL . '">&laquo; 前页</a>';
+            }
+
+            for ($j = ($current_page - 4); $j < ($current_page + 4); $j++) {
+                if ($j < 1)
+                    continue;
+                if ($j > $total_pages)
+                    break;
+                if ($current_page == $j) {
+                    $links[] = '<a href="javascript:;">' . $j . '</a>';
+                } else {
+                    $links[] = '<a href="?page=' . $j . $queryURL . '">' . $j . '</a>';
+                }
+            }
+
+            if ($current_page < $total_pages) {
+                $links[] = '<a href="?page=' . ($current_page + 1) . $queryURL . '"> 下页 &raquo; </a>';
+                $links[] = '<a href="?page=' . ($total_pages) . $queryURL . '"> 末页 &raquo;&raquo; </a>';
+            }
+            return $links;
+        }
+    }
+
+    //还有用，网友在查。
+    function get_key_related($q) {
+        $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
+        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        return $res;
+    }
+
+    // 输出内容.
+    function get_content_1($cid) {
+        $sql = "select * from contents where cid=" . $cid;
+        $res = mysql_query($sql);
+        $row = mysql_fetch_assoc($res);
+    //if(mysql_num_rows($res)>0) $_SESSION[PACKAGE][SEARCH]['title']=htmlspecialchars($row['title']);
+    // $this->__p($_SESSION);
+        mysql_free_result($res);
+        return $row;
+    }
 }
 ?>

@@ -24,6 +24,7 @@ if (!isset($config)) {
     'home' => HOME, 
     'base' => ROOT,
 	'search' => 's.php',
+	'ag' => 'ag.php',
     'header' => array(
         'lang' => 'zh_CN', 
         'charset' => 'UTF-8', 
@@ -45,7 +46,7 @@ if (!isset($config)) {
         'ga' => 'js/ga.js', 
         'cookie' => 'js/cookie.js',
         'easing' => 'js/jquery.easing.1.3.js', 
-        'fancybox' => 'include/jquery.fancybox', 
+        'fancybox' => 'include/fancyBox/', 
         'fmxw' => 'js/dixi.js',
     ),
     'f0' => array(

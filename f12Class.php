@@ -103,6 +103,9 @@ class f12Class extends BaseClass
                     $queryURL .= '&' . $key . '=' . $value;
             }
         }
+		//foreach($_SESSION[PACKAGE][SEARCH] as $k=$v) {
+		//	$queryURL .= '&' . $k . '=' . urlencode($v);
+		//}
         if (($total_pages) > 1) {
             if ($current_page != 1) {
                 $links[] = '<a href="?page=1' . $queryURL . '">&laquo;&laquo; 首页 </a>';
