@@ -285,7 +285,12 @@ class FMXW extends BaseClass
 		
         $res = mysql_query($sql);
         if(! $res) return false;
-		return mysql_insert_id();
+        $pid = mysql_insert_id();
+
+        $sql = "update contents set pinglun=pinglun+1 where cid=".$cid;
+        $res = mysql_query($sql);
+
+		return $pid;
     }	
 
     function draw()
