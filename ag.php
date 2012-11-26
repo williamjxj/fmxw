@@ -16,7 +16,7 @@ require_once (ROOT . 'sClass.php');
 set_lang();
 
 try {
-    $obj = new FMXW_Sphinx();
+    $obj = new FMXW();
 } catch (Exception $e) {
     echo $e -> getMessage(), "line __LINE__.\n";
 }

@@ -335,8 +335,8 @@ $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-$http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_ct_search');
-if(in_array(key($_GET), $http_get) {}
+// $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_ct_search');
+// if(in_array(key($_GET), $http_get) {}
 
 if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_ct_search']) || isset($_GET['js_core']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.

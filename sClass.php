@@ -1,5 +1,6 @@
 <?php
 require_once (ROOT . 'etc/coreseek.php');
+require_once (ROOT . 'configs/base.inc.php');
 
 class FMXW extends BaseClass 
 {
@@ -123,9 +124,19 @@ class FMXW extends BaseClass
         return $memd;
     }
 
+    //还有用，网友在查。
+    function get_key_related($q) {
+        $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
+        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
+        if (PEAR::isError($res)) {
+            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
+        }
+        return $res;
+    }
+
 	// 替代f12Class的get_key_related, 用sphinx 的/etc/new9313.conf
 	// 'localhost', 9312, "keyRelated delta"
-	function get_key_related($q) {
+	function get_key_related_1($q) {
 		if (empty($q)) return;
 		$kss = new SphinxClient;
         $kss->SetServer($this->conf['sphinx']['host'], $this->conf['sphinx']['port']);
@@ -317,16 +328,6 @@ class FMXW extends BaseClass
             }
             return $links;
         }
-    }
-
-    //还有用，网友在查。
-    function get_key_related($q) {
-        $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
-        $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
-        if (PEAR::isError($res)) {
-            die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
-        }
-        return $res;
     }
 
     // 输出内容.
