@@ -542,14 +542,14 @@ div.comment {
 	-moz-border-left-colors: none;
 	-moz-border-right-colors: none;
 	-moz-border-top-colors: none;
-	border-color: #458FCE #D2E1F1 #D2E1F1;
+	border-color: #D2E1F1;
 	border-image: none;
 	border-style: solid;
 	border-width: 1px;
-	height: 20px;
+	/*height: 20px;
+	margin-right: 20px;*/
 	width: 45px;
 	float: right;
-	margin-right: 20px;
 	text-align: center;
 }
 div.comment .count {
@@ -560,8 +560,12 @@ div.comment .count {
 div.comment p {
 	background-color: #F5F8FD;
 	color: #A90000;
-	font-family: "Î¢ÈíÑÅºÚ","ºÚÌå";
+	font-family: "Î¢ï¿½ï¿½ï¿½Åºï¿½","ï¿½ï¿½ï¿½ï¿½";
 	font-size: 12px;
 	margin: 0 auto;
 	padding: 1px 0 0;
+}
+.reply {
+	float:right;
+	display:inline;
 }

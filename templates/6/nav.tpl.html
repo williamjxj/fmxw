@@ -29,11 +29,11 @@
     {/if}
     {/if}
     {if ! $comment_count}
-    <div class="comment"><span class="count">12</span>
+    <div class="comment"><span class="count">{$rts.pinglun}</span>
       <p>评论</p>
     </div>
     {/if} 
-    <span class="t_reply"><a href="javascript:;" class="talk fancybox.ajax" href="{$config.g}?js_talk=1">我要发言</a></span>
+    <span class="t_reply"><a class="talk fancybox.ajax" href="{$config.g}?js_talk=1">我要发言</a></span>
     <br>
     {$rts.content}</li>
   {/foreach}
