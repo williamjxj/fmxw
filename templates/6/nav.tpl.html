@@ -24,13 +24,13 @@
     {elseif {$sort=='cate_id'}} ({$rts.category})
     {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
     {else}
-    {if {$smarty.session.fmxw.search.key}}
-    ({$rts.r}%)
-    {/if}
+     {if {$smarty.session.fmxw.search.key}}
+      ({$rts.r}%)
+     {/if}
     {/if}
     {if ! $comment_count}
-    <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_talk=1">{$rts.pinglun}</a>评论</span>
-      <p><a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1">我要PK</a></p>
+    <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}">{$rts.pinglun}</a>评论</span>
+      <p><a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}">我要PK</a></p>
     </div>
     {/if} 
     <br>
