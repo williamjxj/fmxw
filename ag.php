@@ -21,6 +21,9 @@ try {
     echo $e -> getMessage(), "line __LINE__.\n";
 }
 
+list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
+$obj -> assign('config', $config);
+
 //////////////////////////////////////////////
 /**
  * 以下不需要setmatchmode和setsortmode.
