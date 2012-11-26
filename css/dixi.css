@@ -548,6 +548,7 @@ div.comment {
 	border-width: 1px;
 	/*height: 20px;
 	margin-right: 20px;*/
+	vertical-align:middle;
 	width: 45px;
 	float: right;
 	text-align: center;
