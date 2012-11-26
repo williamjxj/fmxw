@@ -558,7 +558,7 @@ div.comment .count {
 	font-size: 1.2em;
 	font-weight: bold;
 }
-div.comment p {
+div.comment a {
 	background-color: #F5F8FD;
 	color: #A90000;
 	font-family: "微软雅黑", "黑体";
@@ -572,4 +572,12 @@ div.comment a:hover {
 }
 div.comment a:active {
 	background: none repeat scroll 0 0 #BBBBBB;
+}
+.box4 {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #E7E5E6;
+	box-shadow: 2px 2px 10px #E7E5E6;
+	margin: 10px 0;
+	padding: 0 auto;
+	position: relative;
 }
