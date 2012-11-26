@@ -558,7 +558,7 @@ div.comment .count {
 	font-size: 1.2em;
 	font-weight: bold;
 }
-div.comment p {
+div.comment a {
 	background-color: #F5F8FD;
 	color: #A90000;
 	font-family: "微软雅黑", "黑体";
