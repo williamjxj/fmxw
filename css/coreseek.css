@@ -1,5 +1,7 @@
 @charset "utf-8";
-/* 主要就是 reset bootstrap 设置的属性*/
+/* 主要就是 reset bootstrap 设置的属性
+ * 由高级搜索的adsearchClass,coreseekClass.php调用。
+ */
 .clear {
 	clear: both;
 }

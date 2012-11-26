@@ -213,6 +213,8 @@ li.li3:nth-child(even) {
 	border-style: solid;
 	border-width: 1px;
 	border-top: 1px solid #DBDADA;
+	max-height: 500px;
+	overflow: scroll;
 }
 /** 其它扩展 **/
 #affix .bshare-custom {
