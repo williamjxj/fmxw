@@ -561,12 +561,15 @@ div.comment .count {
 div.comment p {
 	background-color: #F5F8FD;
 	color: #A90000;
-	font-family: "΢���ź�","����";
+	font-family: "微软雅黑", "黑体";
 	font-size: 12px;
 	margin: 0 auto;
 	padding: 1px 0 0;
 }
-.reply {
-	float:right;
-	display:inline;
+div.comment a:hover {
+	box-shadow: 2px 2px 2px #888888;
+	text-decoration: underline;
+}
+div.comment a:active {
+	background: none repeat scroll 0 0 #BBBBBB;
 }
