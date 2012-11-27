@@ -61,6 +61,7 @@ $(function() {
 	var f = $('#form_fayan');
 	$('button:submit', f).click(function(e) {
 		e.preventDefault();
+
 		if(!validator.form()) {
 			$('#fayan').attr('placeholder', '请输入您的PK评论。');
 			f.find('div.control-group').first().removeClass('success').addClass('error');
@@ -82,6 +83,10 @@ $(function() {
 
 			f.get(0).reset();
 			parent.$.fancybox.close();
+
+			var t= $('input[name=cid]').val();
+			//var t1 = $('#p'+t, window.opener.document).text(); p'+t, window.opener.document).text(t1+1);
+			$('#p'+t).text(parseInt($('#p'+t).text())+1);
 			
 			return false;
 		});
