@@ -253,14 +253,11 @@ elseif ($obj -> cl -> GetLastWarning()) {
 $_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
 
 if (empty($res["matches"])) {
-	$obj -> assign('_th', $obj -> get_header_label($header));
-	$obj -> assign('_tf', $obj -> get_footer_label($footer));	
-	$obj -> assign('sitemap', $obj -> get_sitemap());
-	$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
-	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
-	$obj->display($tdir6.'ns.tpl.html');
-	
-	if (!empty($q)) $obj->write_named_pipes($q, __LINE__);
+	$info = array();
+	foreach($_GET as $k=>$v) $info[$k] = htmlspecialchars($v);
+	foreach($_SESSION[PACKAGE][SEARCH as $k=>$v) $info[$k] = htmlspecialchars($v);
+	$obj -> assign('info', $info);
+	$obj->display($tdir6.'norecord.tpl.html');	
 	return;
 }
 
