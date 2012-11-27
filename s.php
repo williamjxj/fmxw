@@ -56,8 +56,10 @@ if (isset($_GET['q'])) {
 		elseif ($obj -> cl -> GetLastWarning()) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
+
+		$_SESSION[PACKAGE][SEARCH]['key'] = $q;
+
 		if (empty($res["matches"])) {
-			$_SESSION[PACKAGE][SEARCH]['key'] = $q;
 			$obj -> assign('_th', $obj -> get_header_label($header));
 			$obj -> assign('_tf', $obj -> get_footer_label($footer));			
 			$obj -> assign('sitemap', $obj -> get_sitemap());
@@ -131,7 +133,7 @@ elseif(isset($_GET['js_core'])) {
 }
 //翻页显示。
 elseif(isset($_GET['page'])) {
-	$obj->__p($_SESSION);
+	//$obj->__p($_SESSION);
 }
 elseif(isset($_GET['js_attr'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
@@ -190,7 +192,7 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-echo 'q=['.$q.'], key=['.$key."]<br>\n";
+// echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
 $res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
 
@@ -202,8 +204,9 @@ elseif ($obj -> cl -> GetLastWarning()) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 }
 
+$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
+
 if (empty($res["matches"])) {
-	$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
 	$obj -> assign('_th', $obj -> get_header_label($header));
 	$obj -> assign('_tf', $obj -> get_footer_label($footer));	
 	$obj -> assign('sitemap', $obj -> get_sitemap());
@@ -262,20 +265,22 @@ if (!empty($_SESSION[PACKAGE][SEARCH]['sort'])) {
 	switch($_SESSION[PACKAGE][SEARCH]['sort']) {
 		case 1:
 		case 2:
-		case 3:
-			$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";	
-			break;
 		case 'cate_id':
 		case 'iid':
+			$query .= ' ORDER BY FIELD(cid, ' .  $ids . ')';
+			break;
+		case 3:
+			$query .= ' ORDER BY pinglun DESC, created DESC ';
+			break;
 		default:	
-			$query .= " ORDER BY " . $_SESSION[PACKAGE][SEARCH]['sort'] . " DESC ";
+			$query .= ' ORDER BY ' . $_SESSION[PACKAGE][SEARCH]['sort'] . ' DESC ';
 		break;
 	}	
 }
 else
 	$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";	
 	
-echo $query . "<br>\n";
+//echo $query . "<br>\n";
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);

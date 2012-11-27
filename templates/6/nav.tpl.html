@@ -15,7 +15,7 @@
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
   <li class="li3"><span class="badge badge-warning">{$no++}</span> <a
-  href="{$url}?cid={$rts.cid}&jsc=1" rel="address:{$url}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a> {if {$sort=='clicks'}}({$rts.clicks})
+  href="{$config.ag}?cid={$rts.cid}&jsc=1" rel="address:{$config.ag}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a> {if {$sort=='clicks'}}({$rts.clicks})
     {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
     {elseif {$sort=='pinglun'}} ({$rts.pinglun})
     {elseif {$sort=='likes'}} ({$rts.likes})
@@ -42,14 +42,22 @@ $(function() {
 	$('a.talk').fancybox({
 		maxWidth	: 800,
 		maxHeight	: 600,
-		fitToView	: true,
+		fitToView	: false,
 		width		: '70%',
 		height		: '90%',
-		autoSize	: true,
+		autoSize	: false,
 		closeClick	: false,
 		openEffect	: 'none',
 		closeEffect	: 'none'
 	});
+	$('li.li3').hover(
+		function() {
+			$(this).addClass('highlight').find('div.comment').show();
+		},
+		function() {
+			$(this).removeClass('highlight').find('div.comment').hide();
+		}
+	);
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 

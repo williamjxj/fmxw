@@ -81,12 +81,14 @@ $(function() {
 			$('#pks1').html(data);
 			$('#pks1 div.reping_item:first-child').animate({ backgroundColor: 'LightGoldenRodYellow' }, 3000);
 
+			var t1 = $('input[name=cid]', f).val();
+			var t2 = parseInt($('#p'+t1).text());
+
 			f.get(0).reset();
 			parent.$.fancybox.close();
 
-			var t= $('input[name=cid]').val();
 			//var t1 = $('#p'+t, window.opener.document).text(); p'+t, window.opener.document).text(t1+1);
-			$('#p'+t).text(parseInt($('#p'+t).text())+1);
+			$('#p'+t1).text(t2+1);
 			
 			return false;
 		});

@@ -1,4 +1,5 @@
-{$url={$config.ag}}
+{$url={$config.search}}
+{$url1={$config.ag}}
 {$q={$smarty.session.fmxw.search.key}}
 {$t6={$config.t6}}
 {include file="{$config.t}base_layout.tpl.html"}
@@ -136,7 +137,7 @@ $(function() {
 	
 	$('#category').change(function() {
 		cate_id = $(this).attr('value');
-		$.getJSON("{$url}?js_item=1&cate_id=" + cate_id, function(data) {
+		$.getJSON("{$url1}?js_item=1&cate_id=" + cate_id, function(data) {
 			var items ='<option value="0">- 所有栏目 -</option>\n';
 			$.each(data, function(id, name) {
 				items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
@@ -157,7 +158,7 @@ $(function() {
 
 });
 $(window).load(function() {
-	$.getJSON('{$url}?js_category=1', function(data) {
+	$.getJSON('{$url1}?js_category=1', function(data) {
 		var cates='<option value="0">- 所有类别 -</option>\n';
 		$.each(data, function(key, val) {
 			cates += '<option value="' + parseInt(val[0]) + '">' + val[1] + '</option>\n';
