@@ -563,7 +563,7 @@ div.comment a {
 	color: #A90000;
 	font-family: "微软雅黑", "黑体";
 	font-size: 12px;
-	margin: 0 auto;
+	margin: auto;
 	padding: 1px 0 0;
 }
 div.comment a:hover {

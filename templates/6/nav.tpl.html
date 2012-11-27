@@ -30,7 +30,7 @@
     {/if}
     {if ! $comment_count}
     <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}">{$rts.pinglun}</a>评论</span>
-      <p><a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}">我要PK</a></p>
+      <p><a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}&title={$rts.title}">我要PK</a></p>
     </div>
     {/if} 
     <br>
@@ -39,17 +39,7 @@
 </ul>
 <script type="text/javascript">
 $(function() {
-	$('.talk').fancybox({
-		maxWidth	: 800,
-		maxHeight	: 600,
-		fitToView	: false,
-		width		: '70%',
-		height		: '70%',
-		autoSize	: false,
-		closeClick	: false,
-		openEffect	: 'none',
-		closeEffect	: 'none'
-	});
+	$('a.talk').fancybox();
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 
