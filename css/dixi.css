@@ -547,20 +547,16 @@ div.comment {
 	-moz-border-left-colors: none;
 	-moz-border-right-colors: none;
 	-moz-border-top-colors: none;
-	border-color: #D2E1F1;
-	border-image: none;
-	border-style: solid;
-	border-width: 1px;
+	border: 1px solid #D2E1F1;
 	vertical-align:middle;
 	width: 45px;
 	float: right;
 	text-align: center;
-	padding-top:3px;
-	padding-bottom:3px;
-	display: none;
+	height: 24px;
+	padding: 3px 2px 3px 2px;
+	margin: 4px 8px 4px 4px;
 	z-index: 20;
-	height: 20px;
-	margin-right: 8px;
+	display: none;
 }
 div.comment .count {
 	font-family: Arial,Helvetica,sans-serif;

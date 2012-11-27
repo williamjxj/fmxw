@@ -2,6 +2,7 @@
 session_start();
 error_reporting(E_ALL);
 define("ROOT", "./");
+
 require_once (ROOT . "configs/config.inc.php");
 global $config;
 
@@ -32,6 +33,8 @@ if (isset($_GET['q'])) {
 
 	if(empty($_GET['q'])) {
 	    $q = $key = '';
+		$_SESSION[PACKAGE][SEARCH]['key'] ='';		
+		$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 		
 		$obj->cl->SetMatchMode(SPH_MATCH_FULLSCAN);
 		
@@ -39,6 +42,8 @@ if (isset($_GET['q'])) {
 	}
 	else {
 	    $q = trim($_GET['q']);
+		$_SESSION[PACKAGE][SEARCH]['key'] = $q;
+		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
 		$obj->set_keywords($q);
 		
@@ -57,8 +62,6 @@ if (isset($_GET['q'])) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
 
-		$_SESSION[PACKAGE][SEARCH]['key'] = $q;
-
 		if (empty($res["matches"])) {
 			$obj -> assign('_th', $obj -> get_header_label($header));
 			$obj -> assign('_tf', $obj -> get_footer_label($footer));			
@@ -70,16 +73,15 @@ if (isset($_GET['q'])) {
 			$obj->write_named_pipes($q, __LINE__);
 			return;
 		}
-
+		
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-		$obj->cl->SetArrayResult(true);
+
+        $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
 		
 		$weights = array('title'=>11, 'content'=>10);
 
 		$obj->cl->SetFieldWeights( $weights );
 	}
-
-    $obj -> cl -> SetArrayResult(true);
 }
 elseif(isset($_GET['js_dwmy'])) {
 	switch($_GET['js_dwmy']) {
@@ -99,7 +101,7 @@ elseif(isset($_GET['js_dwmy'])) {
 			$min = 0;
 	}
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$key = $q . $e;
+
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
@@ -112,39 +114,70 @@ elseif(isset($_GET['js_dwmy'])) {
 elseif(isset($_GET['js_core'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	switch($_GET['js_core']) {
-		case 1: //负面度
-			$key = $q . $e;
-			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
-			break;
 		case 2: //相关度
 			$key = $q;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
 			break;
 		case 3: //评论数
 			$key = $q;
-			$_SESSION[PACKAGE][SEARCH]['sort'] = 3;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 'pinglun';
 			break;
+		case 1: //负面度
 		default:
-			$key = $q;
-			$_SESSION[PACKAGE][SEARCH]['sort'] = 4;
+			$key = $q . $e;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
+			break;
 	}
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+
+    $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");        
 }
-//翻页显示。
-elseif(isset($_GET['page'])) {
-	//$obj->__p($_SESSION);
-}
-elseif(isset($_GET['js_attr'])) {
+elseif(isset($_GET['js_attr'])) {	
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	
+
 	$_SESSION[PACKAGE][SEARCH]['sort'] = $_GET['js_attr'];
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_attr']);
 }
+//翻页显示。
+elseif(isset($_GET['page'])) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	//$obj->__p($_SESSION);
+    $obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+
+    if(empty($q)) {
+        $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+        $key = '';
+    }
+    else {
+        switch($_SESSION[PACKAGE][SEARCH]['sort']) {
+            case 1:
+                $key = $q . $e;
+            case 2:
+                $obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
+                $key = $q;
+                break;
+            case 'cate_id':
+            case 'iid':
+                $key = $q;
+                $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+                break;
+            case 'created':
+                $key = $q;
+                $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+                break;
+            default:
+                $key = $q;
+                $obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_SESSION[PACKAGE][SEARCH]['sort']);
+                break;
+        }
+    }
+}
 elseif(isset($_GET['js_ct_search'])) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
@@ -154,8 +187,6 @@ elseif(isset($_GET['js_ct_search'])) {
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 'iid';
 	}
 
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
 
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
@@ -163,6 +194,8 @@ elseif(isset($_GET['js_ct_search'])) {
 else {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
 	$q = $key = '';
+	$_SESSION[PACKAGE][SEARCH]['key'] ='';		
+	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';	
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	
@@ -171,6 +204,8 @@ else {
 
 	$obj->cl->SetArrayResult(true);
 }
+
+$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 
 // 设置当前页和开始的记录号码。
 //empty()= !isset($var) || $var == false.
@@ -275,7 +310,7 @@ if (!empty($_SESSION[PACKAGE][SEARCH]['sort'])) {
 		default:	
 			$query .= ' ORDER BY ' . $_SESSION[PACKAGE][SEARCH]['sort'] . ' DESC ';
 		break;
-	}	
+	}
 }
 else
 	$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";	
@@ -353,7 +388,7 @@ $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 // $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_ct_search');
 // if(in_array(key($_GET), $http_get) {}
 
-if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_ct_search']) || isset($_GET['js_core']) ) {
+if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_ct_search']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
