@@ -29,8 +29,8 @@
      {/if}
     {/if}
     {if ! $comment_count}
-    <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}">{$rts.pinglun}</a>评论</span>
-      <p><a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}">我要PK</a></p>
+    <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}">{$rts.pinglun}</a>评论</span><br />
+      <a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}&title=encodeURI({$rts.title})">我要PK</a>
     </div>
     {/if} 
     <br>
@@ -43,8 +43,6 @@ $(function() {
 		maxWidth	: 800,
 		maxHeight	: 600,
 		fitToView	: false,
-		width		: '70%',
-		height		: '80%',
 		autoSize	: false,
 		closeClick	: false,
 		openEffect	: 'none',
