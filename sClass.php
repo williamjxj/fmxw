@@ -172,7 +172,13 @@ class FMXW extends BaseClass
 		}
 		return $ary;
 	}
-	
+	function get_contents_by_cid($cid){
+		$sql = "select title, pinglun from contents where cid=". $cid;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_assoc($res);
+		return $row['title'];
+	}
+
     function get_repings_by_keyword($q){
         $ary = array();
         $sql = "select * from pk  where  keyword='". mysql_real_escape_string($q) . "' ORDER BY created DESC";

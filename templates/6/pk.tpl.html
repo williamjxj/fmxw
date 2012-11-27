@@ -1,6 +1,8 @@
 <div class="box4">
   <form id="form_fayan" class="form-horizontal" method="post" action="{$config.ag}">
-  	<legend>{$smarty.get.title}</legend>
+    {if {$smarty.session.fmxw.search.title}}
+    <legend>{$smarty.session.fmxw.search.title}</legend>
+    {/if}
     <div class="control-group">
       <div class="controls">
         <label class="radio inline">
@@ -79,6 +81,8 @@ $(function() {
 			$('#pks1 div.reping_item:first-child').animate({ backgroundColor: 'LightGoldenRodYellow' }, 3000);
 
 			f.get(0).reset();
+			parent.$.fancybox.close();
+			
 			return false;
 		});
 	});

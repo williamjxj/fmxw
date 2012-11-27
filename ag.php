@@ -65,8 +65,6 @@ elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 }
 elseif(isset($_GET['jsc'])) {
     $row = $obj->get_content_1($_GET['cid']);
-    $obj->assign('row', $row);
-    $obj->display($tdir6.'single.tpl.html');
     return;
 }
 elseif (isset($_GET['test'])) {
