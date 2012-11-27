@@ -25,11 +25,10 @@ $obj -> set_coreseek_server();
 list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
 $obj -> assign('config', $config);
 
-list($q, $key, $sort) = array('', '', '');
+list($q, $key, $sort, $e) = array('', '', '', '( 负面|丑闻|真相 ) | ( 新闻|评价|曝光 )');
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
-	$obj->s = $obj->init_search();
 
 	if(empty($_GET['q'])) {
 	    $q = $key = '';
@@ -53,7 +52,8 @@ if (isset($_GET['q'])) {
 		if ($res === false) {
 			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
 			return;
-		} else if ($obj -> cl -> GetLastWarning()) {
+		}
+		elseif ($obj -> cl -> GetLastWarning()) {
 			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
 		if (empty($res["matches"])) {
@@ -70,7 +70,8 @@ if (isset($_GET['q'])) {
 		}
 
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-
+		$obj->cl->SetArrayResult(true);
+		
 		$weights = array('title'=>11, 'content'=>10);
 
 		$obj->cl->SetFieldWeights( $weights );
@@ -95,8 +96,10 @@ elseif(isset($_GET['js_dwmy'])) {
 		default:
 			$min = 0;
 	}
-	$obj->s['sort'] = 'created';
-
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = $q . $e;
+	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
+	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
 	//先按时间段（最近一小时/天/周/月）降序，再按相关度降序	
@@ -109,30 +112,31 @@ elseif(isset($_GET['js_core'])) {
 	switch($_GET['js_core']) {
 		case 1: //负面度
 			$key = $q . $e;
-			$obj->s['sort'] = 1;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 			break;
 		case 2: //相关度
 			$key = $q;
-			$obj->s['sort'] = 1;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
 			break;
 		case 3: //评论数
 			$key = $q;
-			$obj->s['sort'] = 2;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 3;
 			break;
 		default:
 			$key = $q;
-			$obj->s['sort'] = 2;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 4;
 	}
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 }
 //翻页显示。
 elseif(isset($_GET['page'])) {
-	$obj->s = $_SESSION[PACKAGE][SEARCH];
+	$obj->__p($_SESSION);
 }
 elseif(isset($_GET['js_attr'])) {
-
-	$obj->s['sort'] = $_GET['js_attr'];
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	
+	$_SESSION[PACKAGE][SEARCH]['sort'] = $_GET['js_attr'];
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	
@@ -141,12 +145,11 @@ elseif(isset($_GET['js_attr'])) {
 elseif(isset($_GET['js_ct_search'])) {
 
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
-
-	$obj->s['sort'] = 'cate_id';
+	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
 
 	if (!empty($_GET['item'])) {
 		$obj->cl -> SetFilter('iid', array($_GET['item']));
-		$obj->s['sort'] = 'iid';
+		$_SESSION[PACKAGE][SEARCH]['sort'] = 'iid';
 	}
 
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
@@ -187,7 +190,10 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
+echo 'q=['.$q.'], key=['.$key."]<br>\n";
+
 $res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
+
 if ($res === false) {
     echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
     return;
@@ -204,20 +210,17 @@ if (empty($res["matches"])) {
 	$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 	$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 	$obj->display($tdir6.'ns.tpl.html');
-	if (!empty($q)) {
-		$obj->write_named_pipes($q, __LINE__); // $obj->backend_scrape($q);
-	}
+	
+	if (!empty($q)) $obj->write_named_pipes($q, __LINE__);
 	return;
 }
 
 // 取得数据成功后，设置SESSION.
-$obj->s['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
-$obj->s['total'] = $res['total'];
-$obj->s['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
-$obj->s['total_found'] = $res['total_found'];
-$obj->s['time'] = $res['time'];
-
-$_SESSION[PACKAGE][SEARCH] = $obj->s;
+$_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
+$_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
+$_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
+$_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
+$_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
 
 /*
  * SetArrayResult(true), $ary_ids = array_keys($res['matches']) ***not work***;
@@ -256,14 +259,23 @@ $ids = implode(",", $ary_ids);
 $query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
 
 if (!empty($_SESSION[PACKAGE][SEARCH]['sort'])) {
-	$query .= " ORDER BY " . $_SESSION[PACKAGE][SEARCH]['sort'] . " DESC ";
-	$t = $_SESSION[PACKAGE][SEARCH]['sort'];
-	if(preg_match("/(cate_id|iid)/", $t))
-		$query .= " , created DESC ";
+	switch($_SESSION[PACKAGE][SEARCH]['sort']) {
+		case 1:
+		case 2:
+		case 3:
+			$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";	
+			break;
+		case 'cate_id':
+		case 'iid':
+		default:	
+			$query .= " ORDER BY " . $_SESSION[PACKAGE][SEARCH]['sort'] . " DESC ";
+		break;
+	}	
 }
 else
-	$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";
-// echo $query;
+	$query .= ' ORDER BY FIELD(cid, ' .  $ids . ")";	
+	
+echo $query . "<br>\n";
 
 // 查询MySQL，并将结果放入$mres数组中。
 $mres = mysql_query($query);
@@ -329,9 +341,7 @@ $obj -> assign('kr', $obj->get_key_related($q));
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
-
 $obj -> assign('sitemap', $obj -> get_sitemap());
-
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 

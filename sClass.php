@@ -346,8 +346,8 @@ class FMXW extends BaseClass
         $sql = "select * from contents where cid=" . $cid;
         $res = mysql_query($sql);
         $row = mysql_fetch_assoc($res);
-    //if(mysql_num_rows($res)>0) $_SESSION[PACKAGE][SEARCH]['title']=htmlspecialchars($row['title']);
-    // $this->__p($_SESSION);
+		//if(mysql_num_rows($res)>0) $_SESSION[PACKAGE][SEARCH]['title']=htmlspecialchars($row['title']);
+		// $this->__p($_SESSION);
         mysql_free_result($res);
         return $row;
     }
