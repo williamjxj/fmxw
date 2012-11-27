@@ -40,12 +40,10 @@
         <form action="{$config.search}" method="get" name="ct_search" id="ct_search">
           <label for="category">类别:</label>
           <select name="category" id="category" style="width:100%">
-            <option value="">--- 请选择 ---</option>
           </select>
           <div id="div_item" style="display:none">
             <label for="item">栏目:</label>
             <select name="item" id="item" style="width:100%">
-              <option value="">--- 请选择 ---</option>
             </select>
           </div>
           <button class="btn btn-small btn-primary" type="submit" disabled="disabled"><i class="icon-white icon-search"></i>查 询</button>
@@ -150,6 +148,8 @@ $(function() {
 	
 	//排序框Form的提交。
 	$('#ct_search').submit(function(e) {
+		e.preventDefault();
+		// alert('{$url}'+','+$(this).serialize()+'&js_ct_search=1' );
 		$main.load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});

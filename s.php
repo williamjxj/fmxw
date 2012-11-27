@@ -43,7 +43,6 @@ if (isset($_GET['q'])) {
 	else {
 	    $q = trim($_GET['q']);
 		$_SESSION[PACKAGE][SEARCH]['key'] = $q;
-		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
 		$obj->set_keywords($q);
 		
@@ -74,6 +73,11 @@ if (isset($_GET['q'])) {
 			return;
 		}
 		
+		//default
+		$key = $q . $e;
+		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
+		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
+
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
         $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
@@ -101,6 +105,7 @@ elseif(isset($_GET['js_dwmy'])) {
 			$min = 0;
 	}
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 	
@@ -113,18 +118,19 @@ elseif(isset($_GET['js_dwmy'])) {
 }
 elseif(isset($_GET['js_core'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+
 	switch($_GET['js_core']) {
 		case 2: //相关度
 			$key = $q;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
 			break;
 		case 3: //评论数
-			$key = $q;
+			$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 'pinglun';
 			break;
 		case 1: //负面度
 		default:
-			$key = $q . $e;
+			$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 			break;
 	}
@@ -133,8 +139,9 @@ elseif(isset($_GET['js_core'])) {
 
     $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");        
 }
-elseif(isset($_GET['js_attr'])) {	
+elseif(isset($_GET['js_attr'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 
 	$_SESSION[PACKAGE][SEARCH]['sort'] = $_GET['js_attr'];
 
@@ -145,6 +152,7 @@ elseif(isset($_GET['js_attr'])) {
 //翻页显示。
 elseif(isset($_GET['page'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+
 	//$obj->__p($_SESSION);
     $obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
@@ -153,31 +161,31 @@ elseif(isset($_GET['page'])) {
         $key = '';
     }
     else {
+		$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
         switch($_SESSION[PACKAGE][SEARCH]['sort']) {
-            case 1:
-                $key = $q . $e;
             case 2:
+				$key = $q;
+            case 1:
                 $obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
-                $key = $q;
                 break;
             case 'cate_id':
             case 'iid':
-                $key = $q;
                 $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
                 break;
             case 'created':
-                $key = $q;
                 $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
                 break;
             default:
-                $key = $q;
                 $obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_SESSION[PACKAGE][SEARCH]['sort']);
                 break;
         }
     }
 }
 elseif(isset($_GET['js_ct_search'])) {
+	$obj->__p($_GET);
+	$obj->__p($_SESSION);
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 
 	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
@@ -205,7 +213,10 @@ else {
 	$obj->cl->SetArrayResult(true);
 }
 
-$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+if(empty($q)) {
+	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+}
 
 // 设置当前页和开始的记录号码。
 //empty()= !isset($var) || $var == false.
@@ -227,7 +238,7 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-// echo 'q=['.$q.'], key=['.$key."]<br>\n";
+echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
 $res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
 
