@@ -153,7 +153,6 @@ elseif(isset($_GET['js_attr'])) {
 elseif(isset($_GET['page'])) {
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 
-	//$obj->__p($_SESSION);
     $obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
     if(empty($q)) {
@@ -182,8 +181,7 @@ elseif(isset($_GET['page'])) {
     }
 }
 elseif(isset($_GET['js_ct_search'])) {
-	$obj->__p($_GET);
-	$obj->__p($_SESSION);
+	// $obj->__p($_GET); $obj->__p($_SESSION);
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
 
@@ -254,8 +252,10 @@ $_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
 
 if (empty($res["matches"])) {
 	$info = array();
+	foreach($_SESSION[PACKAGE][SEARCH] as $k=>$v) {
+		if(preg_match("/(?:key|time)/", $k)) $info[$k] = htmlspecialchars($v);
+	}
 	foreach($_GET as $k=>$v) $info[$k] = htmlspecialchars($v);
-	foreach($_SESSION[PACKAGE][SEARCH as $k=>$v) $info[$k] = htmlspecialchars($v);
 	$obj -> assign('info', $info);
 	$obj->display($tdir6.'norecord.tpl.html');	
 	return;

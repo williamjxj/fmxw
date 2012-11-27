@@ -1,16 +1,14 @@
-<div class="hero-unit well">
   <div class="alert alert-block">
     <h2>没有匹配记录</h2>
     {if $smarty.session.fmxw.language != 'English'}
     <p> 抱歉，没有找到匹配记录。<br />
       您的查询是： <br />
     <ul>
-      {foreach $info as $k=>$v}
-      <li>{$k => $v} </li>
+      {foreach $info as $v}
+      <li>{$v@key}: => {$v} </li>
       {/foreach}
     </ul>
     </p>
     {else}
     <p> Sorry, No result matched. Please Try a new one. </p>
     {/if} </div>
-</div>
