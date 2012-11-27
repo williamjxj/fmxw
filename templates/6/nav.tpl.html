@@ -28,11 +28,9 @@
       ({$rts.r}%)
      {/if}
     {/if}
-    {if ! $comment_count}
     <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}" id="p{$rts.cid}">{$rts.pinglun}</a>评论</span><br />
       <a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}">我要PK</a>
     </div>
-    {/if} 
     <br>
     {$rts.content}</li>
   {/foreach}
@@ -44,12 +42,19 @@ $(function() {
 		maxHeight	: 600,
 		fitToView	: false,
 		width		: '70%',
-		height		: '90%',
+		height		: '70%',
 		autoSize	: false,
 		closeClick	: false,
 		openEffect	: 'none',
 		closeEffect	: 'none'
 	});
+    {if {$sort}=='pinglun' || {$sort}==3}
+		$('div.comment').css('display', 'block');
+		$('li.li3').hover(
+			function() { $(this).addClass('highlight'); },
+			function() { $(this).removeClass('highlight') }
+		);
+	{else}
 	$('li.li3').hover(
 		function() {
 			$(this).addClass('highlight').find('div.comment').show();
@@ -58,6 +63,7 @@ $(function() {
 			$(this).removeClass('highlight').find('div.comment').hide();
 		}
 	);
+    {/if} 
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 
