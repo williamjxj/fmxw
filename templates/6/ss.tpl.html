@@ -148,6 +148,8 @@ $(function() {
 	
 	//排序框Form的提交。
 	$('#ct_search').submit(function(e) {
+		e.preventDefault();
+		// alert('{$url}'+','+$(this).serialize()+'&js_ct_search=1' );
 		$main.load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
