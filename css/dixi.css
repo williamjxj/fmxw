@@ -536,7 +536,6 @@ li.highlight {
     background: none repeat scroll 0 0 #eeeeee;
     border: 1px solid #E7E5E6;
 }
-
 div.comment {
 	-moz-border-bottom-colors: none;
 	-moz-border-left-colors: none;
@@ -546,12 +545,14 @@ div.comment {
 	border-image: none;
 	border-style: solid;
 	border-width: 1px;
-	/*height: 20px;
-	margin-right: 20px;*/
 	vertical-align:middle;
 	width: 45px;
 	float: right;
 	text-align: center;
+	padding-top:3px;
+	padding-bottom:3px;
+	/*height: 20px;
+	margin-right: 20px;*/
 }
 div.comment .count {
 	font-family: Arial,Helvetica,sans-serif;
