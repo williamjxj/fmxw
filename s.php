@@ -77,7 +77,7 @@ if (isset($_GET['q'])) {
 		//q=[方便面], key=[@(title,content) "方便面" (负面|丑闻|有害|真相) | (新闻|评价|曝光)]
 		//"hello world" @title "example program"~10 @body python -(php|perl) @* code
 		//q=[方便面], key=[@title "方便面" @(title,content) 方便面(负面|丑闻|有害|真相) | (新闻|评价|曝光) @* ("负面"|"丑闻"|"有害"|"真相"|"新闻"|"评价"|"曝光")]
-		$key = '@title "'.$q.'" @(title,content) '.$q. $e . ' @* ("负面"|"丑闻"|"有害"|"真相"|"新闻"|"评价"|"曝光")';
+		$key = '@title "'.$q.'" @(title,content) '.$q.' @* (负面|丑闻|有害|真相|新闻|评价|曝光)';
 		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
