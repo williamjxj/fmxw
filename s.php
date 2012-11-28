@@ -77,7 +77,9 @@ if (isset($_GET['q'])) {
 		//q=[方便面], key=[@(title,content) "方便面" (负面|丑闻|有害|真相) | (新闻|评价|曝光)]
 		//"hello world" @title "example program"~10 @body python -(php|perl) @* code
 		//q=[方便面], key=[@title "方便面" @(title,content) 方便面(负面|丑闻|有害|真相) | (新闻|评价|曝光) @* ("负面"|"丑闻"|"有害"|"真相"|"新闻"|"评价"|"曝光")]
-		$key = '@title "'.$q.'" @(title,content) '.$q.' @* (负面|丑闻|有害|真相|新闻|评价|曝光)';
+		//$key = '@title "'.$q.'" @(title,content) '.$q.' @* (负面|丑闻|有害|真相|新闻|评价|曝光)';
+		$key = '@title "'.$q.'" @(title,content) '.$q. ' "丑闻 真相 曝光 腐 贿 淫 荡 娼 滥 罪 恶 贬 讹 劫 燥 偷 窃 狡 诈 毒 害 坏 诱惑 贪污 魔鬼 过期 变质 掺假 邪恶 疾病 落后 贪心 自私 蛮荒 贪婪 姑息 愚昧 假冒 欺诈 悲剧 消极 放纵 虚假 欺骗 倒台 麻烦 厌烦 危机 霉运 倒霉  温床 腐败 谎言 试探 次品 舆论 绯闻 露点 情妇 小三 流氓 恶霸 土匪 在逃 犯罪 辩解 暴发户 卖国 浪尖 愤怒 逃避 媒体 作恶 作秀 负面 新闻 评价"/1';
+
 		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
