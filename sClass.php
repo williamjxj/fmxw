@@ -221,16 +221,17 @@ class FMXW extends BaseClass
 	// 用于摘要。
     function mb_highlight($data, $query, $ins_before, $ins_after) {
 		if (empty($query)) return $data;
-        $result = '';
+        $result=''; $left='';
+		$query_len = mb_strlen($query);
         while (($poz = mb_strpos(mb_strtolower($data), mb_strtolower($query))) !== false) {
-            $query_len = mb_strlen($query);
             $result .= mb_substr($data, 0, $poz) . $ins_before . mb_substr($data, $poz, $query_len) . $ins_after;
+			$left = mb_substr($data, $poz + $query_len);
             $data = mb_substr($data, $poz + $query_len);
         }
-        if (empty($result))
-            $result = $data;
+        if (empty($result)) $result = $data;
+
         //no keywords.
-        return $result;
+        return empty($left) ? $result : $result.$left;
     }
 
     function my_strip($str) {
