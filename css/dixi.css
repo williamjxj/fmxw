@@ -549,12 +549,11 @@ div.comment {
 	-moz-border-top-colors: none;
 	border: 1px solid #D2E1F1;
 	vertical-align:middle;
-	width: 45px;
+	maxWidth: 70px;
 	float: right;
 	text-align: center;
-	height: 24px;
 	padding: 3px 2px 3px 2px;
-	margin: 4px 8px 4px 4px;
+	margin: 0px 8px 4px 4px;
 	z-index: 20;
 	display: none;
 }

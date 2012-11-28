@@ -21,7 +21,6 @@
     <div class="span8" id="sright">
       <div id="sd"></div>
       <div id="pk" style="display:none;"></div>
-      <div id="pk_result" class="box4" style="display:none;"></div>
       <div class="alert"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
       <div id="news">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="weibo">{include file="{$config.t6}news.tpl.html"}</div>
@@ -79,12 +78,10 @@ $(function() {
 
 	//PK框的显示和隐藏。
 	$('#apk').click(function() {
-		if($('#pk').is(':visible')) {
+		if ($('#pk').is(':visible'))
 			$('#pk').hide();
-			$('#pk_result').hide();
-		}
 		else
-			$('#pk').load('{$config.search}?js_pk=1').fadeIn(100);
+			$('#pk').load('{$config.ag}?js_pk2=1').fadeIn(100);
 		return false;
 	});
 	

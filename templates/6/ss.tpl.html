@@ -24,13 +24,19 @@
   <div class="row-fluid">
     <div class="span1" id="sleft">
       <ul id="tf0" class="nav nav-tabs nav-stacked">
-        <li><a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
+	    {if $q} <li class="active">
+		{else} <li>
+		{/if}
+		<a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
         <li><a href="{$url}?js_core=2" rel="tooltip" title="相关度">相关度</a></li>
         <li><a href="{$url}?js_core=3" rel="tooltip" title="评论数">评论数</a></li>
       </ul>
       <br />
       <ul id="tf1" class="nav nav-tabs nav-stacked">
-        <li class="active"> <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
+	    {if $q} <li>
+		{else} <li class="active">
+		{/if}
+        <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
         <li><a href="{$url}?js_dwmy=day24" rel="tooltip" title="一天内的数据">一天内</a></li>
         <li><a href="{$url}?js_dwmy=week" rel="tooltip" title="一月内的数据">一周内</a></li>
         <li><a href="{$url}?js_dwmy=month" rel="tooltip" title="一月内的数据">一月内</a></li>
