@@ -73,8 +73,8 @@ if (isset($_GET['q'])) {
 			return;
 		}
 		
-		//default
-		$key = $q . $e;
+		//default: $key = $q . $e;
+		$key = '@(title,body) "$q" ' . $e;
 		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
@@ -236,7 +236,7 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-//echo 'q=['.$q.'], key=['.$key."]<br>\n";
+echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
 $res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
 
