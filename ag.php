@@ -65,6 +65,7 @@ elseif(isset($_POST['captcha']) && isset($_POST['pk'])) {
 }
 elseif(isset($_GET['jsc'])) {
     $row = $obj->get_content_1($_GET['cid']);
+	if($row['tags'] && preg_match("/(/", $row['tags'])) $row['tags'] = preg_replace("/(.*$/", '', $row['tags']);
 	$obj->assign('row', $row);
 	$obj->display($tdir6.'single.tpl.html');
     return;
