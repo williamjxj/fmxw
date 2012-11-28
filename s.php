@@ -74,7 +74,7 @@ if (isset($_GET['q'])) {
 		}
 		
 		//default: $key = $q . $e;
-		$key = '@(title,body) "'.$q.'" ' . $e;
+		$key = '@(title,content) "'.$q.'" ' . $e;
 		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
