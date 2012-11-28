@@ -23,11 +23,11 @@ $(function(){
 		if($('#pks2').html().length==0) {
 			var t = $('#pks1'), cid=$('#apk_cid').text();
 			t.html($('<div class="ajaxloading"></div>'));
-			t.load('{$config.search}?js_pks1=1&cid='+cid, function(data) {
+			t.load('{$config.ag}?js_pks1=1&cid='+cid, function(data) {
 				if(data==null || data=='') t.html('暂无评论。');
 				else t.html(data);
 			});
-			$('#pks2').load('{$config.search}?js_pks2=1&cid='+cid);
+			$('#pks2').load('{$config.ag}?js_pks2=1&cid='+cid);
 		}
 	}
 	else if(/pinglunla/.test(t)) {
@@ -51,6 +51,6 @@ $(function(){
 });
 $(window).load(function() {
 	//var cid=$('#apk_cid').text();
-	//$('#pk1').load('{$config.search}?js_pks1=1&cid='+cid);
+	//$('#pk1').load('{$config.ag}?js_pks1=1&cid='+cid);
 });
 </script>
