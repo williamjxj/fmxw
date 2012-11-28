@@ -1,10 +1,15 @@
 {$s={$config.f1.s}}
-{if {$config.header.lang}!='en'}
 <div class="row">
   <div class="span12">
-    <div class="btn-group"> {foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}">{$m.2}</a> {/foreach} </div>
+    <div class="btn-group"> {if {$config.header.lang}=='en'}
+      {*foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}">{$m.1|lower|capitalize}</a> {/foreach*}
+      {else}
+      {foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}">{$m.2}</a> {/foreach}
+      {/if} </div>
   </div>
 </div>
+{* if $smarty.session.fmxw.language!='English' *}
+{if $config.header.lang != 'en'}
 <div class="row" style="margin-top:20px;">
   <div class="well1">
     <div class="span1"><a href="{$s}?f1_hot=guanzhu"><span class="label label-warning">实时热点</span></a> </div>
