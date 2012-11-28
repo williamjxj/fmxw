@@ -236,7 +236,7 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-echo 'q=['.$q.'], key=['.$key."]<br>\n";
+//echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
 $res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
 
@@ -343,8 +343,11 @@ while ($row = mysql_fetch_assoc($mres)) {
 	if($relevance<1) $relevance = 1;
 	$row['r'] = $relevance;
 	//echo "[".$matches[$row['cid']]['weight']."], [".$relevance."]<br>\n";
-	if (!preg_match("/(<b>|<em>)/", $row['title']))
+	if (!preg_match("/(?:<b>|<em>)/", $row['title'])) {
+		//echo "11111: " . $row['title'] . "<br>\n";
 		$row['title'] = $obj->mb_highlight($row['title'], $q, '<b>', '</b>');
+		//echo "22222: " . $row['title'] . "<br>\n";
+	}
 
     $rows[$row['cid']] = $row;
 }
