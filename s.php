@@ -26,7 +26,7 @@ $obj -> set_coreseek_server();
 list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
 $obj -> assign('config', $config);
 
-list($q, $key, $sort, $e) = array('', '', '', '( 负面|丑闻|真相 ) | ( 新闻|评价|曝光 )');
+list($q, $key, $sort, $e) = array('', '', '', '(负面|丑闻|有害|真相) | (新闻|评价|曝光)');
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
@@ -74,7 +74,7 @@ if (isset($_GET['q'])) {
 		}
 		
 		//default: $key = $q . $e;
-		$key = '@(title,body) "$q" ' . $e;
+		$key = '@(title,body) "'.$q.'" ' . $e;
 		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
 
