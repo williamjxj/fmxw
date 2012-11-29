@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 session_start();
 error_reporting(E_ALL);
@@ -838,4 +837,3 @@ function get_SetArrayResult_Ids($a) {
 	return $a['id'];
 }
 ?>
->>>>>>> 7d19dc877b36c3fbff8f396ec0aa8f8948158393
