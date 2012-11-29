@@ -28,8 +28,8 @@
       ({$rts.r}%)
      {/if}
     {/if}
-    <div class="comment">
-      <a class="talk" href="{$config.f3.s}?cid={$rts.cid}">我要PK</a>
+    <div class="comment"><span class="count"><a class="fancybox.ajax" href="{$config.ag}?js_pinglun=1&cid={$rts.cid}" id="p{$rts.cid}">{$rts.pinglun}</a>评论</span><br />
+      <a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$rts.cid}">我要PK</a>
     </div>
     <br>
     {$rts.content}</li>
@@ -37,6 +37,17 @@
 </ul>
 <script type="text/javascript">
 $(function() {
+	$('a.talk').fancybox({
+		maxWidth	: 800,
+		maxHeight	: 600,
+		fitToView	: false,
+		width		: '70%',
+		height		: '70%',
+		autoSize	: false,
+		closeClick	: false,
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
     {if {$sort}=='pinglun' || {$sort}==3}
 		$('div.comment').css('display', 'block');
 		$('li.li3').hover(

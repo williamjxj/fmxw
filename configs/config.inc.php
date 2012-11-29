@@ -15,8 +15,8 @@ defined('CORESEEK_PORT2') or define('CORESEEK_PORT2', 9312);
 
 defined('TAB_LIST') or define('TAB_LIST', 10);
 defined('PER_TOTAL') or define('PER_TOTAL', 10);
-defined('LIMIT') or define('LIMIT', 10);
-defined('ROWS_PER_PAGE') or define('ROWS_PER_PAGE', 10);
+defined('LIMIT') or define('LIMIT', 15);
+defined('ROWS_PER_PAGE') or define('ROWS_PER_PAGE', LIMIT);
 
 if (!isset($config)) {
   $config = array(
@@ -76,24 +76,30 @@ if (!isset($config)) {
         's' => 's.php', 
         't' => 'templates/6/',
     ), 
-    'include' => 'include/', 
-    'img' => 'images/', 
-    't' => 'templates/', 
-    't0' => 'templates/0/', 
-    't1' => 'templates/1/', 
-    't2' => 'templates/2/', 
-    't3' => 'templates/3/', 
-    't6' => 'templates/6/', 
-    't8' => 'templates/8/', 
-    'shared' => 'templates/shared/', 
-    'smarty' => 'configs/smarty.ini', 
-    'favicon' => 'favicon.ico', 
-    'browser' => browser_id(), 
-    'phone' => '(866)789-5432', 
-    'email' => 'admin@dixitruth.com', 
+    'f7' => array(
+        'c' => 'css/f3.css', 
+        't' => 'templates/7/',
+        's' => 'f7.php', 
+    ), 
+    'include' => 'include/',
+    'img' => 'images/',
+    't' => 'templates/',
+    't0' => 'templates/0/',
+    't1' => 'templates/1/',
+    't2' => 'templates/2/',
+    't3' => 'templates/3/',
+    't6' => 'templates/6/',
+    't7' => 'templates/7/',
+    't8' => 'templates/8/',
+    'shared' => 'templates/shared/',
+    'smarty' => 'configs/smarty.ini',
+    'favicon' => 'favicon.ico',
+    'browser' => browser_id(),
+    'phone' => '(866)789-5432',
+    'email' => 'admin@dixitruth.com',
     'logo' => array(
-        'logo_290x96' => 'images/logo_290x96.png', 
-        'logo_130x60' => 'images/logo_130x60.png', 
+        'logo_290x96' => 'images/logo_290x96.png',
+        'logo_130x60' => 'images/logo_130x60.png',
         'logo_20x12' => 'images/logo_20x12.png',
     ),
 	'footer' => array(
