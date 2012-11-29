@@ -163,6 +163,18 @@ elseif(isset($_GET['page'])) {
     if(empty($q)) {
         $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
         $key = '';
+        if (isset($_SESSION[PACKAGE][SEARCH]['sort'])) {
+			$t = $_SESSION[PACKAGE][SEARCH]['sort'];
+			if(preg_match("/cate_id/", $t)) {
+				$obj->cl -> SetFilter('cate_id', array($t));
+			}
+			elseif(preg_match("/iid/", $t)) {
+				$obj->cl -> SetFilter('iid', array($t));
+			}
+			else {
+				$obj->__p($_SESSION);
+			}
+		}
     }
     else {
 		$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
