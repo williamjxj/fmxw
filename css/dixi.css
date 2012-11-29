@@ -144,6 +144,12 @@ li.li3:nth-child(even) {
 	max-height:500px;
 	overflow-y:scroll;
 }
+.tab4 {
+	padding: 8px;
+	border-left: 1px solid #DBDADA;
+	border-right: 1px solid #DBDADA;
+	border-bottom: 1px solid #DBDADA;
+}
 .head1 {
 	color: #CC0000;
 	font-size: 14px;
