@@ -83,7 +83,7 @@ class FMXW extends BaseClass
 				'database' => "dixi", 
 			), 
 			'page' => array(
-				'limit' => 10, 
+				'limit' => LIMIT, 
 				'max_matches' => 1000, 
 			)
 		);

@@ -1,0 +1,44 @@
+<div class="row">
+  <table class="table titlefoot">
+    <tr>
+      <td><i class=""></i>来源: <strong>{$info.source}</strong></td>
+      <td>{*$info.author*}</td>
+      <td><i class="icon-time"></i>发布时间: <strong>{$info.pubdate}</strong></td>
+      <td><i class="icon-font"></i>字体:【<a href="javascript:changesize(18)">大</a> <a href="javascript:changesize(14)">中</a> <a href="javascript:changesize(12)">小</a>】</td>
+      <td><i class="icon-print"></i><a onclick="window.print();return false;" class="print" href="#">打印</a></td>
+      <td><i class="icon-envelope"></i><a onclick="copyurl();return false;" class="url" href="#">邮件共享</a></td>
+    </tr>
+    <tr>
+      <td><i class="icon-eye-open"></i>阅读次数: <strong>{$info.clicks}</strong></td>
+      <td><i class="icon-eye-open"></i>关注度: <strong>{$info.guanzhu}</strong> &nbsp;&nbsp;
+      (<strong><a class="a_guanzhu" href="javascript:;">加关注</a></strong>)</td>
+      <td><i class="icon-tags"></i>标签: <strong>{$info.tags}</strong></td>
+      <td><i class="icon-thumbs-up"></i><a class="a_zantong" href="javascript:;">赞同</a>: <strong>{$info.likes}</strong></td>
+      <td><i class="icon-thumbs-down"></i><a class="a_fandui" href="javascript:;">反对</a>: <strong>{$info.fandui}</strong></td>
+      <td><i class="icon-comment"></i>评论数: <strong>{$info.pinglun}</strong></td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('a.a_zantong', 'table.titlefoot').one('click', function(e) {
+		e.preventDefault();
+		$(this).closest('td').find('strong:first').html('{$info.likes+1}');
+		$.post('{$url}', { cid:'{$info.cid}', 'js_likes':1 });
+		return false;
+	});
+	$('a.a_fandui', 'table.titlefoot').one('click', function(e) {
+		e.preventDefault();
+		$(this).closest('td').find('strong:first').html('{$info.fandui+1}');
+		$.post('{$url}', { cid:'{$info.cid}', 'js_fandui':1 });
+		return false;
+	});
+	$('a.a_guanzhu', 'table.titlefoot').one('click', function(e) {
+		e.preventDefault();
+		$(this).html('已关注');
+		$(this).closest('td').find('strong:first').html('{$info.guanzhu+1}');
+		$.post('{$url}', { cid:'{$info.cid}', 'js_guanzhu':1 });
+		return false;
+	});
+});
+</script>

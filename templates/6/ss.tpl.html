@@ -69,7 +69,7 @@
       <div class="alert" style="margin-top:12px"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="news">{include file="{$config.t6}news.tpl.html"}</div>
-      <div id="3pingluns">{include file="{$config.t}3pinglun.tpl.html"}</div>
+      <div id="3pingluns">{*include file="{$config.t}3pinglun.tpl.html"*}</div>
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
