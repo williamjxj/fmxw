@@ -71,12 +71,12 @@ $header = array(
 );
 $search = array(
 	'old_search' => array(
-		'cn' => '搜索负面新闻-旧版',
+		'cn' => '搜 索-旧版',
 		'en' => 'Search Negative News! - Old',
 	),
 	'new_search' => array(
-		'cn' => '搜索负面新闻',
-		'en' => 'Search Negative News!',
+		'cn' => '搜 索',
+		'en' => 'Search!',
 	),
 );
 $list = array(
