@@ -15,8 +15,8 @@ defined('CORESEEK_PORT2') or define('CORESEEK_PORT2', 9312);
 
 defined('TAB_LIST') or define('TAB_LIST', 10);
 defined('PER_TOTAL') or define('PER_TOTAL', 10);
-defined('LIMIT') or define('LIMIT', 25);
-defined('ROWS_PER_PAGE') or define('ROWS_PER_PAGE', 25);
+defined('LIMIT') or define('LIMIT', 10);
+defined('ROWS_PER_PAGE') or define('ROWS_PER_PAGE', 10);
 
 if (!isset($config)) {
   $config = array(
