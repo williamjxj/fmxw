@@ -30,3 +30,17 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+$(function(){
+  $('#Tab3 a').click(function(e) {
+	e.preventDefault();
+	var t = $(this).attr('href');
+	$(this).tab('show');
+	return false;
+  });
+});
+$(window).load(function() {
+	//var cid=$('#apk_cid').text();
+	//$('#pk1').load('{$config.ag}?js_pks1=1&cid='+cid);
+});
+</script>
