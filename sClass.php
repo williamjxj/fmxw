@@ -311,16 +311,7 @@ class FMXW extends BaseClass
         $total_pages = $_SESSION[PACKAGE][SEARCH]['total_pages'] ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
         $links = array();
         $queryURL = '';
-		/**
-        if (count($_GET)) {
-            foreach ($_GET as $key => $value) {
-                if ( $key=='q' ) $queryURL .= '&' . $key . '=' . $value;
-            }
-        }
-        foreach($_SESSION[PACKAGE][SEARCH] as $k=$v) {
-          $queryURL .= '&' . $k . '=' . urlencode($v);
-        }
-		*/
+
         if (($total_pages) > 1) {
             if ($current_page != 1) {
                 $links[] = '<a href="?page=1' . $queryURL . '">&laquo;&laquo; 首页 </a>';

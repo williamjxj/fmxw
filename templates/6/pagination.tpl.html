@@ -2,18 +2,16 @@
 <div class="pages">
   <div class="pagination">
     <ul>
-	{$fg=1}
+      {$fg=1}
       {foreach $pagination as $p}
-	  {if {$fg}}
-	  {if preg_match("/{$page}/", $p)}
+      {if $fg && preg_match("/{$page}/", $p)}
       <li class="active">{$p}</li>
-	  {$fg=0}
+      {$fg=0}
       {else}
       <li> {$p} </li>
       {/if}
-	  {/if}
       {/foreach}
     </ul>
   </div>
 </div>
-{/if}
+{/if} 
