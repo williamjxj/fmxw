@@ -85,10 +85,11 @@
 	width: 100%;
 }
 .pk {
-	display: inline;
 	float: right;
 	margin-right: 10px;
 	padding-right: 10px;
+}
+.pk a {
 	color: #c74b15;
 	font-size: 18px;
 	font-weight: bolder;
