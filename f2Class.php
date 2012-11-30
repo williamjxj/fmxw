@@ -19,7 +19,7 @@ class f2Class extends f23Class {
     function get_key_related($kid, $createdby = '') {
         if ($createdby)
             $createdby = " and createdby = '" . $createdby . "' ";
-        $sql = "select rid, rk, kurl from key_related where kid=" . $kid . $createdby . " limit 0, " . PER_TOTAL;
+        $sql = "select rid, rk, kurl from key_related where kid=" . $kid . $createdby . " limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);

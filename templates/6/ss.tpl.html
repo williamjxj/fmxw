@@ -12,12 +12,19 @@
 <!--加入fancybox-->
 <link rel="stylesheet" type="text/css" href="include/fancybox/source/jquery.fancybox.css?v=2.1.3" media="screen" />
 <script type="text/javascript" src="include/fancybox/source/jquery.fancybox.pack.js?v=2.1.3"></script>
+<link rel="stylesheet" type="text/css" href="include/jquery_news_ticker/styles/ticker-style.css" />
+<script type="text/javascript" src="include/jquery_news_ticker/includes/jquery.ticker.js"></script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
   <div class="row-fluid">
     <div class="span8"> {include file="{$config.t6}search.tpl.html"} </div>
-    <div class="span4 alert" style="display:none"> <img src="{$config.img}discus.gif" width="14" height="14" border="0" /> 关于<span id="apk"></span>, <a href="javascript:;" id="apk_form" class="pk">我要PK...</a><span id="apk_cid" style="display:none"></span></div>
+    <div class="span4 alert">
+      <ul id="js-news" class="js-hidden">
+        <li class="news-item"><div id="uyan_hotcmt_unit"></div></li>
+        <li class="news-item"><div id="uyan_newcmt_unit"></div></li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="container-fluid" align="left">
@@ -25,18 +32,16 @@
     <div class="span1" id="sleft">
       <ul id="tf0" class="nav nav-tabs nav-stacked">
         <li><a href="{$url}?js_core=2" rel="tooltip" title="相关度">相关度</a></li>
-	    {if $q} <li class="active">
-		{else} <li>
-		{/if}
-		<a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
+        {if $q}
+        <li class="active"> {else}
+        <li> {/if} <a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
         <li><a href="{$url}?js_core=3" rel="tooltip" title="评论数">评论数</a></li>
       </ul>
       <br />
       <ul id="tf1" class="nav nav-tabs nav-stacked">
-	    {if $q} <li>
-		{else} <li class="active">
-		{/if}
-        <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
+        {if $q}
+        <li> {else}
+        <li class="active"> {/if} <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
         <li><a href="{$url}?js_dwmy=day24" rel="tooltip" title="一天内的数据">一天内</a></li>
         <li><a href="{$url}?js_dwmy=week" rel="tooltip" title="一月内的数据">一周内</a></li>
         <li><a href="{$url}?js_dwmy=month" rel="tooltip" title="一月内的数据">一月内</a></li>
@@ -66,7 +71,7 @@
     <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
     <div class="span7" id="sright">
       <div id="sd"></div>
-      <div class="alert" style="margin-top:12px"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <span><a id="rk_{$r.rid}" class="rk" href="{$r.kurl}">{$r.rk}</a></span> {/foreach} </span> </div>
+      <div class="alert" style="margin-top:12px"> <strong>网友在查:</strong> <span> {foreach $kr as $r} <a href="javascript:;" class="latest">{$r.rk}</a> {/foreach} </span> </div>
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="news">{include file="{$config.t6}news.tpl.html"}</div>
       <div id="3pingluns">{*include file="{$config.t}3pinglun.tpl.html"*}</div>
@@ -81,6 +86,7 @@
   </div>
   <div id="footer"> {include file="{$footer_template}"} </div>
 </div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1708821"></script>
 <script type="text/javascript">
 $(function() {
 	{if {$q} || {$q}!='所有记录'}
@@ -131,14 +137,6 @@ $(function() {
 		});
 		return false;
 	});
-
-	//PK框的显示和隐藏。 替换掉！！！
-	$('#apk_form').click(function() {
-		if($('#3pingluns').length)
-			$('html,body').animate({ scrollTop: $('#3pingluns').offset().top }, 'slow');
-		return false;
-	});
-	
 	$('#category').change(function() {
 		cate_id = $(this).attr('value');
 		$.getJSON("{$url1}?js_item=1&cate_id=" + cate_id, function(data) {
@@ -159,9 +157,18 @@ $(function() {
 		$main.load('{$url}', $(this).serialize()+'&js_ct_search=1');
 		return false;
 	});
-
+	
+	//关联词汇的查询。
+	$("a.latest").live('click', function(e) {
+		e.preventDefault();
+		var t = $(e.target);
+		$('#q').val(t.text());
+		$('#search_form').trigger('submit');
+		return false;
+	});
+	
 	$.fmxw1.UItoTop({ easingType : 'easeOutQuart' });
-
+	$('#js-news').ticker();
 });
 $(window).load(function() {
 	$.getJSON('{$url1}?js_category=1', function(data) {

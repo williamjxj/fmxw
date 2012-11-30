@@ -83,7 +83,7 @@ class FMXW extends BaseClass
 				'database' => "dixi", 
 			), 
 			'page' => array(
-				'limit' => LIMIT, 
+				'limit' => ROWS_PER_PAGE, 
 				'max_matches' => 1000, 
 			)
 		);
@@ -126,7 +126,12 @@ class FMXW extends BaseClass
 
     //还有用，网友在查。
     function get_key_related($q) {
-        $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
+		if(empty($q)) {
+	        $sql = "select rid, rk from key_related order by rid desc limit 0, " . TAB_LIST;
+		}
+		else {
+	        $sql = "select rid, rk from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
+		}
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);

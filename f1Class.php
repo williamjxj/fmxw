@@ -221,7 +221,7 @@ class f1Class extends f12Class {
         if ($cate_id)
             $where = " where cid = " . $cate_id;
         $order = " order by frequency, weight ";
-        $limit = " limit $start, " . LIMIT;
+        $limit = " limit $start, " . ROWS_PER_PAGE;
         $query = "select cid, name, curl, frequency, description from categories " . $where . $order . $limit;
         $res = mysql_query($query);
         while ($row = mysql_fetch_assoc($res)) {
@@ -238,7 +238,7 @@ class f1Class extends f12Class {
         if ($cate_id)
             $and = ' and cate_id = ' . $cate_id;
         $order = 'order by cid desc ';
-        $limit = ' limit ' . $start . ', ' . LIMIT;
+        $limit = ' limit ' . $start . ', ' . ROWS_PER_PAGE;
         $sql = $this -> content_sql . $and . $order . $limit;
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res))
@@ -252,7 +252,7 @@ class f1Class extends f12Class {
         if ($iid)
             $and = " and iid = " . $iid;
         $order = 'order by cid desc ';
-        $limit = ' limit ' . $start . ', ' . LIMIT;
+        $limit = ' limit ' . $start . ', ' . ROWS_PER_PAGE;
         $sql = $this -> content_sql . $and . $order . $limit;
         $res = $this -> mdb2 -> query($sql);
         if (PEAR::isError($res)) {

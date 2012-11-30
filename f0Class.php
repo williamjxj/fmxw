@@ -56,8 +56,8 @@ class f0Class extends BaseClass
     function get_latest_keywords() {
 		$str = '';
         //不准确，应该为updated,
-        //$sql = "select keyword from keywords order by kid desc limit 0," . PER_TOTAL; 
-        $sql = "select keyword from keywords order by updated desc limit 0," . PER_TOTAL; 
+        //$sql = "select keyword from keywords order by kid desc limit 0," . TAB_LIST; 
+        $sql = "select keyword from keywords order by updated desc limit 0," . TAB_LIST; 
         $res = $this -> mdb2 -> query($sql);
         if (PEAR::isError($res)) die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
 		while($row = $res->fetchRow()) {
@@ -67,7 +67,7 @@ class f0Class extends BaseClass
         return $str;
     }    
     function get_hotest_keywords() {
-        $sql = "select keyword, total from keywords order by total desc limit 0," . PER_TOTAL; 
+        $sql = "select keyword, total from keywords order by total desc limit 0," . TAB_LIST; 
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
@@ -77,7 +77,7 @@ class f0Class extends BaseClass
     // keywords 表:提取最新的，查询次数最多的关键词.
     function get_keywords($order = '') {
         if (!$order) $order = ' order by updated desc, total desc';
-        $sql = "select keyword, total from keywords " . $order . " limit 0, " . PER_TOTAL;
+        $sql = "select keyword, total from keywords " . $order . " limit 0, " . TAB_LIST;
         $res = $this -> mdb2 -> queryAll($sql);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
