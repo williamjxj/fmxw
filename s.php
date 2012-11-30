@@ -177,37 +177,33 @@ elseif(isset($_GET['page']))
     $obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
 	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-    if(empty($key)) {
-        $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
-        $q = '';
-    }
-    else {
-		$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
-        switch($_SESSION[PACKAGE][SEARCH]['sort']) {
-            case 2:
-				$q = $key;
-            case 1:
-                $obj->cl->SetSortMode( SPH_SORT_EXTENDED, "@relevance DESC, @id DESC" );
-                break;
-            case 'cate_id':
-				if(isset($_SESSION[PACKAGE][SEARCH]['cate_id'])) 
-					$obj->cl->SetFilter('cate_id', array($_SESSION[PACKAGE][SEARCH]['cate_id']));
-            case 'iid':
-				if(isset($_SESSION[PACKAGE][SEARCH]['item'])) 
-					$obj->cl->SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
+	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+	
+	switch($_SESSION[PACKAGE][SEARCH]['sort']) {
+		case 2:
+			$q = $key;
+		case 1:
+			$obj->cl->SetSortMode( SPH_SORT_EXTENDED, "@relevance DESC, @id DESC" );
+			break;
+		case 'cate_id':
+			if(isset($_SESSION[PACKAGE][SEARCH]['cate_id'])) 
+				$obj->cl->SetFilter('cate_id', array($_SESSION[PACKAGE][SEARCH]['cate_id']));
+		case 'iid':
+			if(isset($_SESSION[PACKAGE][SEARCH]['item'])) 
+				$obj->cl->SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
 
-                $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
-                break;
-            case 'created':
-				if (isset($_SESSION[PACKAGE][SEARCH]['min']))
-					$obj->cl->SetFilterRange("created", $min, $obj->now);
-					
-                $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
-                break;
-            default:
-                $obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_SESSION[PACKAGE][SEARCH]['sort']);
-                break;
-        }
+			$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+			break;
+		case 'created':
+			if (isset($_SESSION[PACKAGE][SEARCH]['min']))
+				$obj->cl->SetFilterRange("created", $min, $obj->now);
+				
+			$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
+			break;
+		default:
+			$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_SESSION[PACKAGE][SEARCH]['sort']);
+			break;
+
     }
 }
 elseif(isset($_GET['js_cate_item']))
