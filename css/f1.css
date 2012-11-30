@@ -85,11 +85,12 @@
 	width: 100%;
 }
 .pk {
+	display: inline;
 	float: right;
 	margin-right: 10px;
 	padding-right: 10px;
 	color: #c74b15;
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bolder;
 }
 #form_fayan div.controls {
