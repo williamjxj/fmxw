@@ -1,15 +1,16 @@
 
 <div class="alert alert-block">
-  <h2>没有匹配记录 - {$smarty.session.fmxw.search.key}</h2>
+  <h2>没有记录-{$smarty.session.fmxw.search.key},请参考’<a href="{$config.search}?q={$smarty.session.fmxw.search.key}">相关度</a>查询!‘</h2>
   {if $smarty.session.fmxw.language != 'English'}
-  <p> 抱歉，没有找到匹配记录。请参考 ’<a href="{$config.search}?q={$smarty.session.fmxw.search.key}">相 关 度</a>查询!‘<br />
-    您的查询是： <br />
-  <ul>
-    {foreach $info as $v}
-    <li>{$v@key}: => {$v} </li>
-    {/foreach}
-  </ul>
-  </p>
+  <div class="box4">
+    <p> 抱歉，没有找到匹配记录。您的查询是： <br />
+    <ul>
+      {foreach $info as $v}
+      <li>{$v@key}: => {$v} </li>
+      {/foreach}
+    </ul>
+    </p>
+  </div>
   {else}
   <p> Sorry, No result matched. Please Try a new one or <a href="{$config.search}?q={$smarty.session.fmxw.search.key}">Relevance</a> Search.</p>
   {/if} </div>
