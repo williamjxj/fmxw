@@ -91,7 +91,8 @@ if (isset($_GET['q'])) {
 
 		//将缺省设置为’相关度‘，而不是’负面度‘: $q ='@title "'.$key.'" '.$mix;
 
-		$_SESSION[PACKAGE][SEARCH]['q'] = $key;
+		$q = $key;
+		$_SESSION[PACKAGE][SEARCH]['q'] = $q;
 		$_SESSION[PACKAGE][SEARCH]['sort'] = DEFAULT_SORT;
 
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
@@ -142,6 +143,7 @@ elseif(isset($_GET['js_core'])) {
 			$q = '@title "'.$key.'" '.$mix;
 			$_SESSION[PACKAGE][SEARCH]['q'] = $q;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;			
+			break;
 		case 2: //相关度
 			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['q'] = $key;
@@ -196,7 +198,7 @@ elseif(isset($_GET['page']))
 			break;
 		case 'created':
 			if (isset($_SESSION[PACKAGE][SEARCH]['min']))
-				$obj->cl->SetFilterRange("created", $min, $obj->now);
+				$obj->cl->SetFilterRange("created", $_SESSION[PACKAGE][SEARCH]['min'], $obj->now);
 				
 			$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 			break;
