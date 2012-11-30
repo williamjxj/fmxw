@@ -1,8 +1,8 @@
 
 <div class="alert alert-block">
-  <h2>没有匹配记录</h2>
+  <h2>没有匹配记录 - {$smarty.session.search.key}</h2>
   {if $smarty.session.fmxw.language != 'English'}
-  <p> 抱歉，没有找到匹配记录。<br />
+  <p> 抱歉，没有找到匹配记录。请尝试 ’<a href="{$config.search}?js_core=1">相 关 度</a>查询!‘<br />
     您的查询是： <br />
   <ul>
     {foreach $info as $v}
@@ -11,5 +11,5 @@
   </ul>
   </p>
   {else}
-  <p> Sorry, No result matched. Please Try a new one. </p>
+  <p> Sorry, No result matched. Please Try a new one or <a href="{$config.search}?js_core=1">Relevance</a> Search.</p>
   {/if} </div>

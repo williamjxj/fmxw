@@ -291,7 +291,7 @@ $_SESSION[PACKAGE][SEARCH]['q'] = empty($q) ? '' : trim($q);
 if (empty($res["matches"])) {
 	$info = array();
 	foreach($_SESSION[PACKAGE][SEARCH] as $k=>$v) {
-		if(preg_match("/(?:[^total])/", $k)) $info[$k] = htmlspecialchars($v);
+		if(! preg_match("/(?:total|q)/", $k)) $info[$k] = htmlspecialchars($v);
 	}
 	foreach($_GET as $k=>$v) $info[$k] = htmlspecialchars($v);
 	$obj -> assign('info', $info);
