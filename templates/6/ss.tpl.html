@@ -1,17 +1,17 @@
 {$url={$config.search}}
 {$url1={$config.ag}}
-{$q={$smarty.session.fmxw.search.key}}
+{$key={$smarty.session.fmxw.search.key}}
 {$t6={$config.t6}}
 {include file="{$config.t}base_layout.tpl.html"}
-<link rel="stylesheet" type="text/css" href="include/jquery_news_ticker/styles/ticker-style.css" />
 <link rel="stylesheet" type="text/css" href="{$config.f1.c}" media="screen" />
 <script type="text/javascript" src="js/UrlEncode.js"></script>
 <script type="text/javascript" src="{$config.js.easing}"></script>
 <script type="text/javascript" src="include/jquery.address-1.4/jquery.address-1.4.min.js"></script>
 <script type="text/javascript" src="js/jquery.fmxw1.js"></script>
 <!--加入fancybox-->
-<link rel="stylesheet" type="text/css" href="include/fancybox/source/jquery.fancybox.css?v=2.1.3" media="screen" />
-<script type="text/javascript" src="include/fancybox/source/jquery.fancybox.pack.js?v=2.1.3"></script>
+<!--link rel="stylesheet" type="text/css" href="include/fancybox/source/jquery.fancybox.css?v=2.1.3" media="screen" />
+<script type="text/javascript" src="include/fancybox/source/jquery.fancybox.pack.js?v=2.1.3"></script-->
+<link rel="stylesheet" type="text/css" href="include/jquery_news_ticker/styles/ticker-style.css" />
 <script type="text/javascript" src="include/jquery_news_ticker/includes/jquery.ticker.js"></script>
 </head><body>
 <div class="container">
@@ -24,24 +24,20 @@
   <div class="row-fluid">
     <div class="span1" id="sleft">
       <ul id="tf0" class="nav nav-tabs nav-stacked">
-        <li><a href="{$url}?js_core=2" rel="tooltip" title="相关度">相关度</a></li>
-        {if $q}
-        <li class="active"> {else}
-        <li> {/if} <a href="{$url}?js_core=1" rel="tooltip" title="负面度">负面度</a></li>
+        <li class="active"><a href="{$url}?js_core=2" rel="tooltip" title="按照查询的相关度排序">相关度</a></li>
+        <li><a href="{$url}?js_core=1" rel="tooltip" title="按照新闻的负面度排序">负面度</a></li>
         <li><a href="{$url}?js_core=3" rel="tooltip" title="评论数">评论数</a></li>
       </ul>
       <br />
       <ul id="tf1" class="nav nav-tabs nav-stacked">
-        {if $q}
-        <li> {else}
-        <li class="active"> {/if} <a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
+        <li><a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
         <li><a href="{$url}?js_dwmy=day24" rel="tooltip" title="一天内的数据">一天内</a></li>
         <li><a href="{$url}?js_dwmy=week" rel="tooltip" title="一月内的数据">一周内</a></li>
         <li><a href="{$url}?js_dwmy=month" rel="tooltip" title="一月内的数据">一月内</a></li>
         <li><a href="{$url}?js_dwmy=year" rel="tooltip" title="一年内的数据">一年内</a></li>
       </ul>
       <div class="alert" style="margin-top:20px;padding:2px;">
-        <form action="{$config.search}" method="get" name="ct_search" id="ct_search">
+        <form action="{$config.search}" method="get" name="cate_item" id="cate_item">
           <label for="category">类别:</label>
           <select name="category" id="category" style="width:100%">
           </select>
@@ -67,11 +63,14 @@
       <ul id="js-news" class="js-hidden">
         <li class="news-item">{foreach $kr as $r} <a href="javascript:;" class="latest">{$r.rk}</a> {/foreach} </li>
       </ul>
+      {if ! $key}
       <div id="uyan_hotcmt_unit" style="height:100px; max-height:100px;"></div>
       <div id="uyan_newcmt_unit" style="height:100px; max-height:100px;"></div>
+      {/if}
+      {if $key}
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
       <div id="news">{include file="{$config.t6}news.tpl.html"}</div>
-      <div id="3pingluns">{*include file="{$config.t}3pinglun.tpl.html"*}</div>
+      {/if}
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
   </div>
@@ -86,8 +85,8 @@
 <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1708821"></script>
 <script type="text/javascript">
 $(function() {
-	{if {$q} || {$q}!='所有记录'}
-		$('#q').val('{$q}');
+	{if $key || {$key}!='所有记录'}
+		$('#q').val('{$key}');
 	{/if}
 	
 	var $main = $('div#smiddle');
@@ -135,7 +134,7 @@ $(function() {
 		return false;
 	});
 	$('#category').change(function() {
-		cate_id = $(this).attr('value');
+		var cate_id = $(this).attr('value');
 		$.getJSON("{$url1}?js_item=1&cate_id=" + cate_id, function(data) {
 			var items ='<option value="0">- 所有栏目 -</option>\n';
 			$.each(data, function(id, name) {
@@ -143,15 +142,15 @@ $(function() {
 			});
 			$('#div_item').fadeIn(500);
 			$('#item').html(items);
-			$('button:submit', '#ct_search').attr('disabled', false);
+			$('button:submit', '#cate_item').attr('disabled', false);
 		});
 	});
 	
 	//排序框Form的提交。
-	$('#ct_search').submit(function(e) {
+	$('#cate_item').submit(function(e) {
 		e.preventDefault();
-		// alert('{$url}'+','+$(this).serialize()+'&js_ct_search=1' );
-		$main.load('{$url}', $(this).serialize()+'&js_ct_search=1');
+		// alert('{$url}'+','+$(this).serialize()+'&js_cate_item=1' );
+		$main.load('{$url}', $(this).serialize()+'&js_cate_item=1');
 		return false;
 	});
 	

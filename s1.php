@@ -201,7 +201,7 @@ elseif(isset($_GET['page'])) {
         }
     }
 }
-elseif(isset($_GET['js_ct_search'])) {
+elseif(isset($_GET['js_cate_item'])) {
 	// $obj->__p($_GET); $obj->__p($_SESSION);
 	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
@@ -417,10 +417,10 @@ $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-// $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_ct_search');
+// $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_cate_item');
 // if(in_array(key($_GET), $http_get) {}
 
-if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_ct_search']) ) {
+if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_cate_item']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);

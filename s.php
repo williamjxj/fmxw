@@ -2,6 +2,7 @@
 session_start();
 error_reporting(E_ALL);
 define("ROOT", "./");
+define('DEFAULT_SORT', 2);
 
 require_once (ROOT . "configs/config.inc.php");
 global $config;
@@ -26,14 +27,25 @@ $obj -> set_coreseek_server();
 list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
 $obj -> assign('config', $config);
 
-list($q, $key, $sort, $e) = array('', '', '', '(负面|丑闻|有害|真相) | (新闻|评价|曝光)');
+/**
+ * 约定：
+ * 1. http request 进来的$_GET['q']存入$key, $key保留原生的输入值。
+ * 2. 需要查询的统统都存入$q, $q可以等于$key,也可以是$key的扩展: $key+$mix.
+ * 3. 主要是排序：Sphinx的Query需要 SetSortMode(), 而mysql 需要 'order by'.
+ * 4. 附加条件，比如SetFilter(), SetFilterRange(), $q的变化。
+ * 5. $_SESSION[PACKAGE][SEARCH]['q']=$q, $_SESSION[PACKAGE][SEARCH]['key']=$key
+ * Perl: (负面|丑闻|有害|真相) | (新闻|评价|曝光)
+ */
+list($key, $q) = array('', '');
+$mix = '(丑闻|曝光|腐败|贿赂|淫荡|娼妓|滥用|罪恶|讹诈|抢劫|浮躁|偷窃|狡诈|毒害|奸污|诱惑|贪污|魔鬼|过期|变质|掺假|邪恶|疾病|落后|贪心|自私|蛮横|贪婪|姑息|愚昧|假冒|欺诈|悲剧|消极|放纵|虚假|欺骗|倒台|麻烦|厌烦|倒霉|温床|腐败|谎言|试探|次品|舆论|绯闻|露点|情妇|流氓|恶霸|犯罪|辩解|暴发户|浪尖|愤怒|逃避|作恶|作秀|负面|真相|致癌|涉嫌|超标|贬低|炒作|开除|坏) -(模范|开心)';
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
 
 	if(empty($_GET['q'])) {
-	    $q = $key = '';
+	    $key = $q = '';
 		$_SESSION[PACKAGE][SEARCH]['key'] ='';		
+		$_SESSION[PACKAGE][SEARCH]['q'] ='';		
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 		
 		$obj->cl->SetMatchMode(SPH_MATCH_FULLSCAN);
@@ -41,26 +53,30 @@ if (isset($_GET['q'])) {
 		$obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
 	}
 	else {
-	    $q = trim($_GET['q']);
-		$_SESSION[PACKAGE][SEARCH]['key'] = $q;
+	    $key = trim($_GET['q']);
+		$_SESSION[PACKAGE][SEARCH]['key'] = $key;
 
-		$obj->set_keywords($q);
+		$obj->set_keywords($key);
 		
 		$obj->cl->SetMatchMode(SPH_MATCH_PHRASE);
 		
-		$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+		$obj->cl->SetSortMode(SPH_SORT_RELEVANCE);
 		
-		$obj->cl->SetLimits(0, 10);
+		$obj->cl->SetLimits(0, 1);
 
-		$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
+		$res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
+		//注意查询失败和没有结果的区别：
 		if ($res === false) {
-			echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
+			$info = array();
+			$info['fail'] = '查询失败 - (' .$key . "): [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj->cl->GetLastError() . "<br>\n";
+			$obj->assign('info', $info);
+			$obj->display($tdir6.'norecord.tpl.html');
 			return;
 		}
 		elseif ($obj -> cl -> GetLastWarning()) {
-			echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
+			echo "WARNING for " . $key . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 		}
-
+		//如果没有结果，就调用ns.tpl.html直接搜索公共引擎。
 		if (empty($res["matches"])) {
 			$obj -> assign('_th', $obj -> get_header_label($header));
 			$obj -> assign('_tf', $obj -> get_footer_label($footer));			
@@ -69,14 +85,14 @@ if (isset($_GET['q'])) {
 			$obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 			$obj->display($tdir6.'ns.tpl.html');
 
-			$obj->write_named_pipes($q, __LINE__);
+			$obj->write_named_pipes($key, __LINE__);
 			return;
 		}
-		//$key ='@title "'.$q.'" @* (丑闻|曝光|腐败|贿赂|淫荡|娼妓|滥用|罪恶|讹诈|抢劫|浮躁|偷窃|狡诈|毒害|奸污|诱惑|贪污|魔鬼|过期|变质|掺假|邪恶|疾病|落后|贪心|自私|蛮横|贪婪|姑息|愚昧|假冒|欺诈|悲剧|消极|放纵|虚假|欺骗|倒台|麻烦|厌烦|危机|霉运|倒霉|温床|腐败|谎言|试探|次品|舆论|绯闻|露点|情妇|小三|流氓|恶霸|土匪|犯罪|辩解|暴发户|卖萌|浪尖|愤怒|逃避|媒体|作恶|作秀|负面|新闻|评价|真相|致癌|涉嫌|超标|恶斗|贬低|炒作|坏)';
-		
-		$key ='@title "'.$q.'" @(title,content) (丑闻|曝光|腐败|贿赂|淫荡|娼妓|滥用|罪恶|讹诈|抢劫|浮躁|偷窃|狡诈|毒害|奸污|诱惑|贪污|魔鬼|过期|变质|掺假|邪恶|疾病|落后|贪心|自私|蛮横|贪婪|姑息|愚昧|假冒|欺诈|悲剧|消极|放纵|虚假|欺骗|倒台|麻烦|厌烦|倒霉|温床|腐败|谎言|试探|次品|舆论|绯闻|露点|情妇|流氓|恶霸|犯罪|辩解|暴发户|浪尖|愤怒|逃避|作恶|作秀|负面|真相|致癌|涉嫌|超标|贬低|炒作|开除|坏) -(模范|开心)';
-		$_SESSION[PACKAGE][SEARCH]['key1'] = $key;
-		$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
+
+		//将缺省设置为’相关度‘，而不是’负面度‘: $q ='@title "'.$key.'" '.$mix;
+
+		$_SESSION[PACKAGE][SEARCH]['q'] = $key;
+		$_SESSION[PACKAGE][SEARCH]['sort'] = DEFAULT_SORT;
 
 		$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
@@ -104,8 +120,10 @@ elseif(isset($_GET['js_dwmy'])) {
 		default:
 			$min = 0;
 	}
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+	$_SESSION[PACKAGE][SEARCH]['min'] = $min;
+	
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 	
@@ -117,21 +135,25 @@ elseif(isset($_GET['js_dwmy'])) {
 	$obj->cl->SetFilterRange("created", $min, $obj->now);
 }
 elseif(isset($_GET['js_core'])) {
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 
 	switch($_GET['js_core']) {
+		case 1: //负面度
+			$q = '@title "'.$key.'" '.$mix;
+			$_SESSION[PACKAGE][SEARCH]['q'] = $q;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;			
 		case 2: //相关度
-			$key = $q;
+			$q = $key;
+			$_SESSION[PACKAGE][SEARCH]['q'] = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
 			break;
 		case 3: //评论数
-			$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+			$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 'pinglun';
 			break;
-		case 1: //负面度
-		default:
-			$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
-			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
+		default: //以后可能添加。
+			$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+			$_SESSION[PACKAGE][SEARCH]['sort'] = DEFAULT_SORT;
 			break;
 	}
 	
@@ -140,8 +162,8 @@ elseif(isset($_GET['js_core'])) {
     $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");        
 }
 elseif(isset($_GET['js_attr'])) {
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 
 	$_SESSION[PACKAGE][SEARCH]['sort'] = $_GET['js_attr'];
 
@@ -150,28 +172,36 @@ elseif(isset($_GET['js_attr'])) {
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_attr']);
 }
 //翻页显示。
-elseif(isset($_GET['page'])) {
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-
+elseif(isset($_GET['page'])) 
+{
     $obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 
-    if(empty($q)) {
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+    if(empty($key)) {
         $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
-        $key = '';
+        $q = '';
     }
     else {
-		$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+		$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
         switch($_SESSION[PACKAGE][SEARCH]['sort']) {
             case 2:
-				$key = $q;
+				$q = $key;
             case 1:
-                $obj->cl->SetSortMode ( SPH_SORT_RELEVANCE );
+                $obj->cl->SetSortMode( SPH_SORT_EXTENDED, "@relevance DESC, @id DESC" );
                 break;
             case 'cate_id':
+				if(isset($_SESSION[PACKAGE][SEARCH]['cate_id'])) 
+					$obj->cl->SetFilter('cate_id', array($_SESSION[PACKAGE][SEARCH]['cate_id']));
             case 'iid':
+				if(isset($_SESSION[PACKAGE][SEARCH]['item'])) 
+					$obj->cl->SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
+
                 $obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
                 break;
             case 'created':
+				if (isset($_SESSION[PACKAGE][SEARCH]['min']))
+					$obj->cl->SetFilterRange("created", $min, $obj->now);
+					
                 $obj->cl->SetSortMode(SPH_SORT_TIME_SEGMENTS, 'created');
                 break;
             default:
@@ -180,17 +210,23 @@ elseif(isset($_GET['page'])) {
         }
     }
 }
-elseif(isset($_GET['js_ct_search'])) {
+elseif(isset($_GET['js_cate_item']))
+{
 	// $obj->__p($_GET); $obj->__p($_SESSION);
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 
-	$obj->cl -> SetFilter('cate_id', array($_GET['category']));
+	$_SESSION[PACKAGE][SEARCH]['cate_id'] = $_GET['category']; 	
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
+	
+	$obj->cl -> SetFilter('cate_id', array($_SESSION[PACKAGE][SEARCH]['cate_id']));
 
-	if (!empty($_GET['item'])) {
-		$obj->cl -> SetFilter('iid', array($_GET['item']));
+	if (!empty($_GET['item']))
+	{
+		$_SESSION[PACKAGE][SEARCH]['item'] = $_GET['item'];
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 'iid';
+
+		$obj->cl -> SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
 	}
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
@@ -199,9 +235,10 @@ elseif(isset($_GET['js_ct_search'])) {
 }
 else {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
-	$q = $key = '';
-	$_SESSION[PACKAGE][SEARCH]['key'] ='';		
-	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';	
+	$key = $q = '';
+	$_SESSION[PACKAGE][SEARCH]['key'] ='';
+	$_SESSION[PACKAGE][SEARCH]['q'] ='';
+	$_SESSION[PACKAGE][SEARCH]['sort'] = 'created';
 	
 	$obj->cl->SetMatchMode(SPH_MATCH_ALL);
 	
@@ -211,9 +248,9 @@ else {
 	$obj->cl->SetArrayResult(true);
 }
 
-if(empty($q)) {
-	$q = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$key = isset($_SESSION[PACKAGE][SEARCH]['key1']) ? $_SESSION[PACKAGE][SEARCH]['key1']: $q;
+if(empty($key)) {
+	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 }
 
 // 设置当前页和开始的记录号码。
@@ -236,24 +273,27 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-//echo 'q=['.$q.'], key=['.$key."]<br>\n";
+echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
-$res = $obj -> cl -> Query($key, $obj -> conf['coreseek']['index']);
+$res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 
 if ($res === false) {
-    echo "查询失败 - " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastError() . "<br>\n";
-    return;
+	$info = array();
+	$info['fail'] = '查询失败 - (' .$q . "): [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj->cl->GetLastError() . "<br>\n";
+	$obj->assign('info', $info);
+	$obj->display($tdir6.'norecord.tpl.html');
+	return;
 }
 elseif ($obj -> cl -> GetLastWarning()) {
     echo "WARNING for " . $q . ": [at " . __FILE__ . ', ' . __LINE__ . ']: ' . $obj -> cl -> GetLastWarning() . "<br>\n";
 }
 
-$_SESSION[PACKAGE][SEARCH]['key'] = empty($q) ? '' : trim($q);
+$_SESSION[PACKAGE][SEARCH]['q'] = empty($q) ? '' : trim($q);
 
 if (empty($res["matches"])) {
 	$info = array();
 	foreach($_SESSION[PACKAGE][SEARCH] as $k=>$v) {
-		if(preg_match("/(?:key|time)/", $k)) $info[$k] = htmlspecialchars($v);
+		if(preg_match("/(?!total)/", $k)) $info[$k] = htmlspecialchars($v);
 	}
 	foreach($_GET as $k=>$v) $info[$k] = htmlspecialchars($v);
 	$obj -> assign('info', $info);
@@ -281,16 +321,14 @@ foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
 }
 
-// $obj->__p($matches);
 /* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
- * 结果不对。
+ * 结果不对。$obj->__p($matches);
  */
 if(empty($weights)) {
 	$weights = array('title'=>11, 'content'=>10);
 	$obj->cl->SetFieldWeights( $weights );
 }
 
-// 在SPH_MATCH_EXTENDED模式中，最终的权值是带权的词组评分和BM25权重的和，再乘以1000并四舍五入到整数。
 if(empty($res['words'])) {
 	$max_weight = (array_sum($weights) * count($res) + 1) * 1000;
 }
@@ -300,9 +338,7 @@ else {
 
 // 将ary_ids 由数组变成逗号分隔的字符串。
 $ids = implode(",", $ary_ids);
-// $query = $obj->generate_sql($ids);
-// 生成 select cid, title, content, date(created) as date  from contents where cid in (ids) 的语句。
-$query = "select *, date(created) as date from contents where cid in (" . $ids . ")";
+$query = "select *, date(created) as date from contents where cid in (" . $ids . ") ";
 
 if (!empty($_SESSION[PACKAGE][SEARCH]['sort'])) {
 	switch($_SESSION[PACKAGE][SEARCH]['sort']) {
@@ -329,8 +365,12 @@ else
 $mres = mysql_query($query);
 
 if (mysql_num_rows($mres) <= 0) {
-    $summary = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
-    $obj -> __p($summary);
+	$info = array();
+	$info['结果'] = "查询 【" . $q . "】 没有发现匹配结果，耗时约【".$res['time']."】 秒。";
+	foreach($res['matches'] as $k=>$v)
+		$info[$k] = $v;
+	$obj->assign('info', $res);
+	$obj->display($tdir6.'norecord.tpl.html');
     return;
 }
 
@@ -345,7 +385,7 @@ while ($row = mysql_fetch_assoc($mres)) {
 	//echo "[".$matches[$row['cid']]['weight']."], [".$relevance."]<br>\n";
 	if (!preg_match("/(?:<b>|<em>)/", $row['title'])) {
 		//echo "11111: " . $row['title'] . "<br>\n";
-		$row['title'] = $obj->mb_highlight($row['title'], $q, '<b>', '</b>');
+		$row['title'] = $obj->mb_highlight($row['title'], $key, '<b>', '</b>');
 		//echo "22222: " . $row['title'] . "<br>\n";
 	}
 
@@ -361,7 +401,7 @@ foreach ($ary_ids as $id) {
 /* 这一步基本没有作用，应为返回总是FALSE.BuildExcerpts没有成功.
  * Call Sphinxes BuildExcerpts function
  */
-$reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $q);
+$reply = $obj -> cl -> BuildExcerpts($docs, $obj -> conf['coreseek']['index'], $key);
 
 //只好再手动做一遍。
 if (empty($reply)) {
@@ -372,7 +412,7 @@ if (empty($reply)) {
 		else {
 			$d1 = $obj->my_strip( $ct );
 			$d2 = mb_substr($d1, 0, 150);
-			$rows[$id]['content'] = $obj->mb_highlight($d2, $q, '<b>', '</b>');
+			$rows[$id]['content'] = $obj->mb_highlight($d2, $key, '<b>', '</b>');
 		}
 	}
 }
@@ -387,7 +427,7 @@ $obj -> assign('results', $rows);
 
 $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
-$obj -> assign('kr', $obj->get_key_related($q));
+$obj -> assign('kr', $obj->get_key_related($key));
 
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
@@ -396,10 +436,10 @@ $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
-// $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_ct_search');
+// $http_get = array('page', 'js_dwmy', 'js_attr', 'js_core', 'js_cate_item');
 // if(in_array(key($_GET), $http_get) {}
 
-if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_ct_search']) ) {
+if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_cate_item']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     $pagination = $obj -> draw();
     $obj -> assign("pagination", $pagination);
