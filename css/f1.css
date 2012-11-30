@@ -114,3 +114,8 @@
 	background-color:#F5F5F5;
 	border: 0px solid #F5F5F5;
 }
+.ticker-wrapper.has-js {
+    margin-top: 0px !important;
+	margin-bottom: 10px !important;
+}   
+
