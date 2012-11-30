@@ -2,7 +2,7 @@
 <div class="alert alert-block">
   <h2>没有匹配记录 - {$smarty.session.fmxw.search.key}</h2>
   {if $smarty.session.fmxw.language != 'English'}
-  <p> 抱歉，没有找到匹配记录。请尝试 ’<a href="{$config.search}?q={$smarty.session.fmxw.search.key}">相 关 度</a>查询!‘<br />
+  <p> 抱歉，没有找到匹配记录。请参考 ’<a href="{$config.search}?q={$smarty.session.fmxw.search.key}">相 关 度</a>查询!‘<br />
     您的查询是： <br />
   <ul>
     {foreach $info as $v}
