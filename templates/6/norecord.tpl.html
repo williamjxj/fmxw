@@ -2,6 +2,7 @@
 <div class="alert alert-block">
   <h2>没有匹配记录 - {$smarty.session.fmxw.search.key}</h2>
   {if $smarty.session.fmxw.language != 'English'}
+  <div class="box4">
   <p> 抱歉，没有找到匹配记录。请尝试 ’<a href="{$config.search}?q={$smarty.session.fmxw.search.key}">相 关 度</a>查询!‘<br />
     您的查询是： <br />
   <ul>
@@ -10,6 +11,7 @@
     {/foreach}
   </ul>
   </p>
+  </div>
   {else}
   <p> Sorry, No result matched. Please Try a new one or <a href="{$config.search}?q={$smarty.session.fmxw.search.key}">Relevance</a> Search.</p>
   {/if} </div>
