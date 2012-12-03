@@ -1,0 +1,31 @@
+*{ margin:0; padding:0; list-style-type:none;}
+.fix:after{content:"."; display:block; clear:both; visibility:hidden; height:0;}
+.fix{ zoom:1;}
+a{color:#336699;text-decoration:none; outline:none;}
+a:hover{text-decoration:underline;} 
+button::-moz-focus-inner,input::-moz-focus-inner{ border-color:transparent!important;}
+button{ cursor:pointer;}
+img{ border:none 0;}
+section, article, aside, header, footer, nav, dialog, figure{display:block;}
+html{ line-height:1.2;}
+body{ font-size:12px; background-color:#fff; text-align:left; -webkit-text-size-adjust:none; word-wrap:break-word; word-break:break-all;}
+.lf{ float:left;}
+.rf{ float:right;}
+.mainbox{ width:917px; overflow:hidden;}
+.mainbox .hd{ height:100px; background:url(../images/green_10.png.gif) 0 bottom repeat-x; font-size:14px; font-weight:700; font-family:simhei; color:#333;}
+.mainbox .bar{ width:300px; height:100%; background:url(../images/yellow_07.png) right bottom no-repeat;}
+.mainbox .info{ padding-top:45px; line-height:31px;}
+.mainbox .count{ padding:0 30px;}
+.mainbox .total{ margin-right:-10px; position:relative;}
+.mainbox .total .n{ color:#547816; font-size:25px;}
+.mainbox .white{ color:#fff;}
+.mainbox .btm{ padding-top:50px;}
+.mainbox .btm .item{ width:453px; height:122px; text-align:center;}
+.mainbox .btm .item .desc{ font-family:microsoft yahei; font-size:27px; padding-top:25px;}
+.mainbox .btm .item .btn{ display:block; margin:15px auto 0; border:none 0; width:119px; height:33px; text-indent:-1000px; overflow:hidden; font-size:0; background-position:0 0; background-repeat:no-repeat;}
+.mainbox .btm .role_a{ background-color:#ffe7b7;}
+.mainbox .btm .role_a .desc{ color:#a06e03;}
+.mainbox .btm .role_a .btn{ background-image:url(http://x.limgs.cn/f1/up/gy/2012/1019/btn_a_15.gif);}
+.mainbox .btm .role_b{ background-color:#deedbd;}
+.mainbox .btm .role_b .desc{ color:#547816;}
+.mainbox .btm .role_b .btn{ background-image:url(http://x.limgs.cn/f1/up/gy/2012/1019/btn_b_17.gif);}
