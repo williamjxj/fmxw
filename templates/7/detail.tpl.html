@@ -11,13 +11,26 @@
   <div class="display_content"> {$info.content} </div>
 </div>
 <div class="clear"></div>
-<div class="pkbox">
+<div class="pkbox"> </div>
+<div class="tab-pane" id="pks">
+  <div id="pks1">暂无评论</div>
+  <div id="pks2"></div>
 </div>
 <script type="text/javascript">
 $(function() {
 	$('div.pkbox').load("{$t7}vote.tpl.html");
+	if($('#pks2').html().length==0) {
+		var t = $('#pks1'), cid={$cid};
+		t.html($('<div class="ajaxloading"></div>'));
+		t.load('{$config.ag}?js_pks1=1&cid='+cid, function(data) {
+			if(data==null || data=='') t.html('暂无评论。');
+			else t.html(data);
+		});
+		$('#pks2').load('{$config.ag}?js_pks2=1&cid='+cid);
+	}	
 });
 </script>
+<hr />
 <div id="affix">
   <div id="pinglun"> {include file="{$t7}pingluns.tpl.html"} </div>
   <!-- features: 返回顶部 -->
