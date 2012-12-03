@@ -1,0 +1,36 @@
+<link href="../../css/vote.css" type="text/css" rel="stylesheet" />
+<div class="mainbox">
+  <div class="hd fix">
+    <div style="width:800px;" class="bar lf fix">
+      <p class="info lf"><span class="count">1556票</span><span class="white">95%</span></p>
+      <p class="total rf">参与人数：<b class="n">1645</b>人</p>
+    </div>
+    <p class="info rf"><span class="white">5%</span><span class="count">89票</span></p>
+  </div>
+  <div class="btm fix">
+    <div class="role_a item lf">
+      <p class="desc">观点A：认可，只要是做好事就行。</p>
+      <button class="btn" type="submit" onClick="ajpost('32467','p1')">支持A</button>
+    </div>
+    <div class="role_b item rf">
+      <p class="desc">观点B：不认可，只是想借此出名。</p>
+      <button class="btn" type="submit" onClick="ajpost('32468','p2')">支持B</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function ajpost(ypollval,sid){
+	$.post("http://api.cn.yahoo.com/ypoll2/poll_201211/s_8279.php",{ ypoll: ypollval},
+		function(data){
+			if(data=="true"){
+				alert("投票成功");
+				window.location.reload();
+				su = $("#"+sid).html();
+				$("#"+sid).html(Number(su)+1);
+			} else {
+				alert(data);
+			}
+		}
+	);
+}
+</script>

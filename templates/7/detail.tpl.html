@@ -11,6 +11,13 @@
   <div class="display_content"> {$info.content} </div>
 </div>
 <div class="clear"></div>
+<div class="pkbox">
+</div>
+<script type="text/javascript">
+$(function() {
+	$('div.pkbox').load('vote.tpl.html');
+});
+</script>
 <div id="affix">
   <div id="pinglun"> {include file="{$t7}pingluns.tpl.html"} </div>
   <!-- features: 返回顶部 -->
