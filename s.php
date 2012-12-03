@@ -150,11 +150,11 @@ elseif(isset($_GET['js_core'])) {
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
 			break;
 		case 3: //评论数
-			$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 'pinglun';
 			break;
 		default: //以后可能添加。
-			$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = DEFAULT_SORT;
 			break;
 	}
@@ -271,7 +271,7 @@ else {
 }
 $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
-echo 'q=['.$q.'], key=['.$key."]<br>\n";
+// echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 
