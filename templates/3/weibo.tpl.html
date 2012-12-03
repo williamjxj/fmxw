@@ -1,52 +1,37 @@
 <!--http://widget.weibo.com/livestream/listlive.php?atopic=丑闻-->
+
 {$q=$smarty.session.fmxw.search.key}
 <div class="weibo">
-	<h3>看看微博怎么说-</h3>
-	<form method="post" name="wb_search" action="javascript:;"  class="form-search">
-		<input type="text" placeholder="微博主题" name="key" class="input-medium search-query" />
-		<button type="submit" class="btn btn-success">
-			<i class="icon-white icon-search"></i> 微博查询
-		</button>
-	</form>
-	<div class="row" style="margin:0px;">
-		<ul class="nav nav-tabs" id="weiboList">
-			<li class="active">
-				<a href="#sina_wb" rel="tooltip" title="新浪微博"><img src="images/sina.ico" width="16" height="16" border="0" /> 新浪</a>
-			</li>
-			<li>
-				<a href="#tengxun_wb" rel="tooltip" title="腾讯微博"><img src="images/qq.ico" width="16" height="16" border="0" /> 腾讯</a>
-			</li>
-			<li>
-				<a href="#163_wb" rel="tooltip" title="网易微博"><img src="images/163.ico" width="16" height="16" border="0" /> 网易</a>
-			</li>
-			<li>
-				<a href="#sohu_wb" rel="tooltip" title="搜狐微博"><img src="images/sohu.ico" width="16" height="16" border="0" /> 搜狐</a>
-			</li>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane active" id="sina_wb">
-				<div class="ajaxloading"></div>
-			</div>
-			<div class="tab-pane" id="tengxun_wb">
-				<div class="ajaxloading"></div>
-				<p>
-					腾讯微博
-				</p>
-			</div>
-			<div class="tab-pane" id="163_wb">
-				<div class="ajaxloading"></div>
-				<p>
-					网易微博
-				</p>
-			</div>
-			<div class="tab-pane" id="sohu_wb">
-				<div class="ajaxloading"></div>
-				<p>
-					搜狐微博
-				</p>
-			</div>
-		</div>
-	</div>
+  <h3>看看微博怎么说-</h3>
+  <form method="post" name="wb_search" action="javascript:;"  class="form-search">
+    <input type="text" placeholder="微博主题" name="key" class="input-medium search-query" />
+    <button type="submit" class="btn btn-success"> <i class="icon-white icon-search"></i> 进一步查询微博 </button>
+  </form>
+  <div class="row" style="margin:0px;">
+    <ul class="nav nav-tabs" id="weiboList">
+      <li class="active"> <a href="#163_wb" rel="tooltip" title="网易微博"><img src="images/163.ico" width="16" height="16" border="0" /> 网易</a> </li>
+      <li> <a href="#sina_wb" rel="tooltip" title="新浪微博"><img src="images/sina.ico" width="16" height="16" border="0" /> 新浪</a> </li>
+      <li> <a href="#sohu_wb" rel="tooltip" title="搜狐微博"><img src="images/sohu.ico" width="16" height="16" border="0" /> 搜狐</a> </li>
+      <li> <a href="#tengxun_wb" rel="tooltip" title="腾讯微博"><img src="images/qq.ico" width="16" height="16" border="0" /> 腾讯</a> </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="163_wb">
+        <div class="ajaxloading"></div>
+      </div>
+      <div class="tab-pane" id="sina_wb">
+        <div class="ajaxloading"></div>
+        <p> 新浪微博 </p>
+      </div>
+      <div class="tab-pane" id="sohu_wb">
+        <div class="ajaxloading"></div>
+        <p> 搜狐微博 </p>
+      </div>
+      <div class="tab-pane" id="tengxun_wb">
+        <div class="ajaxloading"></div>
+        <p> 腾讯微博 </p>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript" src="{$config.base}js/jquery.fmxw4.js"></script>
 <script type="text/javascript">
@@ -72,6 +57,11 @@
                 if ($(t).find('iframe').attr('src') === undefined) {
                     $(t).html($('<div class="ajaxloading"></div>'));
                     $.fmxw4.sohu_weibo(q);
+                }
+            } else if (/sina/.test(t)) {
+                if ($(t).find('iframe').attr('src') === undefined) {
+                    $(t).html($('<div class="ajaxloading"></div>'));
+                    $.fmxw4.sina_weibo(q);
                 }
             }
             $(this).tab('show');
@@ -109,6 +99,6 @@
         });
     });
     $(window).load(function() {
-        $.fmxw4.sina_weibo(q);
+        $.fmxw4.netease_weibo(q);
     }); 
 </script>
