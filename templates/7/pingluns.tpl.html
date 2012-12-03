@@ -1,4 +1,23 @@
 {$cid=$smarty.get.cid}
+
+<input type="text" id="pp" value="" />
+<div id="processBar"></div>
+<script type="text/javascript">
+$(function() {
+	$('#pp').keyup(function(){
+		var len = $(this).val().length;
+		var total = null;
+		total = len * 10;
+		barUpdate(total);
+	});
+	function barUpdate(total) {
+		$('#processBar').progressbar({
+			value : total
+		});
+	}
+});
+</script>
+
 <div class="row reping">
   <h3>网友热评</h3>
   <ul class="nav nav-tabs" id="Tab3">
