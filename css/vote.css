@@ -12,7 +12,7 @@ body{ font-size:12px; background-color:#fff; text-align:left; -webkit-text-size-
 .lf{ float:left;}
 .rf{ float:right;}
 .mainbox{ width:917px; overflow:hidden;}
-.mainbox .hd{ height:100px; background:url(../images/green_10.png.gif) 0 bottom repeat-x; font-size:14px; font-weight:700; font-family:simhei; color:#333;}
+.mainbox .hd{ height:100px; background:url(../images/green_10.gif) 0 bottom repeat-x; font-size:14px; font-weight:700; font-family:simhei; color:#333;}
 .mainbox .bar{ width:300px; height:100%; background:url(../images/yellow_07.png) right bottom no-repeat;}
 .mainbox .info{ padding-top:45px; line-height:31px;}
 .mainbox .count{ padding:0 30px;}
