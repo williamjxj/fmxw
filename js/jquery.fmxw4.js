@@ -129,6 +129,7 @@
             $.extend(attrs, $.fmxw4.defaults);
             attrs.src += q;
             $('#163_wb').html($('<iframe></iframe>').attr(attrs));
+			//alert($("iframe", '#163_wb').contents);
         },
 
         sohu_weibo : function(q) {

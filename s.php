@@ -319,8 +319,10 @@ foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
 }
 
+// $obj->__p($res);
+
 /* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
- * 结果不对。$obj->__p($matches);
+ * 结果不对。
  */
 if(empty($weights)) {
 	$weights = array('title'=>11, 'content'=>10);
@@ -389,6 +391,8 @@ while ($row = mysql_fetch_assoc($mres)) {
 
     $rows[$row['cid']] = $row;
 }
+
+// $obj->__p($rows);
 
 //strip_tags将所有'<>'全部去掉，很彻底。
 $docs = array();

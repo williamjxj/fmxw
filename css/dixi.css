@@ -594,3 +594,12 @@ div.comment a:active {
 #sd {
 	margin-bottom: 10px;
 }
+#div_wb {
+	position : relative;
+}
+#163_wb {
+	position : absolute;
+	top      : 300px;
+	width    : 1280px;
+	height   : 1200px;
+}
