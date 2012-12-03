@@ -34,7 +34,7 @@ if (!isset($config)) {
         'bootstrap' => 'include/bootstrap/css/bootstrap.css', 
         'fmxw' => 'css/dixi.css', 
         'extra' => 'css/extra.css',
-        'jquery-ui' => 'include/jqueryui/js/jquery-ui-1.8.22.custom.min.js', 
+		'jquery-ui' => 'include/jqueryui/css/le-frog/jquery-ui-1.8.22.custom.css',
     ), 
     'js' => array(
         'jquery' => 'js/jquery-1.7.2.min.js', 
@@ -46,6 +46,7 @@ if (!isset($config)) {
         'easing' => 'js/jquery.easing.1.3.js', 
         'fancybox' => 'include/fancyBox/', 
         'fmxw' => 'js/dixi.js',
+        'jquery-ui' => 'include/jqueryui/js/jquery-ui-1.8.22.custom.min.js', 
     ),
     'f0' => array(
         'c' => 'css/f0.css', 
