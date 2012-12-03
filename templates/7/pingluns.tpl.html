@@ -1,9 +1,13 @@
 {$cid=$smarty.get.cid}
 
-<input type="text" id="pp" value="" />
+<input type="text" id="pp" value="" placeholder="processing calculating" />
 <div id="processBar"></div>
 <script type="text/javascript">
 $(function() {
+	$('#processBar').progressbar({
+		value: 50
+	});
+
 	$('#pp').keyup(function(){
 		var len = $(this).val().length;
 		var total = null;
