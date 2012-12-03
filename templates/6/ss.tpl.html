@@ -96,28 +96,6 @@ $(function() {
 		$(this).closest('li').addClass('active');
 		return false;
 	});
-	
-	$.address.init(function(event) { 
-		return false;
-	}).
-	change(function(event) {
-		if(event.value=='/') return false;
-		u = event.value.replace(/^\//,'');
-		$t = $('[rel="address:' + u + '"]');
-		$('{$config.wait}').insertAfter($t);
-		if($('#sd').length) {
-			$('#sd').load(u, function() {
-				$(this).fadeIn(200);
-				$('li.li3').removeClass('highlight1');
-				$t.parent('li.li3').addClass('highlight1');
-				$t.next('img').remove();
-			});
-		}
-		else {
-			alert('sd not exist.');
-		}
-		return false;
-	});
 
 	//阅览右上角。
 	$('div.pagination a').live('click', function() {
