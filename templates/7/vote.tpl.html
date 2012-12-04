@@ -1,16 +1,17 @@
+{debug}
 <link href="{$config.css.vote}" type="text/css" rel="stylesheet" />
 <div class="mainbox">
   <div class="hd fix">
     <div style="width:800px;" class="bar lf fix">
-      <p class="info lf"><span class="count">1556票</span><span class="white">95%</span></p>
-      <p class="total rf">参与人数：<b class="n">1645</b>人</p>
+      <p class="info lf"><span class="count">{$info.likes}票</span><span class="white">{$info.p1}%</span></p>
+      <p class="total rf">参与人数：<b class="n">{$info.total}</b>人</p>
     </div>
-    <p class="info rf"><span class="white">5%</span><span class="count">89票</span></p>
+    <p class="info rf"><span class="white">{$info.p2}%</span><span class="count">{$info.fandui}票</span></p>
   </div>
   <div class="btm fix">
     <div class="role_a item lf">
       <p class="desc">观点A：认可，只要是做好事就行。</p>
-      <button class="btn" type="submit" id="zhichi">支持A</button>
+      <button class="btn" type="submit" id="likes">支持A</button>
     </div>
     <div class="role_b item rf">
       <p class="desc">观点B：不认可，只是想借此出名。</p>
@@ -21,12 +22,12 @@
 <script type="text/javascript">
 $(function() {
 	var cid = {$cid};
-	$('#zhichi').click(function(e) {
+	$('#likes').click(function(e) {
 		$(this).after($('<div class="ajaxloading"></div>'));
 		$.getJSON("{$config.f7.s}",{ cid:cid, js_likes:1 }, function(data){
 			if(data){
-				var z=parseInt(data[0]), f=parseInt(data[1]);
-				var total = z+f;
+				var z=parseInt(data.likes), f=parseInt(data.fandui);
+				var total = parseInt(data.total);
 				alert($('div.bar.lf.fix').attr('style') + ', ' + data + ',' + z +','+f+','+total);
 				$('div.bar.lf.fix').css('width', function(index) {
 					alert(parseInt(800*z/total));
@@ -36,22 +37,25 @@ $(function() {
 			} else {
 				alert('Error: connect or access database error.');
 			}
-			$('#zhichi').next($('div.ajaxloading')).remove();
+			$('#likes').next($('div.ajaxloading')).remove();
 		});
 		return false;
 	});
 	$('#fandui').click(function(e) {
 		$(this).after($('<div class="ajaxloading"></div>'));
-		$.post("{$config.f7.s}",{ cid:cid, js_fandui:1 },
-			function(data){
-				if(data){
-					alert("投票成功" + data);
-					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
-				} else {
-					alert('Error: connect or access database error.');
-				}
-				$('#fandui').next('div.ajaxloading').remove();
+		$.getJSON("{$config.f7.s}",{ cid:cid, js_fandui:1 }, function(data){
+			if(data){
+				var z=parseInt(data.fandui), f=parseInt(data.fandui);
+				var total = parseInt(data.total);
+				$('div.bar.lf.fix').css('width', function(index) {
+					return parseInt(800*z/total);
+				});
+				//$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+			} else {
+				alert('Error: connect or access database error.');
 			}
+			$('#fandui').next($('div.ajaxloading')).remove();
+		});
 		);
 		return false;
 	});

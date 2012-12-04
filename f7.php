@@ -19,10 +19,13 @@ if(isset($_GET['js_zhichi'])) {
     $obj->set_zhichi($_GET['cid']);
     exit;
 }
-//使用之
+//使用之, 赞成，反对，总数，各自的百分比。
 elseif(isset($_GET['js_vote'])) {
-    $cid = intval($_GET['cid']);    
-    $obj -> assign('cid', $cid);
+    $cid = intval($_GET['cid']);
+    $info = array('cid'=>$cid);
+    $info = $obj -> get_likes_fandui($cid);
+    $info['p1'] = round($info['likes']/$info['total'], 2) * 100;
+    $info['p2'] = round($info['fandui']/$info['total'], 2) * 100;
     $obj->display($tdir7.'vote.tpl.html');
     return;
 }
