@@ -32,11 +32,21 @@ elseif(isset($_GET['js_vote'])) {
     return;
 }
 elseif(isset($_GET['js_likes'])) {
-    echo json_encode($obj->set_likes($_GET['cid']));
+    $info = array();
+    $info = $obj->set_likes($_GET['cid']);
+    $info['p1'] = round($info['likes']/$info['total'], 2) * 100;
+    $info['p2'] = round($info['fandui']/$info['total'], 2) * 100;
+    $info['cid'] = $cid;
+    echo json_encode($info);
 	return;
 }
 elseif(isset($_GET['js_fandui'])) {
-    echo json_encode($obj->set_fandui($_GET['cid']));
+    $info = array();
+    $info = $obj->set_fandui($_GET['cid']);
+    $info['p1'] = round($info['likes']/$info['total'], 2) * 100;
+    $info['p2'] = round($info['fandui']/$info['total'], 2) * 100;
+    $info['cid'] = $cid;
+    echo json_encode($info);
 	return;
 }
 elseif(isset($_GET['js_get_recommand'])) {

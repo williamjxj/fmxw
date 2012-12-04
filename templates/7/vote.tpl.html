@@ -23,18 +23,18 @@ $(function() {
 	var cid = {$info.cid};
 	$('#likes').click(function(e) {
 		$(this).after($('<div class="ajaxloading"></div>'));
-		$.getJSON("{$config.f7.s}",{ cid:cid, js_likes:1 }, function(data){
-			if(data){
-				var z=parseInt(data.likes), f=parseInt(data.fandui);
-				var total = parseInt(data.total);
+		$.getJSON("{$config.f7.s}",{ cid:cid, js_likes:1 }, function(info){
+			if(info){
+				var z=parseInt(info.likes), f=parseInt(info.fandui);
+				var total = parseInt(info.total);
 				$('div.bar.lf.fix').css('width', function(index) {
 					return parseInt(800*z/total);
 				});
-				$('s1').html('{$info.likes}票');
-				$('s2').html('{$info.p1}%');
-				$('s3').html('{$info.total}');
-				$('s4').html('{$info.p2}%');
-				$('s5').html('{$info.fandui}票');
+				$('#s1').html(z + '票');
+				$('#s2').html(parseInt(info.p1) + '%');
+				$('#s3').html(total);
+				$('#s4').html(parseInt(info.p2) + '%');
+				$('#s5').html(f + '票');
 			} else {
 				alert('Error: connect or access database error.');
 			}
@@ -51,11 +51,11 @@ $(function() {
 				$('div.bar.lf.fix').css('width', function(index) {
 					return parseInt(800*z/total);
 				});
-				$('s1').html('{$info.likes}票');
-				$('s2').html('{$info.p1}%');
-				$('s3').html('{$info.total}');
-				$('s4').html('{$info.p2}%');
-				$('s5').html('{$info.fandui}票');
+				$('#s1').html(z + '票');
+				$('#s2').html(parseInt(info.p1) + '%');
+				$('#s3').html(total);
+				$('#s4').html(parseInt(info.p2) + '%');
+				$('#s5').html(f + '票');
 			} else {
 				alert('Error: connect or access database error.');
 			}
