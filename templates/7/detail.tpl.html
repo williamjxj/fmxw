@@ -18,7 +18,8 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	$('div.pkbox').load("{$t7}vote.tpl.html");
+	$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+	
 	if($('#pks2').html().length==0) {
 		var t = $('#pks1'), cid={$cid};
 		t.html($('<div class="ajaxloading"></div>'));

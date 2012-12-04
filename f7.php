@@ -13,13 +13,18 @@ $obj = new f3Class();
 
 list($tdir0, $tdir1, $tdir6, $tdir7) = array($config['t0'], $config['t1'], $config['t6'], $config['t7']);
 
+$obj -> assign('config', $config);
+
 if(isset($_POST['js_zhichi'])) {
     $obj->set_zhichi($_POST['cid']);
     exit;
 }
-elseif(isset($_POST['js_guanzhu'])) {
-    $obj->set_guanzhu($_POST['cid']);
-    exit;
+//使用之
+elseif(isset($_GET['js_vote'])) {
+    $cid = intval($_GET['cid']);    
+    $obj -> assign('cid', $cid);
+    $obj->display($tdir7.'vote.tpl.html');
+    return;
 }
 elseif(isset($_POST['js_likes'])) {
     $obj->set_likes($_POST['cid']);
@@ -86,7 +91,7 @@ global $footer;
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
 
-$obj -> assign('config', $config);
+
 $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 

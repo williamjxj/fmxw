@@ -1,4 +1,4 @@
-<link href="css/vote.css" type="text/css" rel="stylesheet" />
+<link href="{$config.css.vote}" type="text/css" rel="stylesheet" />
 <div class="mainbox">
   <div class="hd fix">
     <div style="width:800px;" class="bar lf fix">
@@ -10,23 +10,23 @@
   <div class="btm fix">
     <div class="role_a item lf">
       <p class="desc">观点A：认可，只要是做好事就行。</p>
-      <button class="btn" type="submit" onClick="ajpost('32467','p1')">支持A</button>
+      <button class="btn" type="submit" onClick="ajpost('{$cid}')">支持A</button>
     </div>
     <div class="role_b item rf">
       <p class="desc">观点B：不认可，只是想借此出名。</p>
-      <button class="btn" type="submit" onClick="ajpost('32468','p2')">支持B</button>
+      <button class="btn" type="submit" onClick="ajpost('{$cid}')">支持B</button>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-function ajpost(ypollval,sid){
-	$.post("http://api.cn.yahoo.com/ypoll2/poll_201211/s_8279.php",{ ypoll: ypollval},
+function ajpost(cid){
+	$.post("{$config.f7.s}",{ poll: cid },
 		function(data){
 			if(data=="true"){
 				alert("投票成功");
 				window.location.reload();
-				su = $("#"+sid).html();
-				$("#"+sid).html(Number(su)+1);
+				su = $("#"+cid).html();
+				$("#"+cid).html(Number(su)+1);
 			} else {
 				alert(data);
 			}
