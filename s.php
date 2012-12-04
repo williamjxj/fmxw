@@ -312,7 +312,7 @@ $_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
  */
 $ary_ids = array_map("get_SetArrayResult_Ids", $res['matches']);
 
-/* 将 cid=>weigth队放入matches中。
+/* 将 cid=>weight队放入matches中。
  */
 $matches = array();
 foreach($res['matches'] as $v) {
@@ -378,7 +378,7 @@ if (mysql_num_rows($mres) <= 0) {
 $rows = array();
 while ($row = mysql_fetch_assoc($mres)) {
 	//echo "[".$matches[$row['cid']]."], [".$max_weight."]<br>\n";
-    $relevance = ceil(($matches[$row['cid']] / $max_weight) * 100); //relevance
+    $relevance = ceil((intval($matches[$row['cid']]) / $max_weight) * 100); //relevance
 	if($relevance>100) $relevance = 100;
 	if($relevance<1) $relevance = 1;
 	$row['r'] = $relevance;
