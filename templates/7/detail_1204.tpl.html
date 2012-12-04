@@ -12,16 +12,31 @@
 </div>
 <div style="clear:both;"></div>
 <div class="pkbox"> </div>
-<!-- UY BEGIN -->
-<div id="uyan_frame"></div>
-<script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1708821" async=""></script>
-<!-- UY END -->
-<span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</span>
+<div class="tab-pane" id="pks">
+  <div id="pks1">暂无评论</div>
+  <div id="pks2"></div>
+</div>
 <script type="text/javascript">
-$(function() {
-	$().UItoTop({ easingType : 'easeOutQuart' });
-}); 
 $(window).load(function() {
 	$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+	
+	if($('#pks2').html().length==0) {
+		var t = $('#pks1'), cid={$cid};
+		t.html($('<div class="ajaxloading"></div>'));
+		t.load('{$config.ag}?js_pks1=1&cid='+cid, function(data) {
+			if(data==null || data=='') t.html('暂无评论。');
+			else t.html(data);
+		});
+		$('#pks2').load('{$config.ag}?js_pks2=1&cid='+cid);
+	}
 });
+</script>
+<hr />
+<div id="affix"> <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</span> </div>
+<script type="text/javascript">
+$(function() {
+	$().UItoTop({
+		easingType : 'easeOutQuart'
+	});
+}); 
 </script>
