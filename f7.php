@@ -47,7 +47,7 @@ elseif (isset($_GET['cid'])) {
 		array_push($info['breadcrumb'], array('name'=>$info['item'], 'link'=>'iid='.$info['iid']));
 	}
 
-    $info['rps'] = $obj -> get_comments($_GET['cid']);
+    // $info['rps'] = $obj -> get_comments($_GET['cid']);
 
     $obj -> assign('info', $info);
 } 
