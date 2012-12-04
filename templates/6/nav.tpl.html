@@ -24,17 +24,15 @@
     {elseif {$sort=='cate_id'}} ({$rts.category})
     {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
     {else}
-     {if {$smarty.session.fmxw.search.key}}
-      ({$rts.r}%)
-     {/if}
+    {if {$smarty.session.fmxw.search.key}}
+    ({$rts.r}%)
     {/if}
-    <div class="comment">
-      <i class="icon-hand-up"></i>&nbsp;<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3">我要PK</a>
-    </div>
-    <br>
+    {/if}
+    <div class="comment"> <i class="icon-hand-up"></i>&nbsp;<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3">我要PK</a> </div>
+    <span class="preview"><span class="iPre"> <span class="iPreBox" style="71px;visibility:hidden;"><em class="iPreArr"></em> </span></span> </span><br>
     {$rts.content}<br />
     <div class="highLight"></div>
-    </li>
+  </li>
   {/foreach}
 </ul>
 <script type="text/javascript">
