@@ -154,7 +154,7 @@ class f7Class extends f23Class {
     }
 	function get_likes_fandui($cid) {
 		//$res = mysql_query("select likes, fandui, likes+fandui as total from contents where cid=".$cid) or mysql_error();
-		$res = mysql_query("select likes, guanzhu like fandui, likes+guanzhu as total from contents where cid=".$cid) or mysql_error();
+		$res = mysql_query("select likes, guanzhu as fandui, likes+guanzhu as total from contents where cid=".$cid) or mysql_error();
 		$row =  mysql_fetch_assoc($res);
 		mysql_free_result($res);
 		return $row;
