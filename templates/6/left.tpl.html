@@ -45,11 +45,13 @@ $(function(){
 	$("span", '#toggle').click(function() {
 		if($(this).hasClass('close1')) {
 			$('#sleft').addClass('span1').removeClass('sosospan');
+			//$('#sright').addClass('span7').removeClass('span8');
 			$('#soso').show();
 			$(this).removeClass('close1');
 		}
 		else {
 			$('#sleft').removeClass('span1').addClass('sosospan');
+			//$('#sright').addClass('span8').removeClass('span7');
 			$('#soso').hide();
 			$(this).addClass('close1');
 			$('#toggle').show().css('display', 'block');
