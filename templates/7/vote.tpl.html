@@ -1,4 +1,3 @@
-{debug}
 <link href="{$config.css.vote}" type="text/css" rel="stylesheet" />
 <div class="mainbox">
   <div class="hd fix">
@@ -21,19 +20,19 @@
 </div>
 <script type="text/javascript">
 $(function() {
-	var cid = {$cid};
+	var cid = {$info.cid};
 	$('#likes').click(function(e) {
 		$(this).after($('<div class="ajaxloading"></div>'));
 		$.getJSON("{$config.f7.s}",{ cid:cid, js_likes:1 }, function(data){
 			if(data){
 				var z=parseInt(data.likes), f=parseInt(data.fandui);
 				var total = parseInt(data.total);
-				alert($('div.bar.lf.fix').attr('style') + ', ' + data + ',' + z +','+f+','+total);
+				//alert($('div.bar.lf.fix').attr('style') + ', ' + data + ',' + z +','+f+','+total);
 				$('div.bar.lf.fix').css('width', function(index) {
-					alert(parseInt(800*z/total));
+					//alert(parseInt(800*z/total));
 					return parseInt(800*z/total);
 				});
-				//$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+				$('div.pkbox').load("{$config.f7.s}?cid={$info.cid}&js_vote=1");
 			} else {
 				alert('Error: connect or access database error.');
 			}
@@ -50,13 +49,12 @@ $(function() {
 				$('div.bar.lf.fix').css('width', function(index) {
 					return parseInt(800*z/total);
 				});
-				//$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+				//$('div.pkbox').load("{$config.f7.s}?cid={$info.cid}&js_vote=1");
 			} else {
 				alert('Error: connect or access database error.');
 			}
 			$('#fandui').next($('div.ajaxloading')).remove();
 		});
-		);
 		return false;
 	});
 });
