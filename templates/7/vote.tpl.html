@@ -44,10 +44,10 @@ $(function() {
 	});
 	$('#fandui').click(function(e) {
 		$(this).after($('<div class="ajaxloading"></div>'));
-		$.getJSON("{$config.f7.s}",{ cid:cid, js_fandui:1 }, function(data){
-			if(data){
-				var z=parseInt(data.fandui), f=parseInt(data.fandui);
-				var total = parseInt(data.total);
+		$.getJSON("{$config.f7.s}",{ cid:cid, js_fandui:1 }, function(info){
+			if(info){
+				var z=parseInt(info.likes), f=parseInt(info.fandui);
+				var total = parseInt(info.total);
 				$('div.bar.lf.fix').css('width', function(index) {
 					return parseInt(800*z/total);
 				});
