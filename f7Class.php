@@ -138,8 +138,18 @@ class f7Class extends f23Class {
     }
 
     function update_clicks($cid) {
-        mysql_query("update contents set clicks=clicks+1 where cid=" . $cid);
+        mysql_query("update contents set clicks=clicks+1 where cid=" . $cid) or mysql_error();
+        return $cid;
     }
 
+        function set_likes($cid) {
+        mysql_query("update contents set likes=likes+1 where cid=".$cid) or mysql_error();
+        return $cid;
+    }
+    function set_fandui($cid) {
+        mysql_query("update contents set fandui=fandui+1 where cid=".$cid) or mysql_error();
+        return $cid;
+    }
+    
 }
 ?>

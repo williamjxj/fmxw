@@ -27,12 +27,10 @@ elseif(isset($_GET['js_vote'])) {
     return;
 }
 elseif(isset($_POST['js_likes'])) {
-    $obj->set_likes($_POST['cid']);
-    exit;
+    return $obj->set_likes($_POST['cid']);
 }
 elseif(isset($_POST['js_fandui'])) {
-    $obj->set_fandui($_POST['cid']);
-    exit;
+    return $obj->set_fandui($_POST['cid']);
 }
 elseif(isset($_GET['js_get_recommand'])) {
 	echo $obj->get_relative_references($_GET['cid'], $_GET['iid'], $_GET['cate_id']);
