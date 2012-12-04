@@ -17,7 +17,7 @@
   <div id="pks2"></div>
 </div>
 <script type="text/javascript">
-$(function() {
+$(window).load(function() {
 	$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
 	
 	if($('#pks2').html().length==0) {
@@ -28,19 +28,13 @@ $(function() {
 			else t.html(data);
 		});
 		$('#pks2').load('{$config.ag}?js_pks2=1&cid='+cid);
-	}	
+	}
 });
 </script>
 <hr />
 <div id="affix"> <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</span> </div>
 <script type="text/javascript">
 $(function() {
-	$('a.keyword', 'div.container').click(function(e) {
-		e.preventDefault();
-		$('form.form-search').find('input[name=key]').val($(this).text());
-		$('form.form-search').submit();
-	});
-	$(".collapse").collapse();
 	$().UItoTop({
 		easingType : 'easeOutQuart'
 	});
