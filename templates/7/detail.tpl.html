@@ -7,7 +7,7 @@
 {$t7="{$config.t7}"}
 <div class="hero-unit">
   <h2><a href="{$info.url}">{$info.title}</a></h2>
-  {include file="{$t7}title.tpl.html"}
+  <div>来源: <strong>{$info.source}</strong>&nbsp; <span><i class="icon-time"></i>发布时间: <strong>{$info.pubdate}</strong></span> </div>
   <div class="display_content"> {$info.content} </div>
 </div>
 <div class="clear"></div>
@@ -31,20 +31,17 @@ $(function() {
 });
 </script>
 <hr />
-<div id="affix">
-  <div id="pinglun"> {include file="{$t7}pingluns.tpl.html"} </div>
-  <!-- features: 返回顶部 -->
-  <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</span> </div>
+<div id="affix"> <span id="toTop" style="left:1100px; visibility: visible; cursor:pointer;">回顶部</span> </div>
 <script type="text/javascript">
-    $(function() {
-        $('a.keyword', 'div.container').click(function(e) {
-            e.preventDefault();
-            $('form.form-search').find('input[name=key]').val($(this).text());
-            $('form.form-search').submit();
-        });
-        $(".collapse").collapse();
-        $().UItoTop({
-            easingType : 'easeOutQuart'
-        });
-    }); 
+$(function() {
+	$('a.keyword', 'div.container').click(function(e) {
+		e.preventDefault();
+		$('form.form-search').find('input[name=key]').val($(this).text());
+		$('form.form-search').submit();
+	});
+	$(".collapse").collapse();
+	$().UItoTop({
+		easingType : 'easeOutQuart'
+	});
+}); 
 </script>

@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{$config.css.jqueryui}" media="screen" />
 <script type="text/javascript" src="{$config.js.easing}"></script>
 <script type="text/javascript" src="{$config.js.fmxw}"></script>
-<script type="text/javascript" src="js/UrlEncode.js"></script>
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="{$config.js.jqueryui}"></script>
 </head><body id="{$config.browser}">
@@ -15,10 +14,6 @@
     {include file="{$search_template}"}
     {elseif {$sitemap_template}}
     {include file="{$sitemap_template}"}
-    {elseif {$rss_template}}
-    {include file="{$rss_template}"}
-    {elseif {$news_template}}
-    {include file="{$news_template}"}
     {elseif {$cc_template}}
     {include file="{$cc_template}"}
     {else}
