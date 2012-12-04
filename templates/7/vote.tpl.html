@@ -14,12 +14,13 @@
     </div>
     <div class="role_b item rf">
       <p class="desc">观点B：不认可，只是想借此出名。</p>
-      <button class="btn" type="submit" id="fandui" onClick="ajpost('{$cid}')">支持B</button>
+      <button class="btn" type="submit" id="fandui">支持B</button>
     </div>
   </div>
 </div>
 <script type="text/javascript">
 $(function() {
+	var cid = {$cid};
 	$('#zhichi').click(function(e) {
 		$(this).html($('<div class="ajaxloading"></div>'));
 		$.post("{$config.f7.s}",{ cid:cid, js_likes:1 },
