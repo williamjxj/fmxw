@@ -1,0 +1,61 @@
+
+<ul id="tf0" class="nav nav-tabs nav-stacked">
+  <li class="active"><a href="{$url}?js_core=2" rel="tooltip" title="按照查询的相关度排序">相关度</a></li>
+  <li><a href="{$url}?js_core=1" rel="tooltip" title="按照新闻的负面度排序">负面度</a></li>
+  <li><a href="{$url}?js_core=3" rel="tooltip" title="评论数">评论数</a></li>
+</ul>
+<br />
+<ul id="tf1" class="nav nav-tabs nav-stacked">
+  <li><a href="{$url}?js_dwmy=all" rel="tooltip" title="所有数据">全部时间</a></li>
+  <li><a href="{$url}?js_dwmy=day24" rel="tooltip" title="一天内的数据">一天内</a></li>
+  <li><a href="{$url}?js_dwmy=week" rel="tooltip" title="一月内的数据">一周内</a></li>
+  <li><a href="{$url}?js_dwmy=month" rel="tooltip" title="一月内的数据">一月内</a></li>
+  <li><a href="{$url}?js_dwmy=year" rel="tooltip" title="一年内的数据">一年内</a></li>
+</ul>
+<div class="alert" style="margin-top:20px;padding:2px;">
+  <form action="{$config.search}" method="get" name="cate_item" id="cate_item">
+    <label for="category">类别:</label>
+    <select name="category" id="category" style="width:100%">
+    </select>
+    <div id="div_item" style="display:none">
+      <label for="item">栏目:</label>
+      <select name="item" id="item" style="width:100%">
+      </select>
+    </div>
+    <button class="btn btn-small btn-primary" type="submit" disabled="disabled"><i class="icon-white icon-search"></i>查 询</button>
+  </form>
+</div>
+<ul id="tf2" class="nav nav-tabs nav-stacked">
+  <li><a href="{$url}?js_attr=clicks" rel="tooltip" title="阅读次数">阅读次数</a></li>
+  <li><a href="{$url}?js_attr=likes" rel="tooltip" title="赞同">赞同</a></li>
+  <li><a href="{$url}?js_attr=guanzhu" rel="tooltip" title="反对">反对</a></li>
+  <li><a href="{$url}?js_attr=pinglun" rel="tooltip" title="评论数">评论数</a></li>
+  <li><a href="{$url}?js_attr=guanzhu" rel="tooltip" title="关注度">关注度</a></li>
+</ul>
+<p id="toggle" style="display: none;"><span>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span></p>
+<script type="text/javascript">
+$(function(){
+	var $main = $('div#smiddle');
+	$('#category').change(function() {
+		var cate_id = $(this).attr('value');
+		$.getJSON("{$url1}?js_item=1&cate_id=" + cate_id, function(data) {
+			var items ='<option value="0">- 所有栏目 -</option>\n';
+			$.each(data, function(id, name) {
+				items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
+			});
+			$('#div_item').fadeIn(500);
+			$('#item').html(items);
+			$('button:submit', '#cate_item').attr('disabled', false);
+		});
+	});
+	
+	//排序框Form的提交。
+	$('#cate_item').submit(function(e) {
+		e.preventDefault();
+		// alert('{$url}'+','+$(this).serialize()+'&js_cate_item=1' );
+		$main.load('{$url}', $(this).serialize()+'&js_cate_item=1');
+		return false;
+	});
+
+});
+</script>

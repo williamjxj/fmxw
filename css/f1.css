@@ -117,5 +117,17 @@
 .ticker-wrapper.has-js {
     margin-top: 0px !important;
 	margin-bottom: 10px !important;
-}   
-
+}
+#toggle {
+	float:right;
+	width: 20px;
+}
+#toggle span {
+    background-position: 0 -139px;
+    cursor: pointer;
+    display: block;
+    height: 179px;
+    margin-top: 78px;
+    overflow: hidden;
+    width: 15px;
+}

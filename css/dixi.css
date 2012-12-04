@@ -556,7 +556,6 @@ div.comment {
 	border: 1px solid #D2E1F1;
 	vertical-align:middle;
 	maxWidth: 70px;
-	float: right;
 	text-align: center;
 	padding: 3px 2px 3px 2px;
 	margin: 0px 8px 4px 4px;
@@ -565,7 +564,7 @@ div.comment {
 }
 div.comment .count {
 	font-family: Arial,Helvetica,sans-serif;
-	font-size: 1.2em;
+	font-size: 1.5em;
 	font-weight: bold;
 }
 div.comment a {

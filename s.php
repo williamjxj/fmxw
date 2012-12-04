@@ -430,6 +430,7 @@ $pagination = $obj -> draw();
 $obj -> assign("pagination", $pagination);
 $obj -> assign('kr', $obj->get_key_related($key));
 
+$obj -> assign("left_template", $tdir6 . 'left.tpl.html');	
 $obj -> assign("nav_template", $tdir6 . 'nav.tpl.html');	
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
