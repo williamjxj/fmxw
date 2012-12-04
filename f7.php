@@ -15,8 +15,8 @@ list($tdir0, $tdir1, $tdir6, $tdir7) = array($config['t0'], $config['t1'], $conf
 
 $obj -> assign('config', $config);
 
-if(isset($_POST['js_zhichi'])) {
-    $obj->set_zhichi($_POST['cid']);
+if(isset($_GET['js_zhichi'])) {
+    $obj->set_zhichi($_GET['cid']);
     exit;
 }
 //使用之
@@ -26,11 +26,13 @@ elseif(isset($_GET['js_vote'])) {
     $obj->display($tdir7.'vote.tpl.html');
     return;
 }
-elseif(isset($_POST['js_likes'])) {
-    return $obj->set_likes($_POST['cid']);
+elseif(isset($_GET['js_likes'])) {
+    echo json_encode($obj->set_likes($_GET['cid']));
+	return;
 }
-elseif(isset($_POST['js_fandui'])) {
-    return $obj->set_fandui($_POST['cid']);
+elseif(isset($_GET['js_fandui'])) {
+    echo json_encode($obj->set_fandui($_GET['cid']));
+	return;
 }
 elseif(isset($_GET['js_get_recommand'])) {
 	echo $obj->get_relative_references($_GET['cid'], $_GET['iid'], $_GET['cate_id']);

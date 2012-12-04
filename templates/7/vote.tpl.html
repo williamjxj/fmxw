@@ -22,33 +22,38 @@
 $(function() {
 	var cid = {$cid};
 	$('#zhichi').click(function(e) {
-		$(this).append($('<div class="ajaxloading"></div>'));
-		$.post("{$config.f7.s}",{ cid:cid, js_likes:1 },
-			function(data){
-				if(data){
-					alert("投票成功" + data);
-					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
-					//window.location.reload();
-					//su = $("#"+cid).html();
-					//$("#"+cid).html(Number(su)+1);
-				} else {
-					alert(data);
-				}
+		$(this).after($('<div class="ajaxloading"></div>'));
+		$.getJSON("{$config.f7.s}",{ cid:cid, js_likes:1 }, function(data){
+			if(data){
+				var z=parseInt(data[0]), f=parseInt(data[1]);
+				var total = z+f;
+				alert($('div.bar.lf.fix').attr('style') + ', ' + data + ',' + z +','+f+','+total);
+				$('div.bar.lf.fix').css('width', function(index) {
+					alert(parseInt(800*z/total));
+					return parseInt(800*z/total);
+				});
+				//$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+			} else {
+				alert('Error: connect or access database error.');
 			}
-		);
+			$('#zhichi').next($('div.ajaxloading')).remove();
+		});
+		return false;
 	});
 	$('#fandui').click(function(e) {
-		$(this).append($('<div class="ajaxloading"></div>'));
+		$(this).after($('<div class="ajaxloading"></div>'));
 		$.post("{$config.f7.s}",{ cid:cid, js_fandui:1 },
 			function(data){
 				if(data){
 					alert("投票成功" + data);
 					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
 				} else {
-					alert(data);
+					alert('Error: connect or access database error.');
 				}
+				$('#fandui').next('div.ajaxloading').remove();
 			}
 		);
+		return false;
 	});
 });
 </script>
