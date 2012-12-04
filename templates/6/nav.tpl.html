@@ -29,7 +29,7 @@
     {/if}
     {/if}
     <div class="comment"> <i class="icon-hand-up"></i>&nbsp;<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3">我要PK</a> </div>
-    <span class="preview"><span class="iPre"> <span class="iPreBox" style="71px;visibility:hidden;"><em class="iPreArr"></em> </span></span> </span><br>
+    <span id="{$rts.cid}" class="preview"><span class="iPre"> <span class="iPreBox" style="71px;visibility:hidden;"><em class="iPreArr"></em> </span></span> </span><br>
     {$rts.content}<br />
     <div class="highLight"></div>
   </li>
@@ -37,6 +37,12 @@
 </ul>
 <script type="text/javascript">
 $(function() {
+	$('span', 'li.li3').hover(function() {
+		$('span.iPreBox').show();
+	}, function() {
+		$('span.iPreBox').hide();
+	});
+	
 	$.address.init(function(event) { 
 		return false;
 	}).
