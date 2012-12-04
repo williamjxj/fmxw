@@ -11,7 +11,7 @@ html{ line-height:1.2;}
 body{ font-size:12px; background-color:#fff; text-align:left; -webkit-text-size-adjust:none; word-wrap:break-word; word-break:break-all;}
 .lf{ float:left;}
 .rf{ float:right;}
-.mainbox{ width:917px; overflow:hidden;}
+.mainbox{ width:940px; overflow:hidden;}
 .mainbox .hd{ height:100px; background:url(../images/green_10.gif) 0 bottom repeat-x; font-size:14px; font-weight:700; font-family:simhei; color:#333;}
 .mainbox .bar{ width:300px; height:100%; background:url(../images/yellow_07.png) right bottom no-repeat;}
 .mainbox .info{ padding-top:45px; line-height:31px;}

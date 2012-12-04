@@ -26,7 +26,7 @@ elseif(isset($_GET['js_vote'])) {
     $info = $obj -> get_likes_fandui($cid);
     $info['p1'] = round($info['likes']/$info['total'], 2) * 100;
     $info['p2'] = round($info['fandui']/$info['total'], 2) * 100;
-    $info['p3'] = round($info['likes']/$info['total'], 2) * 800;
+    $info['p3'] = round($info['likes']/$info['total'], 2) * 940;
 	$info['cid'] = $cid;
     $obj -> assign('info', $info);
     $obj->display($tdir7.'vote.tpl.html');
