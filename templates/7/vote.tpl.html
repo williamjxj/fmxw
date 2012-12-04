@@ -36,5 +36,18 @@ $(function() {
 			}
 		);
 	});
+	$('#fandui').click(function(e) {
+		$(this).html($('<div class="ajaxloading"></div>'));
+		$.post("{$config.f7.s}",{ cid:cid, js_fandui:1 },
+			function(data){
+				if(data=="true"){
+					alert("投票成功");
+					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
+				} else {
+					alert(data);
+				}
+			}
+		);
+	});
 });
 </script>
