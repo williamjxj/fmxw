@@ -2,19 +2,19 @@
 <div class="mainbox">
   <div class="hd fix">
     <div style="width:800px;" class="bar lf fix">
-      <p class="info lf"><span class="count">{$info.likes}票</span><span class="white">{$info.p1}%</span></p>
-      <p class="total rf">参与人数：<b class="n">{$info.total}</b>人</p>
+      <p class="info lf"><span class="count" id="s1">{$info.likes}票</span><span class="white" id="s2">{$info.p1}%</span></p>
+      <p class="total rf">参与人数：<b class="n" id="s3">{$info.total}</b>人</p>
     </div>
-    <p class="info rf"><span class="white">{$info.p2}%</span><span class="count">{$info.fandui}票</span></p>
+    <p class="info rf"><span class="white" id="s4">{$info.p2}%</span><span class="count" id="s5">{$info.fandui}票</span></p>
   </div>
   <div class="btm fix">
     <div class="role_a item lf">
-      <p class="desc">观点A：认可，只要是做好事就行。</p>
-      <button class="btn" type="submit" id="likes">支持A</button>
+      <p class="desc">观点A：认可。</p>
+      <button class="btn" type="button" id="likes">支持A</button>
     </div>
     <div class="role_b item rf">
-      <p class="desc">观点B：不认可，只是想借此出名。</p>
-      <button class="btn" type="submit" id="fandui">支持B</button>
+      <p class="desc">观点B：不认可。</p>
+      <button class="btn" type="button" id="fandui">支持B</button>
     </div>
   </div>
 </div>
@@ -27,12 +27,14 @@ $(function() {
 			if(data){
 				var z=parseInt(data.likes), f=parseInt(data.fandui);
 				var total = parseInt(data.total);
-				//alert($('div.bar.lf.fix').attr('style') + ', ' + data + ',' + z +','+f+','+total);
 				$('div.bar.lf.fix').css('width', function(index) {
-					//alert(parseInt(800*z/total));
 					return parseInt(800*z/total);
 				});
-				$('div.pkbox').load("{$config.f7.s}?cid={$info.cid}&js_vote=1");
+				$('s1').html('{$info.likes}票');
+				$('s2').html('{$info.p1}%');
+				$('s3').html('{$info.total}');
+				$('s4').html('{$info.p2}%');
+				$('s5').html('{$info.fandui}票');
 			} else {
 				alert('Error: connect or access database error.');
 			}
@@ -49,7 +51,11 @@ $(function() {
 				$('div.bar.lf.fix').css('width', function(index) {
 					return parseInt(800*z/total);
 				});
-				//$('div.pkbox').load("{$config.f7.s}?cid={$info.cid}&js_vote=1");
+				$('s1').html('{$info.likes}票');
+				$('s2').html('{$info.p1}%');
+				$('s3').html('{$info.total}');
+				$('s4').html('{$info.p2}%');
+				$('s5').html('{$info.fandui}票');
 			} else {
 				alert('Error: connect or access database error.');
 			}
