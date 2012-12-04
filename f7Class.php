@@ -142,16 +142,19 @@ class f7Class extends f23Class {
         return $cid;
     }
 
+    //用guanzhu 来代替fandui, 因为guanzhu 有值，而fandui===0
 	function set_likes($cid) {
         mysql_query("update contents set likes=likes+1 where cid=".$cid) or mysql_error();
         return $this->get_likes_fandui($cid);
     }
     function set_fandui($cid) {
-        mysql_query("update contents set fandui=fandui+1 where cid=".$cid) or mysql_error();
+        //mysql_query("update contents set fandui=fandui+1 where cid=".$cid) or mysql_error();
+        mysql_query("update contents set guanzhu=guanzhu+1 where cid=".$cid) or mysql_error();
         return $this->get_likes_fandui($cid);
     }
 	function get_likes_fandui($cid) {
-		$res = mysql_query("select likes, fandui, likes+fandui as total from contents where cid=".$cid) or mysql_error();
+		//$res = mysql_query("select likes, fandui, likes+fandui as total from contents where cid=".$cid) or mysql_error();
+		$res = mysql_query("select likes, guanzhu like fandui, likes+guanzhu as total from contents where cid=".$cid) or mysql_error();
 		$row =  mysql_fetch_assoc($res);
 		mysql_free_result($res);
 		return $row;
