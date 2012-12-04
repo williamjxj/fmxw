@@ -273,6 +273,12 @@ $obj -> cl -> SetLimits($currentOffset, $obj->conf['page']['limit']);
 
 // echo 'q=['.$q.'], key=['.$key."]<br>\n";
 
+if(empty($weights)) {
+	$weights = array('title'=>11, 'content'=>10);
+	$obj->cl->SetFieldWeights( $weights );
+}
+
+
 $res = $obj -> cl -> Query($q, $obj -> conf['coreseek']['index']);
 
 if ($res === false) {
@@ -319,15 +325,7 @@ foreach($res['matches'] as $v) {
 	$matches[$v['id']] = $v['weight'];
 }
 
-// $obj->__p($res);
-
-/* 如何设置weights的缺省值？这里仿造：http://www.shroomery.org/forums/dosearch.php.txt
- * 结果不对。
- */
-if(empty($weights)) {
-	$weights = array('title'=>11, 'content'=>10);
-	$obj->cl->SetFieldWeights( $weights );
-}
+// $obj->__p($matches);
 
 if(empty($res['words'])) {
 	$max_weight = (array_sum($weights) * count($res) + 1) * 1000;
@@ -376,13 +374,14 @@ if (mysql_num_rows($mres) <= 0) {
 
 //生成要显示的完整记录，放入$rows数组中。以下唯一需要提升的是对content列进行BuildExcerpt()。
 $rows = array();
-while ($row = mysql_fetch_assoc($mres)) {
-	//echo "[".$matches[$row['cid']]."], [".$max_weight."]<br>\n";
+while ($row = mysql_fetch_assoc($mres)) 
+{
+	// echo "[".$matches[$row['cid']]."], [".$max_weight."]<br>\n";
     $relevance = ceil((intval($matches[$row['cid']]) / $max_weight) * 100); //relevance
 	if($relevance>100) $relevance = 100;
 	if($relevance<1) $relevance = 1;
 	$row['r'] = $relevance;
-	//echo "[".$matches[$row['cid']]['weight']."], [".$relevance."]<br>\n";
+	// echo "[".$matches[$row['cid']]['weight']."], [".$relevance."]<br>\n";
 	if (!preg_match("/(?:<b>|<em>)/", $row['title'])) {
 		//echo "11111: " . $row['title'] . "<br>\n";
 		$row['title'] = $obj->mb_highlight($row['title'], $key, '<b>', '</b>');
