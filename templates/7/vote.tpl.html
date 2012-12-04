@@ -22,11 +22,11 @@
 $(function() {
 	var cid = {$cid};
 	$('#zhichi').click(function(e) {
-		$(this).html($('<div class="ajaxloading"></div>'));
+		$(this).append($('<div class="ajaxloading"></div>'));
 		$.post("{$config.f7.s}",{ cid:cid, js_likes:1 },
 			function(data){
-				if(data=="true"){
-					alert("投票成功");
+				if(data){
+					alert("投票成功" + data);
 					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
 					//window.location.reload();
 					//su = $("#"+cid).html();
@@ -38,11 +38,11 @@ $(function() {
 		);
 	});
 	$('#fandui').click(function(e) {
-		$(this).html($('<div class="ajaxloading"></div>'));
+		$(this).append($('<div class="ajaxloading"></div>'));
 		$.post("{$config.f7.s}",{ cid:cid, js_fandui:1 },
 			function(data){
-				if(data=="true"){
-					alert("投票成功");
+				if(data){
+					alert("投票成功" + data);
 					$('div.pkbox').load("{$config.f7.s}?cid={$cid}&js_vote=1");
 				} else {
 					alert(data);
