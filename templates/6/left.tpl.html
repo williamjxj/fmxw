@@ -1,4 +1,5 @@
-
+<p id="toggle" style="display: none;"><span> </span></p>
+<div id="soso">
 <ul id="tf0" class="nav nav-tabs nav-stacked">
   <li class="active"><a href="{$url}?js_core=2" rel="tooltip" title="按照查询的相关度排序">相关度</a></li>
   <li><a href="{$url}?js_core=1" rel="tooltip" title="按照新闻的负面度排序">负面度</a></li>
@@ -17,7 +18,7 @@
     <label for="category">类别:</label>
     <select name="category" id="category" style="width:100%">
     </select>
-    <div id="div_item" style="display:none">
+    <div id="div_item" style="display:none;">
       <label for="item">栏目:</label>
       <select name="item" id="item" style="width:100%">
       </select>
@@ -32,9 +33,30 @@
   <li><a href="{$url}?js_attr=pinglun" rel="tooltip" title="评论数">评论数</a></li>
   <li><a href="{$url}?js_attr=guanzhu" rel="tooltip" title="关注度">关注度</a></li>
 </ul>
-<p id="toggle" style="display: none;"><span>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span></p>
+</div>
 <script type="text/javascript">
 $(function(){
+	$('#sleft').hover(function() {
+		if($(this).hasClass('span1')) $('#toggle').show();
+	}, function() {
+		if($(this).hasClass('span1')) $('#toggle').hide();
+	});
+
+	$("span", '#toggle').click(function() {
+		if($(this).hasClass('close1')) {
+			$('#sleft').addClass('span1').removeClass('sosospan');
+			$('#soso').show();
+			$(this).removeClass('close1');
+		}
+		else {
+			$('#sleft').removeClass('span1').addClass('sosospan');
+			$('#soso').hide();
+			$(this).addClass('close1');
+			$('#toggle').show().css('display', 'block');
+		}
+		return false;
+	});
+
 	var $main = $('div#smiddle');
 	$('#category').change(function() {
 		var cate_id = $(this).attr('value');

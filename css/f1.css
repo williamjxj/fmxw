@@ -118,16 +118,28 @@
     margin-top: 0px !important;
 	margin-bottom: 10px !important;
 }
+#sleft {
+}
 #toggle {
 	float:right;
 	width: 20px;
 }
 #toggle span {
-    background-position: 0 -139px;
+    background: url("http://soso.qstatic.com/30d/img/web/soso_sp13.png") no-repeat scroll 0 0 transparent;
+    background-position: 0px -139px;
     cursor: pointer;
     display: block;
     height: 179px;
     margin-top: 78px;
     overflow: hidden;
     width: 15px;
+	position:absolute;
+}
+#toggle span.close1 {
+    background-position: -16px -139px;
+}
+.sosospan {
+	width:10px !important;
+	margin-left:0px;
+	position:relative;
 }
