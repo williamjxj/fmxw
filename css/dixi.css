@@ -560,7 +560,7 @@ div.comment {
 	padding: 3px 2px 3px 2px;
 	margin: 0px 8px 4px 4px;
 	z-index: 20;
-	display: none;
+	visibility: hidden;
 }
 div.comment .count {
 	font-family: Arial,Helvetica,sans-serif;
