@@ -146,19 +146,19 @@
 .selected {
     position: relative;
 }
-.highLight {
+.hLight {
     background-color: #EFF3F8;
     border: 1px solid #CEDBEE;
     display: none;
     height: 100%;
+    width: 100%;
     left: -3px;
+    top: -3px;
     padding: 3px;
     position: absolute;
-    top: -3px;
-    width: 100%;
-    z-index: -1;
+    z-index: 10;
 }
-.selected .highLight {
+.selected .hLight {
     display: none;
 }
 #smiddle .iPre {
@@ -181,6 +181,9 @@
     top: -1px;
     width: 29px;
 }
+#smiddle .preview {
+	/*position: relative;*/
+}
 #smiddle .iPreBox, #smiddle .iPreArr, #prevshow .close {
     background: url("http://soso.qstatic.com/30d/img/web/preview_iconBg8.png") repeat-y scroll 0 0 transparent;
 }
@@ -189,9 +192,9 @@
     border: 1px solid #CBDCE6;
     display: block;
     height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    /*visibility: hidden;*/
     position: relative;
-    visibility: hidden;
     width: 27px;
 }
 #smiddle .iPre2 .iPreBox {

@@ -30,8 +30,8 @@
         <li class="news-item">{foreach $kr as $r} <a href="javascript:;" class="latest">{$r.rk}</a> {/foreach} </li>
       </ul>
       {if ! $key}
-      <div id="uyan_hotcmt_unit" style="height:100px; max-height:100px;"></div>
-      <div id="uyan_newcmt_unit" style="height:100px; max-height:100px;"></div>
+      <div id="uyan_hotcmt_unit" style="min-height:200px; max-height:500px;"></div>
+      <div id="uyan_newcmt_unit" style="min-height:200px; max-height:500px;"></div>
       {/if}
       {if $key}
       <div id="weibo">{include file="{$config.t3}weibo.tpl.html"}</div>
@@ -39,6 +39,7 @@
       {/if}
       <div class="guanggao">{include file="{$config.t}guanggao2.tpl.html"}</div>
     </div>
+    <div id="spreview" style="width:0;height:0;visibility:hidden"></div>
   </div>
 </div>
 <div class="clear"></div>
