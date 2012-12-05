@@ -52,8 +52,11 @@ $(function() {
 	$('div.iPre').click(function() {
 		cid = $(this).closest('li').attr('id');
 		var t = $(this).closest('li').find('div.hLight');
-		console.log(t);
-		$(t).load('{$config.ag}?jsc=1&cid='+cid);
+		$(t)
+		.html($('<iframe></iframe>').attr({ scrolling:'yes',frameborder:0, src: UrlEncode(url) }));
+		.show();
+		//console.log(t);
+		//$(t).load('{$config.ag}?jsc=1&cid='+cid);
 	});
 
 	$.address.init(function(event) { 
