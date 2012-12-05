@@ -30,7 +30,7 @@
     <div class="comment"> <i class="icon-hand-up"></i>&nbsp;<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3">我要PK</a> </div>
     <span class="preview">
 		<span class="iPre">
-			<span class="iPreBox" style="71px;visibility:hidden;">
+			<span class="iPreBox"> 
 				<em class="iPreArr"></em>
 			</span>
 		</span>
@@ -42,12 +42,13 @@
 </ul>
 <script type="text/javascript">
 $(function() {
+/*
 	$('li.li3').hover(function() {
 		$(this).find('span.iPreBox').css("visibility", "visible");
 	}, function() {
 		$(this).find('span.iPreBox').css('visibility', 'hidden');
 	});
-	
+*/	
 	$('div.iPre').click(function() {
 		cid = $(this).closest('li').attr('id');
 		var t = $(this).closest('li').find('div.hLight');
@@ -77,6 +78,7 @@ $(function() {
 		return false;
 	});
 
+/*
     {if {$sort}=='pinglun' || {$sort}==3}
 		$('div.comment').css('display', 'block');
 		$('li.li3').hover(
@@ -93,6 +95,7 @@ $(function() {
 		}
 	);
     {/if} 
+	*/
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 

@@ -2,10 +2,14 @@
 <form class="well form-search" action="{$config.search}" method="get" name="search_form" id="search_form">
   <input type="text" name="q" id="q" class="search-query" style="width:399px" data-provide="typeahead" autocomplete="off" placeholder="请输入关键词" />
   <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i>搜索</button>
-  <img id="waiting" width="16" height="16" border="0" src="images/space.gif" />
+  <img id="waiting" width="16" height="16" border="0" src="images/spinner.gif" />
 </form>
 <script type="text/javascript">
 $(function() {
+	$('#search_form').submit(function() {
+		$('#waiting').css('visibility', 'visible');
+		return true;
+	});
 	var timer;
 	$('#q').typeahead({
 		source: function(typeahead, query) {
@@ -20,11 +24,14 @@ $(function() {
 				async: false,
 				cache: false,
 				beforeSend: function(){
-					$('#waiting').attr('src', 'images/spinner.gif');
+					$('#waiting').css('visibility', 'visible');
 				},
 				success: function(data) {
-					$('#waiting').attr('src', 'images/space.gif');
+					if(data==null || (data.length==0)) return;
 					typeahead.process(data);
+				},
+				complete: function() {
+					$('#waiting').css('visibility', 'hidden');
 				}
 			});
 		  }, 200);

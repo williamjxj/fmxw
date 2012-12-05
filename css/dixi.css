@@ -32,18 +32,11 @@ ul li.sina {
 	text-align: center;
 	width:98px;
 }
-/*
-ul li a {
-	color: #0066CC;
-	height: 16px;
-	margin-right: 5px;
-	margin-top: 10px;
-	outline: medium none;
+#waiting {
+    background-color:#F5F5F5;
+	border: 0px solid #F5F5F5;
+	visibility: hidden;
 }
-ul li a:hover {
-	color: #CC0000;
-}
-*/
 ul li .bshare-custom {
 	margin-top: 0px;
 }

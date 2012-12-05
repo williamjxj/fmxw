@@ -39,7 +39,7 @@
   <div id="footer"> {include file="{$footer_template}"} </div>
 </div>
 <script type="text/javascript">
-$(function() {
+;(function($) {
 	{if $q || {$q}!='所有记录'}
 		$('#q').val('{$q}');
 	{/if}

@@ -5,7 +5,7 @@
     <form class="form-search" action="{$config.search}" method="get" name="sf" id="sf">
       <input type="text" name="q" id="typeahead" class="input-large search-query" style="width:400px; height:35px;" data-provide="typeahead" autocomplete="off"  placeholder="请输入关键词" />
       <button type="submit" class="btn btn-primary" id="ns"> <i class="icon-search icon-white"></i>{$_ts.new_search} </button>
-      <img id="waiting" src="images/noimg.gif" width="16" height="16" border="0" />
+      <img id="waiting" src="images/spinner.gif" width="16" height="16" border="0" />
     </form>
   </div>
   <br/>
@@ -21,6 +21,11 @@
 </div>
 <script type="text/javascript">
 $(function() {
+    $('#sf').submit(function() {
+		$('#waiting').css('visibility', 'visible');
+		return true;
+	});
+
 	$('#os').click(function(e) {
 		e.preventDefault();
 		form = document.getElementById('sf');
@@ -64,13 +69,15 @@ $(function() {
 					async : false,
 					cache : false,
 					beforeSend : function() {
-						$('#waiting').attr('src', 'images/spinner.gif');
+						$('#waiting').css('visibility', 'visible');
 					},
 					success : function(data) {
 						// if json is null, means no match, won't do again.
-						$('#waiting').attr('src', 'images/noimg.gif');
 						if(data==null || (data.length===0)) return;
 						typeahead.process(data);
+					},
+					complete : function() {
+						$('#waiting').css('visibility', 'hidden');
 					}
 				});
 			}, 300);
