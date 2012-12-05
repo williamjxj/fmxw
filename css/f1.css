@@ -120,21 +120,6 @@
 }
 #sleft {
 }
-#toggle {
-	float:right;
-	width: 20px;
-}
-#toggle span {
-    background: url("http://soso.qstatic.com/30d/img/web/soso_sp13.png") no-repeat scroll 0 0 transparent;
-    background-position: 0px -139px;
-    cursor: pointer;
-    display: block;
-    height: 179px;
-    margin-top: 78px;
-    overflow: hidden;
-    width: 15px;
-	position:absolute;
-}
 #toggle span.close1 {
     background-position: -16px -139px;
 }
@@ -142,78 +127,4 @@
 	width:10px !important;
 	margin-left:0px;
 	position:relative;
-}
-.selected {
-    position: relative;
-}
-.hLight {
-    background-color: #EFF3F8;
-    border: 1px solid #CEDBEE;
-    display: none;
-    height: 100%;
-    width: 100%;
-    left: -3px;
-    top: -3px;
-    padding: 3px;
-    position: absolute;
-    z-index: 10;
-}
-.selected .hLight {
-    display: none;
-}
-#smiddle .iPre {
-    color: #666666;
-    cursor: pointer;
-    margin-left: 5px;
-    padding: 1px 2px 0;
-    text-decoration: none;
-}
-#smiddle .iPre, #smiddle .iPre1, #smiddle .iPre2 {
-    background: none repeat scroll 0 0 transparent;
-    bottom: 0;
-    cursor: default;
-    height: auto;
-    margin: 0;
-    min-height: 34px;
-    padding: 0 0 0 8px;
-    position: absolute;
-    right: -35px;
-    top: -1px;
-    width: 29px;
-}
-#smiddle .preview {
-	/*position: relative;*/
-}
-#smiddle .iPreBox, #smiddle .iPreArr, #prevshow .close {
-    background: url("http://soso.qstatic.com/30d/img/web/preview_iconBg8.png") repeat-y scroll 0 0 transparent;
-}
-#smiddle .iPreBox {
-    background-position: 0 0;
-    border: 1px solid #CBDCE6;
-    display: block;
-    height: 100%;
-    /*overflow: hidden;*/
-    /*visibility: hidden;*/
-    position: relative;
-    width: 27px;
-}
-#smiddle .iPre2 .iPreBox {
-    background-position: -30px 0;
-    border-color: #C2D4E2 -moz-use-text-color #C2D4E2 #C2D4E2;
-    border-right: 0 none;
-    width: 25px;
-    z-index: 101;
-}
-#smiddle .iPreArr {
-    background-position: -60px 0;
-    background-repeat: no-repeat;
-    height: 15px;
-    left: 9px;
-    margin-top: -8px;
-    position: absolute;
-    top: 50%;
-    width: 10px;
-}
-#smiddle .iPre2 .iPreArr {
-    background-position: -75px 0;
 }
