@@ -53,6 +53,10 @@ elseif(isset($_GET['js_pk2'])) {
     return;
 } 
 elseif(isset($_POST['captcha']) && isset($_POST['comment']) && isset($_POST['role'])) {
+    if (empty($_SESSION['captcha']) || trim(strtolower($_REQUEST['captcha'])) != $_SESSION['captcha']) {
+       echo 'N';
+       return;
+    }        
     $role = $_POST['role'];
     $pid = $obj->insert_pk3();
     if($pid) {
