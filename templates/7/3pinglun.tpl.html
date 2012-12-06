@@ -3,9 +3,9 @@
 <div class="row reping">
   <h3><img src="images/pinglun.gif" border="0" height="19" width="21" />&nbsp;读者评论</h3>
   <ul class="nav nav-tabs" id="Tab3">
-    <li class="active"><a href="#uyan">PK 擂台</a></li>
-    <li><a href="#pk1">当事人申辩</a></li>
-    <li><a href="#pk2"><img src="images/comment.gif" border="0" height="20" width="20" />发布者反击</a></li>
+    <li class="active"><a href="#uyan"><img src="images/comment.gif" border="0" height="20" width="20" />&nbsp;<span class="head2">PK 擂台</span></a></li>
+    <li><a href="#pk1"><img src="images/comment.gif" border="0" height="20" width="20" />&nbsp;<span class="head2">当事人申辩</span></a></li>
+    <li><a href="#pk2"><img src="images/comment.gif" border="0" height="20" width="20" />&nbsp;<span class="head2">发布者反击</span></a></li>
   </ul>
   <div class="tab-content tab4">
     <div class="tab-pane active" id="uyan">
@@ -16,11 +16,11 @@
     </div>
     <div class="tab-pane" id="pk1">
       <div id="pk1a"></div>
-      <div id="pks1b">{include file="{$config.t7}pk1.tpl.html"}</div>
+      <div id="pk1b">{include file="{$config.t7}pk1.tpl.html"}</div>
     </div>
     <div class="tab-pane" id="pk2">
-      <div id="pks2a"></div>
-      <div id="pks2b">{include file="{$config.t7}pk2.tpl.html"}</div>
+      <div id="pk2a"></div>
+      <div id="pk2b">{include file="{$config.t7}pk2.tpl.html"}</div>
     </div>
   </div>
 </div>
@@ -32,21 +32,21 @@ $(function(){
 	var t = $(this).attr('href');
 	if(/pk1/.test(t)) {
 		if($('#pk1a').html().length==0) {
-			var t = $('#pk1a');
-			t.html('<div class="ajaxloading"></div>');
-			t.load('{$config.ag}?js_pk1=1&cid='+cid, function(data) {
-				if(data==null || data=='') t.html('暂无评论。');
-				else t.html(data);
+			var t1 = $('#pk1a');
+			t1.html('<div class="ajaxloading"></div>');
+			t1.load('{$config.ag}?js_pk1=1&cid='+cid, function(data) {
+				if(data==null || data=='') t1.html('暂无评论。');
+				else t1.html(data);
 			});
 		}
 	}
 	else if(/pk2/.test(t)) {
 		if($('#pk2a').html().length==0) {
-			var t = $('#pk2a');
-			t.html('<div class="ajaxloading"></div>');
-			t.load('{$config.ag}?js_pk2=1&cid='+cid, function(data) {
-				if(data==null || data=='') t.html('暂无评论。');
-				else t.html(data);
+			var t2 = $('#pk2a');
+			t2.html('<div class="ajaxloading"></div>');
+			t2.load('{$config.ag}?js_pk2=1&cid='+cid, function(data) {
+				if(data==null || data=='') t2.html('暂无评论。');
+				else t2.html(data);
 			});
 		}
 	}
@@ -54,9 +54,6 @@ $(function(){
 		if($(t).html().length==0) {
 			$(t).load('templates/shared/disqus.tpl.html');
 		}
-	}
-	else {
-		alert('欢迎使用本评论系统。');
 	}
 	$(this).tab('show');
 	return false;

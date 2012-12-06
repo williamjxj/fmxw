@@ -37,10 +37,20 @@ elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items($_GET['cate_id']));
 	return;
 }
-/**
- * 
- * 
+/** 关于新的3个评论的处理。
  */
+elseif(isset($_GET['js_pk1'])) {
+    $cid = intval($_GET['cid']);    
+    $obj -> assign('pks', $obj -> get_pk3_by_cid($cid, 'A'));
+    $obj->display($tdir7.'reping.tpl.html');
+    return;
+}
+elseif(isset($_GET['js_pk2'])) {
+    $cid = intval($_GET['cid']);    
+    $obj -> assign('pks', $obj -> get_pk3_by_cid($cid, 'B'));
+    $obj->display($tdir7.'reping.tpl.html');
+    return;
+} 
 elseif(isset($_POST['captcha']) && isset($_POST['comment'])) {
     echo "AAAAAAAAAAAA"; return;
     $role = $_POST['role'];
