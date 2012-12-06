@@ -28,7 +28,17 @@
     {/if}
     {/if}
 	<br />
-    <div class="comment"> <i class="icon-hand-up"></i>&nbsp; <a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3" target="_blank">我要PK</a> <span class="preview"> <span class="iPre"> <span class="iPreBox"> <em class="iPreArr"></em> </span> </span> </span> </div>
+    <div class="comment">
+		<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3" target="_blank">我要PK</a>
+		<br>
+		<span class="preview">
+			<span class="iPre">
+				<span class="iPreBox">
+					<em class="iPreArr"></em>
+				</span>
+			</span>
+		</span>
+	</div>
     {$rts.content}<br />
     <div class="hLight"></div>
   </li>
@@ -36,23 +46,34 @@
 </ul>
 <script type="text/javascript">
 $(function(){
-	$('span.iPre1').hover(function() {
+	$('span.iPre').hover(function() {
+		var o = $('#sright').offset();
+		var p = $('#sright').position();
+		var w = $('#sright').width();
+		var h = $('#sright').height();
 		var t = $(this).closest('li').find('div.hLight');
-		$(t).addClass('loadPic').show();
+
+		//alert(o.left + ', ' + o.top); //808.9000244..., 188.5
+		//alert(p.left + ', ' + p.top); //769.4667..., 188.5
+		//alert(w+','+h); //1065,942
+		//$(t).attr({ left:808, top:0 }).show();
+		//$(t).attr({ left:o.left, top:o.top, width:w, height:h }).show();
+		//$(t).attr({ left:p.left, top:p.top }).show();
+
+		//$(t).addClass('loadPic').show();
 		var url = $(this).closest('li').find('a:first').attr('alt');
 		console.log(url);
-		$(t)
-		.html($('<iframe></iframe>').attr({
+		var i = $('<iframe></iframe>').attr({
 			scrolling: "yes",
 			frameborder:0,
 			src: url,
 			width: "50%",
 			height: "50%"
-		}));
-		return false;
+		});
+		$(t).html(i);
 	}, function() {
-		//var t = $(this).closest('li').find('div.hLight');
-		//$(t).hide();
+		var t = $(this).closest('li').find('div.hLight');
+		if($(t).length) $(t).hide();
 	});
 
     {if {$sort}=='pinglun' || {$sort}==3}
