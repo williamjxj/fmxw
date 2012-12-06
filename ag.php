@@ -51,8 +51,7 @@ elseif(isset($_GET['js_pk2'])) {
     $obj->display($tdir7.'reping.tpl.html');
     return;
 } 
-elseif(isset($_POST['captcha']) && isset($_POST['comment'])) {
-    echo "AAAAAAAAAAAA"; return;
+elseif(isset($_POST['captcha']) && isset($_POST['comment']) && isset($_POST['role'])) {
     $role = $_POST['role'];
     $pid = $obj->insert_pk3();
     if($pid) {
