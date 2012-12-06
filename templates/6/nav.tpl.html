@@ -15,7 +15,7 @@
 <ul class="nav nav-pills nav-stacked">
   {foreach $results as $rts}
   <li class="li3" id="{$rts.cid}"><span class="badge badge-warning">{$no++}</span>
-  <a alt="{$rts.url}" href="{$config.ag}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a>
+  <a alt="{$rts.url}" href="{$config.ag}?cid={$rts.cid}&jsc=1" rel="address:{$config.ag}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a>
     {if {$sort=='clicks'}}({$rts.clicks})
     {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
     {elseif {$sort=='pinglun'}} ({$rts.pinglun})
@@ -45,25 +45,6 @@
 <script type="text/javascript">
 $(function()
 {
-	$('span.iPre').hover(function() {
-		var t = $(this).closest('li').find('div.hLight');
-		$(t).addClass('loadPic').show();
-		var url = $(this).closest('li').find('a:first').attr('alt');
-		console.log(url);
-		$(t)
-		.html($('<iframe></iframe>').attr({
-			scrolling: "yes",
-			frameborder:0,
-			src: url,
-			width: "50%",
-			height: "50%"
-		}));
-		return false;
-	}, function() {
-		var t = $(this).closest('li').find('div.hLight');
-		$(t).hide();
-	});
-
 	$.address.init(function(event) { 
 		return false;
 	}).
@@ -86,6 +67,24 @@ $(function()
 		return false;
 	});
 
+	$('span.iPre').hover(function() {
+		var t = $(this).closest('li').find('div.hLight');
+		$(t).addClass('loadPic').show();
+		var url = $(this).closest('li').find('a:first').attr('alt');
+		console.log(url);
+		$(t)
+		.html($('<iframe></iframe>').attr({
+			scrolling: "yes",
+			frameborder:0,
+			src: url,
+			width: "50%",
+			height: "50%"
+		}));
+		return false;
+	}, function() {
+		var t = $(this).closest('li').find('div.hLight');
+		$(t).hide();
+	});
 
     {if {$sort}=='pinglun' || {$sort}==3}
 		$('div.comment').css('visibility', 'visible');
