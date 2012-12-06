@@ -279,7 +279,7 @@ class FMXW extends BaseClass
         $comment = mysql_real_escape_string(trim($_POST['comment']));
         $keyword = mysql_real_escape_string(trim($_POST['kw']));
         $cid = intval($_POST['cid']);
-        $role = $_POST['pk'];
+        $role = $_POST['role'];
         $captcha = $_POST['captcha'];
         
         if(empty($_POST['zhichi'])) $zhichi = rand(10, 100);
