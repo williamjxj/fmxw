@@ -546,7 +546,9 @@ div.comment {
 	-moz-border-top-colors: none;
 	border: 1px solid #D2E1F1;
 	vertical-align:middle;
-	maxWidth: 70px;
+	float:right;
+	max-width: 70px;
+	max-height: 70px;
 	text-align: center;
 	padding: 3px 2px 3px 2px;
 	margin: 0px 8px 4px 4px;
@@ -600,4 +602,10 @@ div.comment a:active {
 	box-shadow: 2px 2px 10px #E7E5E6;
 	margin: 10px 0;
 	padding: 0 auto;
+}
+.breadcrumb {
+	margin-bottom: 6px;
+}
+#smiddle .span4 {
+	margin-left: 1.12766%;
 }
