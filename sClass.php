@@ -168,15 +168,25 @@ class FMXW extends BaseClass
 		return $ary;
 	}
 	
-	function get_repings_by_cid($cid){
+	function get_pk3_by_cid($cid, $role='A'){
 		$ary = array();
-		$sql = "select * from pk where cid=". $cid . " ORDER BY id DESC";
+		$sql = "select * from pk3 where cid=". $cid . " and role='".$role."' ORDER BY id DESC";
 		$res = mysql_query($sql);
 		while ($row = mysql_fetch_assoc($res)) {
 			array_push($ary, $row);
 		}
 		return $ary;
 	}
+    
+    function get_repings_by_cid($cid){
+        $ary = array();
+        $sql = "select * from pk where cid=". $cid . " ORDER BY id DESC";
+        $res = mysql_query($sql);
+        while ($row = mysql_fetch_assoc($res)) {
+            array_push($ary, $row);
+        }
+        return $ary;
+    }
 	function get_contents_by_cid($cid){
 		$sql = "select title, pinglun from contents where cid=". $cid;
 		$res = mysql_query($sql);
@@ -263,6 +273,50 @@ class FMXW extends BaseClass
 		return $ary;
 	}
 	
+    function insert_pk3() 
+    {
+        $title = mysql_real_escape_string(trim($_POST['title']));
+        $comment = mysql_real_escape_string(trim($_POST['comment']));
+        $keyword = mysql_real_escape_string(trim($_POST['kw']));
+        $cid = intval($_POST['cid']);
+        $role = $_POST['pk'];
+        $captcha = $_POST['captcha'];
+        
+        if(empty($_POST['zhichi'])) $zhichi = rand(10, 100);
+        else $zhichi = $_POST['zhichi'];
+
+        $qqwry=new qqwry('etc/qqwry.dat');
+        $arr=$qqwry->q($_SERVER['REMOTE_ADDR']);
+        $arr[0]=iconv('GB2312','UTF-8',$arr[0]);
+        $arr[1]=iconv('GB2312','UTF-8',$arr[1]);
+        $area = $arr[1] ? $arr[0].'|'.$arr[1] : $arr[0];
+        $area = mysql_real_escape_string($area);
+        
+        if(empty($_POST['author'])) 
+            $author = isset($_SESSION[PACKAGE]['username']) ?  $_SESSION[PACKAGE]['username'] : '访问用户';
+        else $author = mysql_real_escape_string(trim($_POST['author']));
+
+        $sql = "insert into pk3(role, title, author, keyword, zhichi, comment, created, area, cid, captcha) values('" . 
+            $role     . "', '" .
+            $title     . "', '" .
+            $author . "', '" .
+            $keyword. "', " .
+            $zhichi . ", '" .
+            $comment  . "', now(), '" . 
+            $area . "', " .
+            $cid . ", '" .
+            $captcha . "')";
+        
+        $res = mysql_query($sql);
+        if(! $res) return false;
+        $pid = mysql_insert_id();
+
+        $sql = "update contents set pinglun=pinglun+1 where cid=".$cid;
+        $res = mysql_query($sql);
+
+        return $pid;
+    }
+
     function insert_pk() 
 	{
 		$fayan = mysql_real_escape_string(trim($_POST['fayan']));

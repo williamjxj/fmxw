@@ -1,0 +1,87 @@
+<style type="text/css">
+.form-horizontal .controls {
+    margin-left: 10px;
+}
+</style>
+<div class="box4">
+  <form id="form_pk1" class="form-horizontal" method="post" action="{$config.ag}">
+    {if {$smarty.session.fmxw.search.title}}
+    <legend>{$smarty.session.fmxw.search.title}</legend>
+    {/if}
+    <div class="control-group">
+      <div class="controls">
+      <input type="text" id="title1" name="title" placeholder="关于当事人的简要说明/声明" />
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <textarea id="comment1" name="comment" placeholder="当事人的申辩，请文明上网。" style="width:98%" rows="8"></textarea>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls"> <img src="include/captcha/captcha.php" id="captcha1" /> <a href="#" id="change-image1">看不清?换一张。</a>
+        <input type="text" name="captcha" id="captcha-form1" autocomplete="off" />
+        {if {$smarty.session.fmxw.username}}
+        <input type="text" name="author" value="{$smarty.session.fmxw.username}" />
+        {else}
+        <input type="text" name="author" placeholder="当事人的称呼" />
+        {/if}
+        <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 当事人申辩</button>
+        <input name="kw" type="hidden" value="{$kw}" />
+        <input name="cid" type="hidden" value="{$cid}" />
+      </div>
+    </div>
+  </form>
+  <div id="result1"></div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#change-image1').click(function(e) {
+		document.getElementById('captcha1').src='include/captcha/captcha.php?'+Math.random();
+		$('#captcha-form1').focus();
+		return false;
+	});
+	
+	var validator = $('#form_pk1').validate({
+		rules: { "comment": "required" },
+		messages: { comment: "" },
+		highlight: function(label) {
+			$(label).closest('.control-group').addClass('error');
+		},
+		success: function(label) {
+			$(label).closest('.control-group').addClass('success');
+		}	
+	});
+
+	var f = $('#form_pk1');
+	$('button:submit', f).click(function(e) {
+		e.preventDefault();
+
+		if(!validator.form()) {
+			$('#comment1').attr('placeholder', '请输入您的PK评论。');
+			f.find('div.control-group').first().removeClass('success').addClass('error');
+			return false;
+		}
+		if($('#captcha-form1').val()=='') {
+			$('#result1').html('请输入验证码。').show();
+			return false;
+		}
+
+		$.post(f.attr('action'), f.serialize(), function(data) {
+			if($('#result1').is(':visible'))
+				$('#result1').hide();
+			if(data=='N') {
+				$('#result1').html('重复插入，无法添加评论, 请重试。').show();
+				return false;
+			}
+			$('html,body').animate({ scrollTop: $('#pk1a').offset().top }, 100);
+			$('#pk1a').html(data);
+			$('#pk1a div.reping_item:first-child').animate({ backgroundColor: 'LightGoldenRodYellow' }, 3000);
+
+			f.get(0).reset();
+			
+			return false;
+		});
+	});
+});
+</script>
