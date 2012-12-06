@@ -36,7 +36,7 @@
       </div>
     </div>
   </form>
-  <div id="result1" class="alert"></div>
+  <div id="result1"></div>
 </div>
 <script type="text/javascript">
 $(function() {
@@ -47,10 +47,7 @@ $(function() {
 	});
 	
 	var validator = $('#form_pk1').validate({
-		rules: {
-			"comment": "required",
-			"title": "required"
-		},
+		rules: { "comment": "required" },
 		messages: { comment: "" },
 		highlight: function(label) {
 			$(label).closest('.control-group').addClass('error');
@@ -78,7 +75,7 @@ $(function() {
 			if($('#result1').is(':visible'))
 				$('#result1').hide();
 			if(data=='N') {
-				$('#result1').html('重复插入，无法添加评论, 请重试。').show();
+				$('#result1').html('验证出错，无法添加评论, 请重试。').show();
 				return false;
 			}
 			$('html,body').animate({ scrollTop: $('#pk1a').offset().top }, 100);

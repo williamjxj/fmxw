@@ -1,5 +1,5 @@
 <style type="text/css">
-#form_pk1 {
+#form_pk2 {
 	margin-top:12px;
 }
 .form-horizontal .controls {
@@ -13,7 +13,7 @@
     {/if}
     <div class="control-group">
       <div class="controls">
-      <input type="text" id="title2" name="title" styel="width:90%" placeholder="关于发布者的简要说明/声明" />
+      <input type="text" id="title2" name="title" style="width:90%" placeholder="关于发布者的简要说明/声明" />
       </div>
     </div>
     <div class="control-group">
@@ -78,7 +78,7 @@ $(function() {
 			if($('#result2').is(':visible'))
 				$('#result2').hide();
 			if(data=='N') {
-				$('#result2').html('重复插入，无法添加评论, 请重试。').show();
+				$('#result2').html('验证出错，无法添加评论, 请重试。').show();
 				return false;
 			}
 			$('html,body').animate({ scrollTop: $('#pk2a').offset().top }, 100);
