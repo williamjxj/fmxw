@@ -78,7 +78,7 @@ $(function() {
 			if($('#result2').is(':visible'))
 				$('#result2').hide();
 			if(data=='N') {
-				$('#result2').html('验证出错，无法添加评论, 请重试。').show();
+				$('#result2').html('验证出错，无法添加评论，请尝试刷新验证码。').show();
 				return false;
 			}
 			$('html,body').animate({ scrollTop: $('#pk2a').offset().top }, 100);
