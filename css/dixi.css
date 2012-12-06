@@ -361,8 +361,6 @@ div.ajaxloading * {
 	padding:10px 4px;
 	overflow: hidden;
 }
-/*标题下的副标题:span,a*/
-/*网友热评 <i class="iconcomment"></i>*/
 .reping {
 	background-color: #FFFFFF;
 	border-color: #C8D8F2;
@@ -524,7 +522,7 @@ a.tqmail {
 	background: url(http://mat1.gtimg.com/news/imgcss_article_qq/qqmail.png) no-repeat scroll 0 0 transparent;
 }
 li.highlight {
-    background: none repeat scroll 0 0 #eeeeee;
+    background: none repeat scroll 0 0 #FFFAF0;
     border: 1px solid #E7E5E6;
     /*box-shadow: 1px 1px 1px #E7E5E6;*/
     -moz-border-radius: 4px 4px 4px 4px;
