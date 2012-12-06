@@ -43,8 +43,7 @@
   {/foreach}
 </ul>
 <script type="text/javascript">
-$(function()
-{
+;(function($) {
 	$.address.init(function(event) { 
 		return false;
 	}).
@@ -66,7 +65,10 @@ $(function()
 		}
 		return false;
 	});
+})(jQuery);
 
+$(function()
+{
 	$('span.iPre').hover(function() {
 		var t = $(this).closest('li').find('div.hLight');
 		$(t).addClass('loadPic').show();
