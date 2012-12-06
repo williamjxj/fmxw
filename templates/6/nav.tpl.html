@@ -26,8 +26,6 @@
     {if {$smarty.session.fmxw.search.key}}
     ({$rts.r}%)
     {/if}
-    {/if}
-	<br />
     <div class="comment">
 		<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3" target="_blank">我要PK</a>
 		<br>
@@ -39,6 +37,7 @@
 			</span>
 		</span>
 	</div>
+    {/if} <br />
     {$rts.content}<br />
     <div class="hLight"></div>
   </li>

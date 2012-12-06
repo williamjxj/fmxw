@@ -2,19 +2,19 @@
 <div class="mainbox">
   <div class="hd fix">
     <div style="width:{$info.p3}px;" class="bar lf fix">
-      <p class="info lf"><span class="count" id="s1">{$info.likes}票</span><span class="white" id="s2">{$info.p1}%</span></p>
-      <p class="total rf">参与人数：<b class="n" id="s3">{$info.total}</b>人</p>
+      <p class="info lf"><span class="count" id="s1">赞成{$info.likes}票</span><span class="white" id="s2">{$info.p1}%</span></p>
+      <p class="total rf">PK台参与人数：<b class="n" id="s3">{$info.total}</b>人</p>
     </div>
-    <p class="info rf"><span class="white" id="s4">{$info.p2}%</span><span class="count" id="s5">{$info.fandui}票</span></p>
+    <p class="info rf"><span class="white" id="s4">{$info.p2}%</span><span class="count" id="s5">反对{$info.fandui}票</span></p>
   </div>
   <div class="btm fix">
     <div class="role_a item lf">
-      <p class="desc">观点A：认可。</p>
-      <button class="btn" type="button" id="likes">支持A</button>
+      <p class="desc">赞成本文的观点。</p>
+      <button class="btn" type="button" id="likes"><i class="icon-thumbs-up"></i>我赞成，顶一个</button>
     </div>
     <div class="role_b item rf">
-      <p class="desc">观点B：不认可。</p>
-      <button class="btn" type="button" id="fandui">支持B</button>
+      <p class="desc">反对本文的观点。</p>
+      <button class="btn" type="button" id="fandui"><i class="icon-thumbs-down"></i>我反对，踩一个</button>
     </div>
   </div>
 </div>

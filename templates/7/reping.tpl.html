@@ -1,0 +1,35 @@
+{if $ks}
+<div class="row reping"> {foreach $reping as $pk}
+  <div class="reping_item">
+    <div class="t_info"><i class="icon-gift"></i> {$pk.author} <br>
+      <span class="t_area">{$pk.area}</span></div>
+    <div class="t_title">{$pk.title} - {$pk.role} </div>
+    <div class="t_txt">{$pk.comment} <span class="t_date"> {$pk.created} <span class="t_reply"><a href="javascript:;" class="a_zhichi" id="{$pk.id}">支持</a></span> </span> </div>
+  </div>
+  {/foreach} </div>
+<script type="text/javascript">
+$(function() {
+	$('div.reping_item').hover(
+		function() {
+			$(this).find('span.t_reply').show();
+			return false;
+		},
+		function() {
+			$(this).find('span.t_reply').hide();
+			return false;
+		}
+	);
+	$('a.a_zhichi', 'span.t_reply').one('click', function(e) {
+		var comment_id = $(this).attr('id');
+		e.preventDefault();
+		$(this).html('已支持');
+		$.ajax({
+			url: '{$url}',
+			type: 'post',
+			data: { id:comment_id, 'js_zhichi':1 }
+		});
+		return false;
+	});
+});
+</script>
+{/if} 

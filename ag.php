@@ -37,6 +37,22 @@ elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items($_GET['cate_id']));
 	return;
 }
+/**
+ * 
+ * 
+ */
+elseif(isset($_POST['captcha']) && isset($_POST['comment'])) {
+    echo "AAAAAAAAAAAA"; return;
+    $role = $_POST['role'];
+    $pid = $obj->insert_pk3();
+    if($pid) {
+        $obj -> assign('pks', $obj -> get_pk3_by_cid($_POST['cid'], $role));
+        $obj->display($tdir7.'reping.tpl.html');       
+    }
+    else echo "N";
+    return;
+}
+  
 //以下不需要setmatchmode和setsortmode.
 /* 显示顺序：（1）是显示评论列表js_reping；（2）当用户点击要发表评论时，js_pk（3）当用户提交评论后自动刷新评论列表。
  */
