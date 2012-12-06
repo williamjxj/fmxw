@@ -21,7 +21,8 @@ try {
     echo $e -> getMessage(), "line __LINE__.\n";
 }
 
-list($tdir0, $tdir6) = array($config['t0'], $config['t6']);
+list($tdir0, $tdir6, $tdir7) = array($config['t0'], $config['t6'],
+$config['t7']);
 $obj -> assign('config', $config);
 
 //////////////////////////////////////////////
