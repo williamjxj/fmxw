@@ -26,6 +26,31 @@
     <div class="span4" id="smiddle"> {include file="{$nav_template}"} </div>
     <div class="span7" id="sright">
       <div id="sd"></div>
+<script type="text/javascript">
+;(function($) {
+	$.address.init(function(event) { 
+		return false;
+	}).
+	change(function(event) {
+		if(event.value=='/') return false;
+		u = event.value.replace(/^\//,'');
+		$t = $('[rel="address:' + u + '"]');
+		$('{$config.wait}').insertAfter($t);
+		if($('#sd').length) {
+			$('#sd').load(u, function() {
+				$(this).fadeIn(200);
+				$('li.li3').removeClass('highlight1');
+				$t.parent('li.li3').addClass('highlight1');
+				$t.next('img').remove();
+			});
+		}
+		else {
+			alert('sd not exist.');
+		}
+		return false;
+	});
+})(jQuery);
+</script>      
       <ul id="js-news" class="js-hidden">
         <li class="news-item">{foreach $kr as $r} <a href="javascript:;" class="latest">{$r.rk}</a> {/foreach} </li>
       </ul>

@@ -35,70 +35,70 @@
 </div>
 <script type="text/javascript" src="{$config.base}js/jquery.fmxw4.js"></script>
 <script type="text/javascript">
-    //这里需要q是全局的,这样window.load能访问到.
-    var q = '{$q}';
-    $(function() {
+//这里需要q是全局的,这样window.load能访问到.
+var q = '{$q}';
+$(function() {
 
-        $('#weiboList a').click(function(e) {
-            e.preventDefault();
-            t = $(this).attr('href');
-            if (/tengxun/.test(t)) {
-                //只执行一次, 用one()来.
-                if ($(t).find('iframe').attr('src') === undefined) {
-                    $(t).html($('<div class="ajaxloading"></div>'));
-                    $.fmxw4.qq_weibo(q);
-                }
-            } else if (/163/.test(t)) {
-                if ($(t).find('iframe').attr('src') === undefined) {
-                    $(t).html($('<div class="ajaxloading"></div>'));
-                    $.fmxw4.netease_weibo(q);
-                }
-            } else if (/sohu/.test(t)) {
-                if ($(t).find('iframe').attr('src') === undefined) {
-                    $(t).html($('<div class="ajaxloading"></div>'));
-                    $.fmxw4.sohu_weibo(q);
-                }
-            } else if (/sina/.test(t)) {
-                if ($(t).find('iframe').attr('src') === undefined) {
-                    $(t).html($('<div class="ajaxloading"></div>'));
-                    $.fmxw4.sina_weibo(q);
-                }
-            }
-            $(this).tab('show');
-            return false;
-        });
-        $('form[name="wb_search"]').submit(function(e) {
-            e.preventDefault();
-            var q = $('input:text', $(this)).val();
-            if (/^\s*$/.test(q)) {
-                alert('请输入查询微博词?');
-                $('input:text', this).focus();
-                return false;
-            }
-            var t1 = $('#weiboList').find('li.active a').attr('href');
-            if (/sina/.test(t1))
-                $.fmxw4.sina_weibo(q);
-            else if (/tengxun/.test(t1))
-                $.fmxw4.qq_weibo(q);
-            else if (/163/.test(t1))
-                $.fmxw4.netease_weibo(q);
-            else if (/sohu/.test(t1))
-                $.fmxw4.sohu_weibo(q);
-            return false;
+	$('#weiboList a').click(function(e) {
+		e.preventDefault();
+		t = $(this).attr('href');
+		if (/tengxun/.test(t)) {
+			//只执行一次, 用one()来.
+			if ($(t).find('iframe').attr('src') === undefined) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.fmxw4.qq_weibo(q);
+			}
+		} else if (/163/.test(t)) {
+			if ($(t).find('iframe').attr('src') === undefined) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.fmxw4.netease_weibo(q);
+			}
+		} else if (/sohu/.test(t)) {
+			if ($(t).find('iframe').attr('src') === undefined) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.fmxw4.sohu_weibo(q);
+			}
+		} else if (/sina/.test(t)) {
+			if ($(t).find('iframe').attr('src') === undefined) {
+				$(t).html($('<div class="ajaxloading"></div>'));
+				$.fmxw4.sina_weibo(q);
+			}
+		}
+		$(this).tab('show');
+		return false;
+	});
+	$('form[name="wb_search"]').submit(function(e) {
+		e.preventDefault();
+		var q = $('input:text', $(this)).val();
+		if (/^\s*$/.test(q)) {
+			alert('请输入查询微博词?');
+			$('input:text', this).focus();
+			return false;
+		}
+		var t1 = $('#weiboList').find('li.active a').attr('href');
+		if (/sina/.test(t1))
+			$.fmxw4.sina_weibo(q);
+		else if (/tengxun/.test(t1))
+			$.fmxw4.qq_weibo(q);
+		else if (/163/.test(t1))
+			$.fmxw4.netease_weibo(q);
+		else if (/sohu/.test(t1))
+			$.fmxw4.sohu_weibo(q);
+		return false;
 
-        });
-        $('input[name=key]', 'form[name=wb_search]').val(q);
-        $('input:text', 'form[name="wb_search"]').focus(function() {
-            $(this).animate({
-                width : '+=50',
-            }).select();
-        }).blur(function() {
-            $(this).animate({
-                width : '-=50',
-            });
-        });
-    });
-    $(window).load(function() {
-        $.fmxw4.netease_weibo(q);
-    }); 
+	});
+	$('input[name=key]', 'form[name=wb_search]').val(q);
+	$('input:text', 'form[name="wb_search"]').focus(function() {
+		$(this).animate({
+			width : '+=50',
+		}).select();
+	}).blur(function() {
+		$(this).animate({
+			width : '-=50',
+		});
+	});
+});
+$(window).load(function() {
+	$.fmxw4.netease_weibo(q);
+}); 
 </script>

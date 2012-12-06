@@ -43,32 +43,7 @@
   {/foreach}
 </ul>
 <script type="text/javascript">
-;(function($) {
-	$.address.init(function(event) { 
-		return false;
-	}).
-	change(function(event) {
-		if(event.value=='/') return false;
-		u = event.value.replace(/^\//,'');
-		$t = $('[rel="address:' + u + '"]');
-		$('{$config.wait}').insertAfter($t);
-		if($('#sd').length) {
-			$('#sd').load(u, function() {
-				$(this).fadeIn(200);
-				$('li.li3').removeClass('highlight1');
-				$t.parent('li.li3').addClass('highlight1');
-				$t.next('img').remove();
-			});
-		}
-		else {
-			alert('sd not exist.');
-		}
-		return false;
-	});
-})(jQuery);
-
-$(function()
-{
+$(function(){
 	$('span.iPre').hover(function() {
 		var t = $(this).closest('li').find('div.hLight');
 		$(t).addClass('loadPic').show();
@@ -84,8 +59,8 @@ $(function()
 		}));
 		return false;
 	}, function() {
-		var t = $(this).closest('li').find('div.hLight');
-		$(t).hide();
+		//var t = $(this).closest('li').find('div.hLight');
+		//$(t).hide();
 	});
 
     {if {$sort}=='pinglun' || {$sort}==3}
