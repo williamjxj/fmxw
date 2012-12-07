@@ -45,57 +45,67 @@
 </ul>
 <script type="text/javascript">
 $(function(){
-	$('span.iPre').hover(function() {
-		var o = $('#sright').offset();
-		var p = $('#sright').position();
-		var w = $('#sright').width();
-		var h = $('#sright').height();
-		var t = $(this).closest('li').find('div.hLight');
+	$('span.iPre').live('mouseover', function(e) {
+		e.preventDefault();
 
-		//alert(o.left + ', ' + o.top); //808.9000244..., 188.5
-		//alert(p.left + ', ' + p.top); //769.4667..., 188.5
-		//alert(w+','+h); //1065,942
-		//$(t).attr({ left:808, top:0 }).show();
-		//$(t).attr({ left:o.left, top:o.top, width:w, height:h }).show();
-		//$(t).attr({ left:p.left, top:p.top }).show();
+		var s = $('#sright');
+		var t1 = $(this).closest('li').find('div.hLight'),
+		url = $(this).closest('li').find('a:first').attr('alt'),
+		o=s.offset(), p=s.position(), w=s.width(), h=s.height();
 
-		//$(t).addClass('loadPic').show();
-		var url = $(this).closest('li').find('a:first').attr('alt');
-		console.log(url);
-		var i = $('<iframe></iframe>').attr({
-			scrolling: "yes",
-			frameborder:0,
-			src: url,
-			width: "50%",
-			height: "50%"
+		var pos = $(this).position();
+
+//alert($(window).height()+','+$(window).scrollTop()); //425,(221,677,1118...)
+//alert(o.left+','+o.top+','+p.left+','+p.top+','+w+','+h); //607,186,578,186,794,979
+//alert(pos.left+','+pos.top);
+
+		if (! /^http/i.test(url)) url = 'http://' + url;
+
+		var options = {
+			'src' : url,
+			'width' : w,
+			'height' : h
+		};
+		$(t1).css({ 
+			position: "absolute",
+			top: (o.top+pos.top) + 'px',
+			left: (parseInt(o.left) - 10) + 'px'
 		});
-		$(t).html(i);
-	}, function() {
-		var t = $(this).closest('li').find('div.hLight');
-		if($(t).length) $(t).hide();
+		//$(t1).html('loadPic').show();
+		$(t1).html('<div class="ajaxloading"></div>').show();
+		$(t1).nav_preview(options);
+
+		e.stopPropagation();
 	});
+	$('div.hLight').live('mouseout', function(e) {
+		e.preventDefault();
+		var t2 = $(this).closest('li').find('div.hLight');
+		if($(t2).length) $(t2).hide();
+		e.stopPropagation();
+	});
+
 
     {if {$sort}=='pinglun' || {$sort}==3}
 		$('div.comment').css('visibility', 'visible');
 		$('li.li3').hover(
 			function() {
 				$(this).addClass('highlight'); 
-				$(this).find('span.iPreBox').css("visibility", "visible");
+				//$(this).find('span.iPreBox').css("visibility", "visible");
 			},
 			function() {
 				$(this).removeClass('highlight');
-				$(this).find('span.iPreBox').css('visibility', 'hidden');
+				//$(this).find('span.iPreBox').css('visibility', 'hidden');
 			}
 		);
 	{else}
 		$('li.li3').hover(
 			function() {
 				$(this).addClass('highlight').find('div.comment').css("visibility", "visible");
-				$(this).find('span.iPreBox').css("visibility", "visible");
+				//$(this).find('span.iPreBox').css("visibility", "visible");
 			},
 			function() {
 				$(this).removeClass('highlight').find('div.comment').css('visibility', 'hidden');
-				$(this).find('span.iPreBox').css('visibility', 'hidden');
+				//$(this).find('span.iPreBox').css('visibility', 'hidden');
 			}
 		);
     {/if} 

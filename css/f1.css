@@ -101,14 +101,11 @@
 	width:32px;
 	height:32px;
 	background:url(../images/loadPic.gif) no-repeat;
-	position:absolute;
 	top:50%;
 	left:50%;
 	margin-top:-16px;
 	margin-left:-16px;
-	line-height:999em;
-	display:block;
-	overflow:hidden;
+	position: relative;
 }
 .ticker-wrapper.has-js {
     margin-top: 0px !important;
@@ -140,15 +137,11 @@
 	position:relative;
 }
 .hLight {
-	left: 808px;
-	top: 0;
-	width: 58%;
-	*width: 58%;
     background-color: #EFF3F8;
     border: 1px solid #CEDBEE;
-    height: 100%;
     padding: 3px;
-    z-index: 10;
+    z-index: 1000;
+	position: absoulte;
 	display:none;
 }
 #smiddle .iPre {
