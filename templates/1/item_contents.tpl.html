@@ -9,6 +9,11 @@
       <li class="active">内容：</li>
       <li style="float:right"> {include file="{$config.shared}bshare.tpl.html"} </li>
     </ul>
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
+      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;
+    </div>
     {include file="{$config.t6}pagination.tpl.html"}
     <table class="table table-bordered table-hover table-striped table-condensed">
       <tr>
