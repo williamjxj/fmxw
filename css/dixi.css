@@ -540,9 +540,9 @@ li.highlight1 {
     border: 1px solid #E7E5E6;
 }
 .box4 {
-	background: none repeat scroll 0 0 #FFFFFF;
-	border: 1px solid #E7E5E6;
-	box-shadow: 2px 2px 10px #E7E5E6;
+	background: none repeat scroll 0 0 #FDF5E6;
+	border: 2px solid #E7E5E6;
+	box-shadow: 4px 4px 10px #E7E5E6;
 	margin: 10px 0;
 	padding: 0 auto;
 	position: relative;
@@ -561,7 +561,6 @@ li.highlight1 {
 }
 .box6 {
 	background: none repeat scroll 0 0 #FFFFFF;
-	border-top: 1px solid #E7E5E6;
 	border-bottom: 1px solid #E7E5E6;
 	box-shadow: 2px 2px 10px #E7E5E6;
 	margin: 10px 0;
