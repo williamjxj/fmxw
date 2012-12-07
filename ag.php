@@ -80,6 +80,7 @@ elseif(isset($_GET['js_pks2'])) {
     $obj->display($tdir6.'pk.tpl.html');
     return;
 }
+//<a class="talk fancybox.ajax" href="{$config.ag}?js_talk=1&cid={$l.cid}"></a>
 elseif(isset($_GET['js_talk'])) {
     $obj->display($tdir6.'pk.tpl.html');
     return;
