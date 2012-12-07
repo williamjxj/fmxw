@@ -1,5 +1,10 @@
 {$h=$list.0}
-{$count=1}
+{if $smarty.get.page}
+{$page=$smarty.get.page}
+{else}
+{$page=1}
+{/if}
+{$no=1+({$page}-1)*10}
 <div class="row">
   <div class="span12">
     <ul class="breadcrumb">
@@ -9,6 +14,7 @@
       <li class="active">内容：</li>
       <li style="float:right"> {include file="{$config.shared}bshare.tpl.html"} </li>
     </ul>
+    {$no=1+({$page}-1)*30}
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>
       位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
@@ -29,7 +35,7 @@
       </tr>
       {foreach $list as $l}
       <tr>
-        <td><span class="badge badge-warning">{$count++}</span></td>
+        <td><span class="badge badge-warning">{$no++}</span></td>
         <td><a href="{$config.f7.s}?cid={$l.cid}">{$l.title}</a></td>
         <td>{$l.pubdate|default:'N/A'|date_format:"%Y-%m-%d"}</td>
         <td>{$l.clicks}</td>

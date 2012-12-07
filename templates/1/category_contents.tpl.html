@@ -1,5 +1,10 @@
 {$h=$list.0}
-{$count=1}
+{if $smarty.get.page}
+{$page=$smarty.get.page}
+{else}
+{$page=1}
+{/if}
+{$no=1+({$page}-1)*10}
 <div class="row">
   <div class="span12">
     <ul class="breadcrumb">
@@ -11,7 +16,8 @@
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>
       位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
-      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;</div>
+      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;
+    </div>
     {include file="{$config.t6}pagination.tpl.html"}
     <div style="clear:both;"></div>
     <table class="table table-bordered table-hover table-striped table-condensed">
@@ -29,7 +35,7 @@
       </tr>
       {foreach $list as $l}
       <tr>
-        <td><span class="badge badge-warning">{$count++}</span></td>
+        <td><span class="badge badge-warning">{$no++}</span></td>
         <td><a href="{$config.f7.s}?cid={$l.cid}">{$l.title}</a></td>
         <td>{$l.pubdate|default:'N/A'|date_format:"%Y-%m-%d"}</td>
         <td><a href="{$config.f1.s}?iid={$l.iid}">{$l.item}</a></td>
