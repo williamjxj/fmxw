@@ -191,14 +191,20 @@ class f1Class extends f12Class {
         else
             $where = '';
         $order = " order by weight ";
-        $limit = "";
-        $sql = "select iid, name, iurl, category, cid, description from items " . $where . $order . $limit;
+        $sql = "select iid, name, iurl, category, cid, description from items " . $where . $order;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res)) {
             die($res -> getMessage() . ' - line ' . __LINE__ . ': ' . $sql);
         }
         return $res;
     }
+	function get_items_new($cid) {
+		$ary = array();
+		$sql = "select iid, name from items where cid=$cid order by weight";
+		$res = mysql_query($sql);
+		while ($row = mysql_fetch_array($res, MYSQL_NUM)) array_push($ary, $row);
+		return $ary;
+	}
 
     function get_item_contents($iid) 
     {

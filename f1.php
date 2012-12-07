@@ -101,6 +101,10 @@ elseif (isset($_GET['page'])) {
         exit ;
     }
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
+}
+elseif(isset($_GET['js_item'])) {
+	echo json_encode($obj->get_items_new($_GET['cate_id']));
+	return;
 } 
 elseif (isset($_GET['test'])) {
     header('Content-Type: text/html; charset=utf-8');

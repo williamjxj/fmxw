@@ -17,9 +17,15 @@
       <button type="button" class="close" data-dismiss="alert">×</button>
       位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
       总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total}</strong>&gt;,
-      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;
-    </div>
+      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt; </div>
     {include file="{$config.t6}pagination.tpl.html"}
+
+<div id="div_items" style="display:none;">
+  <label for="items">栏目:</label>
+  <select name="items" id="items">
+  </select>
+</div>
+    
     <div style="clear:both;"></div>
     <table class="table table-bordered table-hover table-striped table-condensed">
       <tr>
@@ -45,8 +51,7 @@
         <td>{$l.guanzhu}</td>
         <td>{$l.pinglun}</td>
         <td>{$l.created|date_format:"%Y-%m-%d %H:%M"}</td>
-        <td><a class="talk" href="{$config.f7.s}?cid={$l.cid}#Tab3"><i class="icon-comment"></i>我要PK</a>&nbsp;&nbsp; <i class="icon-list"></i>
-		<a class="talk fancybox.ajax" rel="group" href="{$config.f1.s}?js_get_content=1&cid={$l.cid}">预览</a> </td>
+        <td><a class="talk" href="{$config.f7.s}?cid={$l.cid}#Tab3"><i class="icon-comment"></i>我要PK</a>&nbsp;&nbsp; <i class="icon-list"></i> <a class="talk fancybox.ajax" rel="group" href="{$config.f1.s}?js_get_content=1&cid={$l.cid}">预览</a> </td>
       </tr>
       {/foreach}
     </table>
@@ -65,5 +70,22 @@ $(function() {
 	openEffect  : 'none',
 	closeEffect : 'none'
   });
+  $('#items').change(function(e) {
+	e.preventDefault();
+	var iid = $(this).attr('value');
+	alert('{$config.f1.s}'+','+iid );
+	document.location.href='{$config.f1.s}?iid='+iid;
+	return false;
+  });
+});
+$(window).load(function() {
+	$.getJSON("{$config.f1.s}?js_item=1&cate_id={$h.cate_id}", function(data) {
+		var items ='<option value="0">- 所有栏目 -</option>\n';
+		$.each(data, function(id, name) {
+			items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
+		});
+		$('#div_item').fadeIn(500);
+		$('#items').html(items);
+	});
 });
 </script>
