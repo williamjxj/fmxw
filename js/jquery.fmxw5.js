@@ -19,6 +19,7 @@
 
 ;(function($) {
 	$.fn.nav_preview = function(options) {
+		$(this).html('<div class="ajaxloading"></div>').show();
 		var defaults = {
 			scrolling : 'yes',
 			frameborder : 0

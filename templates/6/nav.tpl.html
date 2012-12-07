@@ -46,15 +46,16 @@
 <script type="text/javascript">
 $(function(){
 	$('span.iPre').live('mouseover', function(e) {
-		e.preventDefault();
+		e.stopPropagation();
 
-		var s = $('#sright');
-		var t1 = $(this).closest('li').find('div.hLight'),
-		url = $(this).closest('li').find('a:first').attr('alt'),
-		o=s.offset(), p=s.position(), w=s.width(), h=s.height();
+		var t1 = $(this).closest('li').find('div.hLight');
+		if($(t1).is(':visible')) $(t1).empty();
 
-		var pos = $(this).position();
+		var url=$(this).closest('li').find('a:first').attr('alt'),
+		s=$('#sright'), o=s.offset(), p=s.position(), w=s.width(), h=s.height(),
+		pos=$(this).position();
 
+//alert($(window).height()+','+$(document).height()+','+h); //545,1674,939,1132,1578,1113
 //alert($(window).height()+','+$(window).scrollTop()); //425,(221,677,1118...)
 //alert(o.left+','+o.top+','+p.left+','+p.top+','+w+','+h); //607,186,578,186,794,979
 //alert(pos.left+','+pos.top);
@@ -66,17 +67,21 @@ $(function(){
 			'width' : w,
 			'height' : h
 		};
+
 		$(t1).css({ 
 			position: "absolute",
 			top: (o.top+pos.top) + 'px',
 			left: (parseInt(o.left) - 10) + 'px'
 		});
-		//$(t1).html('loadPic').show();
-		$(t1).html('<div class="ajaxloading"></div>').show();
-		$(t1).nav_preview(options);
 
+		//$(t1).html('loadPic').show(); $(t1).html('<div class="ajaxloading"></div>').show();
+		$(t1).nav_preview(options);
+		e.preventDefault();
+	}).live('mouseout', function(e) {
 		e.stopPropagation();
+		return false;
 	});
+
 	$('div.hLight').live('mouseout', function(e) {
 		e.preventDefault();
 		var t2 = $(this).closest('li').find('div.hLight');
