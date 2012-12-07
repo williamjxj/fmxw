@@ -443,13 +443,9 @@ $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 if (isset($_GET['page']) || isset($_GET['js_dwmy'])  || isset($_GET['js_attr']) || isset($_GET['js_core']) || isset($_GET['js_cate_item']) ) {
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
-    $pagination = $obj -> draw();
-    $obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'nav.tpl.html');
 } 
 else {
-    $pagination = $obj -> draw();
-	$obj -> assign("pagination", $pagination);
 	$obj -> display($tdir6 . 'ss.tpl.html');
 	if (!empty($_GET['q'])) $obj->write_named_pipes(trim($_GET['q']), __LINE__);
 }

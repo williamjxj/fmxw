@@ -139,7 +139,7 @@ class f1Class extends f12Class {
 
     function get_category_contents($cate_id) {
         $sql = "select cid, title, url, pubdate, author, source, clicks, tags, likes, fandui, guanzhu, pinglun,
-        category, cate_id, item, iid 
+        category, cate_id, item, iid, created 
         from contents  where language='" . $this -> lang . "' and cate_id=$cate_id order by cid desc limit 0,".ROWS_PER_PAGE;
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
@@ -182,7 +182,7 @@ class f1Class extends f12Class {
 
     function get_item_contents($iid) {
         $sql = "select cid, title, url, pubdate, author, source, clicks, tags, likes, fandui, guanzhu, pinglun,
-        category, cate_id, item, iid 
+        category, cate_id, item, iid, created 
         from contents  where language='" . $this -> lang . "' and iid=$iid order by iid desc limit 0, ".ROWS_PER_PAGE;
 
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
