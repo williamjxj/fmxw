@@ -17,6 +17,7 @@
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>
       位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
+      总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total}</strong>&gt;,
       页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;
     </div>
     {include file="{$config.t6}pagination.tpl.html"}
