@@ -83,7 +83,7 @@ class FMXW extends BaseClass
 				'database' => "dixi", 
 			), 
 			'page' => array(
-				'limit' => ROWS_PER_PAGE, 
+				'limit' => ROWS_PER_PAGE_10, 
 				'max_matches' => 1000, 
 			)
 		);
@@ -206,7 +206,7 @@ class FMXW extends BaseClass
 
     function generate_sql($ids) {
         $lang_case = " and language = '" . $this -> lang . "' ";
-        //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc limit  " . $row_no . "," . ROWS_PER_PAGE;
+        //$sql = "select cid, title, content from contents where cid in (".$ids.") " . $lang_case . " order by cid desc limit  " . $row_no . "," . ROWS_PER_PAGE_10;
 
         $sql = "select cid, title, content, date(created) as date, createdby  from contents where cid in (" . $ids . ") order by created desc";
         $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;

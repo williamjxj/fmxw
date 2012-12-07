@@ -308,7 +308,7 @@ if (empty($res["matches"])) {
 // 取得数据成功后，设置SESSION.
 $_SESSION[PACKAGE][SEARCH]['page'] = empty($_GET['page']) ? 1 : $_GET['page'];
 $_SESSION[PACKAGE][SEARCH]['total'] = $res['total'];
-$_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE);
+$_SESSION[PACKAGE][SEARCH]['total_pages'] = ceil($res['total'] / ROWS_PER_PAGE_10);
 $_SESSION[PACKAGE][SEARCH]['total_found'] = $res['total_found'];
 $_SESSION[PACKAGE][SEARCH]['time'] = $res['time'];
 
