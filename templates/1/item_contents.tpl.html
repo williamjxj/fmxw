@@ -14,22 +14,25 @@
       <tr>
         <th>序号</th>
         <th>标题</th>
-        <th>时间</th>
+        <th>日期</th>
         <th>阅览次数</th>
-        <th>关注度</th>
+        <th>赞成</th>
+        <th>反对</th>
         <th>总评论</th>
+        <th>归档时间</th>
         <th>选项</th>
       </tr>
       {foreach $list as $l}
       <tr>
         <td><span class="badge badge-warning">{$count++}</span></td>
         <td><a href="{$config.f7.s}?cid={$l.cid}">{$l.title}</a></td>
-        <td>{$l.pubdate|default:'N/A'|date_format:"%Y-%m-%d %H:%M"}</td>
+        <td>{$l.pubdate|default:'N/A'|date_format:"%Y-%m-%d"}</td>
         <td>{$l.clicks}</td>
+        <td>{$l.likes}</td>
         <td>{$l.guanzhu}</td>
         <td>{$l.pinglun}</td>
-        <td><a class="talk" href="{$config.f7.s}?cid={$l.cid}#Tab3"><i class="icon-comment"></i>我要PK</a>&nbsp;&nbsp; <i class="icon-list"></i><a class="talk
-		fancybox.ajax" href="{$config.f1.s}?js_get_content=1&cid={$l.cid}">预览</a> </td>
+        <td>{$l.created|date_format:"%Y-%m-%d %H:%M"}</td>
+        <td><a class="talk" href="{$config.f7.s}?cid={$l.cid}#Tab3"><i class="icon-comment"></i>我要PK</a>&nbsp;&nbsp; <i class="icon-list"></i> <a class="talk fancybox.ajax" href="{$config.f1.s}?js_get_content=1&cid={$l.cid}">预览</a> </td>
       </tr>
       {/foreach}
     </table>
@@ -38,8 +41,8 @@
 <script type="text/javascript">
 $(function() {
   $('a.talk').fancybox({
-	maxWidth    : 1000,
-	maxHeight   : 800,
+	maxWidth    : 1400,
+	maxHeight   : 1200,
 	fitToView   : false,
 	width       : '85%',
 	height      : '85%',

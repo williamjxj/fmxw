@@ -103,9 +103,7 @@ class f12Class extends BaseClass
                     $queryURL .= '&' . $key . '=' . $value;
             }
         }
-		//foreach($_SESSION[PACKAGE][SEARCH] as $k=$v) {
-		//	$queryURL .= '&' . $k . '=' . urlencode($v);
-		//}
+
         if (($total_pages) > 1) {
             if ($current_page != 1) {
                 $links[] = '<a href="?page=1' . $queryURL . '">&laquo;&laquo; 首页 </a>';
@@ -132,6 +130,37 @@ class f12Class extends BaseClass
         }
     }
 
+    function draw_cate_item()
+	{
+        $current_page = isset($_SESSION[PACKAGE]['cate_item']['page']) ? $_SESSION[PACKAGE]['cate_item']['page'] : 1;
+        $total_pages = isset($_SESSION[PACKAGE]['cate_item']['total_pages']) ? $_SESSION[PACKAGE]['cate_item']['total_pages'] : 1;
+        $links = array();
+        if (($total_pages) > 1) {
+            if ($current_page != 1) {
+                $links[] = '<a href="?page=1">&laquo;&laquo; 首页 </a>';
+                $links[] = '<a href="?page=' . ($current_page - 1) . '">&laquo; 前页</a>';
+            }
+
+            for ($j = ($current_page - 4); $j < ($current_page + 4); $j++) {
+                if ($j < 1)
+                    continue;
+                if ($j > $total_pages)
+                    break;
+                if ($current_page == $j) {
+                    $links[] = '<a href="javascript:;">' . $j . '</a>';
+                } else {
+                    $links[] = '<a href="?page=' . $j . '">' . $j . '</a>';
+                }
+            }
+
+            if ($current_page < $total_pages) {
+                $links[] = '<a href="?page=' . ($current_page + 1) . '"> 下页 &raquo; </a>';
+                $links[] = '<a href="?page=' . ($total_pages) . '"> 末页 &raquo;&raquo; </a>';
+            }
+            return $links;
+        }
+    }
+
 	//还有用，网友在查。
     function get_key_related($q) {
         $sql = "select rid, rk, kurl from key_related where keyword like '%" . mysql_real_escape_string($q) . "%' order by rand() limit 0, " . TAB_LIST;
@@ -147,33 +176,30 @@ class f12Class extends BaseClass
         $sql = "select * from contents where cid=" . $cid;
         $res = mysql_query($sql);
         $row = mysql_fetch_assoc($res);
-	//if(mysql_num_rows($res)>0) $_SESSION[PACKAGE][SEARCH]['title']=htmlspecialchars($row['title']);
-	// $this->__p($_SESSION);
         mysql_free_result($res);
         return $row;
     }
 
-	//应该没有用了。
     function select_contents_by_page() {
         //计算共有多少页？
-        $total_pages = isset($_SESSION[PACKAGE][SEARCH]['total_pages']) ? $_SESSION[PACKAGE][SEARCH]['total_pages'] : 1;
+        $total_pages = isset($_SESSION[PACKAGE]['cate_item']['total_pages']) ? $_SESSION[PACKAGE]['cate_item']['total_pages'] : 1;
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
         if ($page > $total_pages)
             $page = $total_pages;
         if ($page < 1)
             $page = 1;
-        $_SESSION[PACKAGE][SEARCH]['page'] = $page;
+        $_SESSION[PACKAGE]['cate_item']['page'] = $page;
 
-        //当前从第几条记录开始显示�?
+        //当前从第几条记录开始显示?
         $row_no = ((int)$page - 1) * ROWS_PER_PAGE;
 
         //生成新的查询语句.
-        if (preg_match("/limit/i", $_SESSION[PACKAGE][SEARCH]['sql']))
-            $_SESSION[PACKAGE][SEARCH]['sql'] = preg_replace("/limit.*$/i", '', $_SESSION[PACKAGE][SEARCH]['sql']);
+        if (preg_match("/limit/i", $_SESSION[PACKAGE]['cate_item']['sql']))
+            $_SESSION[PACKAGE]['cate_item']['sql'] = preg_replace("/limit.*$/i", '', $_SESSION[PACKAGE]['cate_item']['sql']);
 
-        $sql = $_SESSION[PACKAGE][SEARCH]['sql'];
+        $sql = $_SESSION[PACKAGE]['cate_item']['sql'];
         $sql .= " limit  " . $row_no . "," . ROWS_PER_PAGE;
-        $_SESSION[PACKAGE][SEARCH]['sql'] = $sql;
+        $_SESSION[PACKAGE]['cate_item']['sql'] = $sql;
 
         $ary = array();
         $res = mysql_query($sql);

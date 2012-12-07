@@ -137,10 +137,27 @@ class f1Class extends f12Class {
         return $this -> _get_label($footer);
     }
 
-    function get_category_contents($cate_id) {
+    function get_category_contents($cate_id) 
+	{		
         $sql = "select cid, title, url, pubdate, author, source, clicks, tags, likes, fandui, guanzhu, pinglun,
         category, cate_id, item, iid, created 
         from contents  where language='" . $this -> lang . "' and cate_id=$cate_id order by cid desc limit 0,".ROWS_PER_PAGE;
+
+		if(!isset($_SESSION[PACKAGE]['cate_item']) || empty($_SESSION[PACKAGE]['cate_item']['total_pages'])) {
+			$total = $this->get_category_count($cate_id);
+			$total_pages = ceil($total / ROWS_PER_PAGE);
+			$_SESSION[PACKAGE]['cate_item']['total'] = $total;
+			$_SESSION[PACKAGE]['cate_item']['total_pages'] = $total_pages;
+			
+			$_SESSION[PACKAGE]['cate_item']['page'] = 1;
+			$_SESSION[PACKAGE]['cate_item']['sql'] = $sql;
+		}
+		elseif(isset($_GET['page']))
+			$_SESSION[PACKAGE]['cate_item']['page'] = $_GET['page'];
+			
+		$this->__p($_SESSION[PACKAGE]);
+		exit;
+
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
             die($res -> getMessage());
@@ -152,16 +169,20 @@ class f1Class extends f12Class {
         return $res;
     }
 
-    function assemble_sitemap($sm) {
-        $info = array();
-        if (preg_match("/English/i", $this -> lang)) {
-            $info['title'] = $sm[1];
-            $info['content'] = "Currently this model is under developing, will be ready shortly.<br>\n";
-        } else {
-            $info['title'] = $sm[0];
-            $info['content'] = "目前该分类还处在开发阶段，很快就会有内容呈现。谢谢关注。<br>\n";
-        }
-        return $info;
+    function get_category_count($cate_id) {
+        $sql = "select count(*) from contents where cate_id =" . $cate_id;
+        $res = mysql_query($sql);
+        $row = mysql_fetch_row($res);
+        mysql_free_result($res);
+        return $row[0];
+    }
+
+    function get_item_count($iid) {
+        $sql = "select count(*) from items where iid=" . $iid;
+        $res = mysql_query($sql);
+        $row = mysql_fetch_row($res);
+        mysql_free_result($res);
+        return $row[0];
     }
 
     //////////////// Items ////////////////
@@ -180,10 +201,26 @@ class f1Class extends f12Class {
         return $res;
     }
 
-    function get_item_contents($iid) {
+    function get_item_contents($iid) 
+    {
         $sql = "select cid, title, url, pubdate, author, source, clicks, tags, likes, fandui, guanzhu, pinglun,
         category, cate_id, item, iid, created 
         from contents  where language='" . $this -> lang . "' and iid=$iid order by iid desc limit 0, ".ROWS_PER_PAGE;
+
+        if(!isset($_SESSION[PACKAGE]['cate_item']) || empty($_SESSION[PACKAGE]['cate_item']['total_pages'])) {
+            $total = $this->get_category_count($cate_id);
+            $total_pages = ceil($total / ROWS_PER_PAGE);
+            $_SESSION[PACKAGE]['cate_item']['total'] = $total;
+            $_SESSION[PACKAGE]['cate_item']['total_pages'] = $total_pages;
+            
+            $_SESSION[PACKAGE]['cate_item']['page'] = 1;
+            $_SESSION[PACKAGE]['cate_item']['sql'] = $sql;
+        }
+        elseif(isset($_GET['page']))
+            $_SESSION[PACKAGE]['cate_item']['page'] = $_GET['page'];
+            
+        $this->__p($_SESSION[PACKAGE]);
+        exit;
 
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
@@ -193,6 +230,18 @@ class f1Class extends f12Class {
         return $res;
     }
 
+
+    function assemble_sitemap($sm) {
+        $info = array();
+        if (preg_match("/English/i", $this -> lang)) {
+            $info['title'] = $sm[1];
+            $info['content'] = "Currently this model is under developing, will be ready shortly.<br>\n";
+        } else {
+            $info['title'] = $sm[0];
+            $info['content'] = "目前该分类还处在开发阶段，很快就会有内容呈现。谢谢关注。<br>\n";
+        }
+        return $info;
+    }
 	// NO USE.
 	function get_item_list($cate_id) 
 	{

@@ -33,12 +33,14 @@ if (isset($_GET['js_get_cc'])) {
     exit ;
 } 
 elseif (isset($_GET['cate_id'])) {
+	if (isset($_SESSION[PACKAGE]['cate_item'])) unset($_SESSION[PACKAGE]['cate_item']);
     $list = $obj -> get_category_contents($_GET['cate_id']);
     // $obj -> __p($list);
     $obj -> assign('list', $list);
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
 } 
 elseif (isset($_GET['iid'])) {
+	if (isset($_SESSION[PACKAGE]['cate_item'])) unset($_SESSION[PACKAGE]['cate_item']);
     $list = $obj -> get_item_contents($_GET['iid']);
     $obj -> assign('list', $list);
     $obj -> assign('ic_template', $tdir1 . 'item_contents.tpl.html');
@@ -112,6 +114,9 @@ else {
     $obj -> __p($_REQUEST);
     die("Error, no http request at: [" . __FILE__ . '], line ' . __LINE__);
 }
+
+$pagination = $obj -> draw();
+$obj -> assign("pagination", $pagination);
 
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
