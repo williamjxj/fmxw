@@ -79,7 +79,7 @@ $(function() {
   });
 });
 $(window).load(function() {
-	$.getJSON("{$config.f1.s}?js_item=1&cate_id={$h.cate_id}", function(data) {
+	$.getJSON("{$config.f1.s}?js_item=1&cid={$h.cate_id}", function(data) {
 		var items ='<option value="0">- 所有栏目 -</option>\n';
 		$.each(data, function(id, name) {
 			items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';

@@ -103,7 +103,7 @@ elseif (isset($_GET['page'])) {
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
 }
 elseif(isset($_GET['js_item'])) {
-	echo json_encode($obj->get_items_new($_GET['cate_id']));
+	echo json_encode($obj->get_items_new($_GET['cid']));
 	return;
 } 
 elseif (isset($_GET['test'])) {
