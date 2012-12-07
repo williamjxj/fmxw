@@ -78,7 +78,7 @@ elseif (isset($_GET['f1_hot'])) {
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
     $obj->assign('row', $row);
-    $obj->display($tdir2.'single.tpl.html');
+    $obj->display($tdir1.'single.tpl.html');
     exit;
 } 
 elseif (isset($_GET['page'])) {
