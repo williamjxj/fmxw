@@ -6,14 +6,9 @@
       <li><i class="icon-home"></i>&nbsp;<a href="{$config.home}">首页</a><span class="divider">/</span></li>
       <li><a href="?cate_id={$h.cate_id}">{$h.category}</a> <span class="divider">/</span></li>
       <li class="active">内容：</li>
+      <li style="float:right"> {include file="{$config.shared}bshare.tpl.html"} </li>
     </ul>
-    <div class="listing-heading"> <strong>{$data.self_i18n|default:{$config.header.title}|capitalize}</strong> &nbsp;
-      {if !empty($pagination)}
-      Page {$data.current_page}, Total {$data.total_pages} pages / {$data.total_rows} records
-      {/if} </div>
-    {if !empty($pagination)}
-    <div class="pager1"> {$pagination} </div>
-    {/if}
+    {include file="{$config.t6}pagination.tpl.html"}
     <div style="clear:both;"></div>
     <table class="table table-bordered table-hover table-striped table-condensed">
       <tr>
@@ -43,9 +38,7 @@
       </tr>
       {/foreach}
     </table>
-    {if !empty($pagination)}
-    <div class="pager1 pager-bottom"> {$pagination} </div>
-    {/if} </div>
+    {include file="{$config.t6}pagination.tpl.html"} </div>
 </div>
 <script type="text/javascript">
 $(function() {
