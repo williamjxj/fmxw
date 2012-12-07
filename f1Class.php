@@ -152,10 +152,10 @@ class f1Class extends f12Class {
 			$_SESSION[PACKAGE]['cate_item']['page'] = 1;
 			$_SESSION[PACKAGE]['cate_item']['sql'] = $sql;
 		}
-		elseif(isset($_GET['page']))
-			$_SESSION[PACKAGE]['cate_item']['page'] = $_GET['page'];
-			
-		$this->__p($_SESSION[PACKAGE]);
+        else {
+            $this->__p($_SESSION[PACKAGE]);
+            exit;        
+        }			
 
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))

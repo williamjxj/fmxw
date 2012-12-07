@@ -130,15 +130,16 @@ class f12Class extends BaseClass
         }
     }
 
-    function draw_cate_item()
+	//category template or item template? $ci=1: category; $ci=2: item
+    function draw_cate_item($ci=1)
 	{
         $current_page = isset($_SESSION[PACKAGE]['cate_item']['page']) ? $_SESSION[PACKAGE]['cate_item']['page'] : 1;
         $total_pages = isset($_SESSION[PACKAGE]['cate_item']['total_pages']) ? $_SESSION[PACKAGE]['cate_item']['total_pages'] : 1;
         $links = array();
         if (($total_pages) > 1) {
             if ($current_page != 1) {
-                $links[] = '<a href="?page=1">&laquo;&laquo; 首页 </a>';
-                $links[] = '<a href="?page=' . ($current_page - 1) . '">&laquo; 前页</a>';
+                $links[] = '<a href="?js_ci='.$ci.'&page=1">&laquo;&laquo; 首页 </a>';
+                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($current_page - 1) . '">&laquo; 前页</a>';
             }
 
             for ($j = ($current_page - 4); $j < ($current_page + 4); $j++) {
@@ -149,13 +150,13 @@ class f12Class extends BaseClass
                 if ($current_page == $j) {
                     $links[] = '<a href="javascript:;">' . $j . '</a>';
                 } else {
-                    $links[] = '<a href="?page=' . $j . '">' . $j . '</a>';
+                    $links[] = '<a href="?js_ci='.$ci.'&page=' . $j . '">' . $j . '</a>';
                 }
             }
 
             if ($current_page < $total_pages) {
-                $links[] = '<a href="?page=' . ($current_page + 1) . '"> 下页 &raquo; </a>';
-                $links[] = '<a href="?page=' . ($total_pages) . '"> 末页 &raquo;&raquo; </a>';
+                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($current_page + 1) . '"> 下页 &raquo; </a>';
+                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($total_pages) . '"> 末页 &raquo;&raquo; </a>';
             }
             return $links;
         }
@@ -184,10 +185,8 @@ class f12Class extends BaseClass
         //计算共有多少页？
         $total_pages = isset($_SESSION[PACKAGE]['cate_item']['total_pages']) ? $_SESSION[PACKAGE]['cate_item']['total_pages'] : 1;
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        if ($page > $total_pages)
-            $page = $total_pages;
-        if ($page < 1)
-            $page = 1;
+        if ($page > $total_pages) $page = $total_pages;
+        if ($page < 1) $page = 1;
         $_SESSION[PACKAGE]['cate_item']['page'] = $page;
 
         //当前从第几条记录开始显示?

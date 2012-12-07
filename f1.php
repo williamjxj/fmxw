@@ -39,7 +39,7 @@ elseif (isset($_GET['cate_id'])) {
     $obj -> assign('list', $list);
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
 
-	$pagination = $obj -> draw_cate_item();
+	$pagination = $obj -> draw_cate_item(1);
 	$obj -> assign("pagination", $pagination);
 } 
 elseif (isset($_GET['iid'])) {
@@ -48,7 +48,7 @@ elseif (isset($_GET['iid'])) {
     $obj -> assign('list', $list);
     $obj -> assign('ic_template', $tdir1 . 'item_contents.tpl.html');
 
-	$pagination = $obj -> draw_cate_item();
+	$pagination = $obj -> draw_cate_item(2);
 	$obj -> assign("pagination", $pagination);
 }
 elseif (isset($_GET['sitemap'])) {
@@ -91,7 +91,7 @@ elseif(isset($_GET['js_get_content'])) {
 } 
 elseif (isset($_GET['page'])) {
     $obj -> assign('list', $obj -> select_contents_by_page());
-    $pagination = $obj -> draw_cate_item();
+    $pagination = $obj -> draw_cate_item($_GET['js_ci']);
     $obj -> assign("pagination", $pagination);
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     if (isset($_GET['js_page'])) {
