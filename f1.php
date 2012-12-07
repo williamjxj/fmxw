@@ -38,12 +38,18 @@ elseif (isset($_GET['cate_id'])) {
     // $obj -> __p($list);
     $obj -> assign('list', $list);
     $obj -> assign('cc_template', $tdir1 . 'category_contents.tpl.html');
+
+	$pagination = $obj -> draw_cate_item();
+	$obj -> assign("pagination", $pagination);
 } 
 elseif (isset($_GET['iid'])) {
 	if (isset($_SESSION[PACKAGE]['cate_item'])) unset($_SESSION[PACKAGE]['cate_item']);
     $list = $obj -> get_item_contents($_GET['iid']);
     $obj -> assign('list', $list);
     $obj -> assign('ic_template', $tdir1 . 'item_contents.tpl.html');
+
+	$pagination = $obj -> draw_cate_item();
+	$obj -> assign("pagination", $pagination);
 }
 elseif (isset($_GET['sitemap'])) {
     $sm = $obj -> get_sitemap($_GET['sitemap']);
@@ -84,15 +90,12 @@ elseif(isset($_GET['js_get_content'])) {
     exit;
 } 
 elseif (isset($_GET['page'])) {
-    $obj -> assign('results', $obj -> select_contents_by_page());
-    $pagination = $obj -> draw();
+    $obj -> assign('list', $obj -> select_contents_by_page());
+    $pagination = $obj -> draw_cate_item();
     $obj -> assign("pagination", $pagination);
     // 以下是:去掉search.tpl.html ajax 部分,程序仍然能工作.
     if (isset($_GET['js_page'])) {
         $obj -> display($tdir2 . 'nav.tpl.html');
-        exit ;
-    } else {
-        echo "stop at: " . __FILE__ . ',' . __LINE__;
         exit ;
     }
 } 
@@ -114,9 +117,6 @@ else {
     $obj -> __p($_REQUEST);
     die("Error, no http request at: [" . __FILE__ . '], line ' . __LINE__);
 }
-
-$pagination = $obj -> draw();
-$obj -> assign("pagination", $pagination);
 
 $obj -> assign('_th', $obj -> get_header_label($header));
 $obj -> assign('_tf', $obj -> get_footer_label($footer));
