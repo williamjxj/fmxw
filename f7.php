@@ -112,7 +112,7 @@ $obj -> assign('_tf', $obj -> get_footer_label($footer));
 $obj -> assign('sitemap', $obj -> get_sitemap());
 $obj -> assign('help_template', $config['shared'] . 'help.tpl.html');
 
-$obj -> assign('header_template', $tdir1 . 'header1.tpl.html');
+$obj -> assign('header_template', $tdir6 . 'header1.tpl.html');
 $obj -> assign('footer_template', $tdir0 . 'footer.tpl.html');
 
 $obj->assign('detail_template', $tdir7.'detail.tpl.html');
