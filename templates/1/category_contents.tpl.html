@@ -17,15 +17,13 @@
       <button type="button" class="close" data-dismiss="alert">×</button>
       位置：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
       总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total}</strong>&gt;,
-      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt; </div>
+      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;
+		<div id="div_items" style="display:none;float:right;">
+		  <select name="items" id="items">
+		  </select>
+		</div>
+	  </div>
     {include file="{$config.t6}pagination.tpl.html"}
-
-<div id="div_items" style="display:none;">
-  <label for="items">栏目:</label>
-  <select name="items" id="items">
-  </select>
-</div>
-    
     <div style="clear:both;"></div>
     <table class="table table-bordered table-hover table-striped table-condensed">
       <tr>
@@ -73,7 +71,6 @@ $(function() {
   $('#items').change(function(e) {
 	e.preventDefault();
 	var iid = $(this).attr('value');
-	alert('{$config.f1.s}'+','+iid );
 	document.location.href='{$config.f1.s}?iid='+iid;
 	return false;
   });
@@ -84,7 +81,7 @@ $(window).load(function() {
 		$.each(data, function(id, name) {
 			items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
 		});
-		$('#div_item').fadeIn(500);
+		$('#div_items').fadeIn(500);
 		$('#items').html(items);
 	});
 });
