@@ -207,7 +207,7 @@ class f1Class extends f12Class {
         from contents  where language='" . $this -> lang . "' and iid=$iid order by iid desc limit 0, ".ROWS_PER_PAGE;
 
         if(!isset($_SESSION[PACKAGE]['cate_item']) || empty($_SESSION[PACKAGE]['cate_item']['total_pages'])) {
-            $total = $this->get_item_count($iid);
+            $total = $this->get_category_count($cate_id);
             $total_pages = ceil($total / ROWS_PER_PAGE);
             $_SESSION[PACKAGE]['cate_item']['total'] = $total;
             $_SESSION[PACKAGE]['cate_item']['total_pages'] = $total_pages;
@@ -218,7 +218,7 @@ class f1Class extends f12Class {
         else {
             $this->__p($_SESSION[PACKAGE]);
             exit;        
-        }
+        }			
 
         $res = $this -> mdb2 -> queryAll($sql, '', MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($res))
