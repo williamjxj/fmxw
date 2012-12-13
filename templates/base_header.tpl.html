@@ -1,29 +1,29 @@
 {config_load file="{$config.smarty}"}
 <div class="btn-toolbar">  <i class="icon-time"></i><span class="curtime">{$smarty.now|date_format:'%Y-%m-%d %H:%M'}</span>{if {$config.username}}
-  <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>{$config.username} <span class="caret"></span></a>
+  <div class="btn-group"> <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>{$config.username} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-      <li> <a href="#signup" rel="tooltip" title="{$_th.edit} {$config.username}"><i class="icon-edit"></i> {$_th.edit} {$config.username}</a> </li>
-      <li> <a href="{$config.base}ulogin.php?logout=1" rel="tooltip" title="title"><i class="icon-share"></i> {$_th.logout}</a> </li>
+      <li> <a href="#signup"><i class="icon-edit"></i> {$_th.edit} {$config.username}</a> </li>
+      <li> <a href="{$config.base}ulogin.php?logout=1"><i class="icon-share"></i> {$_th.logout}</a> </li>
     </ul>
   </div>
   {else}
-  <div class="btn-group"> <a href="#login" rel="tooltip" title="{$_th.ulogin}"><i class="icon-share"></i>{$_th.ulogin}</a> &nbsp; <a href="#signup" rel="tooltip" title="{$_th.usignup}"><i class="icon-share"></i>{$_th.usignup}</a> </div>
+  <div class="btn-group"> <a href="#login"><i class="icon-share"></i>{$_th.ulogin}</a> &nbsp; <a href="#signup"><i class="icon-share"></i>{$_th.usignup}</a> </div>
   {/if}
-  <div class="btn-group"> <a href="#" rel="tooltip" title="title" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i id="default_icon" class="icon-list-alt icon-white"></i>&nbsp; <span id="default_language"></span><span class="caret"></span></a>
+  <div class="btn-group"> <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i id="default_icon" class="icon-list-alt icon-white"></i>&nbsp; <span id="default_language"></span><span class="caret"></span></a>
     <ul class="dropdown-menu" id="language">
-      <li> <a class="chinese" href="#" rel="tooltip" title="中文">{#img_cn#}中文</a> </li>
-      <li> <a class="english" href="#" rel="tooltip" title="English">{#img_en#}English</a> </li>
+      <li> <a class="chinese" href="#">{#img_cn#}中文</a> </li>
+      <li> <a class="english" href="#">{#img_en#}English</a> </li>
     </ul>
   </div>
   {if {$smarty.session.fmxw.language}=='中文' || !{$smarty.session.fmxw.language}} <span id="st" style="cursor: pointer;" class="curtime">切至繁体版</span> {/if}
-  <div class="btn-group"> <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown" rel="tooltip" title="title"><i class="icon-user icon-white"></i> {$_th.help} <span class="caret"></span></a>
+  <div class="btn-group"> <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {$_th.help} <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li> <a data-toggle="modal" class="contact" href="#contact"><i class="icon-envelope"></i> {$_th.contact_us}</a> </li>
       <li> <a data-toggle="modal" class="help1"	href="#help_center"><i class="icon-globe"></i> {$_th.help_center}</a> </li>
       <li> <a data-toggle="modal" class="help2"	href="#help_video"><i class="icon-facetime-video"></i> {$_th.help_video}</a> </li>
-      <li> <a href="#" rel="tooltip" title="title"><i class="icon-info-sign"></i> {$_th.faq}</a> </li>
+      <li> <a href="#" ><i class="icon-info-sign"></i> {$_th.faq}</a> </li>
       <li class="divider"></li>
-      <li> <a id="admin_login" href="{$config.base}login/login_admin.php" rel="tooltip" title="title"><i class="icon-flag"></i> {$_th.admin}</a> </li>
+      <li> <a id="admin_login" href="{$config.base}login/login_admin.php" ><i class="icon-flag"></i> {$_th.admin}</a> </li>
     </ul>
   </div>
   <div class="btn-group"> <a href="#" class="btn btn-info btn-small"><i class="icon-list-alt icon-white"></i>&nbsp;显示字体</a><a href="#" data-toggle="dropdown" class="btn  btn-info btn-small dropdown-toggle"><span class="caret"></span></a>

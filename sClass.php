@@ -413,7 +413,7 @@ class FMXW extends BaseClass
         $source = $_POST['source'] ? mysql_real_escape_string(trim($_POST['source'])) : '';
 		$pubdate=date("Y-m-d H:i:s");
         $tags = $_POST['tags'] ? mysql_real_escape_string(trim($_POST['tags'])) : '';
-        $content = mysql_real_escape_string(trim($_POST['content']));
+        $content = '<pre>'.mysql_real_escape_string(trim($_POST['content'])).'</pre>';
 
 		$category='';$cate_id=0;$item='';$iid=0;$clicks=0;$likes=0;$guanzhu=0;
 		$createdby='publish';
