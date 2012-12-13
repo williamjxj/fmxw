@@ -402,5 +402,58 @@ class FMXW extends BaseClass
         mysql_free_result($res);
         return $row;
     }
+	
+	//////////////////////////////////
+	
+	function add_content() 
+	{
+        $title = mysql_real_escape_string(trim($_POST['title']));
+        $url = $_POST['url'] ? mysql_real_escape_string(trim($_POST['url'])) : '';
+        $author = mysql_real_escape_string(trim($_POST['author']));
+        $source = $_POST['source'] ? mysql_real_escape_string(trim($_POST['source'])) : '';
+		$pubdate=date("Y-m-d H:i:s");
+        $tags = $_POST['tags'] ? mysql_real_escape_string(trim($_POST['tags'])) : '';
+        $content = mysql_real_escape_string(trim($_POST['content']));
+
+		$category='';$cate_id=0;$item='';$iid=0;$clicks=0;$likes=0;$guanzhu=0;
+		$createdby='publish';
+		
+		$sql = "insert into contents(
+				title,
+				url,
+				author,
+				source,
+				pubdate,
+				category,
+				cate_id,
+				item,
+				iid,
+				tags,
+				clicks,
+				likes,
+				guanzhu,
+				createdby,
+				created,
+				content
+			) values('" .
+				$title. "', '" . 
+				$url. "', '" . 
+				$author. "', '" . 
+				$source. "', '" . 
+				$pubdate. "', '" . 
+				$category. "', " . 
+				$cate_id. ", '" . 
+				$item. "', " . 
+				$iid. ", '" . 
+				$tags. "', " . 
+				$clicks. ", " . 
+				$likes. ", " . 
+				$guanzhu. ", '" . 
+				$createdby. "', now(), '" . 
+				$content . "')";
+		$res = mysql_query($sql) or mysql_error();
+		if(! $res) return false;
+		return mysql_insert_id();
+	}
 }
 ?>

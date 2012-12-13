@@ -1,0 +1,119 @@
+{$sort=$smarty.session.fmxw.search.sort}
+{if $smarty.get.page}
+{$page=$smarty.get.page}
+{else}
+{$page=1}
+{/if}
+{$no=1+({$page}-1)*10}
+<div class="alert">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  查询：&lt;<strong>{$smarty.session.fmxw.search.key}</strong>&gt;,
+  匹配总数：&lt;<strong>{$smarty.session.fmxw.search.total_found}</strong>&gt;,
+  页数：&lt;<strong>{$smarty.session.fmxw.search.page}/{$smarty.session.fmxw.search.total_pages}</strong>&gt;,
+  用时：&lt;<strong>{$smarty.session.fmxw.search.time}</strong>&gt;秒。</div>
+{include file="{$config.t6}pagination.tpl.html"}
+<ul class="nav nav-pills nav-stacked">
+  {foreach $results as $rts}
+  <li class="li3" id="{$rts.cid}"><span class="badge badge-warning">{$no++}</span> <a alt="{$rts.url}" href="{$config.ag}?cid={$rts.cid}&jsc=1" rel="address:{$config.ag}?cid={$rts.cid}&jsc=1">{$rts.title} -<i>{$rts.date}</i></a> {if {$sort=='clicks'}}({$rts.clicks})
+    {elseif {$sort=='guanzhu'}} ({$rts.guanzhu})
+    {elseif {$sort=='pinglun'}} ({$rts.pinglun})
+    {elseif {$sort=='likes'}} ({$rts.likes})
+    {elseif {$sort=='fandui'}} ({$rts.fandui})
+    {elseif {$sort=='created'}} ({$rts.created})
+    {elseif {$sort=='cate_id'}} ({$rts.category})
+    {elseif {$sort=='iid'}} ({$rts.category} - {$rts.item})
+    {else}
+    {if {$smarty.session.fmxw.search.key}}
+    ({$rts.r}%)
+    {/if}
+    <div class="comment">
+		<a class="talk" href="{$config.f7.s}?cid={$rts.cid}#Tab3" target="_blank">我要PK</a>
+		<br>
+		<span class="preview">
+			<span class="iPre">
+				<span class="iPreBox">
+					<em class="iPreArr"></em>
+				</span>
+			</span>
+		</span>
+	</div>
+    {/if} <br />
+    {$rts.content}<br />
+    <div class="hLight"></div>
+  </li>
+  {/foreach}
+</ul>
+<script type="text/javascript">
+$(function(){
+	$('span.iPre').live('mouseover', function(e) {
+		e.stopPropagation();
+
+		var t1 = $(this).closest('li').find('div.hLight');
+		if($(t1).is(':visible')) $(t1).empty();
+
+		var url=$(this).closest('li').find('a:first').attr('alt'),
+		s=$('#sright'), o=s.offset(), p=s.position(), w=s.width(), h=s.height(),
+		pos=$(this).position();
+
+//alert($(window).height()+','+$(document).height()+','+h); //545,1674,939,1132,1578,1113
+//alert($(window).height()+','+$(window).scrollTop()); //425,(221,677,1118...)
+//alert(o.left+','+o.top+','+p.left+','+p.top+','+w+','+h); //607,186,578,186,794,979
+//alert(pos.left+','+pos.top);
+
+		if (! /^http/i.test(url)) url = 'http://' + url;
+
+		var options = {
+			'src' : url,
+			'width' : w,
+			'height' : h
+		};
+
+		$(t1).css({ 
+			position: "absolute",
+			top: (o.top+pos.top) + 'px',
+			left: (parseInt(o.left) - 10) + 'px'
+		});
+
+		//$(t1).html('loadPic').show(); $(t1).html('<div class="ajaxloading"></div>').show();
+		$(t1).nav_preview(options);
+		e.preventDefault();
+	})
+	.live('mouseout', function(e) {
+		e.stopPropagation();
+		return false;
+	});
+
+	$('div.hLight').live('mouseout', function(e) {
+		e.preventDefault();
+		var t2 = $(this).closest('li').find('div.hLight');
+		if($(t2).length) $(t2).hide();
+		e.stopPropagation();
+	});
+
+
+    {if {$sort}=='pinglun' || {$sort}==3}
+		$('div.comment').css('visibility', 'visible');
+		$('li.li3').hover(
+			function() {
+				$(this).addClass('highlight'); 
+			},
+			function() {
+				$(this).removeClass('highlight');
+			}
+		);
+	{else}
+		$('li.li3').hover(
+			function() {
+				$(this).addClass('highlight').find('div.comment').css("visibility", "visible");
+				//$(this).find('span.iPreBox').css("visibility", "visible");
+			},
+			function() {
+				$(this).removeClass('highlight').find('div.comment').css('visibility', 'hidden');
+				//$(this).find('span.iPreBox').css('visibility', 'hidden');
+			}
+		);
+    {/if} 
+
+});
+</script>
+{include file="{$config.t6}pagination.tpl.html"} 
