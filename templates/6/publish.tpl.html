@@ -8,17 +8,17 @@ input {
 </style>
 <div class="box">
   <form id="form_publish" class="form-horizontal" method="post" action="{$config.ag}">
-    <legend>披露负面新闻</legend>
+    <legend class="alert">披露负面新闻</legend>
     <div class="control-group">
       <label class="control-label" for="author">发布者</label>
       <div class="controls">
-        <input type="text" id="author" name="author" />
+        <input type="text" id="author" name="author" class="input-xlarge" />
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="title">标题</label>
       <div class="controls">
-        <input type="text" id="title" name="title" />
+        <input type="text" id="title" name="title" class="input-xlarge" />
       </div>
     </div>
     <div class="control-group">
@@ -30,25 +30,25 @@ input {
     <div class="control-group">
       <label class="control-label" for="tags">标签（逗号分割，可选）</label>
       <div class="controls">
-        <input type="text" id="tags" name="tags" />
+        <input type="text" id="tags" name="tags" class="input-xlarge" />
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="source">补充信息（可选）</label>
       <div class="controls">
-        <input type="text" id="source" name="source" />
+        <input type="text" id="source" name="source" class="input-xlarge" />
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="tags">URL（参考网址）</label>
       <div class="controls">
-        <input type="text" id="url" name="url" />
+        <input type="text" id="url" name="url" class="input-xlarge" />
       </div>
     </div>
-    <div class="control-group">
+    <div class="form-actions">
       <div class="controls"> <img src="include/captcha/captcha.php" id="captcha" /> <a href="#" id="image_publish">看不清?换一张。</a>
         <input type="text" name="captcha" id="captcha_publish" autocomplete="off" />
-        <button type="submit" class="btn btn-success"><i class="icon-comment icon-white"></i> 发布负面新闻</button>
+        <button type="submit" class="btn btn-success btn-large"><i class="icon-comment icon-white"></i> 发布负面新闻</button>
       </div>
     </div>
   </form>
@@ -67,30 +67,30 @@ $(function() {
 		rules: { 
 			"content": "required",
 			"title": "required",
-			"author": "required" },
-		messages: { content: "" },
+			"author": "required"
+		},
+		//messages: { content: '', title: '', author: '' },
 		highlight: function(label) {
 			$(label).closest('.control-group').addClass('error');
 		},
 		success: function(label) {
-			label.closest('.control-group').addClass('success');
+			label
+			  .text('OK!').addClass('valid')
+			  .closest('.control-group').addClass('success');
 		}	
 	});
 
-	$('button:submit', f).click(function(e) {
+	$('button:submit', f).click(function(e)
+	{
 		e.preventDefault();
-		if(!validator.form()) {
-			$('#content').attr('placeholder', '请输入您的PK评论。');
-			f.find('div.control-group').first().removeClass('success').addClass('error');
-			return false;
-		}
+		validator.form();
+
 		if($('#captcha_publish').val()=='') {
 			$('#result').html('请输入验证码。').show();
 			return false;
 		}
 
 		$.post(f.attr('action'), f.serialize(), function(data) {
-		alert(data);
 			if(data=='N') {
 				$('#result').html('重复插入，无法添加评论, 请重试。').show();
 				return false;

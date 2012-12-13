@@ -572,3 +572,16 @@ li.highlight1 {
 #smiddle .span4 {
 	margin-left: 1.12766%;
 }
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(../images/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
