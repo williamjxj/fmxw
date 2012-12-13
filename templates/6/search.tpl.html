@@ -7,6 +7,17 @@
 </form>
 <script type="text/javascript">
 $(function() {
+    $('a.various').fancybox({
+        maxWidth    : 1000,
+        maxHeight   : 800,
+        fitToView   : false,
+        width       : '90%',
+        height      : '90%',
+        autoSize    : false,
+        closeClick  : false,
+        openEffect  : 'none',
+        closeEffect : 'none'
+    });
 	$('#search_form').submit(function() {
 		$('#waiting').css('visibility', 'visible');
 		return true;
