@@ -69,7 +69,7 @@ $(function() {
 			"title": "required",
 			"author": "required"
 		},
-		//messages: { content: '', title: '', author: '' },
+		messages: { content: '', title: '', author: '' },
 		highlight: function(label) {
 			$(label).closest('.control-group').addClass('error');
 		},
@@ -92,7 +92,7 @@ $(function() {
 
 		$.post(f.attr('action'), f.serialize(), function(data) {
 			if(data=='N') {
-				$('#result').html('重复插入，无法添加评论, 请重试。').show();
+				$('#result').html('验证码输入不正确，请重试。').show();
 				return false;
 			}
 
