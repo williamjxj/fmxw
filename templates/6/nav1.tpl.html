@@ -77,17 +77,16 @@ $(function(){
 		//$(t1).html('loadPic').show(); $(t1).html('<div class="ajaxloading"></div>').show();
 		$(t1).nav_preview(options);
 		e.preventDefault();
-	}).live('mouseout', function(e) {
+	})
+	.live('mouseout', function(e) {
 		e.stopPropagation();
 		return false;
 	});
 
 	$('div.hLight').live('mouseout', function(e) {
 		e.preventDefault();
-		//var $t3 = $(e.target);
-		//var t2 = $t3.closest('li').find('div.hLight');
-		//var t2 = $(this).closest('li').find('div.hLight');
-		if($(e.target).html().length) $(e.target).hide();
+		var t2 = $(this).closest('li').find('div.hLight');
+		if($(t2).length) $(t2).hide();
 		e.stopPropagation();
 	});
 
@@ -97,11 +96,9 @@ $(function(){
 		$('li.li3').hover(
 			function() {
 				$(this).addClass('highlight'); 
-				//$(this).find('span.iPreBox').css("visibility", "visible");
 			},
 			function() {
 				$(this).removeClass('highlight');
-				//$(this).find('span.iPreBox').css('visibility', 'hidden');
 			}
 		);
 	{else}
@@ -120,4 +117,3 @@ $(function(){
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 
->>>>>>> c048b3b44032456e86bed7fc695c1ed153b8baea

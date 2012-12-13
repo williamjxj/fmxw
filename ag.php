@@ -66,6 +66,18 @@ elseif(isset($_POST['captcha']) && isset($_POST['comment']) && isset($_POST['rol
     else echo "N";
     return;
 }
+elseif(isset($_GET['js_publish'])) {
+    $obj->display($tdir6.'publish.tpl.html');
+    return;
+}
+elseif(isset($_POST['captcha']) && isset($_POST['title']) && isset($_POST['content'])) {
+    if (empty($_SESSION['captcha']) || trim(strtolower($_REQUEST['captcha'])) != $_SESSION['captcha']) {
+       echo 'N';
+       return;
+    }        
+	echo $obj->add_content();
+	return;
+}
   
 //以下不需要setmatchmode和setsortmode.
 /* 显示顺序：（1）是显示评论列表js_reping；（2）当用户点击要发表评论时，js_pk（3）当用户提交评论后自动刷新评论列表。
