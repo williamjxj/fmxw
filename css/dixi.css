@@ -572,16 +572,18 @@ li.highlight1 {
 #smiddle .span4 {
 	margin-left: 1.12766%;
 }
-label.valid {
+/* templates/6/publish.tpl.html */
+label.valid1 {
 	width: 24px;
 	height: 24px;
 	background: url(../images/valid.png) center center no-repeat;
 	display: inline-block;
 	text-indent: -9999px;
+	margin-left: 20px;
 }
-label.error {
+label.error1 {
 	font-weight: bold;
 	color: red;
-	padding: 2px 8px;
-	margin-top: 2px;
+	padding-left: 8px;
+	display: inline-block;
 }
