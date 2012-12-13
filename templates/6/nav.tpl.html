@@ -77,7 +77,8 @@ $(function(){
 		//$(t1).html('loadPic').show(); $(t1).html('<div class="ajaxloading"></div>').show();
 		$(t1).nav_preview(options);
 		e.preventDefault();
-	}).live('mouseout', function(e) {
+	})
+	.live('mouseout', function(e) {
 		e.stopPropagation();
 		return false;
 	});
@@ -95,11 +96,9 @@ $(function(){
 		$('li.li3').hover(
 			function() {
 				$(this).addClass('highlight'); 
-				//$(this).find('span.iPreBox').css("visibility", "visible");
 			},
 			function() {
 				$(this).removeClass('highlight');
-				//$(this).find('span.iPreBox').css('visibility', 'hidden');
 			}
 		);
 	{else}
