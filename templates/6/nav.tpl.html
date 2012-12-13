@@ -84,8 +84,10 @@ $(function(){
 
 	$('div.hLight').live('mouseout', function(e) {
 		e.preventDefault();
-		var t2 = $(this).closest('li').find('div.hLight');
-		if($(t2).length) $(t2).hide();
+		//var $t3 = $(e.target);
+		//var t2 = $t3.closest('li').find('div.hLight');
+		//var t2 = $(this).closest('li').find('div.hLight');
+		if($(e.target).html().length) $(e.target).hide();
 		e.stopPropagation();
 	});
 
