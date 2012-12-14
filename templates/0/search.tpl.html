@@ -40,13 +40,14 @@ $(function() {
 	});
 
 	//热门搜索词：
-	$("a.latest, a.post-tag").click(function(e) {
+	$("a.latest, a.post-tag").live('click', function(e) {
 		e.preventDefault();
 		var t = $(e.target);
 		$('#typeahead').val(t.attr('datasrc'));
 		$('#sf').trigger('submit');
 		return false;
 	});
+
 	$(".bind_hover_card").hoverCard({
 		url:"keys_search.php?hoverCard=1",
 		borederRadius:true

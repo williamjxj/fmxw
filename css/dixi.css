@@ -587,3 +587,8 @@ label.error1 {
 	padding-left: 8px;
 	display: inline-block;
 }
+#smiddle .nav > li > a:hover {
+	text-decoration: underline;
+	background-color: transparent !important;
+}
+

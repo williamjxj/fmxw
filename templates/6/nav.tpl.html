@@ -44,23 +44,16 @@
   {/foreach}
 </ul>
 <script type="text/javascript">
-$(function(){
-	$('a', 'li.li3').click(function(e) {
-		alert('1234567890');
-		if($('#sd').length) {
-			$('#sd').load(u, function() {
-				$(this).fadeIn(200);
-				$('li.li3').removeClass('highlight1');
-				$t.parent('li.li3').addClass('highlight1');
-				$t.next('img').remove();
-			});
-		}
-		else {
-			alert('sd not exist.');
-		}
+;(function($){
+	$('a', 'li.li3').live('click', function(e) {
+		e.preventDefault();
+		var u = $(this).attr('href');
+		if($('#sd').length) $('#sd').load(u);
+		else alert('the content is temperaraily unable to display, please try again.');
 		return false;
 	});
-
+})(jQuery);
+$(function() {
 	$('span.iPre').live('mouseover', function(e) {
 		e.stopPropagation();
 

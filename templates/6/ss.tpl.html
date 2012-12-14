@@ -27,9 +27,12 @@
 <script type="text/javascript">
 ;(function($) {
 	$.address.init(function(event) {
+		event.preventDefault();
+		$('a', 'li.li3').unbind('click');
 		return false;
 	}).
 	change(function(event) {
+		event.preventDefault();
 		if($('div.hLight').is(':visible'))
 			$('div.hLight').hide();
 		if(event.value=='/')
@@ -38,7 +41,8 @@
 		u = event.value.replace(/^\//,'');
 		$t = $('[rel="address:' + u + '"]');
 		$('{$config.wait}').insertAfter($t);
-		/*
+		if($t==undefined) return false;
+
 		if($('#sd').length) {
 			$('#sd').load(u, function() {
 				$(this).fadeIn(200);
@@ -49,7 +53,7 @@
 		}
 		else {
 			alert('sd not exist.');
-		}*/
+		}
 		return false;
 	});
 })(jQuery);
