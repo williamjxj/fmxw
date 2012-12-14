@@ -13,3 +13,15 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+$(function() {
+	$('#os').click(function(e) {
+		e.preventDefault();
+		form = document.getElementById('sf');
+		form.action = 'f1.php';
+		form.method = 'get';
+		form.submit();
+		return false;
+	});
+});
+</script>

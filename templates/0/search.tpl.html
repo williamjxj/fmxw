@@ -12,7 +12,7 @@
   </div>
   <br/>
   <div class="span12"> <span class="label label-warning">热门搜索词:</span> <span class="alert"> {foreach $keywords as
-    $rm} <a class="post-tag bind_hover_card" href="javascript:;" datasrc="{$rm.0}">{$rm.0}({$rm.1})</a>&nbsp;
+    $rm} <a class="post-tag bind_hover_card" href="{$config.search}" datasrc="{$rm.0}">{$rm.0}({$rm.1})</a>&nbsp;
     {/foreach} </span> </div>
   <br/>
   <div class="span12 centered">
@@ -39,16 +39,8 @@ $(function() {
 		return true;
 	});
 
-	$('#os').click(function(e) {
-		e.preventDefault();
-		form = document.getElementById('sf');
-		form.action = 'f1.php';
-		form.method = 'get';
-		form.submit();
-		return false;
-	});
 	//热门搜索词：
-	$("a.latest, a.post-tag").live('click', function(e) {
+	$("a.latest, a.post-tag").click(function(e) {
 		e.preventDefault();
 		var t = $(e.target);
 		$('#typeahead').val(t.attr('datasrc'));
@@ -58,14 +50,6 @@ $(function() {
 	$(".bind_hover_card").hoverCard({
 		url:"keys_search.php?hoverCard=1",
 		borederRadius:true
-	});
-	//最新查询：
-	$('a', 'div.bm_hover_card_container').live('click', function(e) {
-		e.preventDefault();
-		var t = $(e.target);
-		$('#typeahead').val(t.text());
-		$('#sf').trigger('submit');
-		return false;
 	});
 
 	var timer;

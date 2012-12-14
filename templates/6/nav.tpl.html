@@ -55,10 +55,10 @@ $(function(){
 		s=$('#sright'), o=s.offset(), p=s.position(), w=s.width(), h=s.height(),
 		pos=$(this).position();
 
-//alert($(window).height()+','+$(document).height()+','+h); //545,1674,939,1132,1578,1113
-//alert($(window).height()+','+$(window).scrollTop()); //425,(221,677,1118...)
-//alert(o.left+','+o.top+','+p.left+','+p.top+','+w+','+h); //607,186,578,186,794,979
-//alert(pos.left+','+pos.top);
+		//alert($(window).height()+','+$(document).height()+','+h); //545,1674,939,1132,1578,1113
+		//alert($(window).height()+','+$(window).scrollTop()); //425,(221,677,1118...)
+		//alert(o.left+','+o.top+','+p.left+','+p.top+','+w+','+h); //607,186,578,186,794,979
+		//alert(pos.left+','+pos.top);
 
 		if (! /^http/i.test(url)) url = 'http://' + url;
 
@@ -100,14 +100,12 @@ $(function(){
 			},
 			function() {
 				$(this).removeClass('highlight');
-				//$(this).find('span.iPreBox').css('visibility', 'hidden');
 			}
 		);
 	{else}
 		$('li.li3').hover(
 			function() {
 				$(this).addClass('highlight').find('div.comment').css("visibility", "visible");
-				//$(this).find('span.iPreBox').css("visibility", "visible");
 			},
 			function() {
 				$(this).removeClass('highlight').find('div.comment').css('visibility', 'hidden');
