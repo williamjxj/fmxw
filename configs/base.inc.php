@@ -109,8 +109,19 @@ class BaseClass extends Smarty {
         return $id;
     }
 
-    function get_sitemap($item = '') {
+    function get_sitemap_1($item = '') {
         $ary = array('dixi' => array('关于底细', 'About Dixi'), 'us' => array('联系我们', 'Contact Us'), 'privacy' => array('隐私保护', 'Privacy'), 'ads' => array('广告服务', 'Advertisement'), 'business' => array('商务洽谈', 'Business'), 'recruit' => array('底细招聘', 'Recruitment'), 'welfare' => array('底细公益', 'Charity'), 'customer' => array('客服中心', 'Customer Service Center'), 'navigator' => array('网站导航', 'Site Navigation'), 'law' => array('法律声明', 'Legal Notices'), 'report' => array('有害信息举报', 'Harmful SMS Report'), );
+		$l = $_SESSION[PACKAGE]['language']=='English'?1:0;
+        if ($item) return $ary[$item];
+            //return $ary[$item][$l];
+        else {
+			$a = array();
+			foreach($ary as $k=>$v) $a[$k] = $v[$l];
+	        return $a;
+		}
+    }
+    function get_sitemap($item = '') {
+        $ary = array('dixi' => array('关于底细', 'About Dixi'), 'business' => array('商务洽谈', 'Business'), 'law' => array('法律声明', 'Legal Notices'), 'recruit' => array('人力资源', 'Human Resource'), 'report' => array('联系我们', 'Contact Us'), );
 		$l = $_SESSION[PACKAGE]['language']=='English'?1:0;
         if ($item) return $ary[$item];
             //return $ary[$item][$l];
