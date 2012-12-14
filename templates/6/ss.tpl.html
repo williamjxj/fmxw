@@ -38,6 +38,7 @@
 		u = event.value.replace(/^\//,'');
 		$t = $('[rel="address:' + u + '"]');
 		$('{$config.wait}').insertAfter($t);
+		/*
 		if($('#sd').length) {
 			$('#sd').load(u, function() {
 				$(this).fadeIn(200);
@@ -48,7 +49,7 @@
 		}
 		else {
 			alert('sd not exist.');
-		}
+		}*/
 		return false;
 	});
 })(jQuery);
