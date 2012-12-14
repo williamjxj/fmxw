@@ -109,6 +109,23 @@ elseif (isset($_GET['f1_hot'])) {
 			array_push($a2, $matches[1]);
 	}
     $obj -> assign('rss', $a2);
+	switch($_GET['f1_hot'])) {
+		case 'guanzhu':
+			$title = '实时热点';
+			break;
+		case 'xinxian':
+			$title = '新鲜事儿';
+			break;
+		case 'events':
+			$title = '最近事件';
+			break;
+		case 'person':
+			$title = '热点人物';
+			break;
+		default:
+			$title = '热点';
+	}
+	$obj -> assign('title', $title);
     $obj -> assign('rss_template', $tdir1 . 'rss_new.tpl.html');
 }
 elseif(isset($_GET['js_get_content'])) {
