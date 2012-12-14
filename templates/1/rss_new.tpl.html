@@ -1,0 +1,26 @@
+{$c=0}
+<table class="table table-bordered table-hover table-striped table-condensed">
+{foreach $rss as $r}
+{if $c%4 ==0}
+<tr>
+{/if}
+<td><a href="{$config.search}?q={$r}">{$r}</td>
+{$c=$c+1}
+{if $c%4 ==0}
+</tr>
+{/if}
+{/foreach}
+{if $c==50 || $c==49}
+ {if $c==50}
+<td colspan="2"></td>
+ {elseif $c==49}
+<td colspan="3"></td>
+ {/if}
+</tr>
+{/if}
+</table>
+<script type="text/javascript">
+$(function() {
+	document.title = document.title + '- new title';
+});
+</script>

@@ -78,10 +78,38 @@ elseif (isset($_GET['f1_news'])) {
     $obj -> display($tdir1 . 'news.tpl.html');
     exit ;
 }
+elseif (isset($_GET['test']) && isset($_GET['f1_hot'])) {
+    header('Content-Type: text/html; charset=utf-8');
+    $rss = $obj -> get_rss($obj -> rss[$_GET['f1_hot']]);
+	//$pattern = '|<tr>.*?<th>.*?</th>.*?<td>(.*?)</td>|U';
+	$pattern = "|<td>(.*?)</td>|U";
+	$ary = array();
+	foreach($rss as $v) {
+		preg_match_all($pattern, $v['text'], $ary);
+	}
+	$obj -> __p($ary);
+	$a=array(); $matches=array();
+	foreach($ary[1] as $t) {
+		if(preg_match("|<a.*?>(.*)</a>|", $t, $matches)) {
+			array_push($a, $matches[1]);
+		}
+	}
+	$obj->__p($a);
+	return;
+}
 elseif (isset($_GET['f1_hot'])) {
     $rss = $obj -> get_rss($obj -> rss[$_GET['f1_hot']]);
-    $obj -> assign('rss', $rss);
-    $obj -> assign('rss_template', $tdir1 . 'rss.tpl.html');
+
+	$pattern = "|<td>(.*?)</td>|U";
+	list($a1, $a2, $matches) = array(array(), array(), array());
+	foreach($rss as $v) preg_match_all($pattern, $v['text'], $a1);
+
+	foreach($a1[1] as $t) {
+		if(preg_match("|<a.*?>(.*)</a>|", $t, $matches))
+			array_push($a2, $matches[1]);
+	}
+    $obj -> assign('rss', $a2);
+    $obj -> assign('rss_template', $tdir1 . 'rss_new.tpl.html');
 }
 elseif(isset($_GET['js_get_content'])) {
     $row = $obj->get_content_1($_GET['cid']);
@@ -106,9 +134,6 @@ elseif(isset($_GET['js_item'])) {
 	echo json_encode($obj->get_items_new($_GET['cid']));
 	return;
 } 
-elseif (isset($_GET['test'])) {
-    header('Content-Type: text/html; charset=utf-8');
-}
 elseif (isset($_GET['q'])) {
 	//$obj -> assign('ss_template', $tdir1 . 'ss.tpl.html');
     if (isset($_SESSION[PACKAGE][SEARCH]))
