@@ -45,7 +45,7 @@
 </ul>
 <script type="text/javascript">
 ;(function($){
-	$('a', 'li.li3').live('click', function(e) {
+	$('a[attr=rel]', 'li.li3').live('click', function(e) {
 		e.preventDefault();
 		var u = $(this).attr('href');
 		if($('#sd').length) $('#sd').load(u);
@@ -122,7 +122,6 @@ $(function() {
 			}
 		);
     {/if} 
-
 });
 </script>
 {include file="{$config.t6}pagination.tpl.html"} 
