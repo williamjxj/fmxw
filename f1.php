@@ -109,7 +109,7 @@ elseif (isset($_GET['f1_hot'])) {
 			array_push($a2, $matches[1]);
 	}
     $obj -> assign('rss', $a2);
-	switch($_GET['f1_hot'])) {
+	switch($_GET['f1_hot']) {
 		case 'guanzhu':
 			$title = '实时热点';
 			break;
