@@ -50,14 +50,19 @@ elseif (isset($_GET['cate_id'])) {
 	$obj->cl->SetFilter('cate_id', array($_GET['cate_id']));
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+
+	$_SESSION[PACKAGE]['cate_item']['title'] = $_SESSION[PACKAGE]['cate_item']['category'];
 } 
 elseif (isset($_GET['iid'])) {
 	$_SESSION[PACKAGE]['cate_item']['iid'] = $_GET['iid'];
-	$_SESSION[PACKAGE]['cate_item']['item'] .= $obj->get_item_by_id($_GET['iid']);
+	$_SESSION[PACKAGE]['cate_item']['item'] = $obj->get_item_by_id($_GET['iid']);
 
 	$obj->cl->SetFilter('iid', array($_GET['iid']));
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");
+
+	$_SESSION[PACKAGE]['cate_item']['title'] =
+		$_SESSION[PACKAGE]['cate_item']['category'].' - '.$_SESSION[PACKAGE]['cate_item']['item'];
 }
 elseif (isset($_GET['sitemap'])) {
     $sm = $obj -> get_sitemap($_GET['sitemap']);
