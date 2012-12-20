@@ -114,6 +114,7 @@ elseif (isset($_GET['f1_hot'])) {
 			$title = '实时热点';
 			break;
 		case 'xinxian':
+		case 'keyword':
 			$title = '新鲜事儿';
 			break;
 		case 'events':
