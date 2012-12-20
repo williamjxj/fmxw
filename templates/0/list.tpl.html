@@ -2,15 +2,14 @@
 {if {$config.header.lang}!='en'}
 <div class="row">
   <div class="span12">
-    <div class="btn-group"> {foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}">{$m.2}</a> {/foreach} </div>
+    <div class="btn-group" style="margin-left:50px"> {foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}" style="margin-left:10px;">{$m.2}</a> {/foreach} </div>
   </div>
 </div>
-<div class="row" style="margin-top:20px;">
-  <div class="well1">
+<div align="center" style="margin-top:20px;margin-left:220px;">
     <div class="span1"><a href="{$s}?f1_hot=guanzhu"><span class="label label-warning">实时热点</span></a> </div>
-    <div class="span1"><a href="{$s}?f1_hot=keyword"><span class="label label-warning">新鲜事儿</span></a></div>
-    <div class="span1"><a href="{$s}?f1_hot=events"><span class="label label-warning">最近事件</span></a></div>
-    <div class="span1"><a href="{$s}?f1_hot=person"><span class="label label-warning">热点人物</span></a></div>
+    <div class="span1 "><a href="{$s}?f1_hot=keyword"><span class="label label-warning">新鲜事儿</span></a></div>
+    <div class="span1 "><a href="{$s}?f1_hot=events"><span class="label label-warning">最近事件</span></a></div>
+    <div class="span1 "><a href="{$s}?f1_hot=person"><span class="label label-warning">热点人物</span></a></div>
     <!--
     <div class="span1"><a href="{$s}?f1_hot=weekhot"><span class="label label-warning">本周热点</span></a> </div>
     <div class="span1"><a href="{$s}?f1_hot=xinxian"><span class="label label-warning">热门搜索</span></a></div>
@@ -19,6 +18,5 @@
     <div class="span1"><a href="{$s}?f1_hot=star"><span class="label label-warning">明星</span></a></div>
     <div class="span1"><a href="{$s}?f1_news=1"><span class="label label-warning">新闻</span></a> </div>
     -->
-  </div>
 </div>
 {/if}

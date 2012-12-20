@@ -210,9 +210,14 @@ elseif(isset($_GET['page']))
 }
 elseif(isset($_GET['js_cate_item']))
 {
-	// $obj->__p($_GET); $obj->__p($_SESSION);
-	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
-	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+	if(empty($_GET['key'])) {
+		$key = $_SESSION[PACKAGE][SEARCH]['key'] = '';
+		$q =   $_SESSION[PACKAGE][SEARCH]['q'] = '';
+	}
+	else {
+		$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
+		$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+	}
 
 	$_SESSION[PACKAGE][SEARCH]['cate_id'] = $_GET['category']; 	
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
