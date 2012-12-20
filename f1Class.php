@@ -1,9 +1,10 @@
 <?php
 require_once (ROOT . "f12Class.php");
+require_once (ROOT . 'etc/coreseek.php');
 
 class f1Class extends f12Class {
 
-    var $url, $mdb2, $lang, $locale;
+    var $url, $mdb2, $lang, $locale, $cl;
     public function __construct() {
         parent::__construct();
         $this -> url = $_SERVER['PHP_SELF'];
@@ -13,18 +14,29 @@ class f1Class extends f12Class {
         $this -> locale = $_SESSION[PACKAGE]['language'] == 'English' ? 'en' : 'cn';
         $this -> ary = array('top10', 'weekhotspot', 'top_keyword', 'shishuoxinci', 'shijian', 'shijian_lastweek', 'shijian_lastmonth', 'hotman', 'girls', 'boys', 'FStar', 'MStar', 'ygeshou', 'ngeshou', 'titan', 'internet', 'mingjia', 'caijing', 'rich', 'zhengtan', 'lishiren', 'relation', 'cishan', 'fangchanqy');
         $this -> rss = array('guanzhu' => 'http://top.baidu.com/rss_xml.php?p=top10', 'weekhot' => 'http://top.baidu.com/rss_xml.php?p=weekhotspot', 'keyword' => 'http://top.baidu.com/rss_xml.php?p=top_keyword', 'xinxian' => 'http://top.baidu.com/rss_xml.php?p=shishuoxinci', 'events' => 'http://top.baidu.com/rss_xml.php?p=shijian', '1week' => 'http://top.baidu.com/rss_xml.php?p=shijian_lastweek', '1month' => 'http://top.baidu.com/rss_xml.php?p=shijian_lastmonth', 'person' => 'http://top.baidu.com/rss_xml.php?p=hotman', 'star' => 'http://top.baidu.com/rss_xml.php?p=FStar', );
-
+		$this->cl = new SphinxClient();
     }
-
-    // news.baidu.com
-    //<script language="JavaScript" type="text/JavaScript" src="http://news.baidu.com/n?cmd=1&class=civilnews&pn=1&tn=newsbrofcu"></ script>
-    public function process_news() {
-        $news = array('civilnews', 'internews', 'mil', 'finannews', 'internet', 'housenews', 'autonews', 'sportnews', 'enternews', 'gamenews', 'edunews', 'healthnews', 'socianews', 'technnews');
-
-        foreach ($news as $n) {
-
-        }
+	function set_coreseek_server() {
+        $this -> cl -> SetServer('localhost', 9313);
+        //以下是缺省设置，后面将会动态调整。
+		$this -> cl -> SetMatchMode(SPH_MATCH_EXTENDED2);
+        $this -> cl -> SetSortMode(SPH_SORT_RELEVANCE);
+        $this -> cl -> SetArrayResult(false);
     }
+	function get_category_by_id($cate_id) {
+		$sql = "select name from categories where cid =" .$cate_id;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return $row[0];
+	}
+	function get_item_by_id($iid) {
+		$sql = "select name from items where iid=".$iid;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return $row[0];
+	}
 
     ///////////// RSS 操作函数  ////////////
 

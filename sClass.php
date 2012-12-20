@@ -273,8 +273,6 @@ class FMXW extends BaseClass
 		return $row[0];
 	}
 
-
-
 	function get_categories() {
 		$ary = array();
 		$sql = "select cid, name from categories order by weight";
