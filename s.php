@@ -284,7 +284,7 @@ else {
 if(empty($key)) {
 	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
-	$_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
+	if(empty($_SESSION[PACKAGE][SEARCH]['y'])) $_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
 }
 
 // 设置当前页和开始的记录号码。
