@@ -67,7 +67,7 @@ elseif (isset($_GET['sitemap'])) {
     }
 }
 elseif(isset($_GET['js_item'])) {
-	echo json_encode($obj->get_items_new($_GET['cid']));
+	echo json_encode($obj->get_items_new($_GET['cate_id']));
 	return;
 } 
 else {
@@ -148,6 +148,8 @@ $list = array();
 while ($row = mysql_fetch_assoc($mres)) {
     $list[] = $row;
 }
+
+$obj -> assign("list", $list);
 
 $pagination = $obj -> draw_cate_item();
 $obj -> assign("pagination", $pagination);
