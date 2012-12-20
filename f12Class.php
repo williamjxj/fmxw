@@ -138,8 +138,8 @@ class f12Class extends BaseClass
         $links = array();
         if (($total_pages) > 1) {
             if ($current_page != 1) {
-                $links[] = '<a href="?js_ci='.$ci.'&page=1">&laquo;&laquo; 首页 </a>';
-                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($current_page - 1) . '">&laquo; 前页</a>';
+                $links[] = '<a href="?page=1">&laquo;&laquo; 首页 </a>';
+                $links[] = '<a href="?page=' . ($current_page - 1) . '">&laquo; 前页</a>';
             }
 
             for ($j = ($current_page - 4); $j < ($current_page + 4); $j++) {
@@ -150,13 +150,13 @@ class f12Class extends BaseClass
                 if ($current_page == $j) {
                     $links[] = '<a href="javascript:;">' . $j . '</a>';
                 } else {
-                    $links[] = '<a href="?js_ci='.$ci.'&page=' . $j . '">' . $j . '</a>';
+                    $links[] = '<a href="?page=' . $j . '">' . $j . '</a>';
                 }
             }
 
             if ($current_page < $total_pages) {
-                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($current_page + 1) . '"> 下页 &raquo; </a>';
-                $links[] = '<a href="?js_ci='.$ci.'&page=' . ($total_pages) . '"> 末页 &raquo;&raquo; </a>';
+                $links[] = '<a href="?page=' . ($current_page + 1) . '"> 下页 &raquo; </a>';
+                $links[] = '<a href="?page=' . ($total_pages) . '"> 末页 &raquo;&raquo; </a>';
             }
             return $links;
         }
