@@ -182,7 +182,7 @@ elseif(isset($_GET['js_attr'])) {
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_attr']);
-	switch($_GET['js_core']) {
+	switch($_GET['js_attr']) {
 	case 'clicks':
 		$_SESSION[PACKAGE][SEARCH]['x'] = '阅读次数';
 		break;
@@ -257,7 +257,7 @@ elseif(isset($_GET['js_cate_item']))
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 'iid';
 
 		$obj->cl -> SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
-		$_SESSION[PACKAGE][SEARCH]['x'] .= ' - ' . $obj->get_item_by_id($_GET['item']);
+		$_SESSION[PACKAGE][SEARCH]['x'] .= '(' . $obj->get_item_by_id($_GET['item']) .')';
 	}
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
