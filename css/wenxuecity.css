@@ -407,7 +407,6 @@ body#print {
     padding: 5px 0;
     width: 990px;
     z-index: 999;
-	margin-left:100px;
 }
 #maincontent #subnav {
     float: left;

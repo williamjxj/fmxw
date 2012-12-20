@@ -25,7 +25,7 @@
 <script type="text/javascript" src="{$config.js.bts}"></script>
 </head>
 <body>
-<div class="container" align="center">
+<div class="container">
   <div class="row">
     <div class="span2">
       <div id="logo"> <a href="{$config.home}" title="{$config.header.title}"><img src="{$config.logo.logo_130x60}" /> </a> </div>
@@ -61,12 +61,12 @@
         {if $d@first}
         <div class="cell margin">
           <ul>
-            {elseif $d@iteration eq 50}
+            {elseif $d@iteration eq 51}
             <div class="cell">
               <ul>
                 {/if}
-                <li><a href="{$config.f7.s}?cid={$d.cid}" title="{$d.url}">{$d.title}</a></li>
-                {if {$d@iteration}==49 || {$d@iteration}==99}
+                <li id="w{$d@iteration}"> <a href="{$config.f7.s}?cid={$d.cid}" title="{$d.url}">{$d.title}</a></li>
+                {if {$d@iteration}==50 || {$d@iteration}==100}
               </ul>
             </div>
             {elseif $d@last}
@@ -77,7 +77,7 @@
     </div>
   </div>
   {include file="{$config.t6}pagination.tpl.html"}
-  <script type="text/javascript">
+<script type="text/javascript">
 $(function() {
   document.title = document.title + '- {$title}';
   $('#items').change(function(e) {
@@ -98,8 +98,11 @@ $(window).load(function() {
 	});
 });
 </script>
-  <div class="clear"></div>
-  <div id="footer"> {include file="{$footer_template}"} </div>
+<div class="row">
+  <div class="span12">
+	  <div id="footer" style="margin-top:20px"> {include file="{$footer_template}"} </div>
+  </div>
+  </div>
 </div>
 </body>
 </html>
