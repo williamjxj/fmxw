@@ -5,7 +5,14 @@
     {$title=$title+' - ' + $smarty.session.fmxw.cate_item.item}
   {/if}
 {/if}
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!DOCTYPE html>
+<html lang="{$config.header.lang}">
+<head>
+<meta charset="{$config.header.charset}">
+<meta name="description" content="{$config.header.desc}">
+<meta name="keywords" content="{$config.header.keywords}">
+<title>{$config.header.title}</title>
+<link rel="shortcut icon" href="{$config.favicon}">
 <link rel="stylesheet" type="text/css" href="{$config.css.bootstrap}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{$config.root}css/wenxuecity.css" media="all">
 <script type="text/javascript" src="{$config.root}js/jquery-1.7.2.min.js"></script>
@@ -16,6 +23,14 @@
 <script type="text/javascript" src="{$config.js.ga}"></script>
 <script type="text/javascript" src="{$config.js.cookie}"></script>
 <script type="text/javascript" src="{$config.js.bts}"></script>
+</head>
+<body>
+<div class="row">
+  <div class="span2">
+    <div id="logo"> <a href="{$config.home}" title="{$config.header.title}"><img src="{$config.logo.logo_130x60}" /> </a> </div>
+  </div>
+  <div class="span10"> {include file="{$config.t}base_header.tpl.html"} </div>
+</div>
 <div class="row">
   <div class="span12">
     <ul class="breadcrumb">
@@ -39,7 +54,6 @@
   </div>
 </div>
 {include file="{$config.t6}pagination.tpl.html"}
-<div style="clear:both;"></div>
 <div id="maincontent">
   <div class="wrapper">
     <div id="content"> {foreach $list as $d}
@@ -58,9 +72,7 @@
         </ul>
       </div>
       {/if}
-      {/foreach}
-      <div class="clear"></div>
-    </div>
+      {/foreach} </div>
   </div>
 </div>
 {include file="{$config.t6}pagination.tpl.html"}
@@ -85,3 +97,7 @@ $(window).load(function() {
 	});
 });
 </script>
+<div class="clear"></div>
+<div id="footer"> {include file="{$footer_template}"} </div>
+</body>
+</html>
