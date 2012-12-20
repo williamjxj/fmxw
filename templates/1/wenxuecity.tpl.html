@@ -25,58 +25,59 @@
 <script type="text/javascript" src="{$config.js.bts}"></script>
 </head>
 <body>
-<div class="row">
-  <div class="span2">
-    <div id="logo"> <a href="{$config.home}" title="{$config.header.title}"><img src="{$config.logo.logo_130x60}" /> </a> </div>
+<div class="container" align="center">
+  <div class="row">
+    <div class="span2">
+      <div id="logo"> <a href="{$config.home}" title="{$config.header.title}"><img src="{$config.logo.logo_130x60}" /> </a> </div>
+    </div>
+    <div class="span10"> {include file="{$config.t}base_header.tpl.html"} </div>
   </div>
-  <div class="span10"> {include file="{$config.t}base_header.tpl.html"} </div>
-</div>
-<div class="row">
-  <div class="span12">
-    <ul class="breadcrumb">
-      <li><i class="icon-home"></i>&nbsp;<a href="{$config.home}">首页</a><span class="divider">/</span></li>
-      <li class="active">{$title}：</li>
-      <li style="float:right"> {include file="{$config.shared}bshare.tpl.html"} </li>
-    </ul>
-  </div>
-</div>
-<div class="row">
-  <div class="alert">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    查询：&lt;<strong>{$smarty.session.fmxw.cate_item.key}</strong>&gt;,
-    匹配总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total_found}</strong>&gt;,
-    页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;,
-    用时：&lt;<strong>{$smarty.session.fmxw.cate_item.time}</strong>&gt;秒。
-    <div id="div_items" style="display:none;float:right;">
-      <select name="items" id="items">
-      </select>
+  <div class="row">
+    <div class="span12">
+      <ul class="breadcrumb">
+        <li><i class="icon-home"></i>&nbsp;<a href="{$config.home}">首页</a><span class="divider">/</span></li>
+        <li class="active">{$title}：</li>
+        <li style="float:right"> {include file="{$config.shared}bshare.tpl.html"} </li>
+      </ul>
     </div>
   </div>
-</div>
-{include file="{$config.t6}pagination.tpl.html"}
-<div id="maincontent">
-  <div class="wrapper">
-    <div id="content"> {foreach $list as $d}
-      {if $d@first}
-      <div class="cell margin">
-        <ul>
-          {elseif $d@iteration eq 50}
-          <div class="cell">
-            <ul>
-              {/if}
-              <li><a href="{$config.f7.s}?cid={$d.cid}" title="{$d.url}">{$d.title}</a></li>
-              {if {$d@iteration}==49 || {$d@iteration}==99}
-            </ul>
-          </div>
-          {elseif $d@last}
-        </ul>
+  <div class="row">
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      查询：&lt;<strong>{$smarty.session.fmxw.cate_item.key}</strong>&gt;,
+      匹配总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total_found}</strong>&gt;,
+      页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;,
+      用时：&lt;<strong>{$smarty.session.fmxw.cate_item.time}</strong>&gt;秒。
+      <div id="div_items" style="display:none;float:right;">
+        <select name="items" id="items">
+        </select>
       </div>
-      {/if}
-      {/foreach} </div>
+    </div>
   </div>
-</div>
-{include file="{$config.t6}pagination.tpl.html"}
-<script type="text/javascript">
+  {include file="{$config.t6}pagination.tpl.html"}
+  <div id="maincontent">
+    <div class="wrapper">
+      <div id="content"> {foreach $list as $d}
+        {if $d@first}
+        <div class="cell margin">
+          <ul>
+            {elseif $d@iteration eq 50}
+            <div class="cell">
+              <ul>
+                {/if}
+                <li><a href="{$config.f7.s}?cid={$d.cid}" title="{$d.url}">{$d.title}</a></li>
+                {if {$d@iteration}==49 || {$d@iteration}==99}
+              </ul>
+            </div>
+            {elseif $d@last}
+          </ul>
+        </div>
+        {/if}
+        {/foreach} </div>
+    </div>
+  </div>
+  {include file="{$config.t6}pagination.tpl.html"}
+  <script type="text/javascript">
 $(function() {
   document.title = document.title + '- {$title}';
   $('#items').change(function(e) {
@@ -97,7 +98,8 @@ $(window).load(function() {
 	});
 });
 </script>
-<div class="clear"></div>
-<div id="footer"> {include file="{$footer_template}"} </div>
+  <div class="clear"></div>
+  <div id="footer"> {include file="{$footer_template}"} </div>
+</div>
 </body>
 </html>
