@@ -1,7 +1,8 @@
-{if $smarty.fmxw.cate_item.category}
-  {$title=$smarty.fmxw.cate_item.category}
-  {if $smarty.fmxw.cate_item.item}
-    {$title=$title+' - ' + $smarty.fmxw.cate_item.item}
+{debug}
+{if $smarty.session.fmxw.cate_item.category}
+  {$title=$smarty.session.fmxw.cate_item.category}
+  {if $smarty.session.fmxw.cate_item.item}
+    {$title=$title+' - ' + $smarty.session.fmxw.cate_item.item}
   {/if}
 {/if}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -22,10 +23,10 @@
 <div class="row">
   <div class="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    查询：&lt;<strong>{$smarty.fmxw.cate_item.key}</strong>&gt;,
-    匹配总数：&lt;<strong>{$smarty.fmxw.cate_item.total_found}</strong>&gt;,
-    页数：&lt;<strong>{$smarty.fmxw.cate_item.page}/{$smarty.fmxw.cate_item.total_pages}</strong>&gt;,
-    用时：&lt;<strong>{$smarty.fmxw.cate_item.time}</strong>&gt;秒。
+    查询：&lt;<strong>{$smarty.session.fmxw.cate_item.key}</strong>&gt;,
+    匹配总数：&lt;<strong>{$smarty.session.fmxw.cate_item.total_found}</strong>&gt;,
+    页数：&lt;<strong>{$smarty.session.fmxw.cate_item.page}/{$smarty.session.fmxw.cate_item.total_pages}</strong>&gt;,
+    用时：&lt;<strong>{$smarty.session.fmxw.cate_item.time}</strong>&gt;秒。
     <div id="div_items" style="display:none;float:right;">
       <select name="items" id="items">
       </select>

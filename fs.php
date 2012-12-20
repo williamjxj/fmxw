@@ -131,7 +131,7 @@ foreach ($res['matches'] AS $key => $row){
 }
 $ids = implode(",", $all);
 
-$query = "select cid, title, url from contents where cid in (" . $ids . ')  ORDER BY FIELD(cid, ' .  $ids . ')';
+$query = "select cid, title, url, category, cate_id, item, iid, created, date(created) as date  from contents where cid in (" . $ids . ')  ORDER BY FIELD(cid, ' .  $ids . ')';
 	
 $mres = mysql_query($query);
 

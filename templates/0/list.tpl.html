@@ -2,7 +2,7 @@
 {if {$config.header.lang}!='en'}
 <div class="row">
   <div class="span12">
-    <div class="btn-group" style="margin-left:50px"> {foreach $list as $m} <a class="btn" href="{$s}?cate_id={$m.0}" title="{$m.1}" style="margin-left:10px;">{$m.2}</a> {/foreach} </div>
+    <div class="btn-group" style="margin-left:50px"> {foreach $list as $m} <a class="btn" href="{$config.root}fs.php?cate_id={$m.0}" title="{$m.1}" style="margin-left:10px;">{$m.2}</a> {/foreach} </div>
   </div>
 </div>
 <div align="center" style="margin-top:20px;margin-left:220px;">
