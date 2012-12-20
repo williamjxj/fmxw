@@ -38,6 +38,10 @@ if(isset($_GET['page']))
 	if(isset($_SESSION[PACKAGE]['cate_item']['iid'])) $obj->cl->SetFilter('iid', array($_SESSION[PACKAGE]['cate_item']['iid']));
 
 }
+elseif(isset($_GET['js_item'])) {
+	echo json_encode($obj->get_items_new($_GET['cid']));
+	return;
+} 
 elseif (isset($_GET['cate_id'])) {
 	if (isset($_SESSION[PACKAGE]['cate_item'])) unset($_SESSION[PACKAGE]['cate_item']);
 	$_SESSION[PACKAGE]['cate_item']['cate_id'] = $_GET['cate_id'];
@@ -66,10 +70,6 @@ elseif (isset($_GET['sitemap'])) {
         $obj -> assign('sitemap_template', $tdir1 . 'sitemap.tpl.html');
     }
 }
-elseif(isset($_GET['js_item'])) {
-	echo json_encode($obj->get_items_new($_GET['cate_id']));
-	return;
-} 
 else {
     if (isset($_SESSION[PACKAGE]['cate_item'])) unset($_SESSION[PACKAGE]['cate_item']);
 	

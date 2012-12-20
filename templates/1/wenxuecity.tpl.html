@@ -1,4 +1,3 @@
-{debug}
 {if $smarty.session.fmxw.cate_item.category}
   {$title=$smarty.session.fmxw.cate_item.category}
   {if $smarty.session.fmxw.cate_item.item}
@@ -88,7 +87,7 @@ $(function() {
   });
 });
 $(window).load(function() {
-	$.getJSON("{$config.root}fs.php?js_item=1&cate_id={$smarty.session.fmxw.cate_item.cate_id}", function(data) {
+	$.getJSON("{$config.root}fs.php?js_item=1&cid={$smarty.session.fmxw.cate_item.cate_id}", function(data) {
 		var items ='<option value="0">- 所有栏目 -</option>\n';
 		$.each(data, function(id, name) {
 			items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
