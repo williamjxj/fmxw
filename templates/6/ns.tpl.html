@@ -42,6 +42,7 @@
 ;(function($) {
 	{if $q || {$q}!='所有记录'}
 		$('#q').val('{$q}');
+		 document.title = document.title + ' - {$q}';
 	{/if}
 	
 	var $main = $('div#smiddle');

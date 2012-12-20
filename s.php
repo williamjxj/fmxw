@@ -41,6 +41,7 @@ $mix = '(丑闻|曝光|腐败|贿赂|淫荡|娼妓|滥用|罪恶|讹诈|抢劫|�
 
 if (isset($_GET['q'])) {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+	$_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
 
 	if(empty($_GET['q'])) {
 	    $key = $q = '';
@@ -108,18 +109,23 @@ elseif(isset($_GET['js_dwmy'])) {
 	switch($_GET['js_dwmy']) {
 		case 'day24':
 			$min = $obj->now - 86400;
+			$_SESSION[PACKAGE][SEARCH]['x'] = '一天内';
 			break;
 		case 'week':
 			$min = $obj->now - 604800;
+			$_SESSION[PACKAGE][SEARCH]['x'] = '一周内';
 			break;
 		case 'month':
 			$min = $obj->now - 2678400;
+			$_SESSION[PACKAGE][SEARCH]['x'] = '一月内';
 			break;
 		case 'year':
 			$min = $obj->now - 31536000;
+			$_SESSION[PACKAGE][SEARCH]['x'] = '一年内';
 			break;
 		default:
 			$min = 0;
+			$_SESSION[PACKAGE][SEARCH]['x'] = '全部时间';
 	}
 	$_SESSION[PACKAGE][SEARCH]['min'] = $min;
 	
@@ -142,20 +148,24 @@ elseif(isset($_GET['js_core'])) {
 		case 1: //负面度
 			$q = '@title "'.$key.'" '.$mix;
 			$_SESSION[PACKAGE][SEARCH]['q'] = $q;
-			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;			
+			$_SESSION[PACKAGE][SEARCH]['sort'] = 1;
+			$_SESSION[PACKAGE][SEARCH]['y'] = '负面度';
 			break;
 		case 2: //相关度
 			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['q'] = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 2;
+			$_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
 			break;
 		case 3: //评论数
 			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = 'pinglun';
+			$_SESSION[PACKAGE][SEARCH]['y'] = '评论数';
 			break;
 		default: //以后可能添加。
 			$q = $key;
 			$_SESSION[PACKAGE][SEARCH]['sort'] = DEFAULT_SORT;
+			$_SESSION[PACKAGE][SEARCH]['y'] = '相关度-';
 			break;
 	}
 	
@@ -172,6 +182,22 @@ elseif(isset($_GET['js_attr'])) {
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	
 	$obj->cl->SetSortMode(SPH_SORT_ATTR_DESC, $_GET['js_attr']);
+	switch($_GET['js_core']) {
+	case 'clicks':
+		$_SESSION[PACKAGE][SEARCH]['x'] = '阅读次数';
+		break;
+	case 'likes';
+		$_SESSION[PACKAGE][SEARCH]['x'] = '赞同';
+		break;
+	case 'guanzhu';
+		$_SESSION[PACKAGE][SEARCH]['x'] = '反对';
+		break;
+	case 'pinglun';
+		$_SESSION[PACKAGE][SEARCH]['x'] = '评论数';
+		break;
+	default:
+		$_SESSION[PACKAGE][SEARCH]['x'] = '关注度';
+	}	
 }
 //翻页显示。
 elseif(isset($_GET['page'])) 
@@ -219,8 +245,9 @@ elseif(isset($_GET['js_cate_item']))
 		$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
 	}
 
-	$_SESSION[PACKAGE][SEARCH]['cate_id'] = $_GET['category']; 	
+	$_SESSION[PACKAGE][SEARCH]['cate_id'] = $_GET['category'];
 	$_SESSION[PACKAGE][SEARCH]['sort'] = 'cate_id';
+	$_SESSION[PACKAGE][SEARCH]['x'] = $obj->get_category_by_id($_GET['category']);
 	
 	$obj->cl -> SetFilter('cate_id', array($_SESSION[PACKAGE][SEARCH]['cate_id']));
 
@@ -230,6 +257,7 @@ elseif(isset($_GET['js_cate_item']))
 		$_SESSION[PACKAGE][SEARCH]['sort'] = 'iid';
 
 		$obj->cl -> SetFilter('iid', array($_SESSION[PACKAGE][SEARCH]['item']));
+		$_SESSION[PACKAGE][SEARCH]['x'] .= ' - ' . $obj->get_item_by_id($_GET['item']);
 	}
 
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);		
@@ -238,6 +266,8 @@ elseif(isset($_GET['js_cate_item']))
 }
 else {
     if (isset($_SESSION[PACKAGE][SEARCH])) unset($_SESSION[PACKAGE][SEARCH]);
+	$_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
+
 	$key = $q = '';
 	$_SESSION[PACKAGE][SEARCH]['key'] ='';
 	$_SESSION[PACKAGE][SEARCH]['q'] ='';
@@ -254,6 +284,7 @@ else {
 if(empty($key)) {
 	$key = isset($_SESSION[PACKAGE][SEARCH]['key']) ? $_SESSION[PACKAGE][SEARCH]['key']: '';
 	$q = isset($_SESSION[PACKAGE][SEARCH]['q']) ? $_SESSION[PACKAGE][SEARCH]['q']: $key;
+	$_SESSION[PACKAGE][SEARCH]['y'] = '相关度';
 }
 
 // 设置当前页和开始的记录号码。

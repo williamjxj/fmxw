@@ -258,6 +258,23 @@ class FMXW extends BaseClass
         return $t;
     }
 
+	function get_category_by_id($cate_id) {
+		$sql = "select name from categories where cid =" .$cate_id;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return $row[0];
+	}
+	function get_item_by_id($iid) {
+		$sql = "select name from items where iid=".$iid;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return $row[0];
+	}
+
+
+
 	function get_categories() {
 		$ary = array();
 		$sql = "select cid, name from categories order by weight";
