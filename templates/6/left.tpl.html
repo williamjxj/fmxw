@@ -78,7 +78,6 @@ $(function(){
 		e.preventDefault();
 		// alert('{$url}'+','+$(this).serialize()+'&js_cate_item=1' );
 		var k=$('#q').val();
-		alert(k);
 		$main.load('{$url}', $(this).serialize()+'&js_cate_item=1&key='+k);
 		return false;
 	});
