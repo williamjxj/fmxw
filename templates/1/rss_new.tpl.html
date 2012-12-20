@@ -17,12 +17,9 @@
     {if $c%4 ==0} </tr>
   {/if}
   {/foreach}
-  {if $c==50 || $c==49}
-  {if $c==50}
-  <td colspan="2"></td>
-    {elseif $c==49}
-    <td colspan="3"></td>
-    {/if} </tr>
+  {if $c%4 !=0}
+  <td colspan="{4-$c%4}"></td>
+    </tr>
   {/if}
 </table>
 <script type="text/javascript">
