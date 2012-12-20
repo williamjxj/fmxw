@@ -77,18 +77,18 @@
     </div>
   </div>
   {include file="{$config.t6}pagination.tpl.html"}
-<script type="text/javascript">
+  <script type="text/javascript">
 $(function() {
   document.title = document.title + '- {$title}';
   $('#items').change(function(e) {
 	e.preventDefault();
 	var iid = $(this).attr('value');
-	document.location.href='{$config.f1.s}?iid='+iid;
+	document.location.href='{$config.root}fs.php?iid='+iid;
 	return false;
   });
 });
 $(window).load(function() {
-	$.getJSON("{$config.f1.s}?js_item=1&cid={$smarty.session.fmxw.cate_item.cate_id}", function(data) {
+	$.getJSON("{$config.root}fs.php?js_item=1&cate_id={$smarty.session.fmxw.cate_item.cate_id}", function(data) {
 		var items ='<option value="0">- 所有栏目 -</option>\n';
 		$.each(data, function(id, name) {
 			items += '<option value="' + name[0] + '">' + name[1] + '</option>\n';
@@ -98,10 +98,10 @@ $(window).load(function() {
 	});
 });
 </script>
-<div class="row">
-  <div class="span12">
-	  <div id="footer" style="margin-top:20px"> {include file="{$footer_template}"} </div>
-  </div>
+  <div class="row">
+    <div class="span12">
+      <div id="footer" style="margin-top:20px"> {include file="{$footer_template}"} </div>
+    </div>
   </div>
 </div>
 </body>
