@@ -1,4 +1,4 @@
-{$f1="{$config.f1.s}"}
+{$f1="{$config.root}fs.php"}
 {$f3="{$config.f3.s}"}
 <div class="container-fluid">
   <div class="row-fluid">
@@ -12,7 +12,7 @@
           <span class="more">时间: {$row.pubdate}</span> 
           </div>
             <div> {if {$row.category} || {$row.item}}
-              位置: <a href="{$f1}?cmenu={$row.cate_id}">{$row.category}</a> / <a href="{$f1}?iid={$row.iid}">{$row.item}</a> {/if} </div></td>
+              位置: <a href="{$f1}?cate_id={$row.cate_id}">{$row.category}</a> / <a href="{$f1}?iid={$row.iid}">{$row.item}</a> {/if} </div></td>
         </tr>
         <tr>
           <td><span>阅读: {$row.clicks}</span>&nbsp;<span>关注: {$row.guanzhu}</span>&nbsp;<span>标签: {$row.tags}</span></td>
