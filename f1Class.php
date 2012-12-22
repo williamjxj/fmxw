@@ -37,6 +37,13 @@ class f1Class extends f12Class {
 		mysql_free_result($res);
 		return $row[0];
 	}
+	function get_category_by_iid($iid) {
+		$sql = "select cid, category from items where iid=".$iid;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return array($row[0], $row[1]);
+	}
 
     ///////////// RSS 操作函数  ////////////
 

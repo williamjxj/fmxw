@@ -1,4 +1,4 @@
-{$f1="{$config.f1.s}"}
+{$f1="{$config.root}fs.php}"}
 {$f7="{$config.f7.s}"}
 <div class="container-fluid">
   <div class="row-fluid">
@@ -13,7 +13,7 @@
         <tr>
           <td><div> {if {$row.source} && {$row.author}}来源: <a href="{$row.author}">{$row.source}</a> {elseif {$row.source}}来源: <a href="{$row.source}">{$row.source}</a> {elseif {$row.author}}来源: <a href="{$row.author}">{$row.author}</a> {/if} <span class="more">时间: {$row.pubdate}</span> </div>
             <div> {if {$row.category} || {$row.item}}
-              位置: <a href="{$f1}?cmenu={$row.cate_id}">{$row.category}</a> / <a href="{$f1}?iid={$row.iid}">{$row.item}</a> {/if} </div></td>
+              位置: <a href="{$f1}?cate_id={$row.cate_id}">{$row.category}</a> / <a href="{$f1}?iid={$row.iid}">{$row.item}</a> {/if} </div></td>
         </tr>
         <tr>
           <td><span>阅读: {$row.clicks}</span>&nbsp;<span>关注: {$row.guanzhu}</span>&nbsp;<span>标签: {$row.tags}</span></td>

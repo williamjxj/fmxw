@@ -57,6 +57,11 @@ elseif (isset($_GET['iid'])) {
 	$_SESSION[PACKAGE]['cate_item']['iid'] = $_GET['iid'];
 	$_SESSION[PACKAGE]['cate_item']['item'] = $obj->get_item_by_id($_GET['iid']);
 
+	if(empty($_SESSION[PACKAGE]['cate_item']['cate_id'])) {
+		list($_SESSION[PACKAGE]['cate_item']['cate_id'], $_SESSION[PACKAGE]['cate_item']['category']) 
+			= $obj->get_category_by_iid($_GET['iid']);
+	}
+
 	$obj->cl->SetFilter('iid', array($_GET['iid']));
 	$obj->cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 	$obj->cl->SetSortMode(SPH_SORT_EXTENDED, "@relevance DESC, @id DESC");

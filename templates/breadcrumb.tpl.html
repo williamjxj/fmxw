@@ -5,7 +5,7 @@
 	{if count($info.breadcrumb)>0}
 	{foreach $info.breadcrumb as $bb}
 	<li>
-		<a href="{$config.f1.s}?{$bb.link}">{$bb.name}</a><span class="divider">/</span>
+		<a href="{$config.root}fs.php?{$bb.link}">{$bb.name}</a><span class="divider">/</span>
 	</li>
 	{/foreach}
 	{/if}
