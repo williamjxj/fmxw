@@ -11,6 +11,17 @@
 <script type="text/javascript" src="js/jquery.fmxw5.js"></script>
 <link rel="stylesheet" type="text/css" href="include/jquery_news_ticker/styles/ticker-style.css" />
 <script type="text/javascript" src="include/jquery_news_ticker/includes/jquery.ticker.js"></script>
+<script type="text/javascript">
+//;(function($){
+//  $('a.li3a', 'li.li3').live('click', function(e) {
+//    e.preventDefault();
+//    var u = $(this).attr('title');
+//    if($('#sd').length) $('#sd').load(u);
+ //   else alert('the content is temperaraily unable to display, please try again.');
+//    return false;
+//  });
+//})(jQuery);
+</script>
 </head><body>
 <div class="container">
   <div id="header"> {include file="{$header_template}"} </div>
@@ -28,7 +39,7 @@
 ;(function($) {
 	$.address.init(function(event) {
 		event.preventDefault();
-		$('a', 'li.li3').unbind('click');
+		$('a'.li3a, 'li.li3').unbind('click');
 		return false;
 	}).
 	change(function(event) {

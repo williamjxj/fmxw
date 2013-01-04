@@ -47,6 +47,13 @@ class f1Class extends f12Class {
 		mysql_free_result($res);
 		return $row[0];
 	}
+	function get_category_by_iid($iid) {
+		$sql = "select cid, category from items where iid=".$iid;
+		$res = mysql_query($sql);
+		$row = mysql_fetch_row($res);
+		mysql_free_result($res);
+		return array($row[0], $row[1]);
+	}
 
     ///////////// RSS 操作函数  ////////////
 	//http://top.baidu.com/rss_xml.php?p=top10
@@ -54,8 +61,43 @@ class f1Class extends f12Class {
 	{
         $rawFeed = file_get_contents($rss_url);
 
+<<<<<<< HEAD
 		$rawFeed = mb_convert_encoding($rawFeed, "UTF-8", "GB2312");
 		return  $this -> parse_premature($rawFeed);
+=======
+        //if (preg_match("/(shishuoxinci|weekhotspot)/", $rss_url)) {
+        if (preg_match("/(shishuoxinci|weekhot|keyword|hotman)/", $rss_url)) {
+            //$rawFeed = iconv("GB2312", "UTF-8//TRANSLIT", $rawFeed);
+            //$rawFeed = iconv("UTF-8", "GB2312", $rawFeed);
+             $rawFeed = mb_convert_encoding($rawFeed, "UTF-8", "GB2312");
+            //$rawFeed = preg_replace_callback('/<!\[CDATA\[(.*)\]\]>/', 'filter_xml', $rawFeed);
+            // $this -> write_file($rawFeed);
+            // $this->__p($rawFeed); exit;
+            // return $rawFeed;
+            return $this -> parse_premature($rawFeed);
+        }
+
+        if (preg_match("/keyword/", $rss_url)) {
+            $rawFeed = iconv("GB2312", "UTF-8", $rawFeed);
+		}
+		//echo $rss_url; $this->__p($rawFeed);
+		$xml = simplexml_load_string($rawFeed);
+		// echo $rss_url; $this->__p($xml);
+
+        if (count($xml) == 0) return;
+
+        $ary = array();
+        foreach ($xml->channel->item as $item) {
+            $sa = array();
+            $sa['title'] = (string)$this -> parse_cdata(trim($item -> title));
+            $text = $this -> parse_desc($this -> parse_cdata(trim($item -> description)));
+            $sa['text'] = $this -> assembly_text($text);
+            $sa['link'] = (string)trim($item -> link);
+            $sa['date'] = $this -> get_datetime((string)$item -> pubDate);
+            array_push($ary, $sa);
+        }
+        return $ary;
+>>>>>>> adf20b4fb0c1f2bc9c7d156d0bfdc6d82dbbd2c1
     }
 
     function parse_cdata($str) {
