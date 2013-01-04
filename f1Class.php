@@ -66,6 +66,7 @@ class f1Class extends f12Class {
         if (preg_match("/keyword/", $rss_url)) {
             $rawFeed = iconv("GB2312", "UTF-8", $rawFeed);
 		}
+		//echo $rss_url; $this->__p($rawFeed);
 		$xml = simplexml_load_string($rawFeed);
 		// echo $rss_url; $this->__p($xml);
 
