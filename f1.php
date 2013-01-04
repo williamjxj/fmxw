@@ -100,14 +100,19 @@ elseif (isset($_GET['test']) && isset($_GET['f1_hot'])) {
 elseif (isset($_GET['f1_hot'])) {
     $rss = $obj -> get_rss($obj -> rss[$_GET['f1_hot']]);
 
-	$pattern = "|<td>(.*?)</td>|U";
+	$pattern = "|<td>(.*?)</td>|s";
 	list($a1, $a2, $matches) = array(array(), array(), array());
 	foreach($rss as $v) preg_match_all($pattern, $v['text'], $a1);
 
 	foreach($a1[1] as $t) {
-		if(preg_match("|<a.*?>(.*)</a>|", $t, $matches))
-			array_push($a2, $matches[1]);
+		if(preg_match("|<a.*?>(.*)</a>|", $t, $matches)) {
+			//echo '['.$matches[1]."]<br>\n";
+			if(!in_array($matches[1], array('簡介','简介','新闻','新聞')))
+				array_push($a2, $matches[1]);
+		}
 	}
+	//echo "<pre>";print_r($a2);echo "</pre>";exit;
+
     $obj -> assign('rss', $a2);
 	switch($_GET['f1_hot']) {
 		case 'guanzhu':
